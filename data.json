@@ -1,0 +1,1447 @@
+{
+  "Revenue": {
+    "Tue Aug 25 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 104510000
+    },
+    "Wed Aug 26 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 153319700
+    },
+    "Thu Aug 27 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 79851415
+    },
+    "Fri Aug 28 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 296746588
+    },
+    "Sat Aug 29 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 350351000
+    },
+    "Sun Aug 30 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 239614125
+    },
+    "Mon Aug 31 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 105907125
+    },
+    "Tue Sep 01 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-08-25T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 54943800
+    },
+    "Wed Sep 02 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "KG",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 107925000
+    },
+    "Thu Sep 03 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "KG",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 220250
+    },
+    "Fri Sep 04 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "KG",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 2264250
+    },
+    "Sat Sep 05 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "KG",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 10545800
+    },
+    "Sun Sep 06 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "KG",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 2114450
+    },
+    "Mon Sep 07 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "KG",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 16706090
+    },
+    "Tue Sep 08 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "KG",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 345197765
+    },
+    "Wed Sep 09 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-08-25T17:00:00.000Z",
+      "Unit": "KG",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 37109815
+    },
+    "Thu Sep 10 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1A",
+      "Platform": "WhatsApp",
+      "Revenue": 184080150
+    },
+    "Fri Sep 11 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1A",
+      "Platform": "WhatsApp",
+      "Revenue": 80718875
+    },
+    "Sat Sep 12 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1A",
+      "Platform": "WhatsApp",
+      "Revenue": 11690475
+    },
+    "Sun Sep 13 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1A",
+      "Platform": "WhatsApp",
+      "Revenue": 196374725
+    },
+    "Mon Sep 14 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1A",
+      "Platform": "WhatsApp",
+      "Revenue": 591593880
+    },
+    "Tue Sep 15 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1A",
+      "Platform": "WhatsApp",
+      "Revenue": 524791150
+    },
+    "Wed Sep 16 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1A",
+      "Platform": "WhatsApp",
+      "Revenue": 402595975
+    },
+    "Thu Sep 17 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-08-25T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1A",
+      "Platform": "WhatsApp",
+      "Revenue": 44274800
+    },
+    "Fri Sep 18 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1B",
+      "Platform": "WhatsApp",
+      "Revenue": 52899525
+    },
+    "Sat Sep 19 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1B",
+      "Platform": "WhatsApp",
+      "Revenue": 41177700
+    },
+    "Sun Sep 20 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1B",
+      "Platform": "WhatsApp",
+      "Revenue": 2675750
+    },
+    "Mon Sep 21 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1B",
+      "Platform": "WhatsApp",
+      "Revenue": 313136255
+    },
+    "Tue Sep 22 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1B",
+      "Platform": "WhatsApp",
+      "Revenue": 260438550
+    },
+    "Wed Sep 23 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1B",
+      "Platform": "WhatsApp",
+      "Revenue": 567352675
+    },
+    "Thu Sep 24 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1B",
+      "Platform": "WhatsApp",
+      "Revenue": 151670725
+    },
+    "Fri Sep 25 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-08-25T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 1B",
+      "Platform": "WhatsApp",
+      "Revenue": 23991075
+    },
+    "Sat Sep 26 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 2",
+      "Platform": "WhatsApp",
+      "Revenue": 149642525
+    },
+    "Sun Sep 27 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 2",
+      "Platform": "WhatsApp",
+      "Revenue": 259611325
+    },
+    "Mon Sep 28 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 2",
+      "Platform": "WhatsApp",
+      "Revenue": 320809900
+    },
+    "Tue Sep 29 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 2",
+      "Platform": "WhatsApp",
+      "Revenue": 753777425
+    },
+    "Wed Sep 30 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 2",
+      "Platform": "WhatsApp",
+      "Revenue": 1014588085
+    },
+    "Thu Oct 01 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 2",
+      "Platform": "WhatsApp",
+      "Revenue": 1136083600
+    },
+    "Fri Oct 02 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 2",
+      "Platform": "WhatsApp",
+      "Revenue": 970771010
+    },
+    "Sat Oct 03 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-08-25T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 2",
+      "Platform": "WhatsApp",
+      "Revenue": 241385870
+    },
+    "Sun Oct 04 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 3",
+      "Platform": "WhatsApp",
+      "Revenue": 103077500
+    },
+    "Mon Oct 05 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 3",
+      "Platform": "WhatsApp",
+      "Revenue": 376481800
+    },
+    "Tue Oct 06 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 3",
+      "Platform": "WhatsApp",
+      "Revenue": 140686420
+    },
+    "Wed Oct 07 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 3",
+      "Platform": "WhatsApp",
+      "Revenue": 726199350
+    },
+    "Thu Oct 08 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 3",
+      "Platform": "WhatsApp",
+      "Revenue": 640870325
+    },
+    "Fri Oct 09 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 3",
+      "Platform": "WhatsApp",
+      "Revenue": 474724800
+    },
+    "Sat Oct 10 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 3",
+      "Platform": "WhatsApp",
+      "Revenue": 642259010
+    },
+    "Sun Oct 11 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-08-25T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Zona 3",
+      "Platform": "WhatsApp",
+      "Revenue": 70975300
+    },
+    "Mon Oct 12 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 9684597
+    },
+    "Tue Oct 13 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 6319242
+    },
+    "Wed Oct 14 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 1980491
+    },
+    "Thu Oct 15 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 4553824
+    },
+    "Fri Oct 16 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 10931309
+    },
+    "Sat Oct 17 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 18560859
+    },
+    "Sun Oct 18 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 126398391
+    },
+    "Mon Oct 19 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-08-25T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 28342460
+    },
+    "Tue Oct 20 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 811600
+    },
+    "Wed Oct 21 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 5319000
+    },
+    "Thu Oct 22 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 40223500
+    },
+    "Fri Oct 23 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 1111400
+    },
+    "Sat Oct 24 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 7552000
+    },
+    "Sun Oct 25 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 130868500
+    },
+    "Mon Oct 26 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 7422600
+    },
+    "Tue Oct 27 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-08-25T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 16154400
+    },
+    "Wed Oct 28 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 905504
+    },
+    "Thu Oct 29 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 792966
+    },
+    "Fri Oct 30 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 515184
+    },
+    "Sat Oct 31 2026 15:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 434890
+    },
+    "Sun Nov 01 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 107500
+    },
+    "Mon Nov 02 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 4800000
+    },
+    "Tue Nov 03 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 3339375
+    },
+    "Wed Nov 04 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 600000
+    },
+    "Thu Nov 05 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 18549200
+    },
+    "Fri Nov 06 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 395000
+    },
+    "Sat Nov 07 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 285000
+    },
+    "Sun Nov 08 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 1440000
+    },
+    "Mon Nov 09 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 1254100
+    },
+    "Tue Nov 10 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 429475
+    },
+    "Wed Nov 11 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 295775
+    },
+    "Thu Nov 12 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 7903816
+    },
+    "Fri Nov 13 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-08-25T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 2046632
+    },
+    "Sat Nov 14 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 309725
+    },
+    "Sun Nov 15 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 72645
+    },
+    "Mon Nov 16 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 418800
+    },
+    "Tue Nov 17 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Event",
+      "Revenue": 149500
+    },
+    "Wed Nov 18 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Event",
+      "Revenue": 373000
+    },
+    "Thu Nov 19 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Kunjungan",
+      "Revenue": 163007000
+    },
+    "Fri Nov 20 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Mitra",
+      "Revenue": 76476000
+    },
+    "Sat Nov 21 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Mitra",
+      "Revenue": 10516000
+    },
+    "Sun Nov 22 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Offline",
+      "Platform": "Konsinyasi",
+      "Revenue": 1920500
+    },
+    "Mon Nov 23 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Offline",
+      "Platform": "Konsinyasi",
+      "Revenue": 1605000
+    },
+    "Tue Nov 24 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Offline",
+      "Platform": "Konsinyasi",
+      "Revenue": 935000
+    },
+    "Wed Nov 25 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Offline",
+      "Platform": "Konsinyasi",
+      "Revenue": 3811500
+    },
+    "Thu Nov 26 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Offline",
+      "Platform": "Konsinyasi",
+      "Revenue": 1893000
+    },
+    "Fri Nov 27 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Offline",
+      "Platform": "Konsinyasi",
+      "Revenue": 747000
+    },
+    "Sat Nov 28 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "NHC",
+      "Divisi": "Offline",
+      "Platform": "Konsinyasi",
+      "Revenue": 6416250
+    },
+    "Sun Nov 29 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 463103665
+    },
+    "Mon Nov 30 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 436619350
+    },
+    "Tue Dec 01 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 522825715
+    },
+    "Wed Dec 02 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 1144404325
+    },
+    "Thu Dec 03 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 2855770525
+    },
+    "Fri Dec 04 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 2199497239
+    },
+    "Sat Dec 05 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 2578894570
+    },
+    "Sun Dec 06 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-08-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 387409050
+    },
+    "Mon Dec 07 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-09-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 145965590
+    },
+    "Tue Dec 08 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-10-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 38089157
+    },
+    "Wed Dec 09 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-11-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 85587298
+    },
+    "Thu Dec 10 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-12-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "CS Deal",
+      "Platform": "WhatsApp",
+      "Revenue": 259632827
+    },
+    "Fri Dec 11 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 5049500
+    },
+    "Sat Dec 12 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 1936500
+    },
+    "Sun Dec 13 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 632500
+    },
+    "Mon Dec 14 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 1096000
+    },
+    "Tue Dec 15 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 3260375
+    },
+    "Wed Dec 16 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 6294000
+    },
+    "Thu Dec 17 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 139228000
+    },
+    "Fri Dec 18 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-08-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 22177500
+    },
+    "Sat Dec 19 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-09-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 20037000
+    },
+    "Sun Dec 20 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-10-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 7970300
+    },
+    "Mon Dec 21 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-11-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 7764890
+    },
+    "Tue Dec 22 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-12-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Shopee",
+      "Revenue": 15306852
+    },
+    "Wed Dec 23 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 544650
+    },
+    "Thu Dec 24 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 319800
+    },
+    "Fri Dec 25 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 383989
+    },
+    "Sat Dec 26 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 458950
+    },
+    "Sun Dec 27 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 345452
+    },
+    "Mon Dec 28 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 237421
+    },
+    "Tue Dec 29 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 8551575
+    },
+    "Wed Dec 30 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-08-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 2393518
+    },
+    "Thu Dec 31 2026 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-09-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 1985729
+    },
+    "Fri Jan 01 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-10-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 897140
+    },
+    "Sat Jan 02 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-11-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 800534
+    },
+    "Sun Jan 03 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-12-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "TikTok Shop",
+      "Revenue": 1087466
+    },
+    "Mon Jan 04 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 0
+    },
+    "Tue Jan 05 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 1425600
+    },
+    "Wed Jan 06 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 1267500
+    },
+    "Thu Jan 07 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 2925000
+    },
+    "Fri Jan 08 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 634100
+    },
+    "Sat Jan 09 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 0
+    },
+    "Sun Jan 10 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 11906150
+    },
+    "Mon Jan 11 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-08-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 0
+    },
+    "Tue Jan 12 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-09-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 482500
+    },
+    "Wed Jan 13 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-10-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 0
+    },
+    "Thu Jan 14 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-11-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 27320625
+    },
+    "Fri Jan 15 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-12-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "WhatsApp",
+      "Revenue": 874000
+    },
+    "Sat Jan 16 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 425000
+    },
+    "Sun Jan 17 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 0
+    },
+    "Mon Jan 18 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 0
+    },
+    "Tue Jan 19 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 0
+    },
+    "Wed Jan 20 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 0
+    },
+    "Thu Jan 21 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 0
+    },
+    "Fri Jan 22 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 9672500
+    },
+    "Sat Jan 23 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-08-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 0
+    },
+    "Sun Jan 24 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-09-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 180000
+    },
+    "Mon Jan 25 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-10-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 0
+    },
+    "Tue Jan 26 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-11-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 0
+    },
+    "Wed Jan 27 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-12-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Website",
+      "Revenue": 0
+    },
+    "Thu Jan 28 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 0
+    },
+    "Fri Jan 29 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 6736100
+    },
+    "Sat Jan 30 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 0
+    },
+    "Sun Jan 31 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 0
+    },
+    "Mon Feb 01 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 0
+    },
+    "Tue Feb 02 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 114751161
+    },
+    "Wed Feb 03 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 0
+    },
+    "Thu Feb 04 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-08-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 0
+    },
+    "Fri Feb 05 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-09-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 8836935
+    },
+    "Sat Feb 06 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-10-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 62039493
+    },
+    "Sun Feb 07 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-11-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 34491227
+    },
+    "Mon Feb 08 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-12-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Toko Ladang",
+      "Revenue": 5900798
+    },
+    "Tue Feb 09 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 0
+    },
+    "Wed Feb 10 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 0
+    },
+    "Thu Feb 11 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 8740000
+    },
+    "Fri Feb 12 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 0
+    },
+    "Sat Feb 13 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 0
+    },
+    "Sun Feb 14 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 0
+    },
+    "Mon Feb 15 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 52090500
+    },
+    "Tue Feb 16 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-08-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 0
+    },
+    "Wed Feb 17 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-09-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 37582000
+    },
+    "Thu Feb 18 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-10-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 6674000
+    },
+    "Fri Feb 19 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-11-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 3988500
+    },
+    "Sat Feb 20 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-12-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Digital Marketing",
+      "Platform": "Blibli",
+      "Revenue": 20454100
+    },
+    "Sun Feb 21 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Kunjungan",
+      "Revenue": null
+    },
+    "Mon Feb 22 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Kunjungan",
+      "Revenue": 164000
+    },
+    "Tue Feb 23 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Kunjungan",
+      "Revenue": null
+    },
+    "Wed Feb 24 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Kunjungan",
+      "Revenue": 3000
+    },
+    "Thu Feb 25 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Kunjungan",
+      "Revenue": 105000
+    },
+    "Fri Feb 26 2027 14:09:12 GMT-0500 (Waktu Standar Timur)": {
+      "Tanggal": "2025-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Divisi": "Offline",
+      "Platform": "Kunjungan",
+      "Revenue": 61200
+    }
+  },
+  "Promo": {
+    "ID_1787712451013": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "BiayaPromosi": 188852647
+    },
+    "ID_1787712572059": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "BiayaPromosi": 163294123
+    },
+    "ID_1787713034565": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "BiayaPromosi": 67064334
+    },
+    "ID_1787713088005": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "BiayaPromosi": 43587087
+    },
+    "ID_1787713158473": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "BiayaPromosi": 15555841
+    },
+    "ID_1787713253508": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "BiayaPromosi": 12674251
+    }
+  },
+  "Leads": {
+    "Tue Aug 25 2026 21:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-01-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Campaign": 971,
+      "DatabaseLeads": 396,
+      "FollowUp": 45799,
+      "Pesanan": 260
+    },
+    "Wed Aug 26 2026 21:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-02-27T17:00:00.000Z",
+      "Unit": "NHP",
+      "Campaign": 128,
+      "DatabaseLeads": 300,
+      "FollowUp": 19877,
+      "Pesanan": 154
+    },
+    "Thu Aug 27 2026 21:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-03-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Campaign": 37329,
+      "DatabaseLeads": 377,
+      "FollowUp": 4540,
+      "Pesanan": 33
+    },
+    "Fri Aug 28 2026 21:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-04-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Campaign": 2818,
+      "DatabaseLeads": 576,
+      "FollowUp": 41574,
+      "Pesanan": 90
+    },
+    "Sat Aug 29 2026 21:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-05-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Campaign": 1824,
+      "DatabaseLeads": 457,
+      "FollowUp": 5994,
+      "Pesanan": 102
+    },
+    "Sun Aug 30 2026 21:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-06-29T17:00:00.000Z",
+      "Unit": "NHP",
+      "Campaign": 2549,
+      "DatabaseLeads": 610,
+      "FollowUp": 7563,
+      "Pesanan": 173
+    },
+    "Mon Aug 31 2026 21:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-07-30T17:00:00.000Z",
+      "Unit": "NHP",
+      "Campaign": 2748,
+      "DatabaseLeads": 670,
+      "FollowUp": 6807,
+      "Pesanan": 312
+    },
+    "Tue Sep 01 2026 21:09:12 GMT-0400 (Waktu Musim Panas Timur)": {
+      "Tanggal": "2026-08-25T17:00:00.000Z",
+      "Unit": "NHP",
+      "Campaign": 7221,
+      "DatabaseLeads": 445,
+      "FollowUp": 4884,
+      "Pesanan": 129
+    }
+  },
+  "MasterData": {
+    "19160000000": {
+      "TargetNHP": 10491778328,
+      "TargetNHC": 1311472291,
+      "TargetKG": 1311472291,
+      "RevenueTahunLalu": 13114722910,
+      "KodeAkses": 0
+    }
+  },
+  "Users": {
+    "USR_1": {
+      "Nama": "Wafa Arsyada",
+      "Email": "admin@marketing.com",
+      "Password": "admin123",
+      "Role": "SUPERADMIN",
+      "Unit": "-",
+      "Avatar": "https://lh3.googleusercontent.com/ogw/AF2bZyhE_XfijAKtvttI4cqqlsislAGitkO5E_MqYyLzpih1CVI=s64-c-mo"
+    },
+    "USR_1787798119406": {
+      "Nama": "Winda Annisa",
+      "Email": "nhp@marketing.com",
+      "Password": "admin123",
+      "Role": "ADMIN_UNIT",
+      "Unit": "NHP",
+      "Avatar": "https://ui-avatars.com/api/?name=Admin%20NHP"
+    },
+    "USR_1787798171007": {
+      "Nama": "Hanifah",
+      "Email": "nhc@marketing.com",
+      "Password": "admin123",
+      "Role": "ADMIN_UNIT",
+      "Unit": "NHC",
+      "Avatar": null
+    },
+    "USR_1787801309643": {
+      "Nama": "Admin KG",
+      "Email": "kg@marketing.com",
+      "Password": "admin123",
+      "Role": "ADMIN_UNIT",
+      "Unit": "KG",
+      "Avatar": "https://ui-avatars.com/api/?name=Admin%20KG"
+    }
+  }
+}

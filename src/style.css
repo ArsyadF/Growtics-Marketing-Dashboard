@@ -1,0 +1,200 @@
+/* ==========================================================================
+   1. IMPORTS & DIRECTIVES (Wajib Paling Atas)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   2. GLOBAL BASE STYLES
+   ========================================================================== */
+body { 
+  font-family: 'Poppins', sans-serif; 
+  transition: background-color 0.4s, color 0.4s; 
+}
+
+.page-section { 
+  display: block; 
+}
+
+/* Background Gradient Layout */
+.bg-gradient-light {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #e0f2fe 100%);
+}
+
+.dark .bg-gradient-dark {
+  background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e293b 100%) !important;
+}
+
+/* ==========================================================================
+   3. GLASSMORPHISM STYLES
+   ========================================================================== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 32px 0 rgba(30, 58, 138, 0.08);
+}
+
+.dark .glass-card {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(191, 219, 254, 0.8);
+}
+
+.dark .glass-input {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(30, 58, 138, 0.6);
+  color: #f1f5f9;
+}
+
+.transparent-header {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom: none !important;
+}
+
+/* ==========================================================================
+   4. LAYOUT & SIDEBAR STYLES
+   ========================================================================== */
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+}
+
+.app-sidebar {
+  width: 250px;
+  background-color: #1e293b;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.app-content {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Floating Sidebar Responsive */
+.floating-sidebar {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+  .floating-sidebar {
+    margin: 1rem;
+    height: calc(100vh - 2rem);
+    border-radius: 1.5rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .floating-sidebar {
+    margin: 0 !important;
+    height: 100vh !important;
+    border-radius: 0 1.5rem 1.5rem 0 !important;
+  }
+}
+
+/* Sidebar Collapsed Mode Mini */
+.sidebar-collapsed {
+  width: 4.5rem !important; /* 72px */
+}
+
+.sidebar-collapsed .sidebar-header {
+  justify-content: center !important;
+  padding: 1.25rem 0 !important;
+}
+
+.sidebar-collapsed .sidebar-header button {
+  justify-content: center !important;
+  width: auto !important;
+}
+
+.sidebar-collapsed .sidebar-text,
+.sidebar-collapsed .sidebar-category,
+.sidebar-collapsed .user-info {
+  display: none !important;
+}
+
+.sidebar-collapsed .nav-item {
+  justify-content: center !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  border-right: none !important;
+}
+
+.sidebar-collapsed .nav-item i {
+  width: auto !important;
+  font-size: 1.25rem;
+}
+
+.sidebar-collapsed .user-box {
+  justify-content: center !important;
+  padding: 0.75rem 0 !important;
+  margin: 0.75rem 0.5rem !important;
+}
+
+/* Navigation Item Active State */
+.nav-item.active { 
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.18) 0%, rgba(56, 189, 248, 0.18) 100%); 
+  color: #1d4ed8; 
+  border-right: 4px solid #2563eb; 
+  font-weight: 600; 
+}
+
+.dark .nav-item.active { 
+  background: linear-gradient(90deg, rgba(37, 99, 235, 0.35) 0%, rgba(56, 189, 248, 0.35) 100%); 
+  color: #60a5fa; 
+  border-right: 4px solid #60a5fa; 
+}
+
+/* ==========================================================================
+   5. COMPONENTS & UTILITIES
+   ========================================================================== */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 240px;
+}
+
+@media (min-width: 768px) {
+  .chart-container { 
+    height: 280px; 
+  }
+}
+
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable-header:hover { 
+  color: #2563eb; 
+}
+
+/* Blur Overlay Area Terproteksi */
+.content-locked {
+  filter: blur(16px) grayscale(90%) !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
