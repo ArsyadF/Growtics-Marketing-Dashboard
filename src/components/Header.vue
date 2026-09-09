@@ -1,6 +1,6 @@
 <!-- src/components/Header.vue -->
 <template>
-  <header class="transparent-header sticky top-0 z-10 px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row gap-3 md:gap-0 justify-between md:items-center">
+  <header class="transparent-header sticky top-0 z-10 pt-6 md:pt-4 px-4 md:px-6 pb-3 md:pb-4 flex flex-col md:flex-row gap-3 md:gap-0 justify-between md:items-center">
     <div class="flex justify-between items-center w-full md:w-auto">
       <div class="flex items-center space-x-3">
         <!-- Tombol Hamburger Mobile -->
