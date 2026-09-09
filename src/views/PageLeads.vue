@@ -43,7 +43,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
       
       <!-- Kolom 1: Rekap Leads Per Bulan -->
-      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <div>
           <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm">
             Rekap Leads Per Bulan
@@ -78,7 +78,7 @@
       </div>
 
       <!-- Kolom 2: Rekap Leads Per Triwulan -->
-      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <div>
           <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm">
             Rekap Triwulan
@@ -99,7 +99,7 @@
       </div>
 
       <!-- Kolom 3: Grafik Trend Leads Bulanan (Presisi Round Dots Anti Gepeng) -->
-      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <div>
           <div class="flex justify-between items-center mb-3">
             <h3 class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm flex items-center gap-1.5">
@@ -164,7 +164,7 @@
     </div>
 
     <!-- 3. Management Data Table Realtime Firestore (Scrollable & Paginated) -->
-    <div class="glass-card p-4 md:p-6 rounded-2xl md:rounded-3xl space-y-4">
+    <div class="glass-card p-4 md:p-6 rounded-2xl md:rounded-1xl space-y-4">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <h3 class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm">Manajemen Data Leads</h3>
         <div class="flex items-center gap-2">

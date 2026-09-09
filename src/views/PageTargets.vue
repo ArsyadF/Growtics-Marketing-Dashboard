@@ -16,7 +16,7 @@
 
    
     <!-- Table Targets -->
-    <div class="glass-card p-4 rounded-2xl md:rounded-3xl overflow-hidden">
+    <div class="glass-card p-4 rounded-2xl md:rounded-1xl overflow-hidden">
       <div class="overflow-x-auto">
         <table class="min-w-full text-xs text-left">
           <thead class="bg-white/40 dark:bg-slate-800/60 text-slate-400">

@@ -2,7 +2,7 @@
 <template>
   <section id="page-unit" class="page-section space-y-4 md:space-y-6">
     <!-- Filter Header Card -->
-    <div class="glass-card p-4 rounded-2xl md:rounded-3xl space-y-3">
+    <div class="glass-card p-4 rounded-2xl md:rounded-1xl space-y-3">
       <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
           <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">
@@ -75,21 +75,21 @@
 
     <!-- Summary Metrics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6">
-      <div class="glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl border-l-4 border-l-emerald-400">
+      <div class="glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl border-l-4 border-l-emerald-400">
         <p class="text-slate-400 text-[11px] md:text-xs">Revenue Unit (Filtered)</p>
         <h3 class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100">
           {{ formatRupiah(totalFilteredRevenue) }}
         </h3>
       </div>
 
-      <div class="glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl border-l-4 border-l-blue-400">
+      <div class="glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl border-l-4 border-l-blue-400">
         <p class="text-slate-400 text-[11px] md:text-xs">Target Unit</p>
         <h3 class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100">
           {{ formatRupiah(unitTarget) }}
         </h3>
       </div>
 
-      <div class="glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl border-l-4 border-l-amber-400">
+      <div class="glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl border-l-4 border-l-amber-400">
         <p class="text-slate-400 text-[11px] md:text-xs">% Kontribusi Global</p>
         <h3 class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100">
           {{ globalContribution }}%
@@ -101,7 +101,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
       
       <!-- 1. Rekap Revenue Per Bulan -->
-      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm">Rekap Revenue Per Bulan</h3>
         <div class="overflow-y-auto max-h-[260px] pr-1">
           <table class="min-w-full text-xs text-left">
@@ -125,7 +125,7 @@
       </div>
 
       <!-- 2. Rekap Triwulan -->
-      <div class="lg:col-span-3 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-3 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm">Rekap Triwulan</h3>
         <div class="space-y-2">
           <div 
@@ -140,7 +140,7 @@
       </div>
 
       <!-- 3. Chart Trend Revenue Bulanan -->
-      <div class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm">Grafik Trend Revenue Bulanan</h3>
         <div class="chart-container relative h-60 w-full">
           <canvas ref="chartUnitMonthlyTrendRef"></canvas>
@@ -150,7 +150,7 @@
 
     <!-- Detail Rekap Divisi/Platform & Platform Contribution Chart -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
-      <div class="lg:col-span-6 glass-card p-4 md:p-6 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-6 glass-card p-4 md:p-6 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 md:mb-4 text-xs md:text-sm">Rekap per Divisi & Platform</h3>
         <div class="overflow-x-auto max-h-[260px]">
           <table class="min-w-full text-xs text-left">
@@ -173,7 +173,7 @@
         </div>
       </div>
 
-      <div class="lg:col-span-6 glass-card p-4 md:p-6 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-6 glass-card p-4 md:p-6 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 md:mb-4 text-xs md:text-sm">Kontribusi Platform</h3>
         <div class="chart-container relative h-60 w-full">
           <canvas ref="chartUnitPlatformRef"></canvas>
@@ -182,7 +182,7 @@
     </div>
 
     <!-- Management Data Table (Scrollable & Paginated) -->
-    <div class="glass-card p-4 md:p-6 rounded-2xl md:rounded-3xl space-y-4">
+    <div class="glass-card p-4 md:p-6 rounded-2xl md:rounded-1xl space-y-4">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <h3 class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm">Manajemen Data Revenue Unit {{ selectedUnitName }}</h3>
         <div class="flex items-center gap-2">

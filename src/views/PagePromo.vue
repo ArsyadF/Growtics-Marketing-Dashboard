@@ -11,7 +11,7 @@
       </div>
       <button 
         @click="store.openModal('promo')" 
-        class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-4 py-2.5 rounded-xl md:rounded-2xl font-medium text-xs shadow-md transition-all w-full sm:w-auto text-center cursor-pointer"
+        class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-4 py-2.5 rounded-xl md:rounded-1xl font-medium text-xs shadow-md transition-all w-full sm:w-auto text-center cursor-pointer"
       >
         <i class="fa-solid fa-plus mr-1.5"></i>Input Biaya Promosi
       </button>
@@ -56,7 +56,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
       
       <!-- Kolom 1: Rekap Biaya Per Bulan -->
-      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <div>
           <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm">
             Rekap Biaya Promosi Per Bulan
@@ -91,7 +91,7 @@
       </div>
 
       <!-- Kolom 2: Rekap Biaya Per Triwulan -->
-      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <div>
           <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm">
             Rekap Triwulan
@@ -112,7 +112,7 @@
       </div>
 
       <!-- Kolom 3: Grafik Trend Biaya Promosi Bulanan (Presisi Round Dots & Smooth Curve) -->
-      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-start h-full">
+      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
         <div>
           <div class="flex justify-between items-center mb-3">
             <h3 class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm flex items-center gap-1.5">
@@ -177,7 +177,7 @@
     </div>
 
     <!-- 3. Management Data Table (Scrollable & Paginated) -->
-    <div class="glass-card rounded-2xl md:rounded-3xl p-4 md:p-6 space-y-4">
+    <div class="glass-card rounded-2xl md:rounded-1xl p-4 md:p-6 space-y-4">
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <h3 class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm">
           Manajemen Data Biaya Promosi
