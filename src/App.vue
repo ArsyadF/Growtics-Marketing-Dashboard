@@ -1,5 +1,5 @@
 <template>
-  <div id="mainBody" :class="['flex h-screen w-full overflow-hidden text-slate-800 dark:text-slate-100', store.isDarkMode ? 'bg-gradient-dark dark' : 'bg-gradient-light']">
+  <div id="mainBody" :class="['flex min-h-screen w-full text-slate-800 dark:text-slate-100', store.isDarkMode ? 'bg-gradient-dark dark' : 'bg-gradient-light']">
 
     <!-- Indikator Loading Global -->
     <div 
@@ -21,13 +21,13 @@
     <!-- Overlay Passcode Publik -->
     <Passcode />
 
-    <!-- KONTEN UTAMA DASHBOARD (FULL-WIDTH FIX) -->
+    <!-- KONTEN UTAMA DASHBOARD -->
     <div 
       id="appContent" 
-      class="flex w-full min-w-0 h-full overflow-hidden transition-all duration-300 relative" 
+      class="flex w-full min-w-0 min-h-screen transition-all duration-300 relative" 
       :class="{ 'content-locked': !store.isAccessGranted }"
     >
-      <!-- Sidebar Navigation (Ditambahkan prop :is-open & event @close-sidebar) -->
+      <!-- Sidebar Navigation -->
       <Sidebar 
         :is-open="isSidebarOpen"
         :active-page="store.currentPage"
@@ -36,19 +36,19 @@
         @open-login="store.openModal('login')"
       />
 
-      <!-- Area Konten Utama -->
-      <main class="flex-1 w-full min-w-0 overflow-x-hidden overflow-y-auto relative flex flex-col">
-        <!-- Header (Ditambahkan event @toggle-sidebar) -->
+      <!-- Area Konten Utama (Scroll Alami untuk WebView Android) -->
+      <main class="flex-1 w-full min-w-0 relative flex flex-col pb-16 md:pb-6">
+        <!-- Header -->
         <Header @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
 
-        <!-- Pembungkus View Utama Tanpa Pembatasan Max-Width -->
+        <!-- Pembungkus View Utama -->
         <div class="p-4 md:p-6 flex-1 w-full space-y-4 md:space-y-6">
           <component :is="activeView" />
         </div>
       </main>
     </div>
 
-    <!-- Pop-up Modals Dynamic (Revenue, Target, User, KodeAkses) -->
+    <!-- Pop-up Modals Dynamic -->
     <Modals v-if="store.activeModal && store.activeModal !== 'login'" />
   </div>
 </template>
