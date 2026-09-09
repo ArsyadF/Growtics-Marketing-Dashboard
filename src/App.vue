@@ -27,6 +27,11 @@
       class="flex w-full min-w-0 min-h-screen transition-all duration-300 relative" 
       :class="{ 'content-locked': !store.isAccessGranted }"
     >
+   <div 
+    class="hidden md:block shrink-0 transition-all duration-300"
+    :class="store.isSidebarCollapsed ? 'w-20' : 'w-64'"
+  ></div>
+
       <!-- Sidebar Navigation -->
       <Sidebar 
         :is-open="isSidebarOpen"
@@ -45,7 +50,9 @@
         <div class="p-4 md:p-6 flex-1 w-full space-y-4 md:space-y-6">
           <component :is="activeView" />
         </div>
+      <BottomNav />
       </main>
+     
     </div>
 
     <!-- Pop-up Modals Dynamic -->
@@ -66,7 +73,7 @@ import Sidebar from './components/Sidebar.vue';
 import Header from './components/Header.vue';
 import LoginModal from './components/LoginModal.vue';
 import Modals from './components/Modals.vue';
-
+import BottomNav from './components/BottomNav.vue';
 // Import Views
 import DashboardMain from './views/Dashboard.vue';
 import PageUnit from './views/PageUnit.vue';

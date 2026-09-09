@@ -115,5 +115,10 @@ export const store = reactive({
     this.setCurrentUser(null);
     this.isAccessGranted = false;
     this.currentPage = 'main';
-  }
+  },
+
+  isSidebarCollapsed: false,
+  toggleSidebarCollapse() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  },
 });
