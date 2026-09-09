@@ -26,7 +26,14 @@
 
           <div>
             <label class="block text-xs mb-1 font-medium">Revenue (Rp)</label>
-            <input type="number" v-model.number="formRev.Revenue" required placeholder="0" class="w-full glass-input rounded-xl p-2.5 text-xs outline-none">
+            <input 
+              type="text" 
+              v-model="displayRevRevenue" 
+              @input="handleInputFormatted($event, formRev, 'Revenue', 'displayRevRevenue')" 
+              required 
+              placeholder="0" 
+              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+            >
           </div>
 
           <div class="grid grid-cols-2 gap-3">
@@ -146,7 +153,14 @@
 
           <div>
             <label class="block text-xs mb-1 font-medium text-rose-500">Biaya Promosi (Rp)</label>
-            <input type="number" v-model.number="formPromo.BiayaPromosi" required placeholder="0" class="w-full glass-input rounded-xl p-2.5 text-xs outline-none">
+            <input 
+              type="text" 
+              v-model="displayPromoBiaya" 
+              @input="handleInputFormatted($event, formPromo, 'BiayaPromosi', 'displayPromoBiaya')" 
+              required 
+              placeholder="0" 
+              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+            >
           </div>
 
           <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
@@ -164,10 +178,22 @@
           <button @click="store.closeModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <form @submit.prevent="saveTargets" class="space-y-3">
-          <div><label class="block text-xs mb-1">Target Global (Rp)</label><input type="number" v-model.number="formTarget.TargetTahunIni" required class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"></div>
-          <div><label class="block text-xs mb-1">Target NHP (Rp)</label><input type="number" v-model.number="formTarget.TargetNHP" required class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"></div>
-          <div><label class="block text-xs mb-1">Target NHC (Rp)</label><input type="number" v-model.number="formTarget.TargetNHC" required class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"></div>
-          <div><label class="block text-xs mb-1">Target KG (Rp)</label><input type="number" v-model.number="formTarget.TargetKG" required class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"></div>
+          <div>
+            <label class="block text-xs mb-1">Target Global (Rp)</label>
+            <input type="text" v-model="displayTargetTahunIni" @input="handleInputFormatted($event, formTarget, 'TargetTahunIni', 'displayTargetTahunIni')" required class="w-full glass-input rounded-xl p-2.5 text-xs outline-none">
+          </div>
+          <div>
+            <label class="block text-xs mb-1">Target NHP (Rp)</label>
+            <input type="text" v-model="displayTargetNHP" @input="handleInputFormatted($event, formTarget, 'TargetNHP', 'displayTargetNHP')" required class="w-full glass-input rounded-xl p-2.5 text-xs outline-none">
+          </div>
+          <div>
+            <label class="block text-xs mb-1">Target NHC (Rp)</label>
+            <input type="text" v-model="displayTargetNHC" @input="handleInputFormatted($event, formTarget, 'TargetNHC', 'displayTargetNHC')" required class="w-full glass-input rounded-xl p-2.5 text-xs outline-none">
+          </div>
+          <div>
+            <label class="block text-xs mb-1">Target KG (Rp)</label>
+            <input type="text" v-model="displayTargetKG" @input="handleInputFormatted($event, formTarget, 'TargetKG', 'displayTargetKG')" required class="w-full glass-input rounded-xl p-2.5 text-xs outline-none">
+          </div>
           <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">Simpan Master Targets</button>
         </form>
       </div>
@@ -237,9 +263,44 @@
 </template>
 
 <script setup>
-import { reactive, computed, watch } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 import { store } from '../store';
 import { api } from '../services/api';
+
+// --- HELPER FUNCTION FORMAT RIBUAN ---
+function formatThousand(val) {
+  if (val === null || val === undefined || val === '') return '';
+  const cleanVal = String(val).replace(/\D/g, '');
+  if (!cleanVal) return '';
+  return new Intl.NumberFormat('id-ID').format(cleanVal);
+}
+
+// Variables untuk Binding Tampilan Input Rupiah
+const displayRevRevenue = ref('');
+const displayPromoBiaya = ref('');
+const displayTargetTahunIni = ref('');
+const displayTargetNHP = ref('');
+const displayTargetNHC = ref('');
+const displayTargetKG = ref('');
+
+// Handler Event @input
+function handleInputFormatted(event, targetFormObj, targetProp, displayRefName) {
+  const inputVal = event.target.value;
+  const cleanVal = inputVal.replace(/\D/g, '');
+  const numVal = cleanVal ? Number(cleanVal) : 0;
+
+  // Simpan nilai murni (number) ke form payload
+  targetFormObj[targetProp] = numVal;
+
+  // Update tampilan dengan titik
+  const formatted = formatThousand(cleanVal);
+  if (displayRefName === 'displayRevRevenue') displayRevRevenue.value = formatted;
+  else if (displayRefName === 'displayPromoBiaya') displayPromoBiaya.value = formatted;
+  else if (displayRefName === 'displayTargetTahunIni') displayTargetTahunIni.value = formatted;
+  else if (displayRefName === 'displayTargetNHP') displayTargetNHP.value = formatted;
+  else if (displayRefName === 'displayTargetNHC') displayTargetNHC.value = formatted;
+  else if (displayRefName === 'displayTargetKG') displayTargetKG.value = formatted;
+}
 
 // --- REACTIVE FORM STATES ---
 const formRev = reactive({
@@ -321,6 +382,7 @@ watch(() => store.activeModal, (newVal) => {
       formRev.Divisi = 'CS Deal';
       formRev.Platform = 'Shopee';
     }
+    displayRevRevenue.value = formatThousand(formRev.Revenue);
   } 
   else if (newVal === 'leads') {
     if (raw && (raw.id || raw.Timestamp || raw.Campaign !== undefined || raw.DatabaseLeads !== undefined)) {
@@ -355,11 +417,16 @@ watch(() => store.activeModal, (newVal) => {
       formPromo.Unit = defaultUnit;
       formPromo.BiayaPromosi = 0;
     }
+    displayPromoBiaya.value = formatThousand(formPromo.BiayaPromosi);
   }
   else if (newVal === 'target') {
     if (store.db.master) {
       Object.assign(formTarget, JSON.parse(JSON.stringify(store.db.master)));
     }
+    displayTargetTahunIni.value = formatThousand(formTarget.TargetTahunIni);
+    displayTargetNHP.value = formatThousand(formTarget.TargetNHP);
+    displayTargetNHC.value = formatThousand(formTarget.TargetNHC);
+    displayTargetKG.value = formatThousand(formTarget.TargetKG);
   } 
   else if (newVal === 'user') {
     if (raw && raw.id) {

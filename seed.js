@@ -2,6 +2,13 @@ import { initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { readFileSync } from 'fs';
 
+const ENABLE_SEEDING = false;
+
+if (!ENABLE_SEEDING) {
+  console.log("Seeding dimatikan.");
+  process.exit(0); // atau 'return;' jika dijalankan di browser
+}
+
 // 1. Baca Service Account
 const serviceAccount = JSON.parse(readFileSync('./serviceAccountKey.json', 'utf8'));
 

@@ -5,7 +5,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-stretch">
       
       <!-- Card Kinerja Finansial -->
-      <div class="lg:col-span-7 glass-card rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col justify-between relative overflow-hidden">
+      <div class="lg:col-span-7 glass-card rounded-2xl md:rounded-1xl p-4 md:p-6 flex flex-col justify-between relative overflow-hidden">
         <div class="flex justify-between items-center mb-3 md:mb-4">
           <span class="text-[10px] md:text-[11px] font-bold uppercase text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-full border border-blue-500/20">
             Kinerja Finansial
@@ -16,19 +16,19 @@
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 md:gap-4 my-1 md:my-2">
-          <div class="p-3 md:p-4 rounded-xl md:rounded-2xl bg-amber-500/10 border border-amber-500/20">
+          <div class="p-3 md:p-4 rounded-xl md:rounded-1xl bg-amber-500/10 border border-amber-500/20">
             <p class="text-[11px] md:text-xs text-amber-700 dark:text-amber-300 font-medium">Target 1 Tahun</p>
             <h3 class="text-sm md:text-base font-bold text-amber-800 dark:text-amber-200 mt-0.5">
               {{ formatRp(targetTahun) }}
             </h3>
           </div>
-          <div class="p-3 md:p-4 rounded-xl md:rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
+          <div class="p-3 md:p-4 rounded-xl md:rounded-1xl bg-emerald-500/10 border border-emerald-500/20">
             <p class="text-[11px] md:text-xs text-emerald-700 dark:text-emerald-300 font-medium">Revenue Terfilter</p>
             <h3 class="text-sm md:text-base font-bold text-emerald-800 dark:text-emerald-200 mt-0.5">
               {{ formatRp(totRevFiltered) }}
             </h3>
           </div>
-          <div class="p-3 md:p-4 rounded-xl md:rounded-2xl bg-rose-500/10 border border-rose-500/20">
+          <div class="p-3 md:p-4 rounded-xl md:rounded-1xl bg-rose-500/10 border border-rose-500/20">
             <p class="text-[11px] md:text-xs text-rose-700 dark:text-rose-300 font-medium">Sisa Target</p>
             <h3 class="text-sm md:text-base font-bold text-rose-800 dark:text-rose-200 mt-0.5">
               {{ formatRp(gap > 0 ? gap : 0) }}
@@ -49,7 +49,7 @@
       </div>
 
       <!-- Card Funnel Marketing -->
-      <div class="lg:col-span-5 glass-card rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col justify-between">
+      <div class="lg:col-span-5 glass-card rounded-2xl md:rounded-1xl p-4 md:p-6 flex flex-col justify-between">
         <div class="flex justify-between items-center mb-3 md:mb-4">
           <span class="text-[10px] md:text-[11px] font-bold uppercase text-sky-600 dark:text-sky-400 bg-sky-500/10 px-2.5 py-1 rounded-full border border-sky-500/20">
             Funnel Marketing
@@ -124,13 +124,13 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
       
       <!-- 1. Bar Chart: Rekap Penjualan Tiap Divisi -->
-      <div class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-between">
+      <div class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-between">
         <h3 class="font-bold text-xs mb-3 text-slate-800 dark:text-slate-100">Rekap Penjualan Tiap Divisi</h3>
         <div class="chart-container relative h-64"><canvas ref="chartDivisiRef"></canvas></div>
       </div>
 
       <!-- 2. Line Chart: Perbandingan Trend Revenue (Tahun Ini vs Tahun Lalu) -->
-      <div class="lg:col-span-7 glass-card p-4 md:p-5 rounded-2xl md:rounded-3xl flex flex-col justify-between">
+      <div class="lg:col-span-7 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-between">
         <h3 class="font-bold text-xs mb-3 text-slate-800 dark:text-slate-100">
           Trend Revenue Bulanan ({{ currentYear }} vs {{ lastYear }})
         </h3>
