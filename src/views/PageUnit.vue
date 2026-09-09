@@ -240,7 +240,7 @@
               <td class="py-2 px-3 font-medium">{{ item.Divisi || '-' }}</td>
               <td class="py-2 px-3">{{ item.Platform || '-' }}</td>
               <td class="py-2 px-3 font-semibold text-emerald-500">{{ formatRupiah(item.Revenue) }}</td>
-              <td class="py-2 px-3 text-center space-x-2">
+              <td class="py-2 px-3 text-center space-x-2" style="display:inline-flex">
                 <button 
                   @click="store.openModal('revenue', item)" 
                   class="text-blue-500 hover:text-blue-600 p-1 cursor-pointer"

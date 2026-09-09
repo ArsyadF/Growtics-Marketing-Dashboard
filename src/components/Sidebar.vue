@@ -10,7 +10,7 @@
 
     <!-- Sidebar Main -->
     <aside 
-      class="fixed md:relative inset-y-0 left-0 shrink-0 glass-card floating-sidebar shadow-2xl flex flex-col z-50 transform transition-all duration-300 overflow-hidden pb-8 md:pb-4"
+      class="fixed md:relative inset-y-0 left-0 shrink-0 glass-card floating-sidebar shadow-2xl flex flex-col z-50 transform transition-all duration-300 overflow-hidden pb-6 md:pb-4"
       :class="[
         isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
         isCollapsed ? 'w-20' : 'w-64'
@@ -18,7 +18,7 @@
     >
       <!-- Header Sidebar: Logo & Toggle Collapse (Ditambahkan pt-6 khusus Mobile untuk Safe-Area Status Bar) -->
       <div 
-        class="p-4 pt-6 md:pt-4 border-b border-blue-100/50 dark:border-slate-800/80 flex items-center justify-between sidebar-header shrink-0"
+        class="p-4 pt-8 md:pt-4 border-b border-blue-100/50 dark:border-slate-800/80 flex items-center justify-between sidebar-header shrink-0"
         :class="isCollapsed ? 'justify-center' : 'justify-between'"
       >
         <!-- Logo / Icon Brand -->
