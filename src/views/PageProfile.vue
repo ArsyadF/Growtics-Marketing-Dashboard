@@ -1,4 +1,4 @@
-<!-- src/views/pageprofile.vue -->
+<!-- src/views/PageProfile.vue -->
 <template>
   <section id="page-profile" class="page-section space-y-4 md:space-y-6">
     <div class="glass-card p-6 rounded-3xl max-w-2xl mx-auto space-y-6">
@@ -141,7 +141,7 @@ const saveUserProfile = async () => {
   const currentUserId = store.currentUser?.id;
   
   if (!currentUserId) {
-    alert("Sesi pengguna tidak ditemukan.");
+    store.openAlert('Perhatian', 'Sesi pengguna tidak ditemukan.', null, 'warning');
     return;
   }
 
@@ -168,27 +168,33 @@ const saveUserProfile = async () => {
         ...payload
       };
       
-      // Update state store Pinia & localStorage
+      // Update state store & localStorage
       store.setCurrentUser(updatedUser);
       userProfile.value = updatedUser;
       
-      alert('Profil berhasil diperbarui!');
+      store.openAlert('Berhasil', 'Profil berhasil diperbarui!', null, 'success');
       form.value.password = '';
     } else {
-      alert('Gagal memperbarui profil.');
+      store.openAlert('Gagal', 'Gagal memperbarui profil.', null, 'warning');
     }
   } catch (err) {
     console.error("Gagal menyimpan profil:", err);
-    alert('Terjadi kesalahan saat menyimpan profil: ' + err.message);
+    store.openAlert('Error', 'Terjadi kesalahan saat menyimpan profil: ' + err.message, null, 'warning');
   } finally {
     isSaving.value = false;
   }
 };
 
+// Penyesuaian logout menggunakan modal kustom store.openAlert
 const handleLogout = () => {
-  if (confirm('Apakah Anda yakin ingin keluar?')) {
-    store.logout();
-    emit('logout-success');
-  }
+  store.openAlert(
+    'Konfirmasi Keluar',
+    'Apakah Anda yakin ingin keluar dari aplikasi?',
+    () => {
+      store.logout();
+      emit('logout-success');
+    },
+    'warning'
+  );
 };
 </script>
