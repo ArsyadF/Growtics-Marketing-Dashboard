@@ -259,6 +259,45 @@
         </form>
       </div>
     </div>
+
+    <!-- 7. Modal Alert / Konfirmasi (Pengganti alert() & confirm() JS) -->
+    <div v-if="store.activeModal === 'alert'" class="fixed inset-0 bg-slate-950/70 z-[60] flex justify-center items-center p-4 backdrop-blur-md">
+      <div class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-sm p-6 space-y-4 text-center shadow-2xl">
+        
+        <!-- Ikon Alert -->
+        <div class="w-12 h-12 rounded-2xl mx-auto flex items-center justify-center text-xl"
+          :class="store.alertPayload.type === 'warning' ? 'bg-amber-500/10 text-amber-500' : (store.alertPayload.type === 'success' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-blue-500/10 text-blue-500')">
+          <i class="fa-solid" :class="store.alertPayload.type === 'warning' ? 'fa-triangle-exclamation' : (store.alertPayload.type === 'success' ? 'fa-circle-check' : 'fa-circle-info')"></i>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base">
+            {{ store.alertPayload.title || 'Pemberitahuan' }}
+          </h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            {{ store.alertPayload.message }}
+          </p>
+        </div>
+
+        <!-- Tombol Aksi -->
+        <div class="flex gap-2 pt-2">
+          <button 
+            v-if="store.alertPayload.onConfirm"
+            @click="store.closeAlert()" 
+            class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold py-2.5 rounded-xl text-xs cursor-pointer hover:bg-slate-300"
+          >
+            Batal
+          </button>
+          
+          <button 
+            @click="handleAlertConfirm" 
+            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md cursor-pointer"
+          >
+            {{ store.alertPayload.onConfirm ? 'Ya, Lanjutkan' : 'OK' }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -289,10 +328,8 @@ function handleInputFormatted(event, targetFormObj, targetProp, displayRefName) 
   const cleanVal = inputVal.replace(/\D/g, '');
   const numVal = cleanVal ? Number(cleanVal) : 0;
 
-  // Simpan nilai murni (number) ke form payload
   targetFormObj[targetProp] = numVal;
 
-  // Update tampilan dengan titik
   const formatted = formatThousand(cleanVal);
   if (displayRefName === 'displayRevRevenue') displayRevRevenue.value = formatted;
   else if (displayRefName === 'displayPromoBiaya') displayPromoBiaya.value = formatted;
@@ -461,7 +498,7 @@ async function saveRevenue() {
     await store.loadFullDatabase();
     store.closeModal();
   } catch (err) {
-    alert("Gagal menyimpan Revenue: " + err.message);
+    store.openAlert("Gagal Menyimpan", "Gagal menyimpan Revenue: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
   }
@@ -481,7 +518,7 @@ async function saveLeads() {
     await store.loadFullDatabase();
     store.closeModal();
   } catch (err) {
-    alert("Gagal menyimpan Leads: " + err.message);
+    store.openAlert("Gagal Menyimpan", "Gagal menyimpan Leads: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
   }
@@ -501,7 +538,7 @@ async function savePromo() {
     await store.loadFullDatabase();
     store.closeModal();
   } catch (err) {
-    alert("Gagal menyimpan Biaya Promosi: " + err.message);
+    store.openAlert("Gagal Menyimpan", "Gagal menyimpan Biaya Promosi: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
   }
@@ -515,10 +552,10 @@ async function saveTargets() {
       await store.loadFullDatabase();
       store.closeModal();
     } else {
-      alert(res.message);
+      store.openAlert("Perhatian", res.message, null, "warning");
     }
   } catch (err) {
-    alert("Gagal menyimpan Target: " + err.message);
+    store.openAlert("Gagal Menyimpan", "Gagal menyimpan Target: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
   }
@@ -544,7 +581,7 @@ async function saveUser() {
     await store.loadFullDatabase();
     store.closeModal();
   } catch (err) {
-    alert("Gagal menyimpan Pengguna: " + err.message);
+    store.openAlert("Gagal Menyimpan", "Gagal menyimpan Pengguna: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
   }
@@ -557,14 +594,21 @@ async function savePasscode() {
     if (res.success) {
       store.db.master.KodeAkses = formPasscode.code;
       store.closeModal();
-      alert("Passcode Publik berhasil diperbarui!");
+      store.openAlert("Berhasil", "Passcode Publik berhasil diperbarui!", null, "success");
     } else {
-      alert(res.message);
+      store.openAlert("Perhatian", res.message, null, "warning");
     }
   } catch (err) {
-    alert("Gagal memperbarui Passcode: " + err.message);
+    store.openAlert("Gagal Menyimpan", "Gagal memperbarui Passcode: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
   }
+}
+
+function handleAlertConfirm() {
+  if (store.alertPayload.onConfirm && typeof store.alertPayload.onConfirm === 'function') {
+    store.alertPayload.onConfirm();
+  }
+  store.closeAlert();
 }
 </script>

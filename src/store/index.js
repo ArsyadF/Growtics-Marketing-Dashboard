@@ -22,22 +22,39 @@ export const store = reactive({
     end: new Date().toISOString().split('T')[0]
   },
 
-  // Database State Global (Struktur Diselaraskan 100% dengan Dashboard & Modals)
+  // Database State Global
   db: {
     revenue: [],
-    promo: [],    // Gunakan 'promo' agar sesuai dengan Dashboard.vue & PagePromo.vue
+    promo: [],    // Sesuai dengan Dashboard.vue & PagePromo.vue
     leads: [],
     users: [],
-    master: {}    // Gunakan 'master' agar sesuai dengan TargetTahunIni & Passcode
+    master: {}    // Sesuai dengan TargetTahunIni & Passcode
   },
 
-  // Centralized Modal Management
-  activeModal: null, // 'login', 'revenue', 'target', 'user', 'kodeakses'
+  // Centralized Modal & Alert Management
+  activeModal: null, // 'login', 'revenue', 'leads', 'promo', 'target', 'user', 'kodeakses', 'alert'
   editPayload: null,
+  alertPayload: {
+    title: '',
+    message: '',
+    type: 'info', // 'info', 'success', 'warning'
+    onConfirm: null
+  },
 
   // --- METHODS ---
 
-  // 1. Dark Mode Toggle
+  // 1. Alert Custom Modal Handler
+  openAlert(title, message, onConfirm = null, type = 'warning') {
+    this.alertPayload = { title, message, onConfirm, type };
+    this.activeModal = 'alert';
+  },
+
+  closeAlert() {
+    this.activeModal = null;
+    this.alertPayload = { title: '', message: '', type: 'info', onConfirm: null };
+  },
+
+  // 2. Dark Mode Toggle
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;
     if (this.isDarkMode) {
@@ -47,7 +64,7 @@ export const store = reactive({
     }
   },
 
-  // 2. Control Modal Pop-up
+  // 3. Control Modal Pop-up
   openModal(name, payload = null) {
     this.activeModal = name;
     this.editPayload = payload;
@@ -58,7 +75,7 @@ export const store = reactive({
     this.editPayload = null;
   },
 
-  // 3. Load Full Database dari Firestore (via api.js)
+  // 4. Load Full Database dari Firestore (via api.js)
   async loadFullDatabase() {
     this.isLoading = true;
     try {
@@ -71,7 +88,7 @@ export const store = reactive({
     }
   },
 
-  // 4. Parse DB (Sinkronkan Data Firestore ke Reactive State)
+  // 5. Parse DB (Sinkronkan Data Firestore ke Reactive State)
   parseDB(data) {
     if (!data) return;
     const parsed = typeof data === 'string' ? JSON.parse(data) : data;
@@ -83,7 +100,7 @@ export const store = reactive({
     this.db.master = parsed.master || parsed.settings || {};
   },
 
-  // 5. Autentikasi & Pengelolaan Sesi User
+  // 6. Autentikasi & Pengelolaan Sesi User
   setCurrentUser(user) {
     this.currentUser = user;
     if (user) {

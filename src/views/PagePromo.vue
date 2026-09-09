@@ -456,22 +456,28 @@ const sortTable = (key) => {
   }
 };
 
-const hapusPromo = async (docId) => {
+const hapusPromo = (docId) => {
   if (!docId) return;
-  if (confirm('Apakah Anda yakin ingin menghapus data biaya promosi ini?')) {
-    store.isLoading = true;
-    try {
-      const res = await api.deleteData('promosi', docId);
-      if (res.success) {
-        await store.loadFullDatabase();
-      } else {
-        alert("Gagal menghapus: " + res.message);
+
+  store.openAlert(
+    'Konfirmasi Hapus',
+    'Apakah Anda yakin ingin menghapus data biaya promosi ini?',
+    async () => {
+      store.isLoading = true;
+      try {
+        const res = await api.deleteData('promosi', docId);
+        if (res.success) {
+          await store.loadFullDatabase();
+        } else {
+          store.openAlert('Gagal', 'Gagal menghapus: ' + res.message, null, 'warning');
+        }
+      } catch (err) {
+        store.openAlert('Error', 'Error: ' + err.message, null, 'warning');
+      } finally {
+        store.isLoading = false;
       }
-    } catch (err) {
-      alert("Error: " + err.message);
-    } finally {
-      store.isLoading = false;
-    }
-  }
+    },
+    'warning'
+  );
 };
 </script>

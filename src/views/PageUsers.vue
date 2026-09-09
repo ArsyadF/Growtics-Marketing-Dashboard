@@ -138,21 +138,28 @@ function getAvatarUrl(user) {
 }
 
 // Hapus User dari Firestore via api.js
-async function deleteUser(userId) {
-  if (!confirm('Apakah Anda yakin ingin menghapus pengguna ini dari Firestore?')) return;
-  
-  store.isLoading = true;
-  try {
-    const res = await api.deleteData('Users', userId);
-    if (res.success) {
-      await store.loadFullDatabase();
-    } else {
-      alert("Gagal menghapus pengguna: " + res.message);
-    }
-  } catch (err) {
-    alert("Error: " + err.message);
-  } finally {
-    store.isLoading = false;
-  }
+function deleteUser(userId) {
+  if (!userId) return;
+
+  store.openAlert(
+    'Konfirmasi Hapus',
+    'Apakah Anda yakin ingin menghapus pengguna ini?',
+    async () => {
+      store.isLoading = true;
+      try {
+        const res = await api.deleteData('Users', userId);
+        if (res.success) {
+          await store.loadFullDatabase();
+        } else {
+          store.openAlert('Gagal', 'Gagal menghapus pengguna: ' + res.message, null, 'warning');
+        }
+      } catch (err) {
+        store.openAlert('Error', 'Error: ' + err.message, null, 'warning');
+      } finally {
+        store.isLoading = false;
+      }
+    },
+    'warning'
+  );
 }
 </script>
