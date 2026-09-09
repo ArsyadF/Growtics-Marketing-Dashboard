@@ -10,15 +10,15 @@
 
     <!-- Sidebar Main -->
     <aside 
-      class="fixed md:relative inset-y-0 left-0 shrink-0 glass-card floating-sidebar shadow-2xl flex flex-col z-50 transform transition-all duration-300 overflow-hidden"
+      class="fixed md:relative inset-y-0 left-0 shrink-0 glass-card floating-sidebar shadow-2xl flex flex-col z-50 transform transition-all duration-300 overflow-hidden pb-8 md:pb-4"
       :class="[
         isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
         isCollapsed ? 'w-20' : 'w-64'
       ]"
     >
-      <!-- Header Sidebar: Logo & Toggle Collapse -->
+      <!-- Header Sidebar: Logo & Toggle Collapse (Ditambahkan pt-6 khusus Mobile untuk Safe-Area Status Bar) -->
       <div 
-        class="p-4 border-b border-blue-100/50 dark:border-slate-800/80 flex items-center justify-between sidebar-header"
+        class="p-4 pt-6 md:pt-4 border-b border-blue-100/50 dark:border-slate-800/80 flex items-center justify-between sidebar-header shrink-0"
         :class="isCollapsed ? 'justify-center' : 'justify-between'"
       >
         <!-- Logo / Icon Brand -->
@@ -39,7 +39,7 @@
           </h1>
         </button>
 
-        <!-- Tombol Toggle Collapse (Bisa diklik di Mobile & Desktop) -->
+        <!-- Tombol Toggle Collapse -->
         <button 
           v-if="!isCollapsed" 
           @click="toggleCollapse" 
@@ -49,7 +49,7 @@
           <i class="fa-solid fa-angles-left text-sm"></i>
         </button>
 
-        <!-- Tombol Close Mobile (Hanya tampil jika tidak dikondisikan collapsed) -->
+        <!-- Tombol Close Mobile -->
         <button 
           @click="$emit('close-sidebar')" 
           class="md:hidden text-slate-400 p-1 shrink-0 cursor-pointer ml-1"
@@ -59,7 +59,7 @@
         </button>
       </div>
       
-      <!-- Menu Navigasi -->
+      <!-- Menu Navigasi (Aktifkan Scrollbar jika Menu Panjang) -->
       <nav class="flex-1 overflow-y-auto py-4">
         <ul class="space-y-1 px-2">
           <!-- 1. Dashboard Utama -->
@@ -240,41 +240,43 @@
         </ul>
       </nav>
 
-      <!-- Bottom Widget: Profil User & Tombol Login -->
-      <div class="p-2 m-2 bg-white/40 dark:bg-slate-800/50 rounded-2xl border border-white/20 dark:border-slate-700/50 flex items-center justify-center">
-        <!-- MODE GUEST -->
-        <button 
-          v-if="!isLoggedIn" 
-          @click="$emit('open-login')" 
-          class="w-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-          :class="isCollapsed ? 'px-0' : 'px-3'"
-          :title="isCollapsed ? 'Masuk / Login' : ''"
-        >
-          <i class="fa-solid fa-right-to-bracket shrink-0"></i>
-          <span v-if="!isCollapsed" class="sidebar-text whitespace-nowrap">Masuk / Login</span>
-        </button>
+      <!-- Bottom Widget: Profil User -->
+<div class="p-2 m-2 bg-white/40 dark:bg-slate-800/50 rounded-2xl border border-white/20 dark:border-slate-700/50 flex items-center justify-center shrink-0">
+  
+  <!-- MODE GUEST -->
+  <button 
+    v-if="!isLoggedIn" 
+    @click="$emit('open-login')" 
+    class="w-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+    :class="isCollapsed ? 'px-0' : 'px-3'"
+    :title="isCollapsed ? 'Masuk / Login' : ''"
+  >
+    <i class="fa-solid fa-right-to-bracket shrink-0"></i>
+    <span v-if="!isCollapsed" class="sidebar-text whitespace-nowrap">Masuk / Login</span>
+  </button>
 
-        <!-- MODE LOGGED IN -->
-        <button 
-          v-else 
-          @click="navigate('profile')" 
-          class="w-full flex items-center justify-center gap-3 text-left group outline-none overflow-hidden cursor-pointer"
-          :title="isCollapsed ? (userData?.nama || 'Profil') : ''"
-        >
-          <img 
-            :src="userData?.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.nama || 'User')}&background=0D8ABC&color=fff`" 
-            class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-blue-400/50 group-hover:scale-105 transition-transform"
-          >
-          <div v-if="!isCollapsed" class="user-info min-w-0 flex-1 overflow-hidden sidebar-text">
-            <p class="font-bold text-xs truncate leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400">
-              {{ userData?.nama || 'Admin User' }}
-            </p>
-            <p class="text-[9px] text-blue-500 font-semibold uppercase truncate mt-0.5">
-              {{ userData?.role || 'User' }}
-            </p>
-          </div>
-        </button>
-      </div>
+  <!-- MODE LOGGED IN -->
+  <button 
+    v-else 
+    @click="navigate('profile')" 
+    class="w-full flex items-center justify-center gap-3 text-left group outline-none overflow-hidden cursor-pointer"
+    :title="isCollapsed ? (userData?.nama || 'Profil') : ''"
+  >
+    <img 
+      :src="userData?.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.nama || 'User')}&background=0D8ABC&color=fff`" 
+      class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-blue-400/50 group-hover:scale-105 transition-transform"
+    >
+    <div v-if="!isCollapsed" class="user-info min-w-0 flex-1 overflow-hidden sidebar-text">
+      <p class="font-bold text-xs truncate leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400">
+        {{ userData?.nama || 'Admin User' }}
+      </p>
+      <p class="text-[9px] text-blue-500 font-semibold uppercase truncate mt-0.5">
+        {{ userData?.role || 'User' }}
+      </p>
+    </div>
+  </button>
+
+</div>
     </aside>
   </div>
 </template>
