@@ -8,14 +8,14 @@
       class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-40 md:hidden transition-opacity"
     ></div>
 
-    <!-- Sidebar Main -->
-    <aside 
-      class="fixed md:relative inset-y-0 left-0 shrink-0 glass-card floating-sidebar shadow-2xl flex flex-col z-50 transform transition-all duration-300 overflow-hidden pb-6 md:pb-4"
-      :class="[
-        isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
-        isCollapsed ? 'w-20' : 'w-64'
-      ]"
-    >
+  <!-- Sidebar Main -->
+  <aside 
+    class="fixed top-0 left-0 shrink-0 h-screen glass-card floating-sidebar shadow-2xl flex flex-col z-50 transform transition-all duration-300 overflow-hidden pt-6 pb-8 md:pt-4 md:pb-4"
+    :class="[
+      isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+      isCollapsed ? 'w-20' : 'w-64'
+    ]"
+  >
       <!-- Header Sidebar: Logo & Toggle Collapse (Ditambahkan pt-6 khusus Mobile untuk Safe-Area Status Bar) -->
       <div 
         class="p-4 pt-8 md:pt-4 border-b border-blue-100/50 dark:border-slate-800/80 flex items-center justify-between sidebar-header shrink-0"
@@ -299,11 +299,16 @@ const props = defineProps({
 const emit = defineEmits(['close-sidebar', 'change-page', 'open-login']);
 
 // State Collapse Sidebar
-const isCollapsed = ref(false);
+// const isCollapsed = ref(false);
+const isCollapsed = computed(() => store.isSidebarCollapsed);
 
 // Fungsi Toggle Collapse (Berfungsi untuk Semua Ukuran Layar)
+// const toggleCollapse = () => {
+//   isCollapsed.value = !isCollapsed.value;
+// };
+
 const toggleCollapse = () => {
-  isCollapsed.value = !isCollapsed.value;
+  store.toggleSidebarCollapse();
 };
 
 // Status Login dari Store
