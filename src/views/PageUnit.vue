@@ -474,22 +474,27 @@ const sortTable = (key) => {
   }
 };
 
-const hapusRevenue = async (docId) => {
-  if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-    store.isLoading = true;
-    try {
-      const res = await api.deleteData('revenues', docId);
-      if (res.success) {
-        await store.loadFullDatabase();
-      } else {
-        alert("Gagal menghapus: " + res.message);
+const hapusRevenue = (docId) => {
+  store.openAlert(
+    'Konfirmasi Hapus',
+    'Apakah Anda yakin ingin menghapus data ini?',
+    async () => {
+      store.isLoading = true;
+      try {
+        const res = await api.deleteData('revenues', docId);
+        if (res.success) {
+          await store.loadFullDatabase();
+        } else {
+          store.openAlert('Gagal', 'Gagal menghapus: ' + res.message, null, 'warning');
+        }
+      } catch (err) {
+        store.openAlert('Error', 'Error: ' + err.message, null, 'warning');
+      } finally {
+        store.isLoading = false;
       }
-    } catch (err) {
-      alert("Error: " + err.message);
-    } finally {
-      store.isLoading = false;
-    }
-  }
+    },
+    'warning'
+  );
 };
 
 const initCharts = () => {
