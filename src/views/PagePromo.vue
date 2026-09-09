@@ -235,7 +235,7 @@
               <td class="py-3 px-4 md:px-6 font-semibold text-rose-500">
                 {{ formatRupiah(item.BiayaPromosi) }}
               </td>
-              <td class="py-3 px-4 md:px-6 text-center space-x-2">
+              <td class="py-3 px-4 md:px-6 text-center space-x-2" style="display:inline-flex">
                 <button @click="store.openModal('promo', item)" class="text-blue-500 hover:text-blue-600 p-1 cursor-pointer" title="Edit Promo">
                   <i class="fa-solid fa-pen"></i>
                 </button>

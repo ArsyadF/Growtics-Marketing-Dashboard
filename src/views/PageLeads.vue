@@ -210,7 +210,7 @@
               <td class="py-2 px-3 text-blue-500 font-semibold">{{ l.DatabaseLeads || 0 }}</td>
               <td class="py-2 px-3 text-amber-500 font-semibold">{{ l.FollowUp || 0 }}</td>
               <td class="py-2 px-3 text-emerald-500 font-semibold">{{ l.Pesanan || 0 }}</td>
-              <td class="py-2 px-3 text-center">
+              <td class="py-2 px-3 text-center" style="display:inline-flex">
                 <button @click="store.openModal('leads', l)" class="text-blue-500 hover:text-blue-600 p-1 mr-2 cursor-pointer" title="Edit Leads">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>

@@ -89,7 +89,7 @@
               <td class="py-3.5 px-4 font-medium text-slate-600 dark:text-slate-300">
                 {{ formatAksesUnit(user.aksesUnit) }}
               </td>
-              <td class="py-3.5 px-4 text-center">
+              <td class="py-3.5 px-4 text-center" style="display:inline-flex">
                 <button 
                   @click="store.openModal('user', user)" 
                   class="text-blue-500 hover:text-blue-700 p-1.5 rounded-lg hover:bg-blue-50 dark:hover:bg-slate-800 mr-1 transition-all cursor-pointer"
