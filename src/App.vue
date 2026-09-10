@@ -75,8 +75,9 @@ import { store } from './store';
 // State Sidebar Mobile Open/Close
 const isSidebarOpen = ref(false);
 
-// Tumpukan Riwayat Halaman untuk Back Berantai
+// Tumpukan Riwayat Halaman & Flag Penanda Back
 const pageHistory = ref([]);
+const isBackAction = ref(false);
 
 // Import Komponen
 import Passcode from './components/Passcode.vue';
@@ -119,10 +120,17 @@ const activeView = computed(() => {
   }
 });
 
-// Catat perpindahan halaman ke dalam pageHistory
+// --- PERBAIKAN WATCHER HISTORY (MENCEGAH LOOP) ---
 watch(() => store.currentPage, (newPage, oldPage) => {
+  // Jika perubahan halaman disebabkan oleh tombol Back, jangan catat ke history
+  if (isBackAction.value) {
+    isBackAction.value = false; // Reset flag
+    return;
+  }
+
+  // Hanya catat jika user klik menu biasa (Navigasi Maju)
   if (oldPage && newPage !== oldPage) {
-    // Jangan catat jika halaman terakhir di riwayat adalah halaman yang sama
+    // Mencegah duplikasi halaman yang sama berturut-turut
     if (pageHistory.value[pageHistory.value.length - 1] !== oldPage) {
       pageHistory.value.push(oldPage);
     }
@@ -138,21 +146,25 @@ onMounted(async () => {
     await store.loadFullDatabase();
   }
 
-  // Bridge untuk Android Back Button (Back Berantai)
+  // --- PERBAIKAN BRIDGE ANDROID BACK BUTTON ---
   window.handleAndroidBack = () => {
-    // Jika masih ada riwayat halaman sebelumnya
     if (pageHistory.value.length > 0) {
+      // Ambil halaman terakhir
       const previousPage = pageHistory.value.pop();
+      
+      // Beritahu watcher bahwa ini adalah aksi Back (agar tidak di-push balik)
+      isBackAction.value = true;
       store.currentPage = previousPage;
+      
       return true; // Tangani back di Vue
     } 
-    // Jika riwayat kosong tapi sedang tidak di 'main'
     else if (store.currentPage !== 'main') {
+      isBackAction.value = true;
       store.currentPage = 'main';
       return true; // Tangani back di Vue
     }
     
-    // Jika sudah di 'main' dan riwayat habis, berikan sinyal false ke Android
+    // Jika sudah di 'main' dan tumpukan riwayat habis
     return false;
   };
 });
