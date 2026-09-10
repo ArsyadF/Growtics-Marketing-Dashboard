@@ -4,11 +4,12 @@
     <!-- Header Section -->
     <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
       <div>
-        <h2 class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100">Leads & Campaign</h2>
+        <!-- <h2 class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100">Leads & Campaign</h2> -->
         <p class="text-slate-500 dark:text-slate-400 text-xs md:text-sm">Progres Campaign, Database Leads, Follow Up, & Pesanan.</p>
       </div>
       <button 
-        @click="store.openModal('leads')" 
+      v-if="store.canEditPage('leads')"  
+      @click="store.openModal('leads')" 
         class="bg-gradient-to-r from-blue-600 to-sky-500 text-white px-4 py-2.5 rounded-xl font-medium text-xs shadow-md hover:from-blue-700 hover:to-sky-600 w-full sm:w-auto cursor-pointer"
       >
         <i class="fa-solid fa-plus mr-1.5"></i>Input Leads & Campaign
@@ -193,7 +194,7 @@
               <th class="py-2.5 px-3">Leads</th>
               <th class="py-2.5 px-3">FU</th>
               <th class="py-2.5 px-3">Pesanan</th>
-              <th class="py-2.5 px-3 text-center">Aksi</th>
+              <th  v-if="store.canEditPage('leads')"  class="py-2.5 px-3 text-center">Aksi</th>
             </tr>
           </thead>
           <tbody class="divide-y dark:divide-slate-800/80">
@@ -210,7 +211,8 @@
               <td class="py-2 px-3 text-blue-500 font-semibold">{{ l.DatabaseLeads || 0 }}</td>
               <td class="py-2 px-3 text-amber-500 font-semibold">{{ l.FollowUp || 0 }}</td>
               <td class="py-2 px-3 text-emerald-500 font-semibold">{{ l.Pesanan || 0 }}</td>
-              <td class="py-2 px-3 text-center" style="display:inline-flex">
+              <td  v-if="store.canEditPage('leads')"  
+              class="py-2 px-3 text-center" style="display:inline-flex">
                 <button @click="store.openModal('leads', l)" class="text-blue-500 hover:text-blue-600 p-1 mr-2 cursor-pointer" title="Edit Leads">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>

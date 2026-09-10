@@ -47,12 +47,20 @@
         <Header @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
 
         <!-- Pembungkus View Utama -->
-        <div class="p-4 md:p-6 flex-1 w-full space-y-4 md:space-y-6">
-          <component :is="activeView" />
-        </div>
-      <BottomNav />
+          <div class="p-4 md:p-6 flex-1 w-full space-y-4 md:space-y-6">
+           <template v-if="store.isAccessGranted">
+            <component :is="activeView" v-if="store.canAccessPage(store.currentPage)" />
+            
+            <!-- Jika tidak punya akses ke halaman tersebut -->
+            <div v-else class="glass-card p-12 text-center rounded-3xl space-y-3 mt-10">
+              <i class="fa-solid fa-lock text-4xl text-rose-500 mb-2"></i>
+              <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Akses Terbatas !</h3>
+              <p class="text-xs text-slate-400">Akun Anda hanya dapat mengakses menu yang diperbolehkan.</p>
+            </div>
+          </template>
+          </div>
+        <BottomNav />
       </main>
-     
     </div>
 
     <!-- Pop-up Modals Dynamic -->
@@ -108,12 +116,13 @@ const activeView = computed(() => {
 });
 
 // --- HOOK INISIALISASI UTAMA ---
+// Di App.vue / Main file saat onMounted:
 onMounted(async () => {
-  if (store.currentUser) {
-    store.isAccessGranted = true;
+  const savedUser = localStorage.getItem('SESSION_USER');
+  if (savedUser) {
+    store.currentUser = JSON.parse(savedUser);
+    store.isAccessGranted = true; // Mencegah munculnya prompt kode akses / passcode publik
     await store.loadFullDatabase();
-  } else {
-    store.isAccessGranted = false;
   }
 });
 </script>

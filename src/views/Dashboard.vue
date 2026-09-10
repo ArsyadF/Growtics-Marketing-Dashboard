@@ -1,6 +1,7 @@
 <!-- dashboard.vue -->
 <template>
-  <section id="page-main" class="page-section space-y-4 md:space-y-6">
+  <section id="page-main"
+  class="page-section space-y-4 md:space-y-6">
     <!-- Top Row: Kinerja Finansial & Funnel Marketing -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-stretch">
       

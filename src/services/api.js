@@ -36,14 +36,12 @@ export const api = {
     }
   },
 
-  // 2. Autentikasi Login Pengguna (Mengikuti skema Firestore: email, password, nama, role, aksesUnit, avatarUrl)
+  // 2. Autentikasi Login Pengguna
   async validateUserLogin(userEmail, passwordInput) {
     try {
-      // Query utama berdasarkan field 'email' (camelCase)
       let q = query(collection(firestoreDb, "users"), where("email", "==", userEmail));
       let querySnapshot = await getDocs(q);
       
-      // Fallback jika ada data lama yang tersimpan dengan field 'Email' (Capital)
       if (querySnapshot.empty) {
         q = query(collection(firestoreDb, "users"), where("Email", "==", userEmail));
         querySnapshot = await getDocs(q);
@@ -55,8 +53,6 @@ export const api = {
       let userData = null;
       querySnapshot.forEach((d) => {
         const dData = d.data();
-        
-        // Memetakan array aksesUnit secara presisi
         let units = dData.aksesUnit;
         if (!units) {
           units = dData.unit || dData.Unit ? [dData.unit || dData.Unit] : ['NHP'];
@@ -68,6 +64,7 @@ export const api = {
           email: dData.email || dData.Email || '',
           role: dData.role || dData.Role || 'ADMIN_UNIT',
           aksesUnit: Array.isArray(units) ? units : [units],
+          permissions: dData.permissions || null, // FIX: TAMBAHKAN INI
           avatarUrl: dData.avatarUrl || dData.Avatar || dData.avatar || '',
           password: dData.password || dData.Password || '',
           bio: dData.bio || dData.Bio || ''
@@ -113,7 +110,9 @@ export const api = {
           email: u.email || u.Email || '',
           role: u.role || u.Role || 'ADMIN_UNIT',
           aksesUnit: Array.isArray(units) ? units : [units],
+          permissions: u.permissions || null, // FIX: TAMBAHKAN INI
           avatarUrl: u.avatarUrl || u.Avatar || u.avatar || '',
+          password: u.password || u.Password || '',
           bio: u.bio || u.Bio || ''
         };
       });
