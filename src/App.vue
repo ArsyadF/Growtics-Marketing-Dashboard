@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { store } from './store';
 
 // State Sidebar Mobile Open/Close
@@ -124,6 +124,18 @@ onMounted(async () => {
     store.isAccessGranted = true; // Mencegah munculnya prompt kode akses / passcode publik
     await store.loadFullDatabase();
   }
+});
+
+  onMounted(() => {
+  // Menangkap event saat tombol back WebView (goBack) ditekan
+  window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.page) {
+      store.currentPage = event.state.page; // Kembalikan state halaman Vue ke menu sebelumnya
+    } else {
+      store.currentPage = 'main'; // Fallback ke dashboard utama
+    }
+  });
+
 });
 </script>
 
