@@ -33,13 +33,14 @@
   ></div>
 
       <!-- Sidebar Navigation -->
-      <Sidebar 
-        :is-open="isSidebarOpen"
-        :active-page="store.currentPage"
-        @close-sidebar="isSidebarOpen = false"
-        @change-page="store.currentPage = $event"
-        @open-login="store.openModal('login')"
-      />
+     <Sidebar 
+  v-if="store.isAccessGranted"
+  :is-open="isSidebarOpen"
+  :active-page="store.currentPage"
+  @close-sidebar="isSidebarOpen = false"
+  @change-page="navigateTo($event)"
+  @open-login="store.openModal('login')"
+/>
 
       <!-- Area Konten Utama (Scroll Alami untuk WebView Android) -->
       <main class="flex-1 w-full min-w-0 relative flex flex-col pb-16 md:pb-6">
@@ -59,7 +60,7 @@
             </div>
           </template>
           </div>
-        <BottomNav />
+        <BottomNav class="pb-[env(safe-area-inset-bottom,16px)]"/>
       </main>
     </div>
 
@@ -116,27 +117,29 @@ const activeView = computed(() => {
 });
 
 // --- HOOK INISIALISASI UTAMA ---
-// Di App.vue / Main file saat onMounted:
-onMounted(async () => {
-  const savedUser = localStorage.getItem('SESSION_USER');
-  if (savedUser) {
-    store.currentUser = JSON.parse(savedUser);
-    store.isAccessGranted = true; // Mencegah munculnya prompt kode akses / passcode publik
-    await store.loadFullDatabase();
+// Stack untuk mencatat riwayat halaman
+const historyStack = ref(['main']);
+
+// Fungsi navigasi global yang wajib dipanggil saat pindah halaman
+const navigateTo = (page) => {
+  if (store.currentPage !== page) {
+    historyStack.value.push(page);
+    store.currentPage = page;
   }
-});
+};
 
 onMounted(() => {
-  // Didaftarkan agar bisa dipanggil langsung dari Kotlin Android
+  // Dipanggil langsung oleh Kotlin Android saat tombol Back ditekan
   window.handleAndroidBack = () => {
-    // Jika posisi saat ini bukan di halaman utama ('main')
-    if (store.currentPage && store.currentPage !== 'main') {
-      store.currentPage = 'main'; // Kembalikan ke Dashboard Utama
-      return true; // Beritahu Android bahwa event back sudah ditangani di Vue
+    // Jika ada riwayat halaman sebelumnya, mundur 1 langkah
+    if (historyStack.value.length > 1) {
+      historyStack.value.pop(); // buang halaman sekarang
+      store.currentPage = historyStack.value[historyStack.value.length - 1]; // balik ke halaman sebelumnya
+      return "true"; // Beri tahu Android: "Vue berhasil mundur"
     }
     
-    // Jika sudah di halaman utama ('main'), kembalikan false agar Android keluar aplikasi
-    return false;
+    // Jika sudah di halaman utama ('main'), beri tahu Android untuk proses 2x back exit
+    return "false";
   };
 });
 </script>
