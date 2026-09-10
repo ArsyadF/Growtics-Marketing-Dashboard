@@ -1,5 +1,5 @@
 <template>
-  <div id="mainBody" :class="['flex min-h-screen w-full text-slate-800 dark:text-slate-100', store.isDarkMode ? 'bg-gradient-dark dark' : 'bg-gradient-light']">
+  <div id="mainBody" :class="[ `pb-[env(safe-area-inset-bottom,16px)]`, 'flex min-h-screen w-full text-slate-800 dark:text-slate-100', store.isDarkMode ? 'bg-gradient-dark dark' : 'bg-gradient-light' ]">
 
     <!-- Indikator Loading Global -->
     <div 
@@ -69,19 +69,23 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
 import { store } from './store';
 
 // State Sidebar Mobile Open/Close
 const isSidebarOpen = ref(false);
 
-// Import Komponen Layout & Modals
+// Tumpukan Riwayat Halaman untuk Back Berantai
+const pageHistory = ref([]);
+
+// Import Komponen
 import Passcode from './components/Passcode.vue';
 import Sidebar from './components/Sidebar.vue';
 import Header from './components/Header.vue';
 import LoginModal from './components/LoginModal.vue';
 import Modals from './components/Modals.vue';
 import BottomNav from './components/BottomNav.vue';
+
 // Import Views
 import DashboardMain from './views/Dashboard.vue';
 import PageUnit from './views/PageUnit.vue';
@@ -115,27 +119,42 @@ const activeView = computed(() => {
   }
 });
 
+// Catat perpindahan halaman ke dalam pageHistory
+watch(() => store.currentPage, (newPage, oldPage) => {
+  if (oldPage && newPage !== oldPage) {
+    // Jangan catat jika halaman terakhir di riwayat adalah halaman yang sama
+    if (pageHistory.value[pageHistory.value.length - 1] !== oldPage) {
+      pageHistory.value.push(oldPage);
+    }
+  }
+});
+
 // --- HOOK INISIALISASI UTAMA ---
-// Di App.vue / Main file saat onMounted:
 onMounted(async () => {
   const savedUser = localStorage.getItem('SESSION_USER');
   if (savedUser) {
     store.currentUser = JSON.parse(savedUser);
-    store.isAccessGranted = true; // Mencegah munculnya prompt kode akses / passcode publik
+    store.isAccessGranted = true;
     await store.loadFullDatabase();
   }
-});
 
-  onMounted(() => {
-  // Menangkap event saat tombol back WebView (goBack) ditekan
-  window.addEventListener('popstate', (event) => {
-    if (event.state && event.state.page) {
-      store.currentPage = event.state.page; // Kembalikan state halaman Vue ke menu sebelumnya
-    } else {
-      store.currentPage = 'main'; // Fallback ke dashboard utama
+  // Bridge untuk Android Back Button (Back Berantai)
+  window.handleAndroidBack = () => {
+    // Jika masih ada riwayat halaman sebelumnya
+    if (pageHistory.value.length > 0) {
+      const previousPage = pageHistory.value.pop();
+      store.currentPage = previousPage;
+      return true; // Tangani back di Vue
+    } 
+    // Jika riwayat kosong tapi sedang tidak di 'main'
+    else if (store.currentPage !== 'main') {
+      store.currentPage = 'main';
+      return true; // Tangani back di Vue
     }
-  });
-
+    
+    // Jika sudah di 'main' dan riwayat habis, berikan sinyal false ke Android
+    return false;
+  };
 });
 </script>
 
