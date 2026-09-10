@@ -120,52 +120,41 @@ const activeView = computed(() => {
   }
 });
 
-// --- PERBAIKAN WATCHER HISTORY (MENCEGAH LOOP) ---
+// Kosongkan riwayat jika user kembali ke halaman 'main' secara manual (misal lewat menu sidebar)
 watch(() => store.currentPage, (newPage, oldPage) => {
-  // Jika perubahan halaman disebabkan oleh tombol Back, jangan catat ke history
+  if (newPage === 'main') {
+    pageHistory.value = []; // Reset total riwayat
+  }
+
   if (isBackAction.value) {
-    isBackAction.value = false; // Reset flag
+    isBackAction.value = false;
     return;
   }
 
-  // Hanya catat jika user klik menu biasa (Navigasi Maju)
   if (oldPage && newPage !== oldPage) {
-    // Mencegah duplikasi halaman yang sama berturut-turut
     if (pageHistory.value[pageHistory.value.length - 1] !== oldPage) {
       pageHistory.value.push(oldPage);
     }
   }
 });
 
-// --- HOOK INISIALISASI UTAMA ---
-onMounted(async () => {
-  const savedUser = localStorage.getItem('SESSION_USER');
-  if (savedUser) {
-    store.currentUser = JSON.parse(savedUser);
-    store.isAccessGranted = true;
-    await store.loadFullDatabase();
-  }
-
-  // --- PERBAIKAN BRIDGE ANDROID BACK BUTTON ---
+// Bridge Android Back
+onMounted(() => {
   window.handleAndroidBack = () => {
     if (pageHistory.value.length > 0) {
-      // Ambil halaman terakhir
       const previousPage = pageHistory.value.pop();
-      
-      // Beritahu watcher bahwa ini adalah aksi Back (agar tidak di-push balik)
       isBackAction.value = true;
       store.currentPage = previousPage;
-      
-      return true; // Tangani back di Vue
+      return "true"; // Kembalikan string "true" untuk JS evaluateJavascript
     } 
-    else if (store.currentPage !== 'main') {
+    else if (store.currentPage && store.currentPage !== 'main') {
       isBackAction.value = true;
       store.currentPage = 'main';
-      return true; // Tangani back di Vue
+      return "true";
     }
     
-    // Jika sudah di 'main' dan tumpukan riwayat habis
-    return false;
+    // Sudah di main dan riwayat kosong
+    return "false";
   };
 });
 </script>
