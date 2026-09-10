@@ -75,12 +75,27 @@ export const store = reactive({
     this.editPayload = null;
   },
 
-  // 4. Load Full Database dari Firestore (via api.js)
+// 4. Load Full Database dari Firestore (via api.js)
   async loadFullDatabase() {
     this.isLoading = true;
     try {
       const res = await api.getAllData();
       this.parseDB(res);
+
+      // FIX: Pulihkan session currentUser dari database terbaru setelah load
+      if (this.currentUser && this.currentUser.email) {
+        const foundUser = this.db.users.find(u => 
+          (u.email && u.email === this.currentUser.email) || 
+          (u.Email && u.Email === this.currentUser.email)
+        );
+        if (foundUser) {
+          // Perbarui data user aktif dengan data terbaru dari database (termasuk permissions terbaru)
+          this.setCurrentUser({
+            ...this.currentUser,
+            ...foundUser
+          });
+        }
+      }
     } catch (err) {
       console.error("Gagal memuat data dari Firestore:", err);
     } finally {
@@ -121,4 +136,56 @@ export const store = reactive({
   toggleSidebarCollapse() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   },
+
+  currentUser: null,
+  
+ // 1. Cek apakah user bisa BUKA halaman tertentu
+
+// 1. Cek apakah user bisa BUKA halaman tertentu
+  canAccessPage(pageId) {
+    // 1. Pengecualian mutlak: Halaman profil SELALU bisa dibuka jika sudah login/masuk
+    if (pageId === 'profile') return true;
+
+    // Jika passcode publik belum dimasukkan/divalidasi, tolak semua akses halaman
+    if (!this.isAccessGranted) return false;
+
+    // Jika belum login, cek apakah halaman ini diizinkan secara publik (misal: main)
+    if (!this.currentUser) {
+      if (pageId === 'main') return true; 
+      return false;
+    }
+    
+    // Superadmin memiliki akses penuh
+    const role = this.currentUser.role || this.currentUser.Role;
+    if (role === 'SUPERADMIN') return true;
+    
+    // Periksa granular permissions (checkbox matrix)
+    const perms = this.currentUser.permissions;
+    if (perms && perms[pageId] !== undefined) {
+      return !!perms[pageId]?.access;
+    }
+
+    return true;
+  },
+
+  // 2. Cek apakah user diizinkan TAMBAH/EDIT data di halaman aktif
+  canEditPage(pageId) {
+    if (!this.currentUser) return false;
+    
+    const role = this.currentUser.role || this.currentUser.Role;
+    if (role === 'SUPERADMIN') return true;
+    
+    const perms = this.currentUser.permissions;
+    if (perms) {
+      return !!(perms[pageId]?.access && perms[pageId]?.canEdit);
+    }
+    
+    // Fallback sistem lama: Anggap semua admin unit bisa edit unitnya sendiri
+    if (pageId.startsWith('revenue') || pageId.startsWith('leads') || pageId.startsWith('promo')) {
+        return true; 
+    }
+
+    return false;
+  }
+
 });

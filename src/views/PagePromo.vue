@@ -4,12 +4,13 @@
     <!-- Header Section -->
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
       <div>
-        <h2 class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100">Biaya Promosi</h2>
+        <!-- <h2 class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100">Biaya Promosi</h2> -->
         <p class="text-slate-500 dark:text-slate-400 text-xs md:text-sm">
           Rekapitulasi dan Tren Pengeluaran Promosi Tiap Unit.
         </p>
       </div>
       <button 
+       v-if="store.canEditPage('promo')"  
         @click="store.openModal('promo')" 
         class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-4 py-2.5 rounded-xl md:rounded-1xl font-medium text-xs shadow-md transition-all w-full sm:w-auto text-center cursor-pointer"
       >
@@ -211,7 +212,8 @@
               <th @click="sortTable('BiayaPromosi')" class="py-2.5 px-4 md:px-6 cursor-pointer select-none">
                 Biaya Promosi <i class="fa-solid fa-sort text-[10px] ml-1"></i>
               </th>
-              <th class="py-2.5 px-4 md:px-6 text-center">Aksi</th>
+              <th v-if="store.canEditPage('promo')"  
+              class="py-2.5 px-4 md:px-6 text-center">Aksi</th>
             </tr>
           </thead>
 
@@ -235,7 +237,8 @@
               <td class="py-3 px-4 md:px-6 font-semibold text-rose-500">
                 {{ formatRupiah(item.BiayaPromosi) }}
               </td>
-              <td class="py-3 px-4 md:px-6 text-center space-x-2" style="display:inline-flex">
+              <td v-if="store.canEditPage('promo')"  
+               class="py-3 px-4 md:px-6 text-center space-x-2" style="display:inline-flex">
                 <button @click="store.openModal('promo', item)" class="text-blue-500 hover:text-blue-600 p-1 cursor-pointer" title="Edit Promo">
                   <i class="fa-solid fa-pen"></i>
                 </button>

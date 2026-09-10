@@ -7,7 +7,8 @@
         <p class="text-slate-400 text-xs">Pantau progres ketercapaian target revenue per unit bisnis.</p>
       </div>
         <button 
-        @click="store.openModal('target')" 
+         v-if="store.canEditPage('targets')"  
+        @click="store.openModal('targets')" 
         class="bg-gradient-to-r from-blue-600 to-sky-500 text-white px-4 py-2.5 rounded-xl font-medium text-xs shadow-md hover:from-blue-700 hover:to-sky-600 w-full sm:w-auto cursor-pointer"
       >
         <i class="fa-solid fa-plus mr-1.5"></i>Edit Target Master

@@ -5,12 +5,13 @@
     <div class="glass-card p-4 rounded-2xl md:rounded-1xl space-y-3">
       <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
-          <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">
+          <!-- <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">
             Filter Khusus Unit <span class="text-blue-500">{{ selectedUnitName }}</span>
-          </h3>
+          </h3> -->
           <p class="text-slate-400 text-xs">Sesuaikan rekap berdasarkan bulan, divisi, atau platform.</p>
         </div>
         <button 
+         v-if="store.canEditPage('unit-' + selectedUnitName)"  
           @click="store.openModal('revenue', { Unit: selectedUnitName })" 
           class="bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
         >
@@ -217,7 +218,7 @@
               <th @click="sortTable('Revenue')" class="py-2.5 px-3 cursor-pointer select-none">
                 Revenue <i class="fa-solid fa-sort text-[10px] ml-1"></i>
               </th>
-              <th class="py-2.5 px-4 text-center">Aksi</th>
+              <th  v-if="store.canEditPage('unit-' + selectedUnitName)" class="py-2.5 px-4 text-center">Aksi</th>
             </tr>
           </thead>
 
@@ -240,15 +241,19 @@
               <td class="py-2 px-3 font-medium">{{ item.Divisi || '-' }}</td>
               <td class="py-2 px-3">{{ item.Platform || '-' }}</td>
               <td class="py-2 px-3 font-semibold text-emerald-500">{{ formatRupiah(item.Revenue) }}</td>
-              <td class="py-2 px-3 text-center space-x-2" style="display:inline-flex">
-                <button 
+              <td  v-if="store.canEditPage('unit-' + selectedUnitName)" 
+              class="py-2 px-3 text-center space-x-2" style="display:inline-flex">
+                <button
+                
                   @click="store.openModal('revenue', item)" 
                   class="text-blue-500 hover:text-blue-600 p-1 cursor-pointer"
                   title="Edit Revenue"
                 >
                   <i class="fa-solid fa-pen"></i>
                 </button>
-                <button @click="hapusRevenue(item.id || item.Timestamp)" class="text-rose-500 hover:text-rose-600 cursor-pointer">
+                <button 
+              
+                @click="hapusRevenue(item.id || item.Timestamp)" class="text-rose-500 hover:text-rose-600 cursor-pointer">
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </td>

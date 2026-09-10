@@ -13,7 +13,7 @@
     class="fixed top-0 left-0 shrink-0 h-screen glass-card floating-sidebar shadow-2xl flex flex-col z-50 transform transition-all duration-300 overflow-hidden pt-6 pb-8 md:pt-4 md:pb-4"
     :class="[
       isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
-      isCollapsed ? 'w-20' : 'w-64'
+      isCollapsed ? 'w-18' : 'w-60'
     ]"
   >
       <!-- Header Sidebar: Logo & Toggle Collapse (Ditambahkan pt-6 khusus Mobile untuk Safe-Area Status Bar) -->
@@ -63,7 +63,7 @@
       <nav class="flex-1 overflow-y-auto py-4">
         <ul class="space-y-1 px-2">
           <!-- 1. Dashboard Utama -->
-          <li>
+          <li v-if="store.canAccessPage('main')">
             <a 
               href="#" 
               @click.prevent="navigate('main')" 
@@ -172,7 +172,7 @@
               </a>
             </li>
 
-            <li>
+            <li v-if="store.canAccessPage('promo')">
               <a 
                 href="#" 
                 @click.prevent="navigate('promo')" 
@@ -190,17 +190,7 @@
               </a>
             </li>
 
-            <!-- 4. Pengaturan Master -->
-            <template v-if="isSuperadmin">
-              <li 
-                class="py-2 text-[10px] font-bold text-blue-400 dark:text-blue-500 uppercase tracking-widest mt-4 sidebar-category"
-                :class="isCollapsed ? 'text-center px-0' : 'px-4'"
-              >
-                <span v-if="!isCollapsed">Pengaturan Master</span>
-                <span v-else class="text-[8px]">ADMIN</span>
-              </li>
-              
-              <li>
+            <li v-if="store.canAccessPage('targets')">
                 <a 
                   href="#" 
                   @click.prevent="navigate('targets')" 
@@ -218,6 +208,16 @@
                 </a>
               </li>
 
+            <!-- 4. Pengaturan Master -->
+            <template v-if="isSuperadmin">
+              <li 
+                class="py-2 text-[10px] font-bold text-blue-400 dark:text-blue-500 uppercase tracking-widest mt-4 sidebar-category"
+                :class="isCollapsed ? 'text-center px-0' : 'px-4'"
+              >
+                <span v-if="!isCollapsed">Pengaturan Master</span>
+                <span v-else class="text-[8px]">ADMIN</span>
+              </li>
+              
               <li>
                 <a 
                   href="#" 
@@ -324,16 +324,21 @@ const isSuperadmin = computed(() => {
 });
 
 // Hak Akses Unit
-const hasUnitAccess = (unitName) => {
-  if (isSuperadmin.value) return true;
+// const hasUnitAccess = (unitName) => {
+//   if (isSuperadmin.value) return true;
   
-  const unit = userData.value?.unit || userData.value?.Unit || userData.value?.aksesUnit;
-  if (!unit) return false;
+//   const unit = userData.value?.unit || userData.value?.Unit || userData.value?.aksesUnit;
+//   if (!unit) return false;
 
-  if (Array.isArray(unit)) {
-    return unit.includes(unitName);
-  }
-  return String(unit).toUpperCase() === String(unitName).toUpperCase();
+//   if (Array.isArray(unit)) {
+//     return unit.includes(unitName);
+//   }
+//   return String(unit).toUpperCase() === String(unitName).toUpperCase();
+// };
+
+const hasUnitAccess = (unitName) => {
+  // Langsung serahkan pengecekan ke sistem Granular Permission di store
+  return store.canAccessPage(`unit-${unitName}`);
 };
 
 // Navigasi

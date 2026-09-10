@@ -56,12 +56,14 @@
     <!-- POPUP 2: Pilihan Tambah Data -->
     <transition name="pop-up">
       <div 
+      
         v-if="activePopup === 'add'" 
        class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[92%] max-w-xs z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
       >
         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center">Input Data Baru</p>
         
         <button 
+          v-if="store.canEditPage('revenue')"
           @click="openAddModal('revenue')" 
           class="w-full flex items-center gap-2.5 p-2 rounded-2xl hover:bg-blue-50 dark:hover:bg-slate-800/80 text-left transition-colors cursor-pointer"
         >
@@ -72,6 +74,7 @@
         </button>
 
         <button 
+          v-if="store.canEditPage('leads')"
           @click="openAddModal('leads')" 
           class="w-full flex items-center gap-2.5 p-2 rounded-2xl hover:bg-blue-50 dark:hover:bg-slate-800/80 text-left transition-colors cursor-pointer"
         >
@@ -82,6 +85,7 @@
         </button>
 
         <button 
+            v-if="store.canEditPage('promo')"
           @click="openAddModal('promo')" 
           class="w-full flex items-center gap-2.5 p-2 rounded-2xl hover:bg-blue-50 dark:hover:bg-slate-800/80 text-left transition-colors cursor-pointer"
         >
@@ -131,6 +135,7 @@
 
       <!-- 4. LEADS -->
       <button 
+      
         @click="navTo('leads')" 
         class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
         :class="{ 'text-blue-600 dark:text-blue-400 font-bold': store.currentPage === 'leads' }"
