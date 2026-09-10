@@ -259,7 +259,7 @@
   <button 
     v-else 
     @click="navigate('profile')" 
-    class="w-full flex items-center justify-center gap-3 text-left group outline-none overflow-hidden cursor-pointer"
+    class="w-full flex items-center justify-center gap-3 text-left group outline-none overflow-hidden cursor-pointer pb-[env(safe-area-inset-bottom,16px)]"
     :title="isCollapsed ? (userData?.nama || 'Profil') : ''"
   >
     <img 
