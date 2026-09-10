@@ -186,6 +186,14 @@ export const store = reactive({
     }
 
     return false;
-  }
+  },
+
+    // Contoh di store.js atau fungsi navigasi sidebar
+navigate(page) {
+  this.currentPage = page;
+  
+  // Mendaftarkan state riwayat ke browser/WebView agar tombol back android mendeteksinya
+  window.history.pushState({ page: page }, "", `#${page}`);
+}
 
 });
