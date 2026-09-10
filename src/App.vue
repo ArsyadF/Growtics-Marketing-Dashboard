@@ -126,16 +126,18 @@ onMounted(async () => {
   }
 });
 
-  onMounted(() => {
-  // Menangkap event saat tombol back WebView (goBack) ditekan
-  window.addEventListener('popstate', (event) => {
-    if (event.state && event.state.page) {
-      store.currentPage = event.state.page; // Kembalikan state halaman Vue ke menu sebelumnya
-    } else {
-      store.currentPage = 'main'; // Fallback ke dashboard utama
+onMounted(() => {
+  // Didaftarkan agar bisa dipanggil langsung dari Kotlin Android
+  window.handleAndroidBack = () => {
+    // Jika posisi saat ini bukan di halaman utama ('main')
+    if (store.currentPage && store.currentPage !== 'main') {
+      store.currentPage = 'main'; // Kembalikan ke Dashboard Utama
+      return true; // Beritahu Android bahwa event back sudah ditangani di Vue
     }
-  });
-
+    
+    // Jika sudah di halaman utama ('main'), kembalikan false agar Android keluar aplikasi
+    return false;
+  };
 });
 </script>
 
