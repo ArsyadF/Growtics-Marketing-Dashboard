@@ -75,11 +75,11 @@ import { store } from './store';
 // State Sidebar Mobile Open/Close
 const isSidebarOpen = ref(false);
 
-// Tumpukan Riwayat Halaman & Flag Penanda Back
+// Tumpukan Riwayat Halaman untuk Back di Dalam App
 const pageHistory = ref([]);
 const isBackAction = ref(false);
 
-// Import Komponen
+// Import Komponen Layout & Modals
 import Passcode from './components/Passcode.vue';
 import Sidebar from './components/Sidebar.vue';
 import Header from './components/Header.vue';
@@ -120,17 +120,15 @@ const activeView = computed(() => {
   }
 });
 
-// Kosongkan riwayat jika user kembali ke halaman 'main' secara manual (misal lewat menu sidebar)
+// --- RECORD NAVIGASI DALAM APP ---
 watch(() => store.currentPage, (newPage, oldPage) => {
-  if (newPage === 'main') {
-    pageHistory.value = []; // Reset total riwayat
-  }
-
+  // Jika perpindahan karena tombol back ditekan, abaikan agar tidak loop
   if (isBackAction.value) {
     isBackAction.value = false;
     return;
   }
 
+  // Catat riwayat halaman jika user berpindah menu
   if (oldPage && newPage !== oldPage) {
     if (pageHistory.value[pageHistory.value.length - 1] !== oldPage) {
       pageHistory.value.push(oldPage);
@@ -138,23 +136,34 @@ watch(() => store.currentPage, (newPage, oldPage) => {
   }
 });
 
-// Bridge Android Back
-onMounted(() => {
+// --- HOOK INISIALISASI UTAMA & RESTORE LOGIN ---
+onMounted(async () => {
+  // 1. Memulihkan Sesi Pengguna saat Refresh / Buka Aplikasi
+  const savedUser = localStorage.getItem('SESSION_USER');
+  if (savedUser) {
+    try {
+      store.currentUser = JSON.parse(savedUser);
+      store.isAccessGranted = true; // Langsung beri akses tanpa passcode
+      await store.loadFullDatabase(); // Load data terbaru dari Firestore
+    } catch (e) {
+      console.error("Gagal restore session:", e);
+    }
+  }
+
+  // 2. Bridge Khusus Tombol Back HP (Murni untuk Navigasi Dalam App)
   window.handleAndroidBack = () => {
+    // Jika masih ada riwayat halaman sebelumnya, mundurkan 1 langkah
     if (pageHistory.value.length > 0) {
       const previousPage = pageHistory.value.pop();
       isBackAction.value = true;
       store.currentPage = previousPage;
-      return "true"; // Kembalikan string "true" untuk JS evaluateJavascript
     } 
-    else if (store.currentPage && store.currentPage !== 'main') {
+    // Jika riwayat habis tapi posisi tidak di 'main', kembalikan ke 'main'
+    else if (store.currentPage !== 'main') {
       isBackAction.value = true;
       store.currentPage = 'main';
-      return "true";
     }
-    
-    // Sudah di main dan riwayat kosong
-    return "false";
+    // Jika sudah di 'main', TIDAK MELAKUKAN APA-APA (App tetap diam di Dashboard Utama)
   };
 });
 </script>
