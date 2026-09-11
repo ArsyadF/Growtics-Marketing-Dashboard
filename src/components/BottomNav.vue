@@ -20,9 +20,9 @@
           <!-- Unit NHP -->
           <button 
             @click="selectUnit('unit-NHP')" 
-            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-blue-500/10 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
+            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
           >
-            <div class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform">
+            <div class="w-9 h-9 rounded-xl bg-[#25eba11a] text-[#1caa80] dark:text-[#1caa80] flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-building"></i>
             </div>
             <span class="text-[10px] font-bold text-slate-700 dark:text-slate-200">NHP</span>
@@ -31,7 +31,7 @@
           <!-- Unit NHC -->
           <button 
             @click="selectUnit('unit-NHC')" 
-            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-blue-500/10 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
+            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
           >
             <div class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-building-user"></i>
@@ -42,7 +42,7 @@
           <!-- Unit KG -->
           <button 
             @click="selectUnit('unit-KG')" 
-            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-blue-500/10 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
+            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
           >
             <div class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-city"></i>
@@ -78,7 +78,7 @@
           @click="openAddModal('leads')" 
           class="w-full flex items-center gap-2.5 p-2 rounded-2xl hover:bg-blue-50 dark:hover:bg-slate-800/80 text-left transition-colors cursor-pointer"
         >
-          <span class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs shrink-0">
+          <span class="w-7 h-7 rounded-lg bg-[#25eba11a] text-[#1caa80] dark:text-[#1caa80] flex items-center justify-center text-xs shrink-0">
             <i class="fa-solid fa-users-rays"></i>
           </span>
           <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Data Leads</span>
@@ -103,33 +103,34 @@
       <!-- 1. HOME -->
       <button 
         @click="navTo('main')" 
-        class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
-        :class="{ 'text-blue-600 dark:text-blue-400 font-bold': store.currentPage === 'main' }"
+        class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-[#1caa80] dark:hover:text-[#1caa80] transition-colors cursor-pointer"
+        :class="{ 'text-[#1caa80] dark:text-[#1caa80] font-bold': store.currentPage === 'main' }"
       >
         <i class="fa-solid fa-house text-sm"></i>
         <span class="text-[9px]">Home</span>
-        <span v-if="store.currentPage === 'main'" class="w-1 h-1 bg-blue-600 rounded-full"></span>
+        <span v-if="store.currentPage === 'main'" class="w-1 h-1 bg-[#1caa80] rounded-full"></span>
       </button>
 
       <!-- 2. UNIT -->
       <button 
         @click="togglePopup('unit')" 
-        class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
-        :class="{ 'text-blue-600 dark:text-blue-400 font-bold': activePopup === 'unit' || store.currentPage.startsWith('unit-') }"
+        class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-[#1caa80] dark:hover:text-[#1caa80] transition-colors cursor-pointer"
+        :class="{ 'text-[#1caa80] dark:text-[#1caa80] font-bold': activePopup === 'unit' || store.currentPage.startsWith('unit-') }"
       >
         <i class="fa-solid fa-building text-sm"></i>
         <span class="text-[9px]">Unit</span>
-        <span v-if="store.currentPage.startsWith('unit-')" class="w-1 h-1 bg-blue-600 rounded-full"></span>
+        <span v-if="store.currentPage.startsWith('unit-')" class="w-1 h-1 bg-[#1caa80] rounded-full"></span>
       </button>
 
       <!-- 3. SLOT TENGAH (TEMPAT TOMBOL PLUS MELAYANG) -->
       <div class="relative flex justify-center items-center">
         <button 
           @click="togglePopup('add')" 
-          class="absolute -top-10 w-14 h-14 bg-gradient-to-tr from-blue-600 to-sky-400 text-white rounded-full shadow-xl shadow-blue-500/40 flex items-center justify-center text-lg transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-950"
-          :class="{ 'rotate-45 !from-rose-500 !to-pink-500 shadow-rose-500/40': activePopup === 'add' }"
+          class="absolute -top-10 w-14 h-14 bg-gradient-to-tr from-[#149B73] to-[#2EE59D] text-white rounded-full shadow-xl shadow-[#6bd8a075] flex items-center justify-center text-lg transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-950"
+          :class="{ '!from-[#2EE59D] !to-[#149B73]': activePopup === 'add' }"
         >
-          <i class="fa-solid fa-plus transition-transform duration-300"></i>
+          <i class="fa-solid fa-plus transition-transform duration-300"
+          :class="{ 'rotate-45': activePopup === 'add' }"></i>
         </button>
       </div>
 
@@ -137,23 +138,23 @@
       <button 
       
         @click="navTo('leads')" 
-        class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
-        :class="{ 'text-blue-600 dark:text-blue-400 font-bold': store.currentPage === 'leads' }"
+        class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-[#1caa80] dark:hover:text-[#1caa80] transition-colors cursor-pointer"
+        :class="{ 'text-[#1caa80] dark:text-[#1caa80] font-bold': store.currentPage === 'leads' }"
       >
         <i class="fa-solid fa-users-rays text-sm"></i>
         <span class="text-[9px]">Leads</span>
-        <span v-if="store.currentPage === 'leads'" class="w-1 h-1 bg-blue-600 rounded-full"></span>
+        <span v-if="store.currentPage === 'leads'" class="w-1 h-1 bg-[#1caa80] rounded-full"></span>
       </button>
 
       <!-- 5. PROMOSI -->
       <button 
         @click="navTo('promo')" 
-        class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors cursor-pointer"
-        :class="{ 'text-blue-600 dark:text-blue-400 font-bold': store.currentPage === 'promo' }"
+        class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-[#1caa80] dark:hover:text-[#1caa80] transition-colors cursor-pointer"
+        :class="{ 'text-[#1caa80] dark:text-[#1caa80] font-bold': store.currentPage === 'promo' }"
       >
         <i class="fa-solid fa-bullhorn text-sm"></i>
         <span class="text-[9px]">Promosi</span>
-        <span v-if="store.currentPage === 'promo'" class="w-1 h-1 bg-blue-600 rounded-full"></span>
+        <span v-if="store.currentPage === 'promo'" class="w-1 h-1 bg-[#1caa80] rounded-full"></span>
       </button>
 
     </nav>

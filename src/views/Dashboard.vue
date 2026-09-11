@@ -8,7 +8,7 @@
       <!-- Card Kinerja Finansial -->
       <div class="lg:col-span-7 glass-card rounded-2xl md:rounded-1xl p-4 md:p-6 flex flex-col justify-between relative overflow-hidden">
         <div class="flex justify-between items-center mb-3 md:mb-4">
-          <span class="text-[10px] md:text-[11px] font-bold uppercase text-blue-600 dark:text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-full border border-blue-500/20">
+          <span class="text-[10px] md:text-[11px] font-bold uppercase text-[#1caa80] dark:text-[#1caa80] bg-[#25eba11a] px-2.5 py-1 rounded-full border border-[#1caa80]/20">
             Kinerja Finansial
           </span>
           <span class="text-[11px] md:text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
@@ -40,7 +40,7 @@
         <div class="grid grid-cols-2 gap-2 md:gap-4 mt-2 pt-3 border-t border-slate-200/50 dark:border-slate-800/80 text-[11px] md:text-xs">
           <div>
             <span class="text-slate-400">Selisih vs Thn Lalu:</span>
-            <span class="font-bold text-blue-600 dark:text-blue-400 ml-1">{{ formatRp(selisihThnLalu) }}</span>
+            <span class="font-bold text-[#1caa80] dark:text-[#1caa80] ml-1">{{ formatRp(selisihThnLalu) }}</span>
           </div>
           <div>
             <span class="text-slate-400">Total Biaya Promo:</span>
@@ -63,7 +63,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center my-auto py-2">
           <div class="p-2.5 bg-white/40 dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60">
             <p class="text-[9px] text-slate-400 uppercase font-semibold tracking-wider">Campaign</p>
-            <h4 class="text-sm md:text-base font-bold text-blue-600 dark:text-blue-400 mt-1">{{ totCamp.toLocaleString('id-ID') }}</h4>
+            <h4 class="text-sm md:text-base font-bold text-[#1caa80] dark:text-[#1caa80] mt-1">{{ totCamp.toLocaleString('id-ID') }}</h4>
           </div>
           <div class="p-2.5 bg-white/40 dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60">
             <p class="text-[9px] text-slate-400 uppercase font-semibold tracking-wider">Leads</p>
@@ -88,7 +88,7 @@
         <div v-for="u in ['NHP', 'NHC', 'KG']" :key="u" class="glass-card p-4 rounded-2xl">
           <div class="flex justify-between items-center mb-1">
             <h4 class="font-bold text-slate-700 dark:text-slate-200 text-xs">Unit {{ u }}</h4>
-            <span class="text-[10px] font-semibold text-blue-500">{{ getUnitCapaian(u) }}%</span>
+            <span class="text-[10px] font-semibold text-[#1caa80]">{{ getUnitCapaian(u) }}%</span>
           </div>
           <p class="text-xs text-slate-400">Revenue: <span class="font-bold text-emerald-500">{{ formatRp(getUnitRev(u)) }}</span></p>
           <p class="text-xs text-slate-400">Target: <span class="font-bold text-slate-600 dark:text-slate-300">{{ formatRp(getUnitTarget(u)) }}</span></p>

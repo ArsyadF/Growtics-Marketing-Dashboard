@@ -6,14 +6,14 @@
       <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
           <!-- <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">
-            Filter Khusus Unit <span class="text-blue-500">{{ selectedUnitName }}</span>
+            Filter Khusus Unit <span class="from-[#149B73]">{{ selectedUnitName }}</span>
           </h3> -->
           <p class="text-slate-400 text-xs">Sesuaikan rekap berdasarkan bulan, divisi, atau platform.</p>
         </div>
         <button 
          v-if="store.canEditPage('unit-' + selectedUnitName)"  
           @click="store.openModal('revenue', { Unit: selectedUnitName })" 
-          class="bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
+          class="bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
         >
           <i class="fa-solid fa-plus mr-1.5"></i>Input Revenue {{ selectedUnitName }}
         </button>
@@ -246,7 +246,7 @@
                 <button
                 
                   @click="store.openModal('revenue', item)" 
-                  class="text-blue-500 hover:text-blue-600 p-1 cursor-pointer"
+                  class="text-[#1caa80] hover:text-[#1caa80] p-1 cursor-pointer"
                   title="Edit Revenue"
                 >
                   <i class="fa-solid fa-pen"></i>
@@ -276,7 +276,7 @@
             <i class="fa-solid fa-chevron-left text-[10px]"></i>
           </button>
 
-          <span class="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-500 font-bold">
+          <span class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-[#1caa80] font-bold">
             {{ currentPage }} / {{ totalPages }}
           </span>
 

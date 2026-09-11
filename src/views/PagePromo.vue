@@ -35,7 +35,7 @@
           <p class="text-xs text-slate-400 font-medium">Rata-rata / Bulan</p>
           <h3 class="text-base md:text-lg font-bold text-slate-700 dark:text-slate-200 mt-0.5">{{ formatRupiah(rataRataBulan) }}</h3>
         </div>
-        <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold">
+        <div class="w-10 h-10 rounded-xl bg-[#25eba11a] text-[#1caa80] flex items-center justify-center font-bold">
           <i class="fa-solid fa-calculator text-sm"></i>
         </div>
       </div>
@@ -239,7 +239,7 @@
               </td>
               <td v-if="store.canEditPage('promo')"  
                class="py-3 px-4 md:px-6 text-center space-x-2" style="display:inline-flex">
-                <button @click="store.openModal('promo', item)" class="text-blue-500 hover:text-blue-600 p-1 cursor-pointer" title="Edit Promo">
+                <button @click="store.openModal('promo', item)" class="text-[#1caa80] hover:text-[#1caa80] p-1 cursor-pointer" title="Edit Promo">
                   <i class="fa-solid fa-pen"></i>
                 </button>
                 <button @click="hapusPromo(item.id || item.Timestamp)" class="text-rose-500 hover:text-rose-600 p-1 cursor-pointer" title="Hapus Promo">
@@ -265,7 +265,7 @@
             <i class="fa-solid fa-chevron-left text-[10px]"></i>
           </button>
 
-          <span class="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-500 font-bold">
+          <span class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-[#1caa80] font-bold">
             {{ currentPage }} / {{ totalPages }}
           </span>
 

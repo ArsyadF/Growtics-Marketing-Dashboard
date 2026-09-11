@@ -8,7 +8,7 @@
       class="fixed inset-0 z-[10005] bg-slate-950/20 backdrop-blur-md flex items-center justify-center"
     >
       <div class="flex flex-col items-center gap-3 bg-white/20 dark:bg-slate-900/30 backdrop-blur-xl border border-white/30 dark:border-white/10 p-6 rounded-3xl shadow-2xl">
-        <i class="fa-solid fa-circle-notch fa-spin text-3xl text-blue-500"></i>
+        <i class="fa-solid fa-circle-notch fa-spin text-3xl bg-gradient-to-tr from-[#149B73] to-[#2EE59D] bg-clip-text text-transparent"></i>
         <span class="text-xs font-bold text-slate-800 dark:text-slate-100 drop-shadow-sm">
           Memuat...
         </span>

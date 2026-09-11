@@ -16,7 +16,7 @@
 
       <!-- Header Portal -->
       <div class="text-center space-y-2">
-        <div class="inline-flex p-3 bg-gradient-to-tr from-blue-600 to-sky-400 text-white rounded-2xl shadow-lg text-2xl mb-2">
+        <div class="inline-flex p-3 bg-gradient-to-tr from-[#149B73] to-[#2EE59D] text-white rounded-2xl shadow-lg text-2xl mb-2">
           <i class="fa-solid fa-chart-pie"></i>
         </div>
         <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">Portal Marketing</h2>
@@ -62,7 +62,7 @@
         <button 
           type="submit" 
           :disabled="isSubmitting" 
-          class="w-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold py-3 rounded-xl text-xs transition-all shadow-md mt-2 disabled:opacity-50 cursor-pointer flex items-center justify-center"
+          class="w-full bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-3 rounded-xl text-xs transition-all shadow-md mt-2 disabled:opacity-50 cursor-pointer flex items-center justify-center"
         >
           <i v-if="!isSubmitting" class="fa-solid fa-right-to-bracket mr-2"></i>
           <i v-else class="fa-solid fa-circle-notch fa-spin mr-2 text-sm"></i>
