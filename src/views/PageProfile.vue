@@ -8,13 +8,13 @@
         <img 
           :src="avatarPreviewUrl" 
           alt="Avatar Profile" 
-          class="w-20 h-20 rounded-full object-cover border-2 border-blue-500 shadow-lg shrink-0"
+          class="w-20 h-20 rounded-full object-cover border-2 border-[#1caa80] shadow-lg shrink-0"
         >
         <div>
           <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">
             {{ userProfile.Nama || userProfile.nama || userProfile.name || 'Admin User' }}
           </h3>
-          <p class="text-xs text-blue-500 font-semibold uppercase">
+          <p class="text-xs text-[#1caa80] font-semibold uppercase">
             {{ userProfile.Role || userProfile.role || 'Super Admin' }}
           </p>
           <p class="text-[11px] text-slate-400 mt-0.5">
@@ -50,7 +50,7 @@
         </div>
 
         <div class="pt-2 border-t border-slate-200/50 dark:border-slate-800/80">
-          <label class="block text-xs font-bold mb-1 text-blue-600 dark:text-blue-400">
+          <label class="block text-xs font-bold mb-1 text-[#1caa80] dark:text-blue-400">
             Ganti Password
           </label>
           <input 
@@ -75,7 +75,7 @@
         <button 
           type="submit" 
           :disabled="isSaving"
-          class="w-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md disabled:opacity-50 cursor-pointer"
+          class="w-full bg-gradient-to-r from-[#1caa80] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md disabled:opacity-50 cursor-pointer"
         >
           {{ isSaving ? 'Menyimpan...' : 'Simpan Perubahan Profil' }}
         </button>

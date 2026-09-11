@@ -9,7 +9,7 @@
         <button 
          v-if="store.canEditPage('target')"  
         @click="store.openModal('target')" 
-        class="bg-gradient-to-r from-blue-600 to-sky-500 text-white px-4 py-2.5 rounded-xl font-medium text-xs shadow-md hover:from-blue-700 hover:to-sky-600 w-full sm:w-auto cursor-pointer"
+        class="bg-gradient-to-r from-blue-600 to-sky-500 text-white px-4 py-2.5 rounded-xl font-medium text-xs shadow-md hover:from-[#149b73] hover:to-[#149b73] w-full sm:w-auto cursor-pointer"
       >
         <i class="fa-solid fa-plus mr-1.5"></i>Edit Target Master
       </button>
@@ -150,7 +150,7 @@ const listTargets = computed(() => {
 const getCapaianBadgeClass = (capaianVal) => {
   const val = Number(capaianVal);
   if (val >= 100) return 'bg-emerald-500/10 text-emerald-500';
-  if (val >= 50) return 'bg-blue-500/10 text-blue-500';
+  if (val >= 50) return 'bg-[#25eba11a] text-blue-500';
   if (val > 0) return 'bg-amber-500/10 text-amber-500';
   return 'bg-slate-500/10 text-slate-400';
 };

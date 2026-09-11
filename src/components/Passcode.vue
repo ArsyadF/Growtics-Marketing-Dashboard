@@ -24,7 +24,7 @@
         <button 
           type="submit" 
           :disabled="loading" 
-          class="w-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold py-3 rounded-xl text-xs transition-all shadow-md flex items-center justify-center"
+          class="w-full bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-3 rounded-xl text-xs transition-all shadow-md flex items-center justify-center"
         >
           <i v-if="loading" class="fa-solid fa-spinner fa-spin mr-1.5"></i>
           <span v-else><i class="fa-solid fa-key mr-1.5"></i>Buka Dashboard</span>
@@ -32,7 +32,7 @@
       </form>
 
       <div class="pt-2 border-t border-slate-200/50 dark:border-slate-800/80">
-        <button type="button" @click="store.openModal('login')" class="text-xs text-blue-500 hover:underline font-semibold cursor-pointer">
+        <button type="button" @click="store.openModal('login')" class="text-xs text-[#1caa80] hover:underline font-semibold cursor-pointer">
           <i class="fa-solid fa-user-shield mr-1"></i>Login Pengelola (Admin)
         </button>
       </div>

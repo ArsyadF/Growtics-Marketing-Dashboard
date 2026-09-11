@@ -28,7 +28,7 @@
           :class="isCollapsed ? 'justify-center' : 'justify-start'"
           :title="isCollapsed ? 'Buka Sidebar' : 'Kecilkan Sidebar'"
         >
-          <span class="p-2.5 bg-gradient-to-tr from-blue-600 to-sky-400 text-white rounded-xl shadow-md text-base shrink-0 flex items-center justify-center">
+          <span class="p-2.5 bg-gradient-to-tr from-[#149B73] to-[#2EE59D] text-white rounded-xl shadow-md text-base shrink-0 flex items-center justify-center">
             <i class="fa-solid fa-chart-pie"></i>
           </span>
           <h1 
@@ -43,7 +43,7 @@
         <button 
           v-if="!isCollapsed" 
           @click="toggleCollapse" 
-          class="text-slate-400 hover:text-blue-500 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center justify-center"
+          class="text-slate-400 hover:text-[#1caa80] p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center justify-center"
           title="Kecilkan Sidebar"
         >
           <i class="fa-solid fa-angles-left text-sm"></i>
@@ -70,7 +70,7 @@
               class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
               :class="[
                 activePage === 'main' 
-                  ? 'bg-blue-600/10 text-blue-600 font-bold dark:text-blue-400 border-l-4 border-blue-600' 
+                  ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
                   : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                 isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
               ]"
@@ -84,7 +84,7 @@
           <!-- 2. Unit Usaha -->
           <template v-if="isLoggedIn">
             <li 
-              class="py-2 text-[10px] font-bold text-blue-400 dark:text-blue-500 uppercase tracking-widest mt-4 sidebar-category"
+              class="py-2 text-[10px] font-bold text-[#1caa80] dark:text-[#1caa80] uppercase tracking-widest mt-4 sidebar-category"
               :class="isCollapsed ? 'text-center px-0' : 'px-4'"
             >
               <span v-if="!isCollapsed">Unit Usaha</span>
@@ -98,7 +98,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'unit-NHP' 
-                    ? 'bg-blue-600/10 text-blue-600 font-bold dark:text-blue-400 border-l-4 border-blue-600' 
+                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -116,7 +116,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'unit-NHC' 
-                    ? 'bg-blue-600/10 text-blue-600 font-bold dark:text-blue-400 border-l-4 border-blue-600' 
+                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -134,7 +134,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'unit-KG' 
-                    ? 'bg-blue-600/10 text-blue-600 font-bold dark:text-blue-400 border-l-4 border-blue-600' 
+                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -147,7 +147,7 @@
 
             <!-- 3. Lainnya -->
             <li 
-              class="py-2 text-[10px] font-bold text-blue-400 dark:text-blue-500 uppercase tracking-widest mt-4 sidebar-category"
+              class="py-2 text-[10px] font-bold text-[#1caa80] dark:text-[#1caa80] uppercase tracking-widest mt-4 sidebar-category"
               :class="isCollapsed ? 'text-center px-0' : 'px-4'"
             >
               <span v-if="!isCollapsed">Lainnya</span>
@@ -161,7 +161,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'leads' 
-                    ? 'bg-blue-600/10 text-blue-600 font-bold dark:text-blue-400 border-l-4 border-blue-600' 
+                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -179,7 +179,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'promo' 
-                    ? 'bg-blue-600/10 text-blue-600 font-bold dark:text-blue-400 border-l-4 border-blue-600' 
+                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -197,7 +197,7 @@
                   class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                   :class="[
                     activePage === 'targets' 
-                      ? 'bg-blue-600/10 text-blue-600 font-bold dark:text-blue-400 border-l-4 border-blue-600' 
+                      ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
                       : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                     isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                   ]"
@@ -211,7 +211,7 @@
             <!-- 4. Pengaturan Master -->
             <template v-if="isSuperadmin">
               <li 
-                class="py-2 text-[10px] font-bold text-blue-400 dark:text-blue-500 uppercase tracking-widest mt-4 sidebar-category"
+                class="py-2 text-[10px] font-bold text-[#1caa80] dark:text-[#1caa80] uppercase tracking-widest mt-4 sidebar-category"
                 :class="isCollapsed ? 'text-center px-0' : 'px-4'"
               >
                 <span v-if="!isCollapsed">Pengaturan Master</span>
@@ -225,7 +225,7 @@
                   class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                   :class="[
                     activePage === 'users' 
-                      ? 'bg-blue-600/10 text-blue-600 font-bold dark:text-blue-400 border-l-4 border-blue-600' 
+                      ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
                       : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                     isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                   ]"
@@ -247,7 +247,7 @@
   <button 
     v-if="!isLoggedIn" 
     @click="$emit('open-login')" 
-    class="w-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+    class="w-full bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
     :class="isCollapsed ? 'px-0' : 'px-3'"
     :title="isCollapsed ? 'Masuk / Login' : ''"
   >
@@ -267,10 +267,10 @@
       class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-blue-400/50 group-hover:scale-105 transition-transform"
     >
     <div v-if="!isCollapsed" class="user-info min-w-0 flex-1 overflow-hidden sidebar-text">
-      <p class="font-bold text-xs truncate leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400">
+      <p class="font-bold text-xs truncate leading-tight group-hover:text-[#1caa80] dark:group-hover:text-blue-400">
         {{ userData?.nama || 'Admin User' }}
       </p>
-      <p class="text-[9px] text-blue-500 font-semibold uppercase truncate mt-0.5">
+      <p class="text-[9px] text-[#1caa80] font-semibold uppercase truncate mt-0.5">
         {{ userData?.role || 'User' }}
       </p>
     </div>

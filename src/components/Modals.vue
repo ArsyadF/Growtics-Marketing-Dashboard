@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
+          <button type="submit" class="w-full bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
             Simpan Revenue
           </button>
         </form>
@@ -121,7 +121,7 @@
             </div>
           </div>
 
-          <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
+          <button type="submit" class="w-full bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
             Simpan Data Leads
           </button>
         </form>
@@ -234,7 +234,7 @@
               <option value="KG">Unit KG</option>
             </select>
           </div>
-          <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
+          <button type="submit" class="w-full bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
             Simpan Pengguna
           </button>
         </form>
@@ -266,7 +266,7 @@
         
         <!-- Ikon Alert -->
         <div class="w-12 h-12 rounded-2xl mx-auto flex items-center justify-center text-xl"
-          :class="store.alertPayload.type === 'warning' ? 'bg-amber-500/10 text-amber-500' : (store.alertPayload.type === 'success' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-blue-500/10 text-blue-500')">
+          :class="store.alertPayload.type === 'warning' ? 'bg-amber-500/10 text-amber-500' : (store.alertPayload.type === 'success' ? 'bg-emerald-500/10 text-emerald-500' : 'bg-[#25eba11a] from-[#149B73]')">
           <i class="fa-solid" :class="store.alertPayload.type === 'warning' ? 'fa-triangle-exclamation' : (store.alertPayload.type === 'success' ? 'fa-circle-check' : 'fa-circle-info')"></i>
         </div>
 

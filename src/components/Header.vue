@@ -8,7 +8,8 @@
       <button 
         @click.stop="$emit('toggle-sidebar')" 
         type="button"
-        class="md:hidden text-slate-600 hover:text-blue-600 p-1 flex items-center justify-center shrink-0 cursor-pointer z-20 relative"
+        class="md:hidden text-slate-600 hover:text-[#1caa80] w-10 h-10 md:w-11 md:h-11 rounded-full glass-card text-slate-600 dark:text-amber-400 hover:scale-105 transition-all cursor-pointer flex items-center justify-center shrink-0 
+       flex items-center justify-center shrink-0 cursor-pointer z-20 relative"
         title="Buka Menu"
       >
         <i class="fa-solid fa-bars text-lg"></i>
@@ -42,7 +43,7 @@
         <!-- Tombol Terapkan -->
         <button 
           @click="applyFilter" 
-          class="bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-700 hover:to-sky-600 text-white px-2.5 sm:px-3 py-1 rounded-lg font-medium transition-all shadow-md text-[11px] sm:text-xs cursor-pointer flex items-center gap-1 shrink-0"
+          class="bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white px-2.5 sm:px-3 py-1 rounded-lg font-medium transition-all shadow-md text-[11px] sm:text-xs cursor-pointer flex items-center gap-1 shrink-0"
           title="Terapkan Filter Tanggal"
         >
           <i class="fa-solid fa-filter"></i>
@@ -63,7 +64,7 @@
       <!-- Tombol Dark Mode (Mobile & Desktop disatukan) -->
       <button 
         @click="store.toggleDarkMode()" 
-        class="p-2 md:p-2.5 rounded-2xl glass-card text-slate-600 dark:text-amber-400 hover:scale-105 transition-all cursor-pointer flex items-center justify-center shrink-0"
+        class="w-10 h-10 md:w-11 md:h-11 rounded-full glass-card text-slate-600 dark:text-amber-400 hover:scale-105 transition-all cursor-pointer flex items-center justify-center shrink-0"
         title="Ganti Mode Tampilan"
       >
         <i class="fa-solid" :class="store.isDarkMode ? 'fa-sun text-amber-400 text-base md:text-lg' : 'fa-moon text-slate-600 text-base md:text-lg'"></i>

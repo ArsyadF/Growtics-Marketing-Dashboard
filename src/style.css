@@ -21,12 +21,15 @@ body {
 
 /* Background Gradient Layout */
 .bg-gradient-light {
-  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #e0f2fe 100%);
+  background: linear-gradient(135deg, #effffc 0%, #ebf8ed73 50%, #e0fef057 100%);
 }
 
-.dark .bg-gradient-dark {
+/* .dark .bg-gradient-dark {
   background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e293b 100%) !important;
-}
+} */
+
+.dark .bg-gradient-dark {
+  background: #080c0b}
 
 /* ==========================================================================
    3. GLASSMORPHISM STYLES
@@ -40,23 +43,32 @@ body {
 }
 
 .dark .glass-card {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(20, 20, 20, 0.204);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(17, 210, 140, 0.15);
+  /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); */
 }
+
+/* .dark .glass-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 60%, rgba(10, 15, 26, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+} */
 
 .glass-input {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(191, 219, 254, 0.8);
+  border: 1px solid #6bd8a0a2;
 }
 
 .dark .glass-input {
-  background: rgba(30, 41, 59, 0.7);
+  background: rgba(20, 20, 20, 0.204);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(30, 58, 138, 0.6);
+  border: 1px solid rgba(17, 210, 140, 0.15);
+  /* border: 1px solid rgba(30, 58, 138, 0.6); */
   color: #f1f5f9;
 }
 

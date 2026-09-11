@@ -6,7 +6,7 @@
       <!-- Header Modal -->
       <div class="flex items-center justify-between pb-3 border-b border-slate-200/50 dark:border-slate-800 shrink-0">
         <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
-          <i class="fa-solid fa-user-shield text-blue-500"></i>
+          <i class="fa-solid fa-user-shield from-[#149B73]"></i>
           {{ isEdit ? 'Edit Hak Akses Pengguna' : 'Tambah Pengguna Baru' }}
         </h3>
         <button @click="$emit('close')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer">
@@ -45,7 +45,7 @@
 
         <!-- Checkbox Matrix Hak Akses Halaman -->
         <div v-if="form.role !== 'SUPERADMIN'" class="pt-3 border-t border-slate-200/50 dark:border-slate-800 space-y-2">
-          <label class="block text-xs font-bold text-blue-600 dark:text-blue-400">
+          <label class="block text-xs font-bold text-[#1caa80] dark:text-blue-400">
             Atur Akses Halaman & Fitur Edit
           </label>
           <p class="text-[11px] text-slate-400">Pilih halaman yang boleh dibuka dan apakah pengguna diizinkan menambah/mengedit data di halaman tersebut.</p>
@@ -62,7 +62,7 @@
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
                 <tr v-for="page in pagesList" :key="page.id" class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
                   <td class="p-2.5 font-medium text-slate-700 dark:text-slate-200">
-                    <i :class="page.icon" class="mr-2 text-blue-500"></i>
+                    <i :class="page.icon" class="mr-2 from-[#149B73]"></i>
                     {{ page.label }}
                   </td>
                   <!-- Checkbox Buka Halaman -->
@@ -71,7 +71,7 @@
                       type="checkbox" 
                       v-model="form.permissions[page.id].access" 
                       @change="onAccessChange(page.id)"
-                      class="w-4 h-4 rounded text-blue-600 focus:ring-0 cursor-pointer"
+                      class="w-4 h-4 rounded text-[#1caa80] focus:ring-0 cursor-pointer"
                     >
                   </td>
                   <!-- Checkbox Fitur Edit / Tambah -->
@@ -89,7 +89,7 @@
           </div>
         </div>
 
-        <div v-else class="p-3 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 rounded-2xl text-xs text-blue-600 dark:text-blue-300">
+        <div v-else class="p-3 bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800/50 rounded-2xl text-xs text-[#1caa80] dark:text-blue-300">
           <i class="fa-solid fa-info-circle mr-1"></i>
           <strong>Superadmin</strong> memiliki akses penuh ke seluruh halaman dan seluruh fitur pengeditan tanpa pembatasan.
         </div>
@@ -99,7 +99,7 @@
           <button type="button" @click="$emit('close')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
             Batal
           </button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-md hover:from-blue-700 hover:to-sky-600 cursor-pointer">
+          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-[#149B73] to-[#2EE59D] text-white shadow-md hover:from-[#149b73] hover:to-[#149b73] cursor-pointer">
             {{ isEdit ? 'Simpan Perubahan' : 'Tambah User' }}
           </button>
         </div>
