@@ -126,12 +126,12 @@
             <svg class="w-full h-36 overflow-visible relative z-0" viewBox="0 0 300 100" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.30"/>
-                  <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.0"/>
+                  <stop offset="0%" stop-color="#1caa80" stop-opacity="0.30"/>
+                  <stop offset="100%" stop-color="#1caa80" stop-opacity="0.0"/>
                 </linearGradient>
               </defs>
               <path :d="areaPath" fill="url(#blueGradient)" />
-              <path :d="linePath" fill="none" stroke="#3b82f6" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+              <path :d="linePath" fill="none" stroke="#1caa80" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
             </svg>
 
             <!-- HTML Absolute Bulatan (Dot) - Garansi Anti Gepeng/Lonjong -->

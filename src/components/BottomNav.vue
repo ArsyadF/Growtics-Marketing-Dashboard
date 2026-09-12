@@ -8,11 +8,12 @@
       class="pointer-events-auto fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-30"
     ></div>
 
+  <div class="relative w-full max-w-md pointer-events-auto z-40">
     <!-- POPUP 1: Pilihan Unit Usaha (3 Kotak) -->
     <transition name="pop-up">
       <div 
         v-if="activePopup === 'unit'" 
-        class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[92%] max-w-xs z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
+        class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[92%] max-w-xs z-40 bg-white/95 dark:bg-[#14141434] backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
       >
           <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center">Pilih Unit Usaha</p>
         
@@ -20,7 +21,7 @@
           <!-- Unit NHP -->
           <button 
             @click="selectUnit('unit-NHP')" 
-            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
+            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-[#14141434] hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
           >
             <div class="w-9 h-9 rounded-xl bg-[#25eba11a] text-[#1caa80] dark:text-[#1caa80] flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-building"></i>
@@ -31,7 +32,7 @@
           <!-- Unit NHC -->
           <button 
             @click="selectUnit('unit-NHC')" 
-            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
+            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-[#14141434] hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
           >
             <div class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-building-user"></i>
@@ -42,7 +43,7 @@
           <!-- Unit KG -->
           <button 
             @click="selectUnit('unit-KG')" 
-            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
+            class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-[#14141434] hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
           >
             <div class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform">
               <i class="fa-solid fa-city"></i>
@@ -58,7 +59,7 @@
       <div 
       
         v-if="activePopup === 'add'" 
-       class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[92%] max-w-xs z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
+       class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[92%] max-w-xs z-40 bg-white/95 dark:bg-[#14141434] backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
       >
         <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center">Input Data Baru</p>
         
@@ -98,7 +99,7 @@
     </transition>
 
     <!-- MAIN NAVBAR MENGGUNAKAN GRID 5 KOLOM -->
-    <nav class="pointer-events-auto relative z-30 w-full max-w-md bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-white/20 dark:border-slate-800/80 rounded-3xl shadow-2xl grid grid-cols-5 items-center h-16 px-3">
+    <nav class="pointer-events-auto relative z-30 w-full max-w-md bg-white/90 dark:bg-[#14141434] backdrop-blur-md border border-white/20 dark:border-slate-800/80 rounded-3xl shadow-2xl grid grid-cols-5 items-center h-16 px-3">
       
       <!-- 1. HOME -->
       <button 
@@ -158,6 +159,7 @@
       </button>
 
     </nav>
+  </div>
   </div>
 </template>
 
