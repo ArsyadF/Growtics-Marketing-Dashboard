@@ -127,7 +127,7 @@
       <div class="relative flex justify-center items-center">
         <button 
           @click="togglePopup('add')" 
-          class="absolute -top-10 w-14 h-14 bg-gradient-to-tr from-[#149B73] to-[#2EE59D] text-white rounded-full shadow-xl shadow-[#6bd8a075] flex items-center justify-center text-lg transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-950"
+          class="absolute -top-10 w-14 h-14 bg-gradient-to-tr from-[#149B73] to-[#2EE59D] text-white rounded-full shadow-xl shadow-[#6bd8a075] flex items-center justify-center text-lg transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-[#020617c7]"
           :class="{ '!from-[#2EE59D] !to-[#149B73]': activePopup === 'add' }"
         >
           <i class="fa-solid fa-plus transition-transform duration-300"
