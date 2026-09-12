@@ -44,7 +44,7 @@
         <button 
           v-if="!isCollapsed" 
           @click="toggleCollapse" 
-          class="text-slate-400 hover:text-[#1caa80] p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center justify-center"
+          class="md:hidden text-slate-400 hover:text-[#1caa80] p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center justify-center"
           title="Kecilkan Sidebar"
         >
           <i class="fa-solid fa-angles-left text-sm"></i>
@@ -242,7 +242,7 @@
       </nav>
 
       <!-- Bottom Widget: Profil User (Diberi margin-bottom bertingkat mb-16 khusus mobile agar terangkat dari BottomNav) -->
-      <div class="p-2 m-2 mb-16 md:mb-2 bg-white/40 dark:bg-slate-800/50 rounded-2xl border border-white/20 dark:border-slate-700/50 flex items-center justify-center shrink-0">
+      <div class="p-2 m-2 mb-8 md:mb-2 bg-white/40 dark:bg-slate-800/50 rounded-2xl border border-white/20 dark:border-slate-700/50 flex items-center justify-center shrink-0">
         
         <!-- MODE GUEST -->
         <button 
