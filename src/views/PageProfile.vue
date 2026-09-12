@@ -50,7 +50,7 @@
         </div>
 
         <div class="pt-2 border-t border-slate-200/50 dark:border-slate-800/80">
-          <label class="block text-xs font-bold mb-1 text-[#1caa80] dark:text-blue-400">
+          <label class="block text-xs font-bold mb-1 text-[#1caa80] dark:text-[#1caa80]">
             Ganti Password
           </label>
           <input 

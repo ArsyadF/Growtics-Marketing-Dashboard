@@ -264,10 +264,10 @@
   >
     <img 
       :src="userData?.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.nama || 'User')}&background=0D8ABC&color=fff`" 
-      class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-blue-400/50 group-hover:scale-105 transition-transform"
+      class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-[#1caa80] group-hover:scale-105 transition-transform"
     >
     <div v-if="!isCollapsed" class="user-info min-w-0 flex-1 overflow-hidden sidebar-text">
-      <p class="font-bold text-xs truncate leading-tight group-hover:text-[#1caa80] dark:group-hover:text-blue-400">
+      <p class="font-bold text-xs truncate leading-tight group-hover:text-[#1caa80] dark:group-hover:text-[#1caa80]">
         {{ userData?.nama || 'Admin User' }}
       </p>
       <p class="text-[9px] text-[#1caa80] font-semibold uppercase truncate mt-0.5">
