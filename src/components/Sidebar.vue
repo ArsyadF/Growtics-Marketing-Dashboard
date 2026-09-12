@@ -1,10 +1,11 @@
 <!-- src/components/Sidebar.vue -->
 <template>
   <div>
-    <!-- Overlay Mobile -->
+    <!-- Overlay Mobile (Ditambahkan @touchmove.prevent agar gesture di HP tidak menembus ke halaman main) -->
     <div 
       v-if="isOpen" 
       @click="$emit('close-sidebar')" 
+      @touchmove.prevent
       class="fixed inset-0 bg-slate-950/50 backdrop-blur-sm z-40 md:hidden transition-opacity"
     ></div>
 
@@ -16,7 +17,7 @@
       isCollapsed ? 'w-18' : 'w-60'
     ]"
   >
-      <!-- Header Sidebar: Logo & Toggle Collapse (Ditambahkan pt-6 khusus Mobile untuk Safe-Area Status Bar) -->
+      <!-- Header Sidebar: Logo & Toggle Collapse -->
       <div 
         class="p-4 pt-8 md:pt-4 border-b border-blue-100/50 dark:border-slate-800/80 flex items-center justify-between sidebar-header shrink-0"
         :class="isCollapsed ? 'justify-center' : 'justify-between'"
@@ -59,8 +60,8 @@
         </button>
       </div>
       
-      <!-- Menu Navigasi (Aktifkan Scrollbar jika Menu Panjang) -->
-      <nav class="flex-1 overflow-y-auto py-4">
+      <!-- Menu Navigasi (Sembunyikan batang scrollbar agar lebar tidak berubah saat menu panjang) -->
+      <nav class="flex-1 overflow-y-auto py-4 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         <ul class="space-y-1 px-2">
           <!-- 1. Dashboard Utama -->
           <li v-if="store.canAccessPage('main')">
@@ -191,22 +192,22 @@
             </li>
 
             <li v-if="store.canAccessPage('targets')">
-                <a 
-                  href="#" 
-                  @click.prevent="navigate('targets')" 
-                  class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
-                  :class="[
-                    activePage === 'targets' 
-                      ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
-                    isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
-                  ]"
-                  :title="isCollapsed ? 'Target Revenue' : ''"
-                >
-                  <i class="fa-solid fa-bullseye text-base shrink-0"></i>
-                  <span v-if="!isCollapsed" class="sidebar-text whitespace-nowrap">Target Revenue</span>
-                </a>
-              </li>
+              <a 
+                href="#" 
+                @click.prevent="navigate('targets')" 
+                class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
+                :class="[
+                  activePage === 'targets' 
+                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
+                  isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
+                ]"
+                :title="isCollapsed ? 'Target Revenue' : ''"
+              >
+                <i class="fa-solid fa-bullseye text-base shrink-0"></i>
+                <span v-if="!isCollapsed" class="sidebar-text whitespace-nowrap">Target Revenue</span>
+              </a>
+            </li>
 
             <!-- 4. Pengaturan Master -->
             <template v-if="isSuperadmin">
@@ -240,49 +241,49 @@
         </ul>
       </nav>
 
-      <!-- Bottom Widget: Profil User -->
-<div class="p-2 m-2 bg-white/40 dark:bg-slate-800/50 rounded-2xl border border-white/20 dark:border-slate-700/50 flex items-center justify-center shrink-0">
-  
-  <!-- MODE GUEST -->
-  <button 
-    v-if="!isLoggedIn" 
-    @click="$emit('open-login')" 
-    class="w-full bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
-    :class="isCollapsed ? 'px-0' : 'px-3'"
-    :title="isCollapsed ? 'Masuk / Login' : ''"
-  >
-    <i class="fa-solid fa-right-to-bracket shrink-0"></i>
-    <span v-if="!isCollapsed" class="sidebar-text whitespace-nowrap">Masuk / Login</span>
-  </button>
+      <!-- Bottom Widget: Profil User (Diberi margin-bottom bertingkat mb-16 khusus mobile agar terangkat dari BottomNav) -->
+      <div class="p-2 m-2 mb-16 md:mb-2 bg-white/40 dark:bg-slate-800/50 rounded-2xl border border-white/20 dark:border-slate-700/50 flex items-center justify-center shrink-0">
+        
+        <!-- MODE GUEST -->
+        <button 
+          v-if="!isLoggedIn" 
+          @click="$emit('open-login')" 
+          class="w-full bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+          :class="isCollapsed ? 'px-0' : 'px-3'"
+          :title="isCollapsed ? 'Masuk / Login' : ''"
+        >
+          <i class="fa-solid fa-right-to-bracket shrink-0"></i>
+          <span v-if="!isCollapsed" class="sidebar-text whitespace-nowrap">Masuk / Login</span>
+        </button>
 
-  <!-- MODE LOGGED IN -->
-  <button 
-    v-else 
-    @click="navigate('profile')" 
-    class="w-full flex items-center justify-center gap-3 text-left group outline-none overflow-hidden cursor-pointer pb-[env(safe-area-inset-bottom,16px)]"
-    :title="isCollapsed ? (userData?.nama || 'Profil') : ''"
-  >
-    <img 
-      :src="userData?.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.nama || 'User')}&background=0D8ABC&color=fff`" 
-      class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-[#1caa80] group-hover:scale-105 transition-transform"
-    >
-    <div v-if="!isCollapsed" class="user-info min-w-0 flex-1 overflow-hidden sidebar-text">
-      <p class="font-bold text-xs truncate leading-tight group-hover:text-[#1caa80] dark:group-hover:text-[#1caa80]">
-        {{ userData?.nama || 'Admin User' }}
-      </p>
-      <p class="text-[9px] text-[#1caa80] font-semibold uppercase truncate mt-0.5">
-        {{ userData?.role || 'User' }}
-      </p>
-    </div>
-  </button>
+        <!-- MODE LOGGED IN (Dibersihkan dari padding safe-area yang tidak seimbang) -->
+        <button 
+          v-else 
+          @click="navigate('profile')" 
+          class="w-full flex items-center justify-center gap-3 text-left group outline-none overflow-hidden cursor-pointer"
+          :title="isCollapsed ? (userData?.nama || 'Profil') : ''"
+        >
+          <img 
+            :src="userData?.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.nama || 'User')}&background=0D8ABC&color=fff`" 
+            class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-[#1caa80] group-hover:scale-105 transition-transform"
+          >
+          <div v-if="!isCollapsed" class="user-info min-w-0 flex-1 overflow-hidden sidebar-text">
+            <p class="font-bold text-xs truncate leading-tight group-hover:text-[#1caa80] dark:group-hover:text-[#1caa80]">
+              {{ userData?.nama || 'Admin User' }}
+            </p>
+            <p class="text-[9px] text-[#1caa80] font-semibold uppercase truncate mt-0.5">
+              {{ userData?.role || 'User' }}
+            </p>
+          </div>
+        </button>
 
-</div>
+      </div>
     </aside>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { computed, watch } from 'vue';
 import { store } from '../store';
 
 const props = defineProps({
@@ -298,53 +299,39 @@ const props = defineProps({
 
 const emit = defineEmits(['close-sidebar', 'change-page', 'open-login']);
 
-// State Collapse Sidebar
-// const isCollapsed = ref(false);
-const isCollapsed = computed(() => store.isSidebarCollapsed);
+// Kunci scroll halaman belakang saat sidebar mobile terbuka
+watch(() => props.isOpen, (newVal) => {
+  if (window.innerWidth < 768) {
+    if (newVal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }
+});
 
-// Fungsi Toggle Collapse (Berfungsi untuk Semua Ukuran Layar)
-// const toggleCollapse = () => {
-//   isCollapsed.value = !isCollapsed.value;
-// };
+const isCollapsed = computed(() => store.isSidebarCollapsed);
 
 const toggleCollapse = () => {
   store.toggleSidebarCollapse();
 };
 
-// Status Login dari Store
 const isLoggedIn = computed(() => !!store.currentUser);
-
-// Data User dari Store
 const userData = computed(() => store.currentUser || {});
 
-// Role Check Superadmin
 const isSuperadmin = computed(() => {
   const role = userData.value?.role || userData.value?.Role;
   return role ? role.toUpperCase() === 'SUPERADMIN' : false;
 });
 
-// Hak Akses Unit
-// const hasUnitAccess = (unitName) => {
-//   if (isSuperadmin.value) return true;
-  
-//   const unit = userData.value?.unit || userData.value?.Unit || userData.value?.aksesUnit;
-//   if (!unit) return false;
-
-//   if (Array.isArray(unit)) {
-//     return unit.includes(unitName);
-//   }
-//   return String(unit).toUpperCase() === String(unitName).toUpperCase();
-// };
-
 const hasUnitAccess = (unitName) => {
-  // Langsung serahkan pengecekan ke sistem Granular Permission di store
   return store.canAccessPage(`unit-${unitName}`);
 };
 
-// Navigasi
 const navigate = (page) => {
   emit('change-page', page);
   if (window.innerWidth < 768) {
+    document.body.style.overflow = '';
     emit('close-sidebar');
   }
 };
