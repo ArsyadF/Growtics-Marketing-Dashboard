@@ -24,12 +24,12 @@ body {
   background: linear-gradient(135deg, #effffc 0%, #ebf8ed73 50%, #e0fef057 100%);
 }
 
-/* .dark .bg-gradient-dark {
-  background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e293b 100%) !important;
-} */
-
 .dark .bg-gradient-dark {
-  background: #080c0b}
+  background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e293b 100%) !important;
+}
+
+/* .dark .bg-gradient-dark {
+  background: #080c0b} */
 
 /* ==========================================================================
    3. GLASSMORPHISM STYLES
@@ -216,4 +216,15 @@ body {
   filter: blur(16px) grayscale(90%) !important;
   pointer-events: none !important;
   user-select: none !important;
+}
+
+/* Sembunyikan scrollbar untuk Chrome, Safari, dan Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sembunyikan scrollbar untuk IE, Edge, dan Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE dan Edge */
+  scrollbar-width: none;  /* Firefox */
 }
