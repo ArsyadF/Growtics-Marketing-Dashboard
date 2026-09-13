@@ -107,8 +107,8 @@
         class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-[#1caa80] dark:hover:text-[#1caa80] transition-colors cursor-pointer"
         :class="{ 'text-[#1caa80] dark:text-[#1caa80] font-bold': store.currentPage === 'main' }"
       >
-        <i class="fa-solid fa-house text-sm"></i>
-        <span class="text-[9px]">Home</span>
+        <i class="fa-solid fa-house text-[1.25rem]"></i>
+        <span class="text-[12px]">Home</span>
         <span v-if="store.currentPage === 'main'" class="w-1 h-1 bg-[#1caa80] rounded-full"></span>
       </button>
 
@@ -118,8 +118,8 @@
         class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-[#1caa80] dark:hover:text-[#1caa80] transition-colors cursor-pointer"
         :class="{ 'text-[#1caa80] dark:text-[#1caa80] font-bold': activePopup === 'unit' || store.currentPage.startsWith('unit-') }"
       >
-        <i class="fa-solid fa-building text-sm"></i>
-        <span class="text-[9px]">Unit</span>
+        <i class="fa-solid fa-building text-[1.25rem]"></i>
+        <span class="text-[12px]">Unit</span>
         <span v-if="store.currentPage.startsWith('unit-')" class="w-1 h-1 bg-[#1caa80] rounded-full"></span>
       </button>
 
@@ -142,8 +142,8 @@
         class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-[#1caa80] dark:hover:text-[#1caa80] transition-colors cursor-pointer"
         :class="{ 'text-[#1caa80] dark:text-[#1caa80] font-bold': store.currentPage === 'leads' }"
       >
-        <i class="fa-solid fa-users-rays text-sm"></i>
-        <span class="text-[9px]">Leads</span>
+        <i class="fa-solid fa-users-rays text-[1.25rem]"></i>
+        <span class="text-[12px]">Leads</span>
         <span v-if="store.currentPage === 'leads'" class="w-1 h-1 bg-[#1caa80] rounded-full"></span>
       </button>
 
@@ -153,8 +153,8 @@
         class="flex flex-col items-center justify-center gap-0.5 text-slate-400 hover:text-[#1caa80] dark:hover:text-[#1caa80] transition-colors cursor-pointer"
         :class="{ 'text-[#1caa80] dark:text-[#1caa80] font-bold': store.currentPage === 'promo' }"
       >
-        <i class="fa-solid fa-bullhorn text-sm"></i>
-        <span class="text-[9px]">Promosi</span>
+        <i class="fa-solid fa-bullhorn text-[1.25rem]"></i>
+        <span class="text-[12px]">Promosi</span>
         <span v-if="store.currentPage === 'promo'" class="w-1 h-1 bg-[#1caa80] rounded-full"></span>
       </button>
 
