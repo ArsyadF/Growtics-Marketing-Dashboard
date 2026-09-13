@@ -194,6 +194,54 @@ navigate(page) {
   
   // Mendaftarkan state riwayat ke browser/WebView agar tombol back android mendeteksinya
   window.history.pushState({ page: page }, "", `#${page}`);
-}
+},
 
+// Di dalam src/store.js
+
+// export const store = reactive({
+//   // State Filter Tanggal
+//   filterDates: {
+//     start: '',
+//     end: ''
+//   },
+  
+  // State Tema
+  themePreference: 'system', // 'light' | 'dark' | 'system'
+  isDarkMode: false,
+
+  // Inisialisasi Tema
+  initTheme() {
+    const savedTheme = localStorage.getItem('THEME_PREFERENCE') || 'system';
+    this.setTheme(savedTheme);
+
+    // Listener perubahan tema sistem HP/Laptop
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (this.themePreference === 'system') {
+        this.applyTheme(e.matches);
+      }
+    });
+  },
+
+  // Set & Simpan Tema ke LocalStorage
+  setTheme(pref) {
+    this.themePreference = pref;
+    localStorage.setItem('THEME_PREFERENCE', pref);
+
+    if (pref === 'system') {
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.applyTheme(systemDark);
+    } else {
+      this.applyTheme(pref === 'dark');
+    }
+  },
+
+  // Apply Class 'dark' ke elemen HTML
+  applyTheme(isDark) {
+    this.isDarkMode = isDark;
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }
 });
