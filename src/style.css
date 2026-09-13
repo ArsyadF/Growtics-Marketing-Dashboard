@@ -135,9 +135,9 @@ body {
     border-radius: 0 1rem 1rem 0 !important;
   }
 
-  .dynamic-page-title {
+  /* .dynamic-page-title {
     display: none !important;
-  }
+  } */
 }
 
 /* Sidebar Collapsed Mode Mini */
