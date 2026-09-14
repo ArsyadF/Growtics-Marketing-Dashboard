@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <button type="submit" class="w-full bg-theme-gradient hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
+          <button type="submit" class="w-full bg-theme-gradient hover:opacity-90 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
             Simpan Revenue
           </button>
         </form>
@@ -121,7 +121,7 @@
             </div>
           </div>
 
-          <button type="submit" class="w-full bg-theme-gradient hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
+          <button type="submit" class="w-full bg-theme-gradient hover:opacity-90 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
             Simpan Data Leads
           </button>
         </form>
@@ -234,7 +234,7 @@
               <option value="KG">Unit KG</option>
             </select>
           </div>
-          <button type="submit" class="w-full bg-theme-gradient hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
+          <button type="submit" class="w-full bg-theme-gradient hover:opacity-90 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
             Simpan Pengguna
           </button>
         </form>
@@ -483,7 +483,8 @@ watch(() => store.activeModal, (newVal) => {
   }
 }, { immediate: true });
 
-// --- SAVE ACTIONS TO FIRESTORE ---
+// --- SAVE ACTIONS TO FIRESTORE WITH NOTIFICATIONS ---
+
 async function saveRevenue() {
   store.isLoading = true;
   try {
@@ -492,12 +493,23 @@ async function saveRevenue() {
 
     if (isEditRevenue.value && docId) {
       await api.updateData('revenues', docId, formRev);
+      store.addNotification(
+        'Revenue Diperbarui', 
+        `Revenue Unit ${formRev.Unit} diubah menjadi Rp ${formatThousand(formRev.Revenue)}`, 
+        'warning'
+      );
     } else {
       await api.saveData('revenues', formRev);
+      store.addNotification(
+        'Revenue Ditambahkan', 
+        `Revenue baru Unit ${formRev.Unit} sebesar Rp ${formatThousand(formRev.Revenue)} berhasil disimpan`, 
+        'success'
+      );
     }
     await store.loadFullDatabase();
     store.closeModal();
   } catch (err) {
+    store.addNotification('Gagal Menyimpan', `Gagal menyimpan Revenue: ${err.message}`, 'danger');
     store.openAlert("Gagal Menyimpan", "Gagal menyimpan Revenue: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
@@ -512,12 +524,23 @@ async function saveLeads() {
 
     if (isEditLeads.value && docId) {
       await api.updateData('leads', docId, formLeads);
+      store.addNotification(
+        'Data Leads Diperbarui', 
+        `Data Leads Unit ${formLeads.Unit} berhasil diperbarui`, 
+        'warning'
+      );
     } else {
       await api.saveData('leads', formLeads);
+      store.addNotification(
+        'Leads Ditambahkan', 
+        `Data Leads baru Unit ${formLeads.Unit} berhasil dicatat`, 
+        'success'
+      );
     }
     await store.loadFullDatabase();
     store.closeModal();
   } catch (err) {
+    store.addNotification('Gagal Menyimpan', `Gagal menyimpan Leads: ${err.message}`, 'danger');
     store.openAlert("Gagal Menyimpan", "Gagal menyimpan Leads: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
@@ -532,12 +555,23 @@ async function savePromo() {
 
     if (isEditPromo.value && docId) {
       await api.updateData('promosi', docId, formPromo);
+      store.addNotification(
+        'Biaya Promosi Diubah', 
+        `Promosi Unit ${formPromo.Unit} diperbarui menjadi Rp ${formatThousand(formPromo.BiayaPromosi)}`, 
+        'warning'
+      );
     } else {
       await api.saveData('promosi', formPromo);
+      store.addNotification(
+        'Biaya Promosi Dicatat', 
+        `Iklan Unit ${formPromo.Unit} sebesar Rp ${formatThousand(formPromo.BiayaPromosi)} berhasil disimpan`, 
+        'success'
+      );
     }
     await store.loadFullDatabase();
     store.closeModal();
   } catch (err) {
+    store.addNotification('Gagal Menyimpan', `Gagal menyimpan Biaya Promosi: ${err.message}`, 'danger');
     store.openAlert("Gagal Menyimpan", "Gagal menyimpan Biaya Promosi: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
@@ -549,12 +583,18 @@ async function saveTargets() {
   try {
     const res = await api.saveMasterTargets(formTarget);
     if (res.success) {
+      store.addNotification(
+        'Target Revenue Diperbarui', 
+        `Master target tahunan berhasil disesuaikan`, 
+        'warning'
+      );
       await store.loadFullDatabase();
       store.closeModal();
     } else {
       store.openAlert("Perhatian", res.message, null, "warning");
     }
   } catch (err) {
+    store.addNotification('Gagal Menyimpan Target', err.message, 'danger');
     store.openAlert("Gagal Menyimpan", "Gagal menyimpan Target: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
@@ -575,12 +615,23 @@ async function saveUser() {
 
     if (isEditUser.value) {
       await api.updateData('Users', store.editPayload.id, payload);
+      store.addNotification(
+        'Akses Pengguna Diubah', 
+        `Data akun ${formUser.name} telah diperbarui`, 
+        'warning'
+      );
     } else {
       await api.saveData('Users', payload);
+      store.addNotification(
+        'Pengguna Baru Ditambah', 
+        `Akun pengguna ${formUser.name} (${formUser.role}) telah dibuat`, 
+        'success'
+      );
     }
     await store.loadFullDatabase();
     store.closeModal();
   } catch (err) {
+    store.addNotification('Gagal Menyimpan Pengguna', err.message, 'danger');
     store.openAlert("Gagal Menyimpan", "Gagal menyimpan Pengguna: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;
@@ -593,12 +644,14 @@ async function savePasscode() {
     const res = await api.saveMasterTargets({ KodeAkses: formPasscode.code });
     if (res.success) {
       store.db.master.KodeAkses = formPasscode.code;
+      store.addNotification('Passcode Diperbarui', 'Passcode publik berhasil diubah', 'warning');
       store.closeModal();
       store.openAlert("Berhasil", "Passcode Publik berhasil diperbarui!", null, "success");
     } else {
       store.openAlert("Perhatian", res.message, null, "warning");
     }
   } catch (err) {
+    store.addNotification('Gagal Update Passcode', err.message, 'danger');
     store.openAlert("Gagal Menyimpan", "Gagal memperbarui Passcode: " + err.message, null, "warning");
   } finally {
     store.isLoading = false;

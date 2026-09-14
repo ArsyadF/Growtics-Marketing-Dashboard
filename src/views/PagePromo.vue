@@ -483,4 +483,49 @@ const hapusPromo = (docId) => {
     'warning'
   );
 };
+
+const handleAddData = async () => {
+  try {
+    await api.addData(payload);
+    
+    // Trigger Notifikasi
+    store.addNotification(
+      'Data Berhasil Ditambah',
+      `Data promosi unit ${payload.unit} berhasil disimpan.`,
+      'success'
+    );
+  } catch (err) {
+    store.addNotification('Gagal Menambah Data', err.message, 'danger');
+  }
+};
+
+const handleUpdateData = async () => {
+  try {
+    await api.updateData(payload);
+
+    // Trigger Notifikasi
+    store.addNotification(
+      'Data Diperbarui',
+      `Perubahan target revenue telah disimpan oleh ${store.currentUser.nama}.`,
+      'warning'
+    );
+  } catch (err) {
+    store.addNotification('Gagal Memperbarui', err.message, 'danger');
+  }
+};
+
+const handleDeleteData = async (id) => {
+  try {
+    await api.deleteData(id);
+
+    // Trigger Notifikasi
+    store.addNotification(
+      'Data Dihapus',
+      `Satu baris data telah dihapus dari sistem.`,
+      'danger'
+    );
+  } catch (err) {
+    store.addNotification('Gagal Menghapus', err.message, 'danger');
+  }
+};
 </script>
