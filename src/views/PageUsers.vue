@@ -25,7 +25,7 @@
       <button 
         v-if="canManageUsers"
         @click="openAddUserModal" 
-        class="bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2.5 rounded-xl font-bold text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer shrink-0"
+        class="bg-theme-gradient hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2.5 rounded-xl font-bold text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer shrink-0"
       >
         <i class="fa-solid fa-user-plus"></i> Tambah Pengguna
       </button>
@@ -94,7 +94,7 @@
 
               <!-- Rincian Ringkas Akses Halaman -->
               <td class="py-3 px-2">
-                <div v-if="(user.role || user.Role) === 'SUPERADMIN'" class="text-[11px] text-[#1caa80] dark:text-[#1caa80] font-semibold">
+                <div v-if="(user.role || user.Role) === 'SUPERADMIN'" class="text-[11px] text-theme dark:text-theme font-semibold">
                   <i class="fa-solid fa-shield-halved mr-1"></i> Akses Penuh (Superadmin)
                 </div>
                 <div v-else class="flex flex-wrap gap-1 max-w-xs">
@@ -111,7 +111,7 @@
                     class="px-2 py-0.5 rounded-md text-[9px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/50"
                   >
                     {{ getPageLabel(pageKey) }}
-                    <i v-if="perm.canEdit" class="fa-solid fa-pen text-[8px] text-emerald-500 ml-0.5" title="Bisa Edit/Input"></i>
+                    <i v-if="perm.canEdit" class="fa-solid fa-pen text-[8px] text-theme ml-0.5" title="Bisa Edit/Input"></i>
                   </span>
                 </div>
               </td>
@@ -121,7 +121,7 @@
                 <div class="flex items-center justify-end gap-1.5">
                   <button 
                     @click="openEditUserModal(user)" 
-                    class="p-1.5 text-[#1caa80] hover:bg-blue-50 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                    class="p-1.5 text-theme hover:bg-blue-50 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                     title="Edit Hak Akses"
                   >
                     <i class="fa-solid fa-user-pen"></i>
@@ -175,7 +175,7 @@ const canManageUsers = computed(() => {
 const getRoleBadgeClass = (role) => {
   const r = String(role || '').toUpperCase();
   if (r === 'SUPERADMIN') return 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/30';
-  if (r === 'ADMIN') return 'bg-[#25eba11a] text-[#1caa80] dark:text-[#1caa80] border border-[#1caa80]/30';
+  if (r === 'ADMIN') return 'bg-[#25eba11a] text-theme dark:text-theme border border-theme/30';
   return 'bg-slate-500/10 text-slate-600 dark:text-slate-400 border border-slate-500/30';
 };
 

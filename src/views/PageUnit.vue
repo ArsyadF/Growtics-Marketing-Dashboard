@@ -13,7 +13,7 @@
         <button 
          v-if="store.canEditPage('unit-' + selectedUnitName)"  
           @click="store.openModal('revenue', { Unit: selectedUnitName })" 
-          class="bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
+          class="bg-theme-gradient hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
         >
           <i class="fa-solid fa-plus mr-1.5"></i>Input Revenue {{ selectedUnitName }}
         </button>
@@ -118,7 +118,7 @@
               </tr>
               <tr v-else v-for="(row, idx) in monthlyRecap" :key="idx" class="hover:bg-white/20 dark:hover:bg-slate-800/40">
                 <td class="py-2 px-3 font-medium">{{ row.bulan }}</td>
-                <td class="py-2 px-3 text-right font-semibold text-emerald-500">{{ formatRupiah(row.revenue) }}</td>
+                <td class="py-2 px-3 text-right font-semibold text-theme">{{ formatRupiah(row.revenue) }}</td>
               </tr>
             </tbody>
           </table>
@@ -135,7 +135,7 @@
             class="p-2.5 bg-white/30 dark:bg-slate-800/40 rounded-xl border border-white/20 dark:border-slate-700/50 flex justify-between items-center"
           >
             <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ q.quarter }}</span>
-            <span class="text-xs font-bold text-emerald-500">{{ formatRupiah(q.revenue) }}</span>
+            <span class="text-xs font-bold text-theme">{{ formatRupiah(q.revenue) }}</span>
           </div>
         </div>
       </div>
@@ -167,7 +167,7 @@
               </tr>
               <tr v-else v-for="(item, idx) in detailRecap" :key="idx" class="hover:bg-white/20 dark:hover:bg-slate-800/40">
                 <td class="py-2 px-3 font-medium">{{ item.label }}</td>
-                <td class="py-2 px-3 text-right font-semibold text-emerald-500">{{ formatRupiah(item.revenue) }}</td>
+                <td class="py-2 px-3 text-right font-semibold text-theme">{{ formatRupiah(item.revenue) }}</td>
               </tr>
             </tbody>
           </table>
@@ -240,13 +240,13 @@
               <td class="py-2 px-3">{{ item.Tanggal ? item.Tanggal.substring(0, 10) : '-' }}</td>
               <td class="py-2 px-3 font-medium">{{ item.Divisi || '-' }}</td>
               <td class="py-2 px-3">{{ item.Platform || '-' }}</td>
-              <td class="py-2 px-3 font-semibold text-emerald-500">{{ formatRupiah(item.Revenue) }}</td>
+              <td class="py-2 px-3 font-semibold text-theme">{{ formatRupiah(item.Revenue) }}</td>
               <td  v-if="store.canEditPage('unit-' + selectedUnitName)" 
               class="py-2 px-3 text-center space-x-2" style="display:inline-flex">
                 <button
                 
                   @click="store.openModal('revenue', item)" 
-                  class="text-[#1caa80] hover:text-[#1caa80] p-1 cursor-pointer"
+                  class="text-theme hover:text-theme p-1 cursor-pointer"
                   title="Edit Revenue"
                 >
                   <i class="fa-solid fa-pen"></i>
@@ -276,7 +276,7 @@
             <i class="fa-solid fa-chevron-left text-[10px]"></i>
           </button>
 
-          <span class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-[#1caa80] font-bold">
+          <span class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-bold">
             {{ currentPage }} / {{ totalPages }}
           </span>
 

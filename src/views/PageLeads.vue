@@ -10,7 +10,7 @@
       <button 
       v-if="store.canEditPage('leads')"  
       @click="store.openModal('leads')" 
-        class="bg-gradient-to-r from-[#149B73] to-[#2EE59D] text-white px-4 py-2.5 rounded-xl font-medium text-xs shadow-md hover:from-[#149b73] hover:to-[#149b73] w-full sm:w-auto cursor-pointer"
+        class="bg-theme-gradient text-white px-4 py-2.5 rounded-xl font-medium text-xs shadow-md hover:from-[#149b73] hover:to-[#149b73] w-full sm:w-auto cursor-pointer"
       >
         <i class="fa-solid fa-plus mr-1.5"></i>Input Leads & Campaign
       </button>
@@ -24,7 +24,7 @@
       </div>
       <div class="glass-card p-3 rounded-xl text-center">
         <p class="text-xs text-slate-400">Database Leads</p>
-        <h3 class="text-lg font-bold text-[#1caa80] mt-0.5">{{ sumLeads.toLocaleString('id-ID') }}</h3>
+        <h3 class="text-lg font-bold text-theme mt-0.5">{{ sumLeads.toLocaleString('id-ID') }}</h3>
       </div>
       <div class="glass-card p-3 rounded-xl text-center">
         <p class="text-xs text-slate-400">Follow Up</p>
@@ -32,7 +32,7 @@
       </div>
       <div class="glass-card p-3 rounded-xl text-center">
         <p class="text-xs text-slate-400">Jumlah Pesanan</p>
-        <h3 class="text-lg font-bold text-emerald-500 mt-0.5">{{ sumOrder.toLocaleString('id-ID') }}</h3>
+        <h3 class="text-lg font-bold text-theme mt-0.5">{{ sumOrder.toLocaleString('id-ID') }}</h3>
       </div>
       <div class="glass-card p-3 rounded-xl text-center col-span-2 sm:col-span-1">
         <p class="text-xs text-slate-400">% Konversi</p>
@@ -68,7 +68,7 @@
                   class="hover:bg-white/20 dark:hover:bg-slate-800/40"
                 >
                   <td class="py-2.5 px-3 font-medium">{{ row.bulan }}</td>
-                  <td class="py-2.5 px-3 text-right font-semibold text-[#1caa80]">
+                  <td class="py-2.5 px-3 text-right font-semibold text-theme">
                     {{ row.total.toLocaleString('id-ID') }}
                   </td>
                 </tr>
@@ -143,7 +143,7 @@
                 :style="{ left: `${pt.xPct}%`, top: `${pt.yPct}%` }"
               >
                 <!-- Dot Outer Rings & Core -->
-                <div class="w-4 h-4 rounded-full bg-white border-2 border-[#1caa80] shadow-md transition-transform duration-200 group-hover:scale-125 group-hover:bg-blue-500"></div>
+                <div class="w-4 h-4 rounded-full bg-white border-2 border-theme shadow-md transition-transform duration-200 group-hover:scale-125 group-hover:bg-blue-500"></div>
                 
                 <!-- Tooltip Popup Nominal -->
                 <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-[9px] font-bold py-1 px-2 rounded-md shadow-lg whitespace-nowrap pointer-events-none">
@@ -208,12 +208,12 @@
               <td class="py-2 px-3">{{ l.Tanggal ? String(l.Tanggal).substring(0, 10) : '-' }}</td>
               <td class="py-2 px-3 font-bold">{{ l.Unit || '-' }}</td>
               <td class="py-2 px-3">{{ l.Campaign || 0 }}</td>
-              <td class="py-2 px-3 text-[#1caa80] font-semibold">{{ l.DatabaseLeads || 0 }}</td>
+              <td class="py-2 px-3 text-theme font-semibold">{{ l.DatabaseLeads || 0 }}</td>
               <td class="py-2 px-3 text-amber-500 font-semibold">{{ l.FollowUp || 0 }}</td>
-              <td class="py-2 px-3 text-emerald-500 font-semibold">{{ l.Pesanan || 0 }}</td>
+              <td class="py-2 px-3 text-theme font-semibold">{{ l.Pesanan || 0 }}</td>
               <td  v-if="store.canEditPage('leads')"  
               class="py-2 px-3 text-center" style="display:inline-flex">
-                <button @click="store.openModal('leads', l)" class="text-[#1caa80] hover:text-[#1caa80] p-1 mr-2 cursor-pointer" title="Edit Leads">
+                <button @click="store.openModal('leads', l)" class="text-theme hover:text-theme p-1 mr-2 cursor-pointer" title="Edit Leads">
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>
                 <button @click="deleteLeads(l.id || l.Timestamp)" class="text-rose-500 hover:text-rose-600 p-1 cursor-pointer" title="Hapus Leads">
@@ -239,7 +239,7 @@
             <i class="fa-solid fa-chevron-left text-[10px]"></i>
           </button>
 
-          <span class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-[#1caa80] font-bold">
+          <span class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-bold">
             {{ currentPage }} / {{ totalPages }}
           </span>
 

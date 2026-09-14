@@ -44,7 +44,7 @@
         <!-- Tombol Terapkan -->
         <button 
           @click="applyFilter" 
-          class="bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white px-3 py-1 rounded-lg font-medium transition-all shadow-md text-xs cursor-pointer flex items-center gap-1 shrink-0"
+          class="bg-theme-gradient hover:from-[#149b73] hover:to-[#149b73] text-white px-3 py-1 rounded-lg font-medium transition-all shadow-md text-xs cursor-pointer flex items-center gap-1 shrink-0"
           title="Terapkan Filter Tanggal"
         >
           <i class="fa-solid fa-filter"></i>
@@ -82,127 +82,166 @@
       class="flex flex-col text-slate-400 mb-4 items-center justify-center text-lg active:scale-95 transition-transform cursor-pointer"
       title="Buka Filter Tanggal"
     >
-      <i class="fa-solid fa-filter flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-tr from-[#149B73] to-[#2EE59D] text-white shadow-lg shadow-[#149B73]/40 text-sm"></i>
+      <i class="fa-solid fa-filter flex items-center justify-center w-10 h-10 rounded-full bg-theme-gradient text-white shadow-lg shadow-[#149B73]/40 text-sm"></i>
       <span class="text-[12px] mt-1">Filter</span>
     </button>
   </div>
 
   <!-- ==================== POPUP MODAL FILTER TANGGAL (MOBILE) ==================== -->
-  <Teleport to="body">
-    <div 
-      v-if="isFilterModalOpen" 
-      class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity"
-      @click.self="isFilterModalOpen = false"
-    >
-      <div class="absolute mb-20 w-full max-w-sm glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 animate-in fade-in slide-in-from-bottom-4 duration-200">
-        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-          <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2">
-            <i class="fa-solid fa-filter text-[#1caa80]"></i>
-            Filter Rentang Tanggal
-          </h3>
-          <button @click="isFilterModalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-            <i class="fa-solid fa-xmark text-lg"></i>
-          </button>
-        </div>
+<Teleport to="body">
+  <div 
+    v-if="isFilterModalOpen" 
+    class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity"
+    @click.self="isFilterModalOpen = false"
+  >
+    <div class="absolute mb-20 w-full max-w-sm glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 animate-in fade-in slide-in-from-bottom-4 duration-200">
+      
+      <!-- Header Modal -->
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2">
+          <i class="fa-solid fa-filter text-theme"></i>
+          Filter Rentang Tanggal
+        </h3>
+        <button 
+          @click="isFilterModalOpen = false" 
+          class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer transition-colors"
+        >
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
 
-        <div class="space-y-3 text-xs">
-          <div>
-            <label class="block text-slate-500 dark:text-slate-400 font-medium mb-1">Tanggal Mulai:</label>
-            <input 
-              v-model="tempStartDate" 
-              type="date" 
-              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none"
-            >
-          </div>
-          <div>
-            <label class="block text-slate-500 dark:text-slate-400 font-medium mb-1">Tanggal Akhir:</label>
-            <input 
-              v-model="tempEndDate" 
-              type="date" 
-              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none"
-            >
-          </div>
+      <!-- Input Form -->
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-500 dark:text-slate-400 font-medium mb-1">Tanggal Mulai:</label>
+          <input 
+            v-model="tempStartDate" 
+            type="date" 
+            class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme transition-colors"
+          >
         </div>
-
-        <div class="flex items-center gap-2 pt-2">
-          <button 
-            @click="resetFilterMobile" 
-            class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl font-bold text-xs transition-all text-center"
+        <div>
+          <label class="block text-slate-500 dark:text-slate-400 font-medium mb-1">Tanggal Akhir:</label>
+          <input 
+            v-model="tempEndDate" 
+            type="date" 
+            class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme transition-colors"
           >
-            Reset
-          </button>
-          <button 
-            @click="applyFilterMobile" 
-            class="flex-1 bg-gradient-to-r from-[#149B73] to-[#2EE59D] text-white py-2.5 rounded-xl font-bold text-xs transition-all shadow-md text-center"
-          >
-            Terapkan
-          </button>
         </div>
       </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 pt-2">
+        <button 
+          @click="resetFilterMobile" 
+          class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl font-bold text-xs transition-all text-center cursor-pointer"
+        >
+          Reset
+        </button>
+        <button 
+          @click="applyFilterMobile" 
+          class="flex-1 bg-theme-gradient text-white py-2.5 rounded-xl font-bold text-xs transition-all shadow-md text-center cursor-pointer hover:opacity-95"
+        >
+          Terapkan
+        </button>
+      </div>
+
     </div>
-  </Teleport>
+  </div>
+</Teleport>
 
-  <!-- ==================== POPUP MODAL TEMA (LIGHT / DARK / SYSTEM) ==================== -->
-  <Teleport to="body">
-    <div 
-      v-if="isThemeModalOpen" 
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity"
-      @click.self="isThemeModalOpen = false"
-    >
-      <div class="w-full max-w-xs glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800">
-        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
-          <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2">
-            <i class="fa-solid fa-palette text-[#1caa80]"></i>
-            Pilih Mode Tampilan
-          </h3>
-          <button @click="isThemeModalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-            <i class="fa-solid fa-xmark text-lg"></i>
-          </button>
-        </div>
+<!-- ==================== POPUP MODAL TEMA (LIGHT / DARK / SYSTEM + ACCENT COLOR) ==================== -->
+<Teleport to="body">
+  <div 
+    v-if="isThemeModalOpen" 
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity"
+    @click.self="isThemeModalOpen = false"
+  >
+    <div class="w-full max-w-xs glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in-95 duration-150">
+      
+      <!-- Header Modal -->
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2">
+          <i class="fa-solid fa-palette"></i>
+          Pengaturan Tampilan
+        </h3>
+        <button 
+          @click="isThemeModalOpen = false" 
+          class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer transition-colors"
+        >
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
 
+      <!-- Body Modal -->
+      <div class="space-y-4">
+        
+        <!-- 1. Mode Tampilan (Light / Dark / System) -->
         <div class="space-y-2">
-          <!-- Opsi Terang -->
-          <button 
-            @click="setTheme('light')" 
-            class="w-full flex items-center justify-between p-3 rounded-2xl text-xs font-semibold transition-all cursor-pointer"
-            :class="themePreference === 'light' ? 'bg-[#25eba11a] text-[#1caa80] border border-[#1caa80]/30' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
-          >
-            <span class="flex items-center gap-3">
-              <i class="fa-solid fa-sun text-amber-500 text-sm w-4"></i>
-              Mode Terang (Light)
-            </span>
-            <i v-if="themePreference === 'light'" class="fa-solid fa-circle-check text-sm"></i>
-          </button>
+          <h4 class="font-bold text-[11px] text-slate-400 dark:text-slate-400 uppercase tracking-wider">Mode Tampilan</h4>
+          <div class="grid grid-cols-3 gap-2">
+            <button 
+              @click="store.setTheme('light')"
+              class="p-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-2 transition-all cursor-pointer"
+              :class="store.themePreference === 'light' ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
+            >
+              <i class="fa-solid fa-sun text-amber-500"></i> Terang
+            </button>
 
-          <!-- Opsi Gelap -->
-          <button 
-            @click="setTheme('dark')" 
-            class="w-full flex items-center justify-between p-3 rounded-2xl text-xs font-semibold transition-all cursor-pointer"
-            :class="themePreference === 'dark' ? 'bg-[#25eba11a] text-[#1caa80] border border-[#1caa80]/30' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
-          >
-            <span class="flex items-center gap-3">
-              <i class="fa-solid fa-moon text-indigo-400 text-sm w-4"></i>
-              Mode Gelap (Dark)
-            </span>
-            <i v-if="themePreference === 'dark'" class="fa-solid fa-circle-check text-sm"></i>
-          </button>
+            <button 
+              @click="store.setTheme('dark')"
+              class="p-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-2 transition-all cursor-pointer"
+              :class="store.themePreference === 'dark' ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
+            >
+              <i class="fa-solid fa-moon text-indigo-400"></i> Gelap
+            </button>
 
-          <!-- Opsi Otomatis Sistem -->
-          <button 
-            @click="setTheme('system')" 
-            class="w-full flex items-center justify-between p-3 rounded-2xl text-xs font-semibold transition-all cursor-pointer"
-            :class="themePreference === 'system' ? 'bg-[#25eba11a] text-[#1caa80] border border-[#1caa80]/30' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
-          >
-            <span class="flex items-center gap-3">
-              <i class="fa-solid fa-desktop text-blue-400 text-sm w-4"></i>
-              Otomatis Sistem (OS)
-            </span>
-            <i v-if="themePreference === 'system'" class="fa-solid fa-circle-check text-sm"></i>
-          </button>
+            <button 
+              @click="store.setTheme('system')"
+              class="p-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-2 transition-all cursor-pointer"
+              :class="store.themePreference === 'system' ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
+            >
+              <i class="fa-solid fa-desktop text-blue-400"></i> OS
+            </button>
+          </div>
         </div>
+
+        <!-- 2. Warna Aksen (Presets + Color Wheel) -->
+        <div class="space-y-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+          <h4 class="font-bold text-[11px] text-slate-400 dark:text-slate-400 uppercase tracking-wider">Warna Aksen</h4>
+          
+          <!-- Preset Grid -->
+          <div class="grid grid-cols-3 gap-2">
+            <button 
+              v-for="color in store.colorPresets" 
+              :key="color.id"
+              @click="store.setThemeColor(color.hex, color.lightHex)"
+              class="flex items-center gap-2 p-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer"
+              :class="store.activeThemeColor === color.hex ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm ring-1 ring-theme' : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 opacity-80 hover:opacity-100'"
+            >
+              <span class="w-3.5 h-3.5 rounded-full shrink-0 shadow-sm" :style="{ backgroundColor: color.hex }"></span>
+              <span class="truncate text-[11px]">{{ color.name }}</span>
+            </button>
+          </div>
+
+          <!-- Color Wheel Custom -->
+          <div class="flex items-center justify-between pt-2">
+            <span class="text-xs font-medium text-slate-500 dark:text-slate-400">Warna Bebas (Wheel):</span>
+            <input 
+              type="color" 
+              :value="store.activeThemeColor"
+              @input="e => store.setThemeColor(e.target.value)"
+              class="w-7 h-7 rounded-lg cursor-pointer border-0 bg-transparent p-0"
+            />
+          </div>
+        </div>
+
       </div>
+
     </div>
-  </Teleport>
+  </div>
+</Teleport>
+ 
 </template>
 
 <script setup>
