@@ -6,48 +6,61 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-stretch">
       
       <!-- Card Kinerja Finansial -->
-      <div class="lg:col-span-7 glass-card rounded-2xl md:rounded-1xl p-4 md:p-6 flex flex-col justify-between relative overflow-hidden">
-        <div class="flex justify-between items-center mb-3 md:mb-4">
-          <span class="text-[10px] md:text-[11px] font-bold uppercase text-[#1caa80] dark:text-[#1caa80] bg-[#25eba11a] px-2.5 py-1 rounded-full border border-[#1caa80]/20">
-            Kinerja Finansial
-          </span>
-          <span class="text-[11px] md:text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-            {{ persenCapaian }}% Target
-          </span>
-        </div>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 md:gap-4 my-1 md:my-2">
-          <div class="p-3 md:p-4 rounded-xl md:rounded-1xl bg-amber-500/10 border border-amber-500/20">
-            <p class="text-[11px] md:text-xs text-amber-700 dark:text-amber-300 font-medium">Target 1 Tahun</p>
-            <h3 class="text-sm md:text-base font-bold text-amber-800 dark:text-amber-200 mt-0.5">
-              {{ formatRp(targetTahun) }}
-            </h3>
-          </div>
-          <div class="p-3 md:p-4 rounded-xl md:rounded-1xl bg-emerald-500/10 border border-emerald-500/20">
-            <p class="text-[11px] md:text-xs text-emerald-700 dark:text-emerald-300 font-medium">Revenue Terfilter</p>
-            <h3 class="text-sm md:text-base font-bold text-emerald-800 dark:text-emerald-200 mt-0.5">
-              {{ formatRp(totRevFiltered) }}
-            </h3>
-          </div>
-          <div class="p-3 md:p-4 rounded-xl md:rounded-1xl bg-rose-500/10 border border-rose-500/20">
-            <p class="text-[11px] md:text-xs text-rose-700 dark:text-rose-300 font-medium">Sisa Target</p>
-            <h3 class="text-sm md:text-base font-bold text-rose-800 dark:text-rose-200 mt-0.5">
-              {{ formatRp(gap > 0 ? gap : 0) }}
-            </h3>
-          </div>
-        </div>
+     <div class="lg:col-span-7 glass-card rounded-2xl p-4 md:p-5 flex flex-col justify-start relative overflow-hidden">
+  
+  <!-- Baris Atas: Nominal Utama -->
+  <div class="flex items-end justify-between gap-3">
+    <div class="min-w-0">
+      <span class="text-[9px] md:text-[10px] font-bold uppercase text-theme tracking-wider block mb-0.5">
+        Revenue Terfilter
+      </span>
+      <h2 class="text-xl md:text-2xl font-black text-slate-800 dark:text-slate-100 leading-none truncate">
+        <!-- Tampilan Mobile (Ringkas: Rp 14,4 M) -->
+        <span class="sm:hidden">{{ formatRpDynamic(totRevFiltered, true) }}</span>
+        <!-- Tampilan Desktop (Lengkap: Rp 14.424.470.067) -->
+        <span class="hidden sm:inline">{{ formatRpDynamic(totRevFiltered, false) }}</span>
+      </h2>
+    </div>
+    
+    <!-- Badge Target -->
+    <div class="flex flex-col items-end shrink-0">
+      <span class="inline-block text-[10px] md:text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20 leading-tight">
+        {{ persenCapaian }}% Target
+      </span>
+      <p class="text-[9px] md:text-[10px] text-slate-400 mt-1 leading-none">
+        Target: 
+        <span class="sm:hidden">{{ formatRpDynamic(targetTahun, true) }}</span>
+        <span class="hidden sm:inline">{{ formatRpDynamic(targetTahun, false) }}</span>
+      </p>
+    </div>
+  </div>
 
-        <div class="grid grid-cols-2 gap-2 md:gap-4 mt-2 pt-3 border-t border-slate-200/50 dark:border-slate-800/80 text-[11px] md:text-xs">
-          <div>
-            <span class="text-slate-400">Selisih vs Thn Lalu:</span>
-            <span class="font-bold text-theme dark:text-theme ml-1">{{ formatRp(selisihThnLalu) }}</span>
-          </div>
-          <div>
-            <span class="text-slate-400">Total Biaya Promo:</span>
-            <span class="font-bold text-rose-500 dark:text-rose-400 ml-1">{{ formatRp(totPromo) }}</span>
-          </div>
-        </div>
-      </div>
+  <!-- Baris Bawah: Sub-Metrik Ringkas -->
+  <div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-slate-200/50 dark:border-slate-800/80 text-[10px] md:text-xs">
+    <div>
+      <p class="text-slate-400 text-[9px] md:text-[10px] mb-0.5">Sisa Target</p>
+      <p class="font-bold text-rose-500 dark:text-rose-400 truncate">
+        <span class="sm:hidden">{{ formatRpDynamic(gap > 0 ? gap : 0, true) }}</span>
+        <span class="hidden sm:inline">{{ formatRpDynamic(gap > 0 ? gap : 0, false) }}</span>
+      </p>
+    </div>
+    <div>
+      <p class="text-slate-400 text-[9px] md:text-[10px] mb-0.5">vs Thn Lalu</p>
+      <p class="font-bold text-theme truncate">
+        <span class="sm:hidden">{{ formatRpDynamic(selisihThnLalu, true) }}</span>
+        <span class="hidden sm:inline">{{ formatRpDynamic(selisihThnLalu, false) }}</span>
+      </p>
+    </div>
+    <div>
+      <p class="text-slate-400 text-[9px] md:text-[10px] mb-0.5">Biaya Promo</p>
+      <p class="font-bold text-slate-700 dark:text-slate-300 truncate">
+        <span class="sm:hidden">{{ formatRpDynamic(totPromo, true) }}</span>
+        <span class="hidden sm:inline">{{ formatRpDynamic(totPromo, false) }}</span>
+      </p>
+    </div>
+  </div>
+
+</div>
 
       <!-- Card Funnel Marketing -->
       <div class="lg:col-span-5 glass-card rounded-2xl md:rounded-1xl p-4 md:p-6 flex flex-col justify-between">
@@ -61,19 +74,19 @@
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center my-auto py-2">
-          <div class="p-2.5 bg-white/40 dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60">
+          <div class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60">
             <p class="text-[9px] text-slate-400 uppercase font-semibold tracking-wider">Campaign</p>
             <h4 class="text-sm md:text-base font-bold text-theme dark:text-theme mt-1">{{ totCamp.toLocaleString('id-ID') }}</h4>
           </div>
-          <div class="p-2.5 bg-white/40 dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60">
+          <div class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60">
             <p class="text-[9px] text-slate-400 uppercase font-semibold tracking-wider">Leads</p>
             <h4 class="text-sm md:text-base font-bold text-sky-500 mt-1">{{ totLeads.toLocaleString('id-ID') }}</h4>
           </div>
-          <div class="p-2.5 bg-white/40 dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60">
+          <div class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60">
             <p class="text-[9px] text-slate-400 uppercase font-semibold tracking-wider">Follow Up</p>
             <h4 class="text-sm md:text-base font-bold text-amber-500 mt-1">{{ totFu.toLocaleString('id-ID') }}</h4>
           </div>
-          <div class="p-2.5 bg-white/40 dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60">
+          <div class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60">
             <p class="text-[9px] text-slate-400 uppercase font-semibold tracking-wider">Pesanan</p>
             <h4 class="text-sm md:text-base font-bold text-theme dark:text-theme mt-1">{{ totOrder.toLocaleString('id-ID') }}</h4>
           </div>
@@ -82,19 +95,64 @@
     </div>
 
     <!-- Cards Performa Unit Usaha -->
-    <div>
-      <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-2 text-xs uppercase tracking-wider">Rekap Performa Unit Usaha</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-        <div v-for="u in ['NHP', 'NHC', 'KG']" :key="u" class="glass-card p-4 rounded-2xl">
-          <div class="flex justify-between items-center mb-1">
-            <h4 class="font-bold text-slate-700 dark:text-slate-200 text-xs">Unit {{ u }}</h4>
-            <span class="text-[10px] font-semibold text-theme">{{ getUnitCapaian(u) }}%</span>
-          </div>
-          <p class="text-xs text-slate-400">Revenue: <span class="font-bold text-theme">{{ formatRp(getUnitRev(u)) }}</span></p>
-          <p class="text-xs text-slate-400">Target: <span class="font-bold text-slate-600 dark:text-slate-300">{{ formatRp(getUnitTarget(u)) }}</span></p>
+  <div>
+  <!-- Header Section -->
+  <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-2.5 text-xs uppercase tracking-wider flex items-center gap-1.5">
+    <i class="fa-solid fa-building-user text-theme"></i>
+    Rekap Performa Unit Usaha
+  </h3>
+
+  <!-- Grid Responsive: 2 Kolom di Mobile (NHP Span 2), 3 Kolom di Desktop -->
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3.5 md:gap-4">
+    <div 
+      v-for="(u, index) in ['NHP', 'NHC', 'KG']" 
+      :key="u" 
+      @click="store.navigate(`unit-${u}`)"
+      class="glass-card p-3 sm:p-3.5 rounded-2xl dark:border-slate-800 hover:border-theme/40 transition-all cursor-pointer group flex flex-col justify-between"
+      :class="{ 'col-span-2 sm:col-span-1': index === 0 }"
+    >
+      <div>
+        <!-- BARIS 1: Nama Unit & Badge Persentase -->
+        <div class="flex items-center justify-between mb-2">
+          <h4 class="font-bold text-slate-800 dark:text-slate-100 text-xs sm:text-xs group-hover:text-theme transition-colors">
+            Unit {{ u }}
+          </h4>
+          <span class="text-[9px] sm:text-[10px] font-extrabold text-theme bg-theme-gradient/10 px-2 py-0.5 rounded-full border border-white/20 leading-none">
+            {{ getUnitCapaian(u) }}%
+          </span>
+        </div>
+
+        <!-- BARIS 2 & 3: Label Rev & Nilai Rev Menonjol (Hero Value) -->
+        <div class="mb-2">
+          <span class="text-[9px] sm:text-[10px] text-slate-400 font-medium block leading-none mb-0.5">
+            Rev:
+          </span>
+          <h5 class="text-sm sm:text-base font-black text-theme truncate leading-tight">
+            <span class="sm:hidden">{{ formatRpDynamic(getUnitRev(u), true) }}</span>
+            <span class="hidden sm:inline">{{ formatRpDynamic(getUnitRev(u), false) }}</span>
+          </h5>
+        </div>
+
+        <!-- BARIS 4: Label Tgt & Nilai Target Ringkas -->
+        <div class="flex items-center gap-1 text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400">
+          <span class="text-slate-400 shrink-0">Tgt:</span>
+          <span class="font-bold text-slate-700 dark:text-slate-300 truncate">
+            <span class="sm:hidden">{{ formatRpDynamic(getUnitTarget(u), true) }}</span>
+            <span class="hidden sm:inline">{{ formatRpDynamic(getUnitTarget(u), false) }}</span>
+          </span>
         </div>
       </div>
+
+      <!-- Progress Bar -->
+      <div class="w-full bg-slate-100 dark:bg-slate-800 h-1 sm:h-1.5 rounded-full mt-2.5 overflow-hidden">
+        <div 
+          class="bg-theme-gradient h-full rounded-full transition-all duration-500" 
+          :style="{ width: `${Math.min(getUnitCapaian(u), 100)}%` }"
+        ></div>
+      </div>
     </div>
+  </div>
+</div>
 
     <!-- BARIS 1 CHARTS: Horizontal Unit, Vertikal Rev vs Promo, Pie Platform -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
@@ -113,11 +171,13 @@
 
       <!-- 3. Pie/Doughnut Chart: Penjualan per Platform -->
       <div class="lg:col-span-4 glass-card p-4 rounded-2xl flex flex-col justify-between">
-        <h3 class="font-bold text-xs mb-3 text-slate-800 dark:text-slate-100">Penjualan per Platform</h3>
-        <div class="chart-container relative h-64 flex items-center justify-center">
-          <canvas ref="chartPlatPieRef"></canvas>
-        </div>
-      </div>
+  <h3 class="font-bold text-xs mb-1 text-slate-800 dark:text-slate-100">Penjualan per Platform</h3>
+  
+  <!-- Ketinggian disesuaikan ke h-36/h-40 agar pas dengan setengah donat -->
+  <div class="chart-container relative h-36 md:h-40 flex items-center justify-center overflow-hidden">
+    <canvas ref="chartPlatPieRef"></canvas>
+  </div>
+</div>
 
     </div>
 
@@ -266,26 +326,40 @@ function renderCharts() {
 
   // 3. Pie/Doughnut Chart: Rekap Penjualan per Platform
   const pMap = {};
-  filteredRev.value.forEach(r => { pMap[r.Platform || 'Lainnya'] = (pMap[r.Platform || 'Lainnya'] || 0) + Number(r.Revenue || 0); });
-  if (chartPlatPieRef.value) {
-    cPlatPieInstance = new Chart(chartPlatPieRef.value, {
-      type: 'doughnut',
-      data: {
-        labels: Object.keys(pMap),
-        datasets: [{
-          data: Object.values(pMap),
-          backgroundColor: CHART_COLORS,
-          borderWidth: 0
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: { legend: { position: 'bottom' } },
-        cutout: '65%'
+filteredRev.value.forEach(r => { 
+  pMap[r.Platform || 'Lainnya'] = (pMap[r.Platform || 'Lainnya'] || 0) + Number(r.Revenue || 0); 
+});
+
+if (chartPlatPieRef.value) {
+  cPlatPieInstance = new Chart(chartPlatPieRef.value, {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(pMap),
+      datasets: [{
+        data: Object.values(pMap),
+        backgroundColor: CHART_COLORS,
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      rotation: -90,        // Mulai menggambar dari sudut kiri (-90°)
+      circumference: 180,   // Hanya menggambar setengah lingkaran (180°)
+      cutout: '65%',
+      plugins: { 
+        legend: { 
+          position: 'bottom',
+          labels: {
+            boxWidth: 10,
+            padding: 6,
+            font: { size: 10 }
+          }
+        } 
       }
-    });
-  }
+    }
+  });
+}
 
   // 4. Bar Chart: Rekap Penjualan Tiap Divisi (URUT ABJAD + WARNA VARIAN + ROUNDED)
   const divMap = {};
@@ -378,4 +452,26 @@ function renderCharts() {
 
 onMounted(() => renderCharts());
 watch([filteredRev, filteredPromo, store.filterDates], () => renderCharts(), { deep: true });
+
+// Helper Format Rupiah Dinamis (Lengkap di Desktop, Ringkas di Mobile)
+const formatRpDynamic = (val, isCompact = false) => {
+  if (!val || isNaN(val)) return 'Rp 0';
+  const num = Number(val);
+
+  // Jika opsi compact aktif (biasanya di mobile)
+  if (isCompact) {
+    if (Math.abs(num) >= 1_000_000_000) {
+      // Format Miliar: 14.424.470.067 -> Rp 14,4 M
+      return `Rp ${(num / 1_000_000_000).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} M`;
+    }
+    if (Math.abs(num) >= 1_000_000) {
+      // Format Juta: 4.735.529.933 -> Rp 4.735,5 jt
+      return `Rp ${(num / 1_000_000).toLocaleString('id-ID', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} jt`;
+    }
+  }
+
+  // Format Standar Lengkap
+  return `Rp ${new Intl.NumberFormat('id-ID').format(num)}`;
+};
+
 </script>

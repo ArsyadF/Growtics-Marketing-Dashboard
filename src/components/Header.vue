@@ -217,7 +217,7 @@
               :key="color.id"
               @click="store.setThemeColor(color.hex, color.lightHex)"
               class="flex items-center gap-2 p-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer"
-              :class="store.activeThemeColor === color.hex ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm ring-1 ring-theme' : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 opacity-80 hover:opacity-100'"
+              :class="store.activeThemeColor === color.hex ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 opacity-80 hover:opacity-100'"
             >
               <span class="w-3.5 h-3.5 rounded-full shrink-0 shadow-sm" :style="{ backgroundColor: color.hex }"></span>
               <span class="truncate text-[11px]">{{ color.name }}</span>

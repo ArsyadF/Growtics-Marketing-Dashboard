@@ -32,7 +32,7 @@
       </div>
       <div class="glass-card p-3 rounded-xl text-center">
         <p class="text-xs text-slate-400">Jumlah Pesanan</p>
-        <h3 class="text-lg font-bold text-theme mt-0.5">{{ sumOrder.toLocaleString('id-ID') }}</h3>
+        <h3 class="text-lg font-bold text-emerald-500 mt-0.5">{{ sumOrder.toLocaleString('id-ID') }}</h3>
       </div>
       <div class="glass-card p-3 rounded-xl text-center col-span-2 sm:col-span-1">
         <p class="text-xs text-slate-400">% Konversi</p>
@@ -143,7 +143,7 @@
                 :style="{ left: `${pt.xPct}%`, top: `${pt.yPct}%` }"
               >
                 <!-- Dot Outer Rings & Core -->
-                <div class="w-4 h-4 rounded-full bg-white border-2 border-theme shadow-md transition-transform duration-200 group-hover:scale-125 group-hover:bg-blue-500"></div>
+                <div class="w-4 h-4 rounded-full bg-white border-2 border-[#1caa80] shadow-md transition-transform duration-200 group-hover:scale-125 group-hover:bg-blue-500"></div>
                 
                 <!-- Tooltip Popup Nominal -->
                 <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-[9px] font-bold py-1 px-2 rounded-md shadow-lg whitespace-nowrap pointer-events-none">
@@ -210,7 +210,7 @@
               <td class="py-2 px-3">{{ l.Campaign || 0 }}</td>
               <td class="py-2 px-3 text-theme font-semibold">{{ l.DatabaseLeads || 0 }}</td>
               <td class="py-2 px-3 text-amber-500 font-semibold">{{ l.FollowUp || 0 }}</td>
-              <td class="py-2 px-3 text-theme font-semibold">{{ l.Pesanan || 0 }}</td>
+              <td class="py-2 px-3 text-emerald-500 font-semibold">{{ l.Pesanan || 0 }}</td>
               <td  v-if="store.canEditPage('leads')"  
               class="py-2 px-3 text-center" style="display:inline-flex">
                 <button @click="store.openModal('leads', l)" class="text-theme hover:text-theme p-1 mr-2 cursor-pointer" title="Edit Leads">
