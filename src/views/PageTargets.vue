@@ -9,7 +9,7 @@
         <button 
          v-if="store.canEditPage('target')"  
         @click="store.openModal('target')" 
-        class="bg-gradient-to-r from-blue-600 to-sky-500 text-white px-4 py-2.5 rounded-xl font-medium text-xs shadow-md hover:from-[#149b73] hover:to-[#149b73] w-full sm:w-auto cursor-pointer"
+        class="bg-theme-gradient text-white px-4 py-2.5 rounded-xl font-medium text-xs shadow-md hover:from-[#149b73] hover:to-[#149b73] w-full sm:w-auto cursor-pointer"
       >
         <i class="fa-solid fa-plus mr-1.5"></i>Edit Target Master
       </button>
@@ -36,7 +36,7 @@
             <tr v-else v-for="t in listTargets" :key="t.name" class="hover:bg-white/20 dark:hover:bg-slate-800/40">
               <td class="py-3.5 px-4 font-bold text-slate-800 dark:text-slate-100">{{ t.name }}</td>
               <td class="py-3.5 px-4 font-semibold">{{ formatRp(t.target) }}</td>
-              <td class="py-3.5 px-4 text-emerald-500 font-bold">{{ formatRp(t.real) }}</td>
+              <td class="py-3.5 px-4 text-theme font-bold">{{ formatRp(t.real) }}</td>
               <td class="py-3.5 px-4 text-rose-500 font-semibold">
                 {{ formatRp(t.target - t.real > 0 ? t.target - t.real : 0) }}
               </td>
@@ -149,7 +149,7 @@ const listTargets = computed(() => {
 // Styling Badge
 const getCapaianBadgeClass = (capaianVal) => {
   const val = Number(capaianVal);
-  if (val >= 100) return 'bg-emerald-500/10 text-emerald-500';
+  if (val >= 100) return 'bg-emerald-500/10 text-theme';
   if (val >= 50) return 'bg-[#25eba11a] text-blue-500';
   if (val > 0) return 'bg-amber-500/10 text-amber-500';
   return 'bg-slate-500/10 text-slate-400';

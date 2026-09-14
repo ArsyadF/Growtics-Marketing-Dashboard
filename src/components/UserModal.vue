@@ -80,7 +80,7 @@
                       type="checkbox" 
                       v-model="form.permissions[page.id].canEdit" 
                       :disabled="!form.permissions[page.id].access"
-                      class="w-4 h-4 rounded text-emerald-600 focus:ring-0 cursor-pointer disabled:opacity-30"
+                      class="w-4 h-4 rounded text-theme focus:ring-0 cursor-pointer disabled:opacity-30"
                     >
                   </td>
                 </tr>
@@ -99,7 +99,7 @@
           <button type="button" @click="$emit('close')" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
             Batal
           </button>
-          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-[#149B73] to-[#2EE59D] text-white shadow-md hover:from-[#149b73] hover:to-[#149b73] cursor-pointer">
+          <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold bg-theme-gradient text-white shadow-md hover:from-[#149b73] hover:to-[#149b73] cursor-pointer">
             {{ isEdit ? 'Simpan Perubahan' : 'Tambah User' }}
           </button>
         </div>

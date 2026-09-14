@@ -41,6 +41,77 @@ export const store = reactive({
     onConfirm: null
   },
 
+  // --- STATE TEMA ---
+  themePreference: localStorage.getItem('THEME_PREFERENCE') || 'system',
+  isDarkMode: false,
+  activeThemeColor: localStorage.getItem('APP_THEME_COLOR') || '#149B73',
+
+  // Preset Warna Aksen
+  colorPresets: [
+    { id: 'green', name: 'Hijau', hex: '#149B73', lightHex: '#2EE59D' },
+    { id: 'orange', name: 'Kuning Oranye', hex: '#F59E0B', lightHex: '#FBBF24' },
+    { id: 'blue', name: 'Biru', hex: '#3195ff', lightHex: '#59b4ff' },
+    { id: 'rose', name: 'Pink', hex: '#ef476b', lightHex: '#ff889a' },
+    { id: 'tosca', name: 'Tosca', hex: '#0D9488', lightHex: '#2DD4BF' },
+    { id: 'red', name: 'Merah', hex: '#DC2626', lightHex: '#F87171' }
+  ],
+
+  // --- METHODS TEMA (LIGHT/DARK/SYSTEM) ---
+  initTheme() {
+    const savedTheme = localStorage.getItem('THEME_PREFERENCE') || 'system';
+    this.setTheme(savedTheme);
+
+    // Dynamic listener perubahan tema OS
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (this.themePreference === 'system') {
+        this.applyTheme(e.matches);
+      }
+    });
+  },
+
+  setTheme(pref) {
+    this.themePreference = pref;
+    localStorage.setItem('THEME_PREFERENCE', pref);
+
+    if (pref === 'system') {
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.applyTheme(systemDark);
+    } else {
+      this.applyTheme(pref === 'dark');
+    }
+  },
+
+  applyTheme(isDark) {
+    this.isDarkMode = isDark;
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  },
+
+  // --- METHODS AKSEN WARNA ---
+  setThemeColor(hexColor, lightHexColor = null) {
+    this.activeThemeColor = hexColor;
+    localStorage.setItem('APP_THEME_COLOR', hexColor);
+
+    const lightColor = lightHexColor || hexColor;
+    document.documentElement.style.setProperty('--primary-color', hexColor);
+    document.documentElement.style.setProperty('--primary-light', lightColor);
+    document.documentElement.style.setProperty('--primary-text', hexColor);
+  },
+
+  initThemeColor() {
+    const savedColor = localStorage.getItem('APP_THEME_COLOR') || '#149B73';
+    const preset = this.colorPresets.find((p) => p.hex === savedColor);
+    if (preset) {
+      this.setThemeColor(preset.hex, preset.lightHex);
+    } else {
+      this.setThemeColor(savedColor); // Dukungan Color Wheel
+    }
+  },
+
+
   // --- METHODS ---
 
   // 1. Alert Custom Modal Handler
@@ -243,5 +314,5 @@ navigate(page) {
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }
+  },
 });

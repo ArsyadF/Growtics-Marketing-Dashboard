@@ -10,6 +10,25 @@
 /* ==========================================================================
    2. GLOBAL BASE STYLES
    ========================================================================== */
+:root {
+  /* Default Warna Utama (Hijau) */
+  --primary-color: #149B73;
+  --primary-light: #2EE59D;
+  --primary-text: #1caa80;
+}
+
+/* Utilitas Tailwind Kustom menggunakan CSS Variable */
+.bg-theme-gradient {
+  background-image: linear-gradient(to top right, var(--primary-color), var(--primary-light));
+}
+
+.text-theme {
+  color: var(--primary-text);
+}
+.border-theme {
+  border-color: var(--primary-text);
+}
+
 body { 
   font-family: 'Poppins', sans-serif; 
   transition: background-color 0.4s, color 0.4s; 
@@ -20,16 +39,23 @@ body {
 }
 
 /* Background Gradient Layout */
-.bg-gradient-light {
+/* .bg-gradient-light {
   background: linear-gradient(135deg, #effffc 0%, #ebf8ed73 50%, #e0fef057 100%);
-}
+} */
 
-.dark .bg-gradient-dark {
-  background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e293b 100%) !important;
-}
+/* .bg-gradient-light {
+background: linear-gradient(135deg, #f3f3f3 0%, #e8e8e873 50%, #a1a1a157 100%)
+} */
 
 /* .dark .bg-gradient-dark {
-  background: #080c0b} */
+  background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e293b 100%) !important;
+} */
+
+.bg-gradient-light {
+  background: #f0f0f0}
+
+.dark .bg-gradient-dark {
+  background: #0d1117}
 
 /* ==========================================================================
    3. GLASSMORPHISM STYLES
@@ -39,14 +65,14 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 8px 32px 0 rgba(30, 58, 138, 0.08);
+  /* box-shadow: 0 8px 32px 0 rgba(30, 58, 138, 0.08); */
 }
 
 .dark .glass-card {
   background: rgba(20, 20, 20, 0.204);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(17, 210, 140, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.085);
   /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); */
 }
 
@@ -61,13 +87,13 @@ body {
 .glass-input {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(8px);
-  border: 1px solid #6bd8a0a2;
+  border: 1px solid #dbdbdba2;
 }
 
 .dark .glass-input {
   background: rgba(20, 20, 20, 0.204);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(17, 210, 140, 0.15);
+  border: 1px solid rgba(244, 255, 251, 0.15);
   /* border: 1px solid rgba(30, 58, 138, 0.6); */
   color: #f1f5f9;
 }
@@ -228,3 +254,4 @@ body {
   -ms-overflow-style: none;  /* IE dan Edge */
   scrollbar-width: none;  /* Firefox */
 }
+

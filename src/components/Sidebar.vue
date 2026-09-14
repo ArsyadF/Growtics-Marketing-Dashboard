@@ -11,7 +11,7 @@
 
   <!-- Sidebar Main -->
   <aside 
-    class="fixed top-0 left-0 shrink-0 h-screen glass-card floating-sidebar shadow-2xl flex flex-col z-50 transform transition-all duration-300 overflow-hidden pt-6 pb-8 md:pt-4 md:pb-4"
+    class="fixed top-0 left-0 shrink-0 h-screen glass-card floating-sidebar flex flex-col z-50 transform transition-all duration-300 overflow-hidden pt-6 pb-8 md:pt-4 md:pb-4"
     :class="[
       isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
       isCollapsed ? 'w-18' : 'w-60'
@@ -29,7 +29,7 @@
           :class="isCollapsed ? 'justify-center' : 'justify-start'"
           :title="isCollapsed ? 'Buka Sidebar' : 'Kecilkan Sidebar'"
         >
-          <span class="p-2.5 bg-gradient-to-tr from-[#149B73] to-[#2EE59D] text-white rounded-xl shadow-md text-base shrink-0 flex items-center justify-center">
+          <span class="p-2.5 bg-theme-gradient text-white rounded-xl  text-base shrink-0 flex items-center justify-center">
             <i class="fa-solid fa-chart-pie"></i>
           </span>
           <h1 
@@ -44,7 +44,7 @@
         <button 
           v-if="!isCollapsed" 
           @click="toggleCollapse" 
-          class="md:hidden text-slate-400 hover:text-[#1caa80] p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center justify-center"
+          class="md:hidden text-slate-400 hover:text-theme p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer flex items-center justify-center"
           title="Kecilkan Sidebar"
         >
           <i class="fa-solid fa-angles-left text-sm"></i>
@@ -71,7 +71,7 @@
               class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
               :class="[
                 activePage === 'main' 
-                  ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
+                  ? 'bg-[#fdfdfd08] text-theme font-bold dark:text-theme border-l-4 border-[#ffc600]' 
                   : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                 isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
               ]"
@@ -85,7 +85,7 @@
           <!-- 2. Unit Usaha -->
           <template v-if="isLoggedIn">
             <li 
-              class="py-2 text-[10px] font-bold text-[#1caa80] dark:text-[#1caa80] uppercase tracking-widest mt-4 sidebar-category"
+              class="py-2 text-[10px] font-bold text-theme dark:text-theme uppercase tracking-widest mt-4 sidebar-category"
               :class="isCollapsed ? 'text-center px-0' : 'px-4'"
             >
               <span v-if="!isCollapsed">Unit Usaha</span>
@@ -99,7 +99,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'unit-NHP' 
-                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
+                    ? 'bg-[#fdfdfd08] text-theme font-bold dark:text-theme border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -117,7 +117,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'unit-NHC' 
-                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
+                    ? 'bg-[#fdfdfd08] text-theme font-bold dark:text-theme border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -135,7 +135,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'unit-KG' 
-                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
+                    ? 'bg-[#fdfdfd08] text-theme font-bold dark:text-theme border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -148,7 +148,7 @@
 
             <!-- 3. Lainnya -->
             <li 
-              class="py-2 text-[10px] font-bold text-[#1caa80] dark:text-[#1caa80] uppercase tracking-widest mt-4 sidebar-category"
+              class="py-2 text-[10px] font-bold text-theme dark:text-theme uppercase tracking-widest mt-4 sidebar-category"
               :class="isCollapsed ? 'text-center px-0' : 'px-4'"
             >
               <span v-if="!isCollapsed">Lainnya</span>
@@ -162,7 +162,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'leads' 
-                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
+                    ? 'bg-[#fdfdfd08] text-theme font-bold dark:text-theme border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -180,7 +180,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'promo' 
-                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
+                    ? 'bg-[#fdfdfd08] text-theme font-bold dark:text-theme border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -191,6 +191,14 @@
               </a>
             </li>
 
+               <li 
+                class="py-2 text-[10px] font-bold text-theme dark:text-theme uppercase tracking-widest mt-4 sidebar-category"
+                :class="isCollapsed ? 'text-center px-0' : 'px-4'"
+              >
+                <span v-if="!isCollapsed">Pengaturan Master</span>
+                <span v-else class="text-[8px]">ADMIN</span>
+              </li>
+              
             <li v-if="store.canAccessPage('targets')">
               <a 
                 href="#" 
@@ -198,7 +206,7 @@
                 class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                 :class="[
                   activePage === 'targets' 
-                    ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
+                    ? 'bg-[#fdfdfd08] text-theme font-bold dark:text-theme border-l-4 border-[#ffc600]' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                 ]"
@@ -211,13 +219,7 @@
 
             <!-- 4. Pengaturan Master -->
             <template v-if="isSuperadmin">
-              <li 
-                class="py-2 text-[10px] font-bold text-[#1caa80] dark:text-[#1caa80] uppercase tracking-widest mt-4 sidebar-category"
-                :class="isCollapsed ? 'text-center px-0' : 'px-4'"
-              >
-                <span v-if="!isCollapsed">Pengaturan Master</span>
-                <span v-else class="text-[8px]">ADMIN</span>
-              </li>
+           
               
               <li>
                 <a 
@@ -226,7 +228,7 @@
                   class="nav-item flex items-center px-3 py-3 text-sm rounded-xl transition-all"
                   :class="[
                     activePage === 'users' 
-                      ? 'bg-[#25eba11a] text-[#1caa80] font-bold dark:text-[#1caa80] border-l-4 border-[#ffc600]' 
+                      ? 'bg-[#fdfdfd08] text-theme font-bold dark:text-theme border-l-4 border-[#ffc600]' 
                       : 'text-slate-600 dark:text-slate-300 hover:bg-white/40 dark:hover:bg-slate-800/50',
                     isCollapsed ? 'justify-center px-0' : 'gap-3 px-4'
                   ]"
@@ -248,7 +250,7 @@
         <button 
           v-if="!isLoggedIn" 
           @click="$emit('open-login')" 
-          class="w-full bg-gradient-to-r from-[#149B73] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+          class="w-full bg-theme-gradient hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
           :class="isCollapsed ? 'px-0' : 'px-3'"
           :title="isCollapsed ? 'Masuk / Login' : ''"
         >
@@ -265,13 +267,13 @@
         >
           <img 
             :src="userData?.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.nama || 'User')}&background=0D8ABC&color=fff`" 
-            class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-[#1caa80] group-hover:scale-105 transition-transform"
+            class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-theme group-hover:scale-105 transition-transform"
           >
           <div v-if="!isCollapsed" class="user-info min-w-0 flex-1 overflow-hidden sidebar-text">
-            <p class="font-bold text-xs truncate leading-tight group-hover:text-[#1caa80] dark:group-hover:text-[#1caa80]">
+            <p class="font-bold text-xs truncate leading-tight group-hover:text-theme dark:group-hover:text-theme">
               {{ userData?.nama || 'Admin User' }}
             </p>
-            <p class="text-[9px] text-[#1caa80] font-semibold uppercase truncate mt-0.5">
+            <p class="text-[9px] text-theme font-semibold uppercase truncate mt-0.5">
               {{ userData?.role || 'User' }}
             </p>
           </div>
