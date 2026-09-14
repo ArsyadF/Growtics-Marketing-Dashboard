@@ -146,6 +146,43 @@ export const store = reactive({
     this.editPayload = null;
   },
 
+  // Array untuk menyimpan history notifikasi
+  notifications: JSON.parse(localStorage.getItem('APP_NOTIFICATIONS')) || [
+    { id: 1, title: 'Sistem Siap', message: 'Selamat datang di Dashboard Marketing', time: 'Baru saja', read: false }
+  ],
+
+  // --- METHOD NOTIFIKASI ---
+  addNotification(title, message, type = 'info') {
+    const newNotif = {
+      id: Date.now(),
+      title,
+      message,
+      type, // 'success', 'warning', 'info', 'danger'
+      time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
+      read: false
+    };
+
+    // Tambahkan ke paling atas list
+    this.notifications.unshift(newNotif);
+
+    // Batasi maksimal 20 notifikasi terakhir
+    if (this.notifications.length > 20) {
+      this.notifications.pop();
+    }
+
+    localStorage.setItem('APP_NOTIFICATIONS', JSON.stringify(this.notifications));
+  },
+
+  markAllNotifsAsRead() {
+    this.notifications.forEach(n => n.read = true);
+    localStorage.setItem('APP_NOTIFICATIONS', JSON.stringify(this.notifications));
+  },
+
+  clearNotifications() {
+    this.notifications = [];
+    localStorage.removeItem('APP_NOTIFICATIONS');
+  },
+
 // 4. Load Full Database dari Firestore (via api.js)
   async loadFullDatabase() {
     this.isLoading = true;
