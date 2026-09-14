@@ -1,7 +1,7 @@
 /* ==========================================================================
    1. IMPORTS & DIRECTIVES (Wajib Paling Atas)
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Albert Sans:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -30,7 +30,7 @@
 }
 
 body { 
-  font-family: 'Poppins', sans-serif; 
+  font-family: 'Albert Sans', sans-serif; 
   transition: background-color 0.4s, color 0.4s; 
 }
 
@@ -51,12 +51,21 @@ background: linear-gradient(135deg, #f3f3f3 0%, #e8e8e873 50%, #a1a1a157 100%)
   background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e293b 100%) !important;
 } */
 
-.bg-gradient-light {
-  background: #f0f0f0}
+/* .bg-gradient-light {
+  background: #f0f0f0} */
 
-.dark .bg-gradient-dark {
-  background: #0d1117}
+  .bg-gradient-light {
+  background: #f1f5f9}
+  
 
+/* .dark .bg-gradient-dark {
+  background: #0d1117} */
+
+  .dark .bg-gradient-dark {
+  background: #080717}
+
+  /* .dark .bg-gradient-dark {
+  background: rgba(25, 25, 25, 1)} */
 /* ==========================================================================
    3. GLASSMORPHISM STYLES
    ========================================================================== */
@@ -64,17 +73,25 @@ background: linear-gradient(135deg, #f3f3f3 0%, #e8e8e873 50%, #a1a1a157 100%)
   background: rgba(255, 255, 255, 0.80);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  /* border: 1px solid rgba(255, 255, 255, 0.8); */
   /* box-shadow: 0 8px 32px 0 rgba(30, 58, 138, 0.08); */
 }
 
 .dark .glass-card {
+  background: #171725;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  /* border: 1px solid rgba(255, 255, 255, 0.085); */
+  /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); */
+}
+/* 
+.dark .glass-card {
   background: rgba(20, 20, 20, 0.204);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.085);
-  /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); */
-}
+  border: 1px solid rgba(255, 255, 255, 0.085); */
+  /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+} */
 
 /* .dark .glass-card {
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 60%, rgba(10, 15, 26, 0.95) 100%);
