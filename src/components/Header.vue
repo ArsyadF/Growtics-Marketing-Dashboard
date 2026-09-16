@@ -1,6 +1,6 @@
 <!-- src/components/Header.vue -->
 <template>
-  <header class="transparent-header sticky top-0 z-10 pt-[max(1.5rem,env(safe-area-inset-top))] md:pt-4 px-4 md:px-6 pb-3 md:pb-4 flex items-center justify-between gap-3">
+  <header class="transparent-header sticky top-0 z-40 pt-[max(1.5rem,env(safe-area-inset-top))] md:pt-4 px-4 md:px-6 pb-3 md:pb-4 flex items-center justify-between gap-3">
     
     <!-- SISI KIRI: Hamburger Mobile (Khusus Mobile) -->
     <div class="flex items-center gap-2 md:gap-3 shrink-0 md:min-w-0">

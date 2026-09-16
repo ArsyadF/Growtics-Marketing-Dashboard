@@ -3,77 +3,71 @@
   <div>
     <!-- 1. Modal Input/Edit Revenue -->
     <div v-if="store.activeModal === 'revenue'" class="fixed inset-0 bg-slate-950/70 z-50 flex justify-center items-center p-4 backdrop-blur-md">
-      <div class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-lg p-6 space-y-4">
-        <div class="flex justify-between items-center">
-          <h3 class="font-bold text-slate-800 dark:text-slate-100">{{ isEditRevenue ? 'Edit' : 'Input' }} Revenue</h3>
-          <button @click="store.closeModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+  <div class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-lg p-6 space-y-4">
+    <div class="flex justify-between items-center">
+      <h3 class="font-bold text-slate-800 dark:text-slate-100">{{ isEditRevenue ? 'Edit' : 'Input' }} Revenue</h3>
+      <button @click="store.closeModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <form @submit.prevent="saveRevenue" class="space-y-3">
+      <div>
+        <label class="block text-xs mb-1 font-medium">Tanggal</label>
+        <input type="date" v-model="formRev.Tanggal" required class="w-full glass-input rounded-xl p-2.5 text-xs outline-none">
+      </div>
+
+      <!-- UNIT USAHA DINAMIS FROM STORE -->
+      <div>
+        <label class="block text-xs mb-1 font-medium">Unit Usaha</label>
+        <select v-model="formRev.Unit" required class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none">
+          <option value="" disabled>-- Pilih Unit --</option>
+          <option v-for="u in masterUnits" :key="u.code" :value="u.code">
+            {{ u.code }} - {{ u.name }}
+          </option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs mb-1 font-medium">Revenue (Rp)</label>
+        <input 
+          type="text" 
+          v-model="displayRevRevenue" 
+          @input="handleInputFormatted($event, formRev, 'Revenue', 'displayRevRevenue')" 
+          required 
+          placeholder="0" 
+          class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+        >
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <!-- DIVISI DINAMIS FROM STORE -->
+        <div>
+          <label class="block text-xs mb-1 font-medium">Divisi</label>
+          <select v-model="formRev.Divisi" required class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none">
+            <option value="" disabled>-- Pilih Divisi --</option>
+            <option v-for="div in availableDivisions" :key="div" :value="div">
+              {{ div }}
+            </option>
+          </select>
         </div>
 
-        <form @submit.prevent="saveRevenue" class="space-y-3">
-          <div>
-            <label class="block text-xs mb-1 font-medium">Tanggal</label>
-            <input type="date" v-model="formRev.Tanggal" required class="w-full glass-input rounded-xl p-2.5 text-xs outline-none">
-          </div>
-
-          <div>
-            <label class="block text-xs mb-1 font-medium">Unit Usaha</label>
-            <select v-model="formRev.Unit" class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none">
-              <option value="NHP">NHP</option>
-              <option value="NHC">NHC</option>
-              <option value="KG">KG</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-xs mb-1 font-medium">Revenue (Rp)</label>
-            <input 
-              type="text" 
-              v-model="displayRevRevenue" 
-              @input="handleInputFormatted($event, formRev, 'Revenue', 'displayRevRevenue')" 
-              required 
-              placeholder="0" 
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
-            >
-          </div>
-
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs mb-1 font-medium">Divisi</label>
-              <select v-model="formRev.Divisi" required class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none">
-                <option value="CS Deal">CS Deal</option>
-                <option value="Zona 1A">Zona 1A</option>
-                <option value="Zona 1B">Zona 1B</option>
-                <option value="Zona 2">Zona 2</option>
-                <option value="Zona 3">Zona 3</option>
-                <option value="Digital Marketing">Digital Marketing</option>
-                <option value="Offline">Offline</option>
-              </select>
-            </div>
-
-            <div>
-              <label class="block text-xs mb-1 font-medium">Platform</label>
-              <select v-model="formRev.Platform" required class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none">
-                <option value="Shopee">Shopee</option>
-                <option value="TikTok Shop">TikTok Shop</option>
-                <option value="WhatsApp">WhatsApp</option>
-                <option value="Website">Website</option>
-                <option value="Siplah">Siplah</option>
-                <option value="Toko Ladang">Toko Ladang</option>
-                <option value="Blibli">Blibli</option>
-                <option value="Event">Event</option>
-                <option value="Mitra">Mitra</option>
-                <option value="Kunjungan">Kunjungan</option>
-                <option value="Konsinyasi">Konsinyasi</option>
-              </select>
-            </div>
-          </div>
-
-          <button type="submit" class="w-full bg-theme-gradient hover:opacity-90 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
-            Simpan Revenue
-          </button>
-        </form>
+        <!-- PLATFORM DINAMIS FROM STORE -->
+        <div>
+          <label class="block text-xs mb-1 font-medium">Platform</label>
+          <select v-model="formRev.Platform" required class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none">
+            <option value="" disabled>-- Pilih Platform --</option>
+            <option v-for="plat in availablePlatforms" :key="plat" :value="plat">
+              {{ plat }}
+            </option>
+          </select>
+        </div>
       </div>
-    </div>
+
+      <button type="submit" class="w-full bg-theme-gradient hover:opacity-90 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
+        Simpan Revenue
+      </button>
+    </form>
+  </div>
+</div>
 
     <!-- 2. Modal Input/Edit Leads & Campaign -->
     <div v-if="store.activeModal === 'leads'" class="fixed inset-0 bg-slate-950/70 z-50 flex justify-center items-center p-4 backdrop-blur-md">
@@ -299,6 +293,121 @@
       </div>
     </div>
   </div>
+
+  <!-- ==================================================== -->
+    <!-- 1. MODAL TAMBAH PROGRESS KANBAN (GLOBAL) -->
+    <!-- ==================================================== -->
+    <div v-if="store.activeModal === 'progress'" class="fixed inset-0 bg-slate-950/70 z-50 flex justify-center items-center p-4 backdrop-blur-md">
+      <div class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-lg p-6 space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-slate-800 dark:text-slate-100">Tambah Program / Progress</h3>
+          <button @click="store.closeModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form @submit.prevent="saveProgress" class="space-y-3 text-xs">
+          <div>
+            <label class="block text-xs mb-1 font-medium">Judul Program / Campaign</label>
+            <input type="text" v-model="formProgress.title" required placeholder="Nama Program Kerja" class="w-full glass-input rounded-xl p-2.5 outline-none">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs mb-1 font-medium">Unit Usaha</label>
+              <select v-model="formProgress.unit" required class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none">
+                <option value="NHP">NHP</option>
+                <option value="NHC">NHC</option>
+                <option value="KG">KG</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs mb-1 font-medium">Divisi</label>
+              <select v-model="formProgress.division" required class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none">
+                <option value="CS Deal">CS Deal</option>
+                <option value="Zona 1A">Zona 1A</option>
+                <option value="Zona 1B">Zona 1B</option>
+                <option value="Zona 2">Zona 2</option>
+                <option value="Zona 3">Zona 3</option>
+                <option value="Digital Marketing">Digital Marketing</option>
+                <option value="Offline">Offline</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs mb-1 font-medium">Deadline Target</label>
+              <input type="date" v-model="formProgress.deadline" required class="w-full glass-input rounded-xl p-2.5 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs mb-1 font-medium">Status Awal</label>
+              <select v-model="formProgress.status" required class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none">
+                <option value="To Do">To Do</option>
+                <option value="In Progress">In Progress</option>
+                <option value="In Review">In Review</option>
+                <option value="Completed">Completed</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs mb-1 font-medium">Deskripsi Singkat</label>
+            <textarea v-model="formProgress.description" rows="3" placeholder="Catatan tugas..." class="w-full glass-input rounded-xl p-2.5 outline-none"></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-theme-gradient hover:opacity-90 text-white font-bold py-2.5 rounded-xl shadow-md mt-2 cursor-pointer">
+            Simpan Program Progress
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================================================== -->
+    <!-- 2. MODAL TAMBAH LAPORAN DIVISI / SPV (GLOBAL) -->
+    <!-- ==================================================== -->
+    <div v-if="store.activeModal === 'spv-report'" class="fixed inset-0 bg-slate-950/70 z-50 flex justify-center items-center p-4 backdrop-blur-md">
+      <div class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-lg p-6 space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-slate-800 dark:text-slate-100">Input Laporan Pekanan SPV</h3>
+          <button @click="store.closeModal()" class="text-slate-400 hover:text-slate-600 cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <form @submit.prevent="saveSpvReport" class="space-y-3 text-xs">
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs mb-1 font-medium">Tanggal Laporan</label>
+              <input type="date" v-model="formSpv.tanggal" required class="w-full glass-input rounded-xl p-2.5 outline-none">
+            </div>
+            <div>
+              <label class="block text-xs mb-1 font-medium">Divisi</label>
+              <select v-model="formSpv.divisi" required class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none">
+                <option value="CS Deal">CS Deal</option>
+                <option value="Zona 1A">Zona 1A</option>
+                <option value="Zona 1B">Zona 1B</option>
+                <option value="Zona 2">Zona 2</option>
+                <option value="Zona 3">Zona 3</option>
+                <option value="Digital Marketing">Digital Marketing</option>
+                <option value="Offline">Offline</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs mb-1 font-medium">Capaian & Rangkuman Pekan Ini</label>
+            <textarea v-model="formSpv.capaian" rows="3" required placeholder="Tuliskan poin hasil kerja divisi..." class="w-full glass-input rounded-xl p-2.5 outline-none"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-xs mb-1 font-medium">Kendala & Problem Field</label>
+            <textarea v-model="formSpv.kendala" rows="2" placeholder="Kendala yang dihadapi..." class="w-full glass-input rounded-xl p-2.5 outline-none"></textarea>
+          </div>
+
+          <button type="submit" class="w-full bg-theme-gradient hover:opacity-90 text-white font-bold py-2.5 rounded-xl shadow-md mt-2 cursor-pointer">
+            Simpan Laporan Divisi
+          </button>
+        </form>
+      </div>
+    </div>
+
 </template>
 
 <script setup>
@@ -664,4 +773,96 @@ function handleAlertConfirm() {
   }
   store.closeAlert();
 }
+
+const masterUnits = computed(() => {
+  return store.db?.master?.unitList || [
+    { code: 'NHP', name: 'Nur Hidayah Press' },
+    { code: 'NHC', name: 'Nur Hidayah Creative' },
+    { code: 'KG', name: 'Karta Grafika' }
+  ];
+});
+
+// Computed Data Master Divisi
+const availableDivisions = computed(() => {
+  return store.db?.master?.divisiList || [
+    'CS Deal', 'Zona 1A', 'Zona 1B', 'Zona 2', 'Zona 3', 'Digital Marketing', 'Offline', 'Penerbitan & Cetak', 'Produksi & Logistik'
+  ];
+});
+
+// Computed Data Master Platform
+const availablePlatforms = computed(() => {
+  return store.db?.master?.platformList || [
+    'Shopee', 'TikTok Shop', 'WhatsApp', 'Website', 'Siplah', 'Toko Ladang', 'Blibli', 'Event', 'Mitra', 'Kunjungan', 'Konsinyasi'
+  ];
+});
+
+const formProgress = reactive({
+  title: '',
+  unit: 'NHP',
+  division: 'Digital Marketing',
+  deadline: new Date().toISOString().split('T')[0],
+  status: 'To Do',
+  description: '',
+  progress: 0
+});
+
+// Reactive Form State untuk Laporan SPV
+const formSpv = reactive({
+  tanggal: new Date().toISOString().split('T')[0],
+  divisi: 'CS Deal',
+  capaian: '',
+  kendala: ''
+});
+
+// Function Save Progress Kanban
+const saveProgress = async () => {
+  store.isLoading = true;
+  try {
+    const payload = {
+      id: Date.now(),
+      ...formProgress,
+      createdBy: store.currentUser?.id || store.currentUser?.email
+    };
+
+    if (api && api.saveProgramData) {
+      await api.saveProgramData(payload);
+    }
+    
+    if (!store.db.programs) store.db.programs = [];
+    store.db.programs.unshift(payload);
+
+    store.addNotification('Berhasil', 'Program kerja berhasil ditambahkan', 'success');
+    store.closeModal();
+  } catch (err) {
+    store.addNotification('Gagal', err.message, 'warning');
+  } finally {
+    store.isLoading = false;
+  }
+};
+
+// Function Save Laporan SPV
+const saveSpvReport = async () => {
+  store.isLoading = true;
+  try {
+    const payload = {
+      id: Date.now(),
+      ...formSpv,
+      pembuat: store.currentUser?.nama || store.currentUser?.email
+    };
+
+    if (api && api.saveSpvReportData) {
+      await api.saveSpvReportData(payload);
+    }
+
+    if (!store.db.spvReports) store.db.spvReports = [];
+    store.db.spvReports.unshift(payload);
+
+    store.addNotification('Berhasil', 'Laporan Divisi berhasil disimpan', 'success');
+    store.closeModal();
+  } catch (err) {
+    store.addNotification('Gagal', err.message, 'warning');
+  } finally {
+    store.isLoading = false;
+  }
+};
 </script>

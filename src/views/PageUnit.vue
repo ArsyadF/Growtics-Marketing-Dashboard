@@ -241,10 +241,10 @@
               <td class="py-2 px-3 font-medium">{{ item.Divisi || '-' }}</td>
               <td class="py-2 px-3">{{ item.Platform || '-' }}</td>
               <td class="py-2 px-3 font-semibold text-theme">{{ formatRupiah(item.Revenue) }}</td>
+              
               <td  v-if="store.canEditPage('unit-' + selectedUnitName)" 
               class="py-2 px-3 text-center space-x-2" style="display:inline-flex">
                 <button
-                
                   @click="store.openModal('revenue', item)" 
                   class="text-theme hover:text-theme p-1 cursor-pointer"
                   title="Edit Revenue"

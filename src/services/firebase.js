@@ -1,21 +1,20 @@
-
-// src/firebase.js
+// src/services/firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
-// Paste isi konfigurasi dari Firebase Console Anda di bawah ini:
+// Membaca variabel dari .env di lokal ATAU dari Vercel saat dipublish
 const firebaseConfig = {
-  apiKey: "AIzaSyAiNjqLaw84Zc28tiFA7ifLQu_nV6S0ioU",
-  authDomain: "marketing-ad75c.firebaseapp.com",
-  projectId: "marketing-ad75c",
-  storageBucket: "marketing-ad75c.firebasestorage.app",
-  messagingSenderId: "747898257753",
-  appId: "1:747898257753:web:90be7008ffe941396bcc48",
-  measurementId: "G-2EH46382V6"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
 
-// Inisialisasi Firestore Database dan ekspor agar bisa dipakai di komponen lain
+// Export Firestore untuk digunakan di komponen Vue
 export const db = getFirestore(app);
+export default app;
