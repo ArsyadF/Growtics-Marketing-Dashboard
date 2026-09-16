@@ -11,10 +11,10 @@
 
     <!-- Sidebar Main Container -->
     <aside 
-      class="fixed top-0 left-0 shrink-0 h-screen glass-card floating-sidebar flex flex-col z-50 transform transition-all duration-300 overflow-hidden pt-4 pb-4"
+      class="fixed top-0 left-0 shrink-0 h-100% glass-card floating-sidebar flex flex-col z-50 transform transition-all duration-300 overflow-hidden pt-4 pb-4"
       :class="[
         isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
-        isCollapsed ? 'w-20' : 'w-64'
+        isCollapsed ? 'w-20' : 'w-60'
       ]"
     >
       <!-- Header Sidebar -->
@@ -291,7 +291,7 @@
       </nav>
 
       <!-- Bottom Widget: Profil User -->
-      <div class="p-1.5 m-2 mb-16 md:mb-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-700/40 flex items-center justify-center shrink-0">
+      <div class="p-1.5 m-2 md:mb-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-700/40 flex items-center justify-center shrink-0">
         <button 
           v-if="!isLoggedIn" 
           @click="$emit('open-login')" 

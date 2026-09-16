@@ -12,6 +12,7 @@
     "chart.js": "^4.5.1",
     "firebase": "^12.18.0",
     "firebase-admin": "^14.4.0",
+    "firestore-export-import": "^1.7.0",
     "vue": "^3.5.41"
   },
   "devDependencies": {

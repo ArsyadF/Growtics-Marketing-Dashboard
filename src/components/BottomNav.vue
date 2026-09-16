@@ -129,6 +129,18 @@
             </span>
             <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Laporan Divisi</span>
           </button>
+
+          <!-- Tambah Notes (PALING BAWAH) -->
+          <button 
+            v-if="store.canEditPage('notes')"
+            @click.stop="openAddModal('notes')" 
+            class="w-full flex items-center gap-2.5 p-2 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800/80 text-left transition-colors cursor-pointer border-t border-slate-100 dark:border-slate-800/60 pt-2 mt-1"
+          >
+            <span class="w-7 h-7 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs shrink-0">
+              <i class="fa-solid fa-note-sticky"></i>
+            </span>
+            <span class="text-xs font-bold text-slate-700 dark:text-slate-200">Tambah Notes</span>
+          </button>
         </div>
       </transition>
 
@@ -280,8 +292,6 @@ const selectUnit = (unitPage) => {
   activePopup.value = null;
 };
 
-
-
 // HANDLER METODE DOCUMENT CLICK DENGAN STOP PROPAGATION SAFEGUARD
 const handleDocumentClick = (event) => {
   if (activePopup.value && navContainerRef.value) {
@@ -304,13 +314,19 @@ onUnmounted(() => {
 const openAddModal = (modalName) => {
   activePopup.value = null;
 
-  // Jika tombol yang diklik adalah modul halaman tertentu
+  // Jika tombol yang diklik adalah modul halaman khusus
   if (modalName === 'progress') {
     store.currentPage = 'progress';
     store.openModal('progress');
   } else if (modalName === 'spv-report') {
     store.currentPage = 'spv-report';
     store.openModal('spv-report');
+  } else if (modalName === 'notes') {
+    // Jika ada halaman khusus notes atau membuka modal global notes
+    if (store.canAccessPage && store.canAccessPage('notes')) {
+      store.currentPage = 'notes';
+    }
+    store.openModal('notes');
   } else {
     // Untuk modal global (revenue, leads, promo, dll)
     store.openModal(modalName);
