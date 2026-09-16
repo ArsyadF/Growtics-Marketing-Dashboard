@@ -5,11 +5,17 @@
       
       <!-- Profile Display Header -->
       <div class="flex items-center gap-5 border-b border-slate-200/50 dark:border-slate-800/80 pb-6">
-        <img 
-          :src="avatarPreviewUrl" 
-          alt="Avatar Profile" 
-          class="w-20 h-20 rounded-full object-cover border-2 border-theme shadow-lg shrink-0"
-        >
+        <div class="relative group cursor-pointer" @click="triggerFileInput">
+          <img 
+            :src="avatarPreviewUrl" 
+            alt="Avatar Profile" 
+            class="w-20 h-20 rounded-full object-cover border-2 border-theme shadow-lg shrink-0 transition-all group-hover:brightness-90"
+          >
+          <div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <i class="fa-solid fa-camera text-white text-lg"></i>
+          </div>
+        </div>
+
         <div>
           <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">
             {{ userProfile.Nama || userProfile.nama || userProfile.name || 'Admin User' }}
@@ -37,16 +43,39 @@
           >
         </div>
 
+        <!-- UPLOAD FOTO PROFIL (FILE / URL) -->
         <div>
           <label class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300">
-            Link / URL Foto Profil (Avatar)
+            Foto Profil (Avatar)
           </label>
-          <input 
-            v-model="form.avatarUrl"
-            type="text" 
-            placeholder="https://example.com/avatar.jpg"
-            class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
-          >
+          
+          <div class="flex gap-2 items-center">
+            <input 
+              v-model="form.avatarUrl"
+              type="text" 
+              placeholder="Pilih file atau tempel URL foto..."
+              class="flex-1 glass-input rounded-xl p-2.5 text-xs outline-none"
+            >
+            
+            <!-- Hidden Input File -->
+            <input 
+              ref="fileInputRef" 
+              type="file" 
+              accept="image/*" 
+              class="hidden" 
+              @change="handleFileUpload"
+            >
+            
+            <!-- Tombol Upload HP/Lokal -->
+            <button 
+              type="button" 
+              @click="triggerFileInput"
+              class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5 shrink-0 border border-slate-200 dark:border-slate-700 cursor-pointer"
+            >
+              <i class="fa-solid fa-upload text-theme"></i>
+              <span>Upload</span>
+            </button>
+          </div>
         </div>
 
         <div class="pt-2 border-t border-slate-200/50 dark:border-slate-800/80">
@@ -75,7 +104,7 @@
         <button 
           type="submit" 
           :disabled="isSaving"
-          class="w-full bg-gradient-to-r from-[#1caa80] to-[#2EE59D] hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md disabled:opacity-50 cursor-pointer"
+          class="w-full bg-theme-gradient text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md disabled:opacity-50 cursor-pointer"
         >
           {{ isSaving ? 'Menyimpan...' : 'Simpan Perubahan Profil' }}
         </button>
@@ -91,7 +120,6 @@
         </button>
       </div>
 
-   
     </div>
   </section>
 </template>
@@ -102,6 +130,8 @@ import { store } from '../store';
 import { api } from '../services/api';
 
 const emit = defineEmits(['logout-success']);
+
+const fileInputRef = ref(null);
 
 const userProfile = ref({
   Nama: '',
@@ -128,13 +158,38 @@ const avatarPreviewUrl = computed(() => {
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(nameToUse)}`;
 });
 
-// Sync data user secara reaktif ketika store.currentUser dimuat
+// Trigger input file dari perangkat
+const triggerFileInput = () => {
+  if (fileInputRef.value) {
+    fileInputRef.value.click();
+  }
+};
+
+// Proses konversi file gambar dari perangkat ke Base64 / URL
+const handleFileUpload = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // Cek ukuran file (maksimal 2MB agar tidak memberatkan Firestore)
+  if (file.size > 2 * 1024 * 1024) {
+    store.openAlert('Ukuran Terlalu Besar', 'Gunakan foto dengan ukuran kurang dari 2MB.', null, 'warning');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    form.value.avatarUrl = event.target.result; // Hasil Base64 disimpan ke state
+  };
+  reader.readAsDataURL(file);
+};
+
+// Sync data user secara reaktif
 watch(() => store.currentUser, (curr) => {
   if (curr) {
     userProfile.value = { ...curr };
     form.value.nama = curr.Nama || curr.nama || curr.name || '';
     form.value.bio = curr.Bio || curr.bio || '';
-    form.value.avatarUrl = curr.Avatar || curr.avatar || curr.avatarUrl || '';
+    form.value.avatarUrl = curr.Avatar || curr.avatarUrl || curr.avatar || '';
   }
 }, { immediate: true, deep: true });
 
@@ -173,7 +228,7 @@ const saveUserProfile = async () => {
       store.setCurrentUser(updatedUser);
       userProfile.value = updatedUser;
       
-      store.openAlert('Berhasil', 'Profil berhasil diperbarui!', null, 'success');
+      store.openAlert('Berhasil', 'Profil & Foto berhasil diperbarui!', null, 'success');
       form.value.password = '';
     } else {
       store.openAlert('Gagal', 'Gagal memperbarui profil.', null, 'warning');
@@ -186,7 +241,6 @@ const saveUserProfile = async () => {
   }
 };
 
-// Penyesuaian logout menggunakan modal kustom store.openAlert
 const handleLogout = () => {
   store.openAlert(
     'Konfirmasi Keluar',

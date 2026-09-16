@@ -48,12 +48,12 @@
         <div v-if="form.role !== 'SUPERADMIN'" class="pt-3 border-t border-slate-200/50 dark:border-slate-800 space-y-2">
           <div class="flex items-center justify-between">
             <div>
-              <label class="block text-xs font-bold text-[#1caa80] dark:text-emerald-400">
+              <label class="block text-xs font-bold text-theme dark:text-theme">
                 Atur Akses Halaman & Fitur Edit
               </label>
               <p class="text-[11px] text-slate-400 mt-0.5">Pilih modul yang boleh dibuka dan atur hak pengeditan/penambahan data.</p>
             </div>
-            <button type="button" @click="toggleAllPermissions" class="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 hover:underline cursor-pointer shrink-0">
+            <button type="button" @click="toggleAllPermissions" class="text-[11px] font-bold text-theme dark:text-theme hover:underline cursor-pointer shrink-0">
               {{ isAllSelected ? 'Matikan Semua' : 'Buka Semua' }}
             </button>
           </div>
@@ -70,7 +70,7 @@
               <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
                 <tr v-for="page in pagesList" :key="page.id" class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30">
                   <td class="p-2.5 font-medium text-slate-700 dark:text-slate-200">
-                    <i :class="page.icon" class="mr-2 text-[#1caa80]"></i>
+                    <i :class="page.icon" class="mr-2 text-theme"></i>
                     {{ page.label }}
                   </td>
                   <!-- Checkbox Buka Halaman -->
@@ -129,13 +129,13 @@ const isEdit = ref(!!props.userData);
 
 // Daftar Halaman Lengkap Sesuai Struktur Sistem
 const pagesList = [
-  { id: 'main', label: 'Dashboard Utama', icon: 'fa-solid fa-house' },
+  { id: 'summary', label: 'Rekap Bisnis', icon: 'fa-solid fa-chart-line' },
   { id: 'notes', label: 'Notes / Catatan', icon: 'fa-solid fa-note-sticky' },
   { id: 'unit-NHP', label: 'Unit Nur Hidayah Press', icon: 'fa-solid fa-building' },
   { id: 'unit-NHC', label: 'Unit Nusaragam x Pengaosan', icon: 'fa-solid fa-building-user' },
   { id: 'unit-KG', label: 'Unit Karta Grafika', icon: 'fa-solid fa-city' },
   { id: 'progress', label: 'Kanban Progress', icon: 'fa-solid fa-bars-progress' },
-  { id: 'digmar', label: 'Sosmed Analytics', icon: 'fa-solid fa-share-nodes' },
+  { id: 'digmar', label: 'Socmed Analytics', icon: 'fa-solid fa-share-nodes' },
   { id: 'leads', label: 'Leads & Campaign', icon: 'fa-solid fa-users-rays' },
   { id: 'promo', label: 'Marketing Budget', icon: 'fa-solid fa-wallet' },
   { id: 'spv-report', label: 'Laporan Divisi', icon: 'fa-solid fa-file-signature' },
