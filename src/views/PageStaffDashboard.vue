@@ -23,13 +23,31 @@
     </div>
     
     <!-- Tombol Profil (Klik Membuka Modal Profile) -->
-    <button 
-      @click="navTo('profile')"
-      title="Lihat Profil" 
-      class="w-12 h-12 rounded-2xl bg-white/20 hover:bg-white/30 active:scale-95 transition-all backdrop-blur-md flex items-center justify-center text-xl shrink-0 shadow-inner cursor-pointer"
-    >
-      <i class="fa-solid fa-user-gear"></i>
-    </button>
+ <!-- Di Header / Dashboard Staff -->
+<button 
+  @click="store.currentPage = 'profile'"
+  title="Lihat Profil" 
+  class="w-14 h-14 rounded-full bg-white/20 hover:bg-white/30 active:scale-95 transition-all backdrop-blur-md flex items-center justify-center shrink-0 shadow-inner cursor-pointer overflow-hidden border border-white/30"
+>
+  <!-- 1. Tampilkan Foto User Jika Ada -->
+  <img 
+    v-if="currentUser.Avatar || currentUser.avatarUrl || currentUser.avatar" 
+    :src="currentUser.Avatar || currentUser.avatarUrl || currentUser.avatar" 
+    :alt="currentUser.Nama || currentUser.nama || 'User Profile'" 
+    class="w-full h-full object-cover rounded-2xl"
+  />
+
+  <!-- 2. Fallback: Inisial Nama User -->
+  <span 
+    v-else-if="currentUser.Nama || currentUser.nama" 
+    class="text-base font-extrabold text-white uppercase tracking-wider"
+  >
+    {{ (currentUser.Nama || currentUser.nama).charAt(0) }}
+  </span>
+
+  <!-- 3. Fallback Terakhir: Ikon -->
+  <i v-else class="fa-solid fa-user text-xl text-white"></i>
+</button>
   </div>
 </div>
 

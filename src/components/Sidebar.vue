@@ -309,11 +309,11 @@
       </nav>
 
       <!-- Bottom Widget: Profil User -->
-      <div class="p-1.5 m-2 bottom-[max(1rem,env(safe-area-inset-bottom))] md:mb-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-700/40 flex items-center justify-center shrink-0">
+      <div class="p-1.5 m-2 bottom-[max(1rem,env(safe-area-inset-bottom))] md:mb-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-theme dark:border-slate-700/40 flex items-center justify-center shrink-0">
         <button 
           v-if="!isLoggedIn" 
           @click="$emit('open-login')" 
-          class="w-full bg-theme-gradient hover:bg-emerald-700 text-white font-bold py-2 rounded-xl text-xs transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+          class="w-full bg-theme-gradient hover:bg-theme-gradient text-white font-bold py-2 rounded-xl text-xs transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
           :class="isCollapsed ? 'px-0' : 'px-3'"
           :title="isCollapsed ? 'Masuk / Login' : ''"
         >
@@ -324,16 +324,16 @@
         <button 
           v-else 
           @click="navigate('profile')" 
-          class="w-full flex items-center gap-2.5 text-left group outline-none overflow-hidden cursor-pointer p-1 rounded-xl hover:bg-white/50 dark:hover:bg-slate-700/50 transition-colors"
+          class="w-full flex items-center gap-2.5 text-left group outline-none overflow-hidden cursor-pointer p-1 rounded-xl hover:bg-theme-gradient dark:hover:bg-theme-gradient transition-colors"
           :class="isCollapsed ? 'justify-center' : ''"
           :title="isCollapsed ? (userData?.nama || 'Profil') : ''"
         >
           <img 
             :src="userData?.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.nama || 'User')}&background=0D8ABC&color=fff`" 
-            class="w-8 h-8 rounded-full object-cover shrink-0 aspect-square border border-emerald-500/40 group-hover:scale-105 transition-transform"
+            class="w-8 h-8 rounded-full object-cover shrink-0 aspect-square border border-theme group-hover:scale-105 transition-transform"
           >
           <div v-if="!isCollapsed" class="min-w-0 flex-1 overflow-hidden">
-            <p class="font-bold text-xs truncate leading-tight group-hover:text-emerald-600">
+            <p class="font-bold text-xs truncate leading-tight group-hover:text-theme">
               {{ userData?.nama || 'Admin User' }}
             </p>
             <p class="text-[9px] text-slate-400 font-medium uppercase truncate mt-0.5">

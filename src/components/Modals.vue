@@ -295,7 +295,7 @@
           
           <button 
             @click="handleAlertConfirm" 
-            class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md cursor-pointer"
+            class="flex-1 bg-theme-gradient text-white font-bold py-2.5 rounded-xl text-xs shadow-md cursor-pointer"
           >
             {{ store.alertPayload.onConfirm ? 'Ya, Lanjutkan' : 'OK' }}
           </button>
