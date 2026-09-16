@@ -1,4 +1,5 @@
 <!-- App.vue -->
+<!-- src/App.vue -->
 <template>
   <div 
     id="mainBody" 
@@ -58,14 +59,27 @@
         <!-- Pembungkus View Utama -->
         <div class="p-4 md:p-6 flex-1 w-full space-y-4 md:space-y-6 relative z-10">
           <template v-if="store.isAccessGranted">
-            <component :is="activeView" v-if="store.canAccessPage(store.currentPage)" />
             
-            <!-- Jika tidak punya akses ke halaman tersebut -->
-            <div v-else class="glass-card p-12 text-center rounded-3xl space-y-3 mt-10">
-              <i class="fa-solid fa-lock text-4xl text-rose-500 mb-2"></i>
-              <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Akses Terbatas !</h3>
-              <p class="text-xs text-slate-400">Akun Anda tidak memiliki izin untuk mengakses halaman ini.</p>
-            </div>
+            <!-- 1. JIKA DI HALAMAN UTAMA / DASHBOARD STAFF -->
+            <template v-if="store.currentPage === 'main' || store.currentPage === 'staff-dashboard'">
+              <!-- Jika Superadmin / SPV, tampilkan Dashboard Utama Lengkap (Omset & Grafik) -->
+              <PageMainDashboard v-if="isSuperadminOrSpv" />
+              <!-- Jika Staff biasa, tampilkan Staff Dashboard (Grid Kotak & Ringkasan Non-Sensitif) -->
+              <PageStaffDashboard v-else />
+            </template>
+
+            <!-- 2. JIKA DI HALAMAN MODUL KINERJA LAIN (Progress, Aduan, Reports, dll) -->
+            <template v-else>
+              <component :is="activeView" v-if="store.canAccessPage(store.currentPage)" />
+              
+              <!-- Peringatan jika akun tidak punya izin -->
+              <div v-else class="glass-card p-12 text-center rounded-3xl space-y-3 mt-10">
+                <i class="fa-solid fa-lock text-4xl text-rose-500 mb-2"></i>
+                <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">Akses Terbatas !</h3>
+                <p class="text-xs text-slate-400">Akun Anda tidak memiliki izin untuk mengakses halaman ini.</p>
+              </div>
+            </template>
+
           </template>
         </div>
 
@@ -103,23 +117,16 @@ import DashboardMain from './views/Dashboard.vue';
 import PageUnit from './views/PageUnit.vue';
 import PageLeads from './views/PageLeads.vue';
 import PagePromo from './views/PagePromo.vue';
-import PageTargets from './views/PageTargets.vue';
 import PageUsers from './views/PageUsers.vue';
 import PageProfile from './views/PageProfile.vue';
-
-// Import Views Baru (v3.0 Roadmap)
 import PageNote from './views/PageNote.vue';
-
-/* 
- * Catatan: Untuk views di bawah ini, jika filenya belum dibuat, 
- * buat placeholder file .vue kosong di folder /src/views/ agar tidak error saat diimport.
- */
-import PageProgress from './views/PageProgress.vue'; // Placeholder untuk Progres Divisi & Produksi
-import PageDigmar from './views/PageDigmar.vue';     // Placeholder untuk Social Media Analytics
-import PageReport from './views/PageReport.vue';     // Placeholder untuk Laporan Executive
-import PageSpvReport from './views/PageSpvReport.vue'; // Laporan Pekanan SPV (NEW)
+import PageProgress from './views/PageProgress.vue';
+import PageDigmar from './views/PageDigmar.vue';
+import PageReport from './views/PageReport.vue';
+import PageSpvReport from './views/PageSpvReport.vue';
 import PageMasterData from './views/PageMasterData.vue';
 import PageCustomerCare from './views/PageCustomerCare.vue';
+import PageStaffDashboard from './views/PageStaffDashboard.vue';
 // --- DYNAMIC COMPONENT ROUTING ---
 const activeView = computed(() => {
   if (store.currentPage.startsWith('unit-')) {
@@ -128,7 +135,7 @@ const activeView = computed(() => {
 
   switch (store.currentPage) {
     case 'main':
-      return DashboardMain;
+      return PageStaffDashboard;
     case 'notes':
       return PageNote;
     case 'progress':
@@ -137,21 +144,20 @@ const activeView = computed(() => {
       return PageDigmar;
     case 'leads':
       return PageLeads;
+    case 'spv-report': 
+      return PageSpvReport;
+    case 'aduan':
+      return PageCustomerCare;
     case 'promo':
       return PagePromo;
     case 'report':
       return PageReport;
     case 'master-data':
       return PageMasterData;
-    case 'targets':
-      return PageTargets;
     case 'users':
       return PageUsers;
-    case 'aduan':
-      return PageCustomerCare;
     case 'profile':
       return PageProfile;
-      case 'spv-report': return PageSpvReport;
     default:
       return DashboardMain;
   }

@@ -101,6 +101,24 @@
             </a>
           </li>
 
+          <li v-if="store.canAccessPage('summary') && isMenuVisible('Unit Summary', 'rekap')" class="flex justify-center">
+            <a 
+              href="#" 
+              @click.prevent="navigate('rekap')" 
+              class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all"
+              :class="[
+                activePage === 'rekap' 
+                  ? 'bg-theme-gradient text-white font-bold shadow-sm' 
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
+                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+              ]"
+              :title="isCollapsed ? 'Unit Summary' : ''"
+            >
+              <i class="fa-solid fa-house text-sm shrink-0"></i>
+              <span v-if="!isCollapsed" class="whitespace-nowrap truncate">Unit Summary</span>
+            </a>
+          </li>
+
           <!-- 2. 📝 NOTES / CATATAN (Stand-Alone) -->
           <li v-if="isLoggedIn && isMenuVisible('Catatan Pribadi Notes', 'notes')" class="flex justify-center">
             <a 
