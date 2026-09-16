@@ -29,7 +29,7 @@
 
         <button 
           @click="openAddReportModal" 
-          class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
+          class="bg-theme-gradient text-white font-bold px-4 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
         >
           <i class="fa-solid fa-pen-to-square"></i>
           <span>Buat Laporan Baru</span>
@@ -223,7 +223,7 @@
 
             <div class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
               <button @click="isModalOpen = false" type="button" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-bold">Batal</button>
-              <button type="submit" class="bg-emerald-600 text-white px-5 py-2 rounded-xl font-bold shadow-md hover:bg-emerald-700">Terbitkan Laporan Pekanan</button>
+              <button type="submit" class="bg-theme-gradient text-white px-5 py-2 rounded-xl font-bold shadow-md">Terbitkan Laporan Pekanan</button>
             </div>
           </form>
         </div>

@@ -62,9 +62,12 @@
         </div>
       </div>
 
-      <button type="submit" class="w-full bg-theme-gradient hover:opacity-90 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+      <button @click="store.closeModal()" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-bold">Batal</button>
+      <button type="submit" class="bg-theme-gradient text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md">
         Simpan Revenue
       </button>
+      </div>
     </form>
   </div>
 </div>
@@ -115,9 +118,13 @@
             </div>
           </div>
 
-          <button type="submit" class="w-full bg-theme-gradient hover:opacity-90 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
-            Simpan Data Leads
-          </button>
+          <div class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+      <button @click="store.closeModal()" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-bold">Batal</button>
+      <button type="submit" class="bg-theme-gradient text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md">
+        Simpan Data Leads
+      </button>
+      </div>
+
         </form>
       </div>
     </div>
@@ -157,9 +164,12 @@
             >
           </div>
 
-          <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer">
-            Simpan Biaya Promosi
-          </button>
+           <div class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+      <button @click="store.closeModal()" class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-bold">Batal</button>
+      <button type="submit" class="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md">
+        Simpan Biaya Promosi
+      </button>
+      </div>
         </form>
       </div>
     </div>

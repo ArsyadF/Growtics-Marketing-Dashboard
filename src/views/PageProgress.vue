@@ -129,7 +129,7 @@
           v-if="isSpvOrAdmin"
           @click="openAddModal"
           type="button"
-          class="bg-theme-gradient hover:bg-emerald-700 text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+          class="bg-theme-gradient text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
         >
           <i class="fa-solid fa-plus text-xs"></i>
           <span>Tambah Program</span>
@@ -453,7 +453,7 @@
                 <button 
                   type="submit" 
                   :disabled="isSubmitting"
-                  class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl font-bold shadow-md cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                  class="bg-theme-gradient text-white px-5 py-2 rounded-xl font-bold shadow-md cursor-pointer flex items-center gap-2 disabled:opacity-50"
                 >
                   <i v-if="isSubmitting" class="fa-solid fa-circle-notch fa-spin text-xs"></i>
                   <span>{{ isSubmitting ? 'Memproses...' : 'Simpan Progres' }}</span>
