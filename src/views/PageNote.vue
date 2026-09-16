@@ -502,4 +502,15 @@ onMounted(() => {
 watch(currentUserId, () => {
   fetchNotes();
 });
+
+watch(
+  () => store.activeModal,
+  (newModal) => {
+    if (newModal === 'notes') {
+      openAddModal(); // sesuaikan nama fungsi buka modal di PageNotes.vue
+      store.closeModal();
+    }
+  },
+  { immediate: true }
+);
 </script>

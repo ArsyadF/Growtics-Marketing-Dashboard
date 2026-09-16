@@ -25,7 +25,10 @@ dist-ssr
 
 # .gitignore
 input database json ke firestore.txt
-serviceAccountKeylocal.json
-serviceAccountKeyprod.json
+serviceAccountKey_local.json
+serviceAccountKey_prod.json
 data.json
+backup_marketing_local_firestore.json
+backup_marketing_firestore.json
+backup.js
 
