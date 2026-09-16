@@ -1,6 +1,14 @@
 <!-- src/components/Header.vue -->
 <template>
-  <header class="transparent-header sticky top-0 z-40 pt-[max(1.5rem,env(safe-area-inset-top))] md:pt-4 px-4 md:px-6 pb-3 md:pb-4 flex items-center justify-between gap-3">
+  <header 
+    class="sticky top-0 z-40 pt-[max(1.5rem,env(safe-area-inset-top))] md:pt-4 px-4 md:px-6 pb-4 flex items-center justify-between gap-3 transition-all duration-300 transform"
+    :class="[
+      isHeaderHidden ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100',
+      isScrolled 
+        ? 'bg-gradient-to-b from-white via-white/80 to-transparent dark:from-slate-950 dark:via-slate-950/80 dark:to-transparent backdrop-blur-md shadow-xs' 
+        : 'bg-gradient-to-b from-white/90 to-transparent dark:from-slate-950/90 dark:to-transparent'
+    ]"
+  >
     
     <!-- SISI KIRI: Hamburger Mobile (Khusus Mobile) -->
     <div class="flex items-center gap-2 md:gap-3 shrink-0 md:min-w-0">
@@ -261,25 +269,25 @@
             <h4 class="font-bold text-[11px] text-slate-400 dark:text-slate-400 uppercase tracking-wider">Mode Tampilan</h4>
             <div class="grid grid-cols-3 gap-2">
               <button 
-                @click="store.setTheme('light')"
+                @click="setTheme('light')"
                 class="p-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-2 transition-all cursor-pointer"
-                :class="store.themePreference === 'light' ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                :class="themePreference === 'light' ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
               >
                 <i class="fa-solid fa-sun text-amber-500"></i> Terang
               </button>
 
               <button 
-                @click="store.setTheme('dark')"
+                @click="setTheme('dark')"
                 class="p-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-2 transition-all cursor-pointer"
-                :class="store.themePreference === 'dark' ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                :class="themePreference === 'dark' ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
               >
                 <i class="fa-solid fa-moon text-indigo-400"></i> Gelap
               </button>
 
               <button 
-                @click="store.setTheme('system')"
+                @click="setTheme('system')"
                 class="p-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-2 transition-all cursor-pointer"
-                :class="store.themePreference === 'system' ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                :class="themePreference === 'system' ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'"
               >
                 <i class="fa-solid fa-desktop text-blue-400"></i> OS
               </button>
@@ -296,7 +304,7 @@
                 :key="color.id"
                 @click="store.setThemeColor(color.hex, color.lightHex)"
                 class="flex items-center gap-2 p-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer"
-                :class="store.activeThemeColor === color.hex ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm ring-1 ring-theme' : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 opacity-80 hover:opacity-100'"
+                :class="store.activeThemeColor === color.hex ? 'border-theme text-theme bg-theme-gradient/10 shadow-sm' : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 opacity-80 hover:opacity-100'"
               >
                 <span class="w-3.5 h-3.5 rounded-full shrink-0 shadow-sm" :style="{ backgroundColor: color.hex }"></span>
                 <span class="truncate text-[11px]">{{ color.name }}</span>
@@ -322,7 +330,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { store } from '../store';
 import '../style.css';
 
@@ -347,6 +355,11 @@ const themePreference = ref('system');
 const tempStartDate = ref('');
 const tempEndDate = ref('');
 
+// State Scroll & Hide Header
+const isScrolled = ref(false);
+const isHeaderHidden = ref(false);
+let lastScrollY = 0;
+
 // Dynamic Page Title
 const dynamicPageTitle = computed(() => {
   if (props.pageTitle) return props.pageTitle;
@@ -355,12 +368,22 @@ const dynamicPageTitle = computed(() => {
 
   const titleMap = {
     'main': 'Dashboard Utama',
+    'staff-dashboard': 'Dashboard Staff',
+    'rekap': 'Unit Summary',
+    'summary': 'Ringkasan Laporan',
     'unit-NHP': 'Performa Unit NHP',
     'unit-NHC': 'Performa Unit NHC',
     'unit-KG': 'Performa Unit KG',
+    'progress': 'Team Progress Board',
+    'notes': 'Catatan & Notes Tim',
+    'digmar': 'Sosmed Analytics',
     'leads': 'Leads & Campaign',
     'promo': 'Biaya Promosi',
+    'aduan': 'Customer Care & Aduan',
+    'spv-report': 'Laporan Divisi',
+    'report': 'Laporan Kinerja',
     'targets': 'Pengaturan Target Revenue',
+    'master-data': 'Master Data Sistem',
     'users': 'Manajemen Akses Pengguna',
     'profile': 'Profil Pengguna'
   };
@@ -420,6 +443,11 @@ const setTheme = (mode) => {
   themePreference.value = mode;
   localStorage.setItem('APP_THEME', mode);
 
+  // Jika store mendukung method setTheme
+  if (typeof store.setTheme === 'function') {
+    store.setTheme(mode);
+  }
+
   if (mode === 'dark') {
     applyDarkModeState(true);
   } else if (mode === 'light') {
@@ -430,6 +458,27 @@ const setTheme = (mode) => {
   }
 
   isThemeModalOpen.value = false;
+};
+
+// --- EFEK SCROLL & AUTO HIDE HEADER ---
+const handleScroll = () => {
+  const currentScrollY = window.scrollY;
+
+  // 1. Ubah background ke gradasi lebih tebal + blur saat scrolled > 20px
+  if (currentScrollY > 20) {
+    isScrolled.value = true;
+  } else {
+    isScrolled.value = false;
+  }
+
+  // 2. Hide header jika swipe up (scroll ke bawah) > 80px, show jika swipe down (scroll ke atas)
+  if (currentScrollY > 80 && currentScrollY > lastScrollY) {
+    isHeaderHidden.value = true;
+  } else {
+    isHeaderHidden.value = false;
+  }
+
+  lastScrollY = currentScrollY;
 };
 
 // --- HELPER DATES ---
@@ -462,7 +511,18 @@ onMounted(() => {
     systemThemeQuery.addEventListener('change', handleSystemThemeChange);
   }
 
+  // Pasang scroll listener
+  window.addEventListener('scroll', handleScroll, { passive: true });
+
+  // Terapkan tema awal
   setTheme(savedTheme);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+  if (systemThemeQuery && systemThemeQuery.removeEventListener) {
+    systemThemeQuery.removeEventListener('change', handleSystemThemeChange);
+  }
 });
 
 watch(() => store.filterDates, (newDates) => {

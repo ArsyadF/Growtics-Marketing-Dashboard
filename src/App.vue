@@ -94,8 +94,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { store } from './store/index.js';
+
+let touchStartX = 0;
+let touchStartY = 0;
 
 // State Sidebar Mobile Open/Close
 const isSidebarOpen = ref(false);
@@ -113,7 +116,8 @@ import Modals from './components/Modals.vue';
 import BottomNav from './components/BottomNav.vue';
 
 // Import Views Utama (Existing)
-import DashboardMain from './views/Dashboard.vue';
+import PageStaffDashboard from './views/PageStaffDashboard.vue';
+import PageSummary from './views/PageSummary.vue';
 import PageUnit from './views/PageUnit.vue';
 import PageLeads from './views/PageLeads.vue';
 import PagePromo from './views/PagePromo.vue';
@@ -126,7 +130,6 @@ import PageReport from './views/PageReport.vue';
 import PageSpvReport from './views/PageSpvReport.vue';
 import PageMasterData from './views/PageMasterData.vue';
 import PageCustomerCare from './views/PageCustomerCare.vue';
-import PageStaffDashboard from './views/PageStaffDashboard.vue';
 // --- DYNAMIC COMPONENT ROUTING ---
 const activeView = computed(() => {
   if (store.currentPage.startsWith('unit-')) {
@@ -136,6 +139,8 @@ const activeView = computed(() => {
   switch (store.currentPage) {
     case 'main':
       return PageStaffDashboard;
+    case 'summary':
+      return PageSummary;
     case 'notes':
       return PageNote;
     case 'progress':
@@ -177,7 +182,41 @@ watch(() => store.currentPage, (newPage, oldPage) => {
   }
 });
 
+const handleTouchStart = (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+};
+
+const handleTouchEnd = (e) => {
+  const touchEndX = e.changedTouches[0].clientX;
+  const touchEndY = e.changedTouches[0].clientY;
+
+  const deltaX = touchEndX - touchStartX;
+  const deltaY = touchEndY - touchStartY;
+
+  // Pastikan swipe mendatar (bukan scroll vertikal) dan jarak swipe > 70px
+  if (deltaX > 70 && Math.abs(deltaY) < 50) {
+    // Jika swipe dari pinggir kiri (kurang dari 50px dari tepi layar)
+    if (touchStartX < 50) {
+      // Buka sidebar
+      isSidebarOpen.value = true;
+    }
+  }
+};
+
+
 // --- HOOK INISIALISASI UTAMA & RESTORE LOGIN ---
+
+onUnmounted(() => {
+  window.removeEventListener('touchstart', handleTouchStart);
+  window.removeEventListener('touchend', handleTouchEnd);
+});
+
+onMounted(() => {
+  window.addEventListener('touchstart', handleTouchStart, { passive: true });
+  window.addEventListener('touchend', handleTouchEnd, { passive: true });
+});
+
 onMounted(async () => {
   store.initTheme();
   store.initThemeColor();

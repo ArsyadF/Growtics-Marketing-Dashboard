@@ -3,8 +3,10 @@
   <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
     
     <!-- 1. HEADER MENYAPA STAF -->
-    <div class="glass-card bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 p-5 rounded-3xl text-white shadow-lg relative overflow-hidden">
-  <!-- Ornamen Dekoratif Background -->
+    <div class="bg-theme-gradient from-emerald-600 via-teal-600 to-cyan-600 p-5 rounded-3xl text-white shadow-lg relative overflow-hidden">
+  <!-- <div class="bg-theme-gradient p-5 rounded-3xl text-white shadow-lg relative overflow-hidden"> -->
+  
+        <!-- Ornamen Dekoratif Background -->
   <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
   
   <div class="relative z-10 flex items-center justify-between">

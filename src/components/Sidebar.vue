@@ -35,7 +35,7 @@
             v-if="!isCollapsed" 
             class="text-sm font-bold text-slate-800 dark:text-slate-100 whitespace-nowrap tracking-wide"
           >
-            Growtics NHP-G3
+            NHP-Group3
           </h1>
         </button>
 
@@ -104,37 +104,18 @@
           <li v-if="store.canAccessPage('summary') && isMenuVisible('Unit Summary', 'rekap')" class="flex justify-center">
             <a 
               href="#" 
-              @click.prevent="navigate('rekap')" 
+              @click.prevent="navigate('summary')" 
               class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all"
               :class="[
-                activePage === 'rekap' 
+                activePage === 'summary' 
                   ? 'bg-theme-gradient text-white font-bold shadow-sm' 
                   : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
                 isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
               ]"
               :title="isCollapsed ? 'Unit Summary' : ''"
             >
-              <i class="fa-solid fa-house text-sm shrink-0"></i>
-              <span v-if="!isCollapsed" class="whitespace-nowrap truncate">Unit Summary</span>
-            </a>
-          </li>
-
-          <!-- 2. 📝 NOTES / CATATAN (Stand-Alone) -->
-          <li v-if="isLoggedIn && isMenuVisible('Catatan Pribadi Notes', 'notes')" class="flex justify-center">
-            <a 
-              href="#" 
-              @click.prevent="navigate('notes')" 
-              class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all"
-              :class="[
-                activePage === 'notes' 
-                  ? 'bg-theme-gradient text-white font-bold shadow-sm' 
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
-                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
-              ]"
-              :title="isCollapsed ? 'Notes / Catatan' : ''"
-            >
-              <i class="fa-solid fa-note-sticky text-sm shrink-0"></i>
-              <span v-if="!isCollapsed" class="whitespace-nowrap truncate">Notes</span>
+              <i class="fa-solid fa-chart-line text-sm shrink-0"></i>
+              <span v-if="!isCollapsed" class="whitespace-nowrap truncate">Business Summary</span>
             </a>
           </li>
 
@@ -150,7 +131,7 @@
                 class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all outline-none cursor-pointer mt-1"
                 :class="[
                   isGroupActive(['unit-NHP', 'unit-NHC', 'unit-KG']) 
-                      ? 'bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold' 
+                      ? 'bg-theme-gradient/20 dark:bg-theme-gradient/20 text-theme dark:text-theme font-bold' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
                   isCollapsed ? 'justify-center px-0' : 'justify-between px-3'
                 ]"
@@ -158,7 +139,7 @@
               >
                 <div class="flex items-center gap-3 min-w-0" :class="isCollapsed ? 'justify-center w-full' : ''">
                   <i class="fa-solid fa-building text-sm shrink-0"></i>
-                  <span v-if="!isCollapsed" class="whitespace-nowrap truncate">Unit</span>
+                  <span v-if="!isCollapsed" class="whitespace-nowrap truncate">Business Unit</span>
                 </div>
                 <i 
                   v-if="!isCollapsed" 
@@ -171,17 +152,17 @@
                 <ul v-show="dropdowns.units || isCollapsed || searchMenuQuery" class="mt-1 space-y-1" :class="isCollapsed ? 'px-0' : 'pl-3 border-l-2 border-slate-200 dark:border-slate-800 ml-4'">
                   <li v-if="hasUnitAccess('NHP') && isMenuVisible('Nur Hidayah Press NHP', 'unit-NHP')">
                     <a href="#" @click.prevent="navigate('unit-NHP')" class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg" :class="activePage === 'unit-NHP' ? 'bg-theme-gradient text-white font-bold' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50', isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5'">
-                      <i class="fa-solid fa-building-user text-xs"></i><span v-if="!isCollapsed" class="truncate">Nur Hidayah Press</span>
+                      <i class="fa-solid fa-book-open text-xs"></i><span v-if="!isCollapsed" class="truncate">Nur Hidayah Press</span>
                     </a>
                   </li>
                   <li v-if="hasUnitAccess('NHC') && isMenuVisible('Nusaragam Pengaosan NHC', 'unit-NHC')">
                     <a href="#" @click.prevent="navigate('unit-NHC')" class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg" :class="activePage === 'unit-NHC' ? 'bg-theme-gradient text-white font-bold' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50', isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5'">
-                      <i class="fa-solid fa-building-user text-xs"></i><span v-if="!isCollapsed" class="truncate">Nusaragam x Pengaosan</span>
+                      <i class="fa-solid fa-shirt text-xs"></i><span v-if="!isCollapsed" class="truncate">Nusaragam x Pengaosan</span>
                     </a>
                   </li>
                   <li v-if="hasUnitAccess('KG') && isMenuVisible('Karta Grafika KG', 'unit-KG')">
                     <a href="#" @click.prevent="navigate('unit-KG')" class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg" :class="activePage === 'unit-KG' ? 'bg-theme-gradient text-white font-bold' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50', isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5'">
-                      <i class="fa-solid fa-building-user text-xs"></i><span v-if="!isCollapsed" class="truncate">Karta Grafika</span>
+                      <i class="fa-solid fa-print text-xs"></i><span v-if="!isCollapsed" class="truncate">Karta Grafika</span>
                     </a>
                   </li>
                 </ul>
@@ -200,7 +181,7 @@
                 class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all outline-none cursor-pointer mt-1"
                 :class="[
                   isGroupActive(['progress', 'digmar', 'leads', 'spv-report']) 
-                    ? 'bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 font-bold' 
+                    ? 'text-theme dark:text-theme font-bold bg-theme-gradient/20 dark:bg-theme-gradient/20' 
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
                   isCollapsed ? 'justify-center px-0' : 'justify-between px-3'
                 ]"
@@ -259,6 +240,25 @@
                       <i class="fa-solid fa-file-invoice-dollar text-xs"></i><span v-if="!isCollapsed" class="truncate">Executive Report</span>
                     </a>
                   </li>
+
+                   <!-- 2. 📝 NOTES / CATATAN (Stand-Alone) -->
+          <li v-if="isLoggedIn && isMenuVisible('Catatan Pribadi Notes', 'notes')" class="flex justify-center">
+            <a 
+              href="#" 
+              @click.prevent="navigate('notes')" 
+              class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all"
+              :class="[
+                activePage === 'notes' 
+                  ? 'bg-theme-gradient text-white font-bold shadow-sm' 
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
+                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3'
+              ]"
+              :title="isCollapsed ? 'Notes / Catatan' : ''"
+            >
+              <i class="fa-solid fa-note-sticky text-sm shrink-0"></i>
+              <span v-if="!isCollapsed" class="whitespace-nowrap truncate">Notes</span>
+            </a>
+          </li>
         
 
             <!-- 7. ⚙️ SYSTEM SETTINGS (ACCORDION GROUP - SUPERADMIN KHUSUS) -->
@@ -309,7 +309,7 @@
       </nav>
 
       <!-- Bottom Widget: Profil User -->
-      <div class="p-1.5 m-2 md:mb-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-700/40 flex items-center justify-center shrink-0">
+      <div class="p-1.5 m-2 bottom-[max(1rem,env(safe-area-inset-bottom))] md:mb-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-slate-200/50 dark:border-slate-700/40 flex items-center justify-center shrink-0">
         <button 
           v-if="!isLoggedIn" 
           @click="$emit('open-login')" 

@@ -301,12 +301,24 @@
               >
             </div>
 
-            <button 
-              type="submit" 
-              class="w-full bg-theme-gradient text-white py-2.5 rounded-xl font-bold text-xs shadow-md hover:opacity-95 transition-all mt-2 cursor-pointer"
-            >
-              Simpan Analytics
-            </button>
+             <div class="flex justify-end gap-2 ml-auto">
+                <button 
+                  @click="isModalOpen = false" 
+                  type="button" 
+                  :disabled="isSubmitting"
+                  class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl font-bold cursor-pointer disabled:opacity-50"
+                >
+                  Batal
+                </button>
+                <button 
+                  type="submit" 
+                  :disabled="isSubmitting"
+                  class="bg-theme-gradient text-white px-5 py-2 rounded-xl font-bold shadow-md cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                >
+                  <i v-if="isSubmitting" class="fa-solid fa-circle-notch fa-spin text-xs"></i>
+                  <span>{{ isSubmitting ? 'Memproses...' : 'Simpan Analytics' }}</span>
+                </button>
+              </div>
           </form>
         </div>
       </div>
