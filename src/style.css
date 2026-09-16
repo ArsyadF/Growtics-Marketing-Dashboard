@@ -10,17 +10,31 @@
 /* ==========================================================================
    2. GLOBAL BASE STYLES
    ========================================================================== */
-:root {
+
   /* Default Warna Utama (Hijau) */
-  --primary-color: #149B73;
+/* :root {
+    --primary-color: #149B73;
   --primary-light: #2EE59D;
   --primary-text: #1caa80;
+} */
+
+ /* Default Warna Utama (Hijau) */
+:root {
+  --primary-color: rgb(5 150 105);
+  --primary-light: rgb(5 150 105);
+  --primary-text: rgb(5 150 105);
 }
 
 /* Utilitas Tailwind Kustom menggunakan CSS Variable */
-.bg-theme-gradient {
+/* .bg-theme-gradient {
   background-image: linear-gradient(to top right, var(--primary-color), var(--primary-light));
+} */
+
+.bg-theme-gradient {
+  background-color: var(--primary-color);
+  background-image: none; /* Memastikan tidak ada sisa gradien dari utilitas lain */
 }
+
 
 .text-theme {
   color: var(--primary-text);

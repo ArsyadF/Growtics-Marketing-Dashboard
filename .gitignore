@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# .gitignore
+input database json ke firestore.txt
+serviceAccountKeylocal.json
+serviceAccountKeyprod.json
+data.json
+

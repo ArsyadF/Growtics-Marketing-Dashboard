@@ -5,7 +5,6 @@ import { api } from '../services/api';
 export const store = reactive({
   // Status Akses & UI State Global
   isAccessGranted: false,
-  isDarkMode: false,
   isSidebarCollapsed: false,
   isMobileSidebarOpen: false,
   isLoading: false,
@@ -25,10 +24,11 @@ export const store = reactive({
   // Database State Global
   db: {
     revenue: [],
-    promo: [],    // Sesuai dengan Dashboard.vue & PagePromo.vue
+    promo: [],
     leads: [],
     users: [],
-    master: {}    // Sesuai dengan TargetTahunIni & Passcode
+    programs: [], // Untuk Kanban Program Tim
+    master: {}    // Terhubung ke Target & Master Entitas
   },
 
   // Centralized Modal & Alert Management
@@ -61,7 +61,6 @@ export const store = reactive({
     const savedTheme = localStorage.getItem('THEME_PREFERENCE') || 'system';
     this.setTheme(savedTheme);
 
-    // Dynamic listener perubahan tema OS
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
       if (this.themePreference === 'system') {
         this.applyTheme(e.matches);
@@ -88,6 +87,10 @@ export const store = reactive({
     } else {
       document.documentElement.classList.remove('dark');
     }
+  },
+
+  toggleDarkMode() {
+    this.setTheme(this.isDarkMode ? 'light' : 'dark');
   },
 
   // --- METHODS AKSEN WARNA ---
@@ -107,14 +110,11 @@ export const store = reactive({
     if (preset) {
       this.setThemeColor(preset.hex, preset.lightHex);
     } else {
-      this.setThemeColor(savedColor); // Dukungan Color Wheel
+      this.setThemeColor(savedColor);
     }
   },
 
-
-  // --- METHODS ---
-
-  // 1. Alert Custom Modal Handler
+  // --- METHODS MODAL & ALERT ---
   openAlert(title, message, onConfirm = null, type = 'warning') {
     this.alertPayload = { title, message, onConfirm, type };
     this.activeModal = 'alert';
@@ -125,51 +125,36 @@ export const store = reactive({
     this.alertPayload = { title: '', message: '', type: 'info', onConfirm: null };
   },
 
-  // 2. Dark Mode Toggle
-  toggleDarkMode() {
-    this.isDarkMode = !this.isDarkMode;
-    if (this.isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  },
-
-  // 3. Control Modal Pop-up
-  openModal(name, payload = null) {
-    this.activeModal = name;
-    this.editPayload = payload;
+openModal(modalName, itemData = null) {
+    this.activeModal = modalName;
+    this.selectedItemForEdit = itemData;
   },
 
   closeModal() {
     this.activeModal = null;
-    this.editPayload = null;
+    this.selectedItemForEdit = null;
   },
+  
 
-  // Array untuk menyimpan history notifikasi
+  // --- METHODS NOTIFIKASI ---
   notifications: JSON.parse(localStorage.getItem('APP_NOTIFICATIONS')) || [
     { id: 1, title: 'Sistem Siap', message: 'Selamat datang di Dashboard Marketing', time: 'Baru saja', read: false }
   ],
 
-  // --- METHOD NOTIFIKASI ---
   addNotification(title, message, type = 'info') {
     const newNotif = {
       id: Date.now(),
       title,
       message,
-      type, // 'success', 'warning', 'info', 'danger'
+      type,
       time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
       read: false
     };
 
-    // Tambahkan ke paling atas list
     this.notifications.unshift(newNotif);
-
-    // Batasi maksimal 20 notifikasi terakhir
     if (this.notifications.length > 20) {
       this.notifications.pop();
     }
-
     localStorage.setItem('APP_NOTIFICATIONS', JSON.stringify(this.notifications));
   },
 
@@ -183,47 +168,49 @@ export const store = reactive({
     localStorage.removeItem('APP_NOTIFICATIONS');
   },
 
-// 4. Load Full Database dari Firestore (via api.js)
+  // --- DATABASE OPERATIONS ---
   async loadFullDatabase() {
-    this.isLoading = true;
-    try {
-      const res = await api.getAllData();
-      this.parseDB(res);
+  this.isLoading = true;
+  try {
+    const res = await api.getAllData();
+    this.parseDB(res);
 
-      // FIX: Pulihkan session currentUser dari database terbaru setelah load
-      if (this.currentUser && this.currentUser.email) {
-        const foundUser = this.db.users.find(u => 
-          (u.email && u.email === this.currentUser.email) || 
-          (u.Email && u.Email === this.currentUser.email)
-        );
-        if (foundUser) {
-          // Perbarui data user aktif dengan data terbaru dari database (termasuk permissions terbaru)
-          this.setCurrentUser({
-            ...this.currentUser,
-            ...foundUser
-          });
-        }
+    // Sync Data User Aktif jika sudah login
+    if (this.currentUser && this.currentUser.email) {
+      const foundUser = this.db.users.find(u => 
+        (u.email && u.email.toLowerCase() === this.currentUser.email.toLowerCase()) || 
+        (u.Email && u.Email.toLowerCase() === this.currentUser.email.toLowerCase())
+      );
+      if (foundUser) {
+        this.setCurrentUser({
+          ...this.currentUser,
+          ...foundUser
+        });
       }
-    } catch (err) {
-      console.error("Gagal memuat data dari Firestore:", err);
-    } finally {
-      this.isLoading = false;
     }
-  },
+  } catch (err) {
+    console.error("Gagal memuat data dari Firestore:", err);
+  } finally {
+    this.isLoading = false;
+  }
+},
 
-  // 5. Parse DB (Sinkronkan Data Firestore ke Reactive State)
-  parseDB(data) {
-    if (!data) return;
-    const parsed = typeof data === 'string' ? JSON.parse(data) : data;
-    
-    this.db.revenue = Array.isArray(parsed.revenue) ? parsed.revenue : [];
-    this.db.promo = Array.isArray(parsed.promo) ? parsed.promo : (Array.isArray(parsed.promosi) ? parsed.promosi : []);
-    this.db.leads = Array.isArray(parsed.leads) ? parsed.leads : [];
-    this.db.users = Array.isArray(parsed.users) ? parsed.users : [];
-    this.db.master = parsed.master || parsed.settings || {};
-  },
+ parseDB(data) {
+  if (!data) return;
+  const parsed = typeof data === 'string' ? JSON.parse(data) : data;
 
-  // 6. Autentikasi & Pengelolaan Sesi User
+  this.db.revenue = Array.isArray(parsed.revenue) ? parsed.revenue : [];
+  this.db.promo = Array.isArray(parsed.promo) ? parsed.promo : (Array.isArray(parsed.promosi) ? parsed.promosi : []);
+  this.db.leads = Array.isArray(parsed.leads) ? parsed.leads : [];
+  this.db.users = Array.isArray(parsed.users) ? parsed.users : [];
+  this.db.programs = Array.isArray(parsed.programs) ? parsed.programs : [];
+  this.db.master = parsed.master || parsed.settings || {};
+  
+  // MAP DATA FIRESTORE (Dengan pengamanan Array.isArray dan fallback nama properti)
+  this.db.aduanList = Array.isArray(parsed.aduanList) ? parsed.aduanList : (Array.isArray(parsed.aduan) ? parsed.aduan : []);
+  this.db.spvReports = Array.isArray(parsed.spvReports) ? parsed.spvReports : (Array.isArray(parsed.spv_reports) ? parsed.spv_reports : []);
+},
+
   setCurrentUser(user) {
     this.currentUser = user;
     if (user) {
@@ -240,34 +227,23 @@ export const store = reactive({
     this.currentPage = 'main';
   },
 
-  isSidebarCollapsed: false,
   toggleSidebarCollapse() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   },
 
-  currentUser: null,
-  
- // 1. Cek apakah user bisa BUKA halaman tertentu
-
-// 1. Cek apakah user bisa BUKA halaman tertentu
+  // --- PERMISSIONS & ROUTING ---
   canAccessPage(pageId) {
-    // 1. Pengecualian mutlak: Halaman profil SELALU bisa dibuka jika sudah login/masuk
     if (pageId === 'profile') return true;
-
-    // Jika passcode publik belum dimasukkan/divalidasi, tolak semua akses halaman
     if (!this.isAccessGranted) return false;
 
-    // Jika belum login, cek apakah halaman ini diizinkan secara publik (misal: main)
     if (!this.currentUser) {
       if (pageId === 'main') return true; 
       return false;
     }
     
-    // Superadmin memiliki akses penuh
     const role = this.currentUser.role || this.currentUser.Role;
     if (role === 'SUPERADMIN') return true;
     
-    // Periksa granular permissions (checkbox matrix)
     const perms = this.currentUser.permissions;
     if (perms && perms[pageId] !== undefined) {
       return !!perms[pageId]?.access;
@@ -276,7 +252,20 @@ export const store = reactive({
     return true;
   },
 
-  // 2. Cek apakah user diizinkan TAMBAH/EDIT data di halaman aktif
+  // Di dalam objek store pada src/store/index.js
+
+canAccessPage(pageKey) {
+  if (!this.currentUser) return pageKey === 'main';
+  const role = (this.currentUser.role || this.currentUser.Role || '').toUpperCase();
+  if (role === 'SUPERADMIN') return true;
+
+  if (this.currentUser.permissions && this.currentUser.permissions[pageKey]) {
+    return !!this.currentUser.permissions[pageKey].access;
+  }
+
+  return true; // Fallback jika perizinan belum diset
+},
+
   canEditPage(pageId) {
     if (!this.currentUser) return false;
     
@@ -288,68 +277,15 @@ export const store = reactive({
       return !!(perms[pageId]?.access && perms[pageId]?.canEdit);
     }
     
-    // Fallback sistem lama: Anggap semua admin unit bisa edit unitnya sendiri
     if (pageId.startsWith('revenue') || pageId.startsWith('leads') || pageId.startsWith('promo')) {
-        return true; 
+      return true; 
     }
 
     return false;
   },
 
-    // Contoh di store.js atau fungsi navigasi sidebar
-navigate(page) {
-  this.currentPage = page;
-  
-  // Mendaftarkan state riwayat ke browser/WebView agar tombol back android mendeteksinya
-  window.history.pushState({ page: page }, "", `#${page}`);
-},
-
-// Di dalam src/store.js
-
-// export const store = reactive({
-//   // State Filter Tanggal
-//   filterDates: {
-//     start: '',
-//     end: ''
-//   },
-  
-  // State Tema
-  themePreference: 'system', // 'light' | 'dark' | 'system'
-  isDarkMode: false,
-
-  // Inisialisasi Tema
-  initTheme() {
-    const savedTheme = localStorage.getItem('THEME_PREFERENCE') || 'system';
-    this.setTheme(savedTheme);
-
-    // Listener perubahan tema sistem HP/Laptop
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      if (this.themePreference === 'system') {
-        this.applyTheme(e.matches);
-      }
-    });
-  },
-
-  // Set & Simpan Tema ke LocalStorage
-  setTheme(pref) {
-    this.themePreference = pref;
-    localStorage.setItem('THEME_PREFERENCE', pref);
-
-    if (pref === 'system') {
-      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      this.applyTheme(systemDark);
-    } else {
-      this.applyTheme(pref === 'dark');
-    }
-  },
-
-  // Apply Class 'dark' ke elemen HTML
-  applyTheme(isDark) {
-    this.isDarkMode = isDark;
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  },
+  navigate(page) {
+    this.currentPage = page;
+    window.history.pushState({ page: page }, "", `#${page}`);
+  }
 });

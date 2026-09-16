@@ -2,7 +2,7 @@ import { initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { readFileSync } from 'fs';
 
-const ENABLE_SEEDING = false;
+const ENABLE_SEEDING = false; // Set ke false untuk menonaktifkan seeding
 
 if (!ENABLE_SEEDING) {
   console.log("Seeding dimatikan.");
