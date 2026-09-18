@@ -47,8 +47,17 @@ export const store = reactive({
   activeThemeColor: localStorage.getItem('APP_THEME_COLOR') || '#149B73',
 
   // Preset Warna Aksen
-  colorPresets: [
-    { id: 'green', name: 'Hijau', hex: '#149B73', lightHex: '#2EE59D' },
+  // colorPresets: [
+  //   { id: 'green', name: 'Hijau', hex: '#0db988', lightHex: '#2EE59D' },
+  //   { id: 'orange', name: 'Kuning Oranye', hex: '#fec159', lightHex: '#FBBF24' },
+  //   { id: 'blue', name: 'Biru', hex: '#50a3fb', lightHex: '#59b4ff' },
+  //   { id: 'rose', name: 'Pink', hex: '#ff718f', lightHex: '#ff889a' },
+  //   { id: 'tosca', name: 'Tosca', hex: '#0D9488', lightHex: '#2DD4BF' },
+  //   { id: 'red', name: 'Merah', hex: '#DC2626', lightHex: '#F87171' }
+  // ],
+
+    colorPresets: [
+    { id: 'green', name: 'Hijau', hex: '#0db988', lightHex: '#2EE59D' },
     { id: 'orange', name: 'Kuning Oranye', hex: '#F59E0B', lightHex: '#FBBF24' },
     { id: 'blue', name: 'Biru', hex: '#3195ff', lightHex: '#59b4ff' },
     { id: 'rose', name: 'Pink', hex: '#ef476b', lightHex: '#ff889a' },

@@ -3,27 +3,40 @@
   <section id="page-unit" class="page-section space-y-4 md:space-y-6">
     <!-- Filter Header Card -->
     <div class="glass-card p-4 rounded-2xl md:rounded-1xl space-y-3">
-      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+      <div
+        class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
+      >
         <div>
           <!-- <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">
             Filter Khusus Unit <span class="from-[#149B73]">{{ selectedUnitName }}</span>
           </h3> -->
-          <p class="text-slate-400 text-xs">Sesuaikan rekap berdasarkan bulan, divisi, atau platform.</p>
+          <p class="text-slate-400 text-xs">
+            Sesuaikan rekap berdasarkan bulan, divisi, atau platform.
+          </p>
         </div>
-        <button 
-         v-if="store.canEditPage('unit-' + selectedUnitName)"  
-          @click="store.openModal('revenue', { Unit: selectedUnitName })" 
-          class="bg-theme-gradient hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
+        <button
+          v-if="store.canEditPage('unit-' + selectedUnitName)"
+          @click="store.openModal('revenue', { Unit: selectedUnitName })"
+          class="bg-button hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
         >
-          <i class="fa-solid fa-plus mr-1.5"></i>Input Revenue {{ selectedUnitName }}
+          <i class="fa-solid fa-plus mr-1.5"></i>Input Revenue
+          {{ selectedUnitName }}
         </button>
       </div>
 
       <!-- Filters Row -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80">
+      <div
+        class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80"
+      >
         <div>
-          <label class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Filter Bulan</label>
-          <select v-model="filterMonth" class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none">
+          <label
+            class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+            >Filter Bulan</label
+          >
+          <select
+            v-model="filterMonth"
+            class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none"
+          >
             <option value="ALL">Semua Bulan (Jan - Des)</option>
             <option value="0">Januari</option>
             <option value="1">Februari</option>
@@ -41,8 +54,14 @@
         </div>
 
         <div>
-          <label class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Filter Divisi</label>
-          <select v-model="filterDivisi" class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none">
+          <label
+            class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+            >Filter Divisi</label
+          >
+          <select
+            v-model="filterDivisi"
+            class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none"
+          >
             <option value="ALL">Semua Divisi</option>
             <option value="CS Deal">CS Deal</option>
             <option value="Zona 1A">Zona 1A</option>
@@ -55,8 +74,14 @@
         </div>
 
         <div>
-          <label class="block text-[10px] font-semibold text-slate-400 uppercase mb-1">Filter Platform</label>
-          <select v-model="filterPlatform" class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none">
+          <label
+            class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+            >Filter Platform</label
+          >
+          <select
+            v-model="filterPlatform"
+            class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none"
+          >
             <option value="ALL">Semua Platform</option>
             <option value="Shopee">Shopee</option>
             <option value="TikTok Shop">TikTok Shop</option>
@@ -76,23 +101,37 @@
 
     <!-- Summary Metrics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6">
-      <div class="glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl border-l-4 border-l-emerald-400">
-        <p class="text-slate-400 text-[11px] md:text-xs">Revenue Unit (Filtered)</p>
-        <h3 class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100">
+      <div
+        class="glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl border-l-4 border-l-emerald-400"
+      >
+        <p class="text-slate-400 text-[11px] md:text-xs">
+          Revenue Unit (Filtered)
+        </p>
+        <h3
+          class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100"
+        >
           {{ formatRupiah(totalFilteredRevenue) }}
         </h3>
       </div>
 
-      <div class="glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl border-l-4 border-l-blue-400">
+      <div
+        class="glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl border-l-4 border-l-blue-400"
+      >
         <p class="text-slate-400 text-[11px] md:text-xs">Target Unit</p>
-        <h3 class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100">
+        <h3
+          class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100"
+        >
           {{ formatRupiah(unitTarget) }}
         </h3>
       </div>
 
-      <div class="glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl border-l-4 border-l-amber-400">
+      <div
+        class="glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl border-l-4 border-l-amber-400"
+      >
         <p class="text-slate-400 text-[11px] md:text-xs">% Kontribusi Global</p>
-        <h3 class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100">
+        <h3
+          class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100"
+        >
           {{ globalContribution }}%
         </h3>
       </div>
@@ -100,13 +139,20 @@
 
     <!-- Monthly & Quarterly Rekap + Trend Chart -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
-      
       <!-- 1. Rekap Revenue Per Bulan -->
-      <div class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
-        <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm">Rekap Revenue Per Bulan</h3>
+      <div
+        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full"
+      >
+        <h3
+          class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+        >
+          Rekap Revenue Per Bulan
+        </h3>
         <div class="overflow-y-auto max-h-[260px] pr-1">
           <table class="min-w-full text-xs text-left">
-            <thead class="bg-white/40 dark:bg-slate-800/60 text-slate-400 sticky top-0 backdrop-blur-md">
+            <thead
+              class="bg-white/40 dark:bg-slate-800/60 text-slate-400 sticky top-0 backdrop-blur-md"
+            >
               <tr>
                 <th class="py-2 px-3">Bulan</th>
                 <th class="py-2 px-3 text-right">Revenue</th>
@@ -114,11 +160,20 @@
             </thead>
             <tbody class="divide-y dark:divide-slate-800/80">
               <tr v-if="monthlyRecap.length === 0">
-                <td colspan="2" class="text-center py-3 text-slate-400">Belum ada data.</td>
+                <td colspan="2" class="text-center py-3 text-slate-400">
+                  Belum ada data.
+                </td>
               </tr>
-              <tr v-else v-for="(row, idx) in monthlyRecap" :key="idx" class="hover:bg-white/20 dark:hover:bg-slate-800/40">
+              <tr
+                v-else
+                v-for="(row, idx) in monthlyRecap"
+                :key="idx"
+                class="hover:bg-white/20 dark:hover:bg-slate-800/40"
+              >
                 <td class="py-2 px-3 font-medium">{{ row.bulan }}</td>
-                <td class="py-2 px-3 text-right font-semibold text-theme">{{ formatRupiah(row.revenue) }}</td>
+                <td class="py-2 px-3 text-right font-semibold text-theme">
+                  {{ formatRupiah(row.revenue) }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -126,23 +181,40 @@
       </div>
 
       <!-- 2. Rekap Triwulan -->
-      <div class="lg:col-span-3 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
-        <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm">Rekap Triwulan</h3>
+      <div
+        class="lg:col-span-3 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full"
+      >
+        <h3
+          class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+        >
+          Rekap Triwulan
+        </h3>
         <div class="space-y-2">
-          <div 
-            v-for="(q, idx) in quarterlyRecap" 
-            :key="idx" 
+          <div
+            v-for="(q, idx) in quarterlyRecap"
+            :key="idx"
             class="p-2.5 bg-white/30 dark:bg-slate-800/40 rounded-xl border border-white/20 dark:border-slate-700/50 flex justify-between items-center"
           >
-            <span class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ q.quarter }}</span>
-            <span class="text-xs font-bold text-theme">{{ formatRupiah(q.revenue) }}</span>
+            <span
+              class="text-xs font-bold text-slate-500 dark:text-slate-400"
+              >{{ q.quarter }}</span
+            >
+            <span class="text-xs font-bold text-theme">{{
+              formatRupiah(q.revenue)
+            }}</span>
           </div>
         </div>
       </div>
 
       <!-- 3. Chart Trend Revenue Bulanan -->
-      <div class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
-        <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm">Grafik Trend Revenue Bulanan</h3>
+      <div
+        class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full"
+      >
+        <h3
+          class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+        >
+          Grafik Trend Revenue Bulanan
+        </h3>
         <div class="chart-container relative h-60 w-full">
           <canvas ref="chartUnitMonthlyTrendRef"></canvas>
         </div>
@@ -151,11 +223,19 @@
 
     <!-- Detail Rekap Divisi/Platform & Platform Contribution Chart -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
-      <div class="lg:col-span-6 glass-card p-4 md:p-6 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
-        <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 md:mb-4 text-xs md:text-sm">Rekap per Divisi & Platform</h3>
+      <div
+        class="lg:col-span-6 glass-card p-4 md:p-6 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full"
+      >
+        <h3
+          class="font-bold text-slate-800 dark:text-slate-100 mb-3 md:mb-4 text-xs md:text-sm"
+        >
+          Rekap per Divisi & Platform
+        </h3>
         <div class="overflow-x-auto max-h-[260px]">
           <table class="min-w-full text-xs text-left">
-            <thead class="bg-white/40 dark:bg-slate-800/60 text-slate-400 sticky top-0 backdrop-blur-md">
+            <thead
+              class="bg-white/40 dark:bg-slate-800/60 text-slate-400 sticky top-0 backdrop-blur-md"
+            >
               <tr>
                 <th class="py-2 px-3">Divisi / Platform</th>
                 <th class="py-2 px-3 text-right">Revenue</th>
@@ -163,19 +243,34 @@
             </thead>
             <tbody class="divide-y dark:divide-slate-800/80">
               <tr v-if="detailRecap.length === 0">
-                <td colspan="2" class="text-center py-3 text-slate-400">Tidak ada detail rekap.</td>
+                <td colspan="2" class="text-center py-3 text-slate-400">
+                  Tidak ada detail rekap.
+                </td>
               </tr>
-              <tr v-else v-for="(item, idx) in detailRecap" :key="idx" class="hover:bg-white/20 dark:hover:bg-slate-800/40">
+              <tr
+                v-else
+                v-for="(item, idx) in detailRecap"
+                :key="idx"
+                class="hover:bg-white/20 dark:hover:bg-slate-800/40"
+              >
                 <td class="py-2 px-3 font-medium">{{ item.label }}</td>
-                <td class="py-2 px-3 text-right font-semibold text-theme">{{ formatRupiah(item.revenue) }}</td>
+                <td class="py-2 px-3 text-right font-semibold text-theme">
+                  {{ formatRupiah(item.revenue) }}
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <div class="lg:col-span-6 glass-card p-4 md:p-6 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full">
-        <h3 class="font-bold text-slate-800 dark:text-slate-100 mb-3 md:mb-4 text-xs md:text-sm">Kontribusi Platform</h3>
+      <div
+        class="lg:col-span-6 glass-card p-4 md:p-6 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full"
+      >
+        <h3
+          class="font-bold text-slate-800 dark:text-slate-100 mb-3 md:mb-4 text-xs md:text-sm"
+        >
+          Kontribusi Platform
+        </h3>
         <div class="chart-container relative h-60 w-full">
           <canvas ref="chartUnitPlatformRef"></canvas>
         </div>
@@ -184,12 +279,18 @@
 
     <!-- Management Data Table (Scrollable & Paginated) -->
     <div class="glass-card p-4 md:p-6 rounded-2xl md:rounded-1xl space-y-4">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-        <h3 class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm">Manajemen Data Revenue Unit {{ selectedUnitName }}</h3>
+      <div
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
+      >
+        <h3
+          class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm"
+        >
+          Manajemen Data Revenue Unit {{ selectedUnitName }}
+        </h3>
         <div class="flex items-center gap-2">
           <span class="text-xs text-slate-400">Tampilkan:</span>
-          <select 
-            v-model="itemsPerPage" 
+          <select
+            v-model="itemsPerPage"
             @change="currentPage = 1"
             class="glass-input rounded-xl p-1.5 text-xs dark:bg-slate-800 outline-none"
           >
@@ -204,56 +305,87 @@
       <!-- Area Scrollable Tabel dengan Sticky Header -->
       <div class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1">
         <table class="min-w-full text-xs text-left">
-          <thead class="bg-white/80 dark:bg-slate-800/90 text-slate-400 sticky top-0 backdrop-blur-md z-10">
+          <thead
+            class="bg-white/80 dark:bg-slate-800/90 text-slate-400 sticky top-0 backdrop-blur-md z-10"
+          >
             <tr>
-              <th @click="sortTable('Tanggal')" class="py-2.5 px-3 cursor-pointer select-none">
+              <th
+                @click="sortTable('Tanggal')"
+                class="py-2.5 px-3 cursor-pointer select-none"
+              >
                 Tanggal <i class="fa-solid fa-sort text-[10px] ml-1"></i>
               </th>
-              <th @click="sortTable('Divisi')" class="py-2.5 px-3 cursor-pointer select-none">
+              <th
+                @click="sortTable('Divisi')"
+                class="py-2.5 px-3 cursor-pointer select-none"
+              >
                 Divisi <i class="fa-solid fa-sort text-[10px] ml-1"></i>
               </th>
-              <th @click="sortTable('Platform')" class="py-2.5 px-3 cursor-pointer select-none">
+              <th
+                @click="sortTable('Platform')"
+                class="py-2.5 px-3 cursor-pointer select-none"
+              >
                 Platform <i class="fa-solid fa-sort text-[10px] ml-1"></i>
               </th>
-              <th @click="sortTable('Revenue')" class="py-2.5 px-3 cursor-pointer select-none">
+              <th
+                @click="sortTable('Revenue')"
+                class="py-2.5 px-3 cursor-pointer select-none"
+              >
                 Revenue <i class="fa-solid fa-sort text-[10px] ml-1"></i>
               </th>
-              <th  v-if="store.canEditPage('unit-' + selectedUnitName)" class="py-2.5 px-4 text-center">Aksi</th>
+              <th
+                v-if="store.canEditPage('unit-' + selectedUnitName)"
+                class="py-2.5 px-4 text-center"
+              >
+                Aksi
+              </th>
             </tr>
           </thead>
 
           <tbody class="divide-y dark:divide-slate-800/80">
             <tr v-if="store.isLoading">
-              <td colspan="5" class="text-center py-4 text-slate-400">Memuat data revenue...</td>
+              <td colspan="5" class="text-center py-4 text-slate-400">
+                Memuat data revenue...
+              </td>
             </tr>
 
             <tr v-else-if="paginatedRevenue.length === 0">
-              <td colspan="5" class="text-center py-4 text-slate-400">Tidak ada data revenue.</td>
+              <td colspan="5" class="text-center py-4 text-slate-400">
+                Tidak ada data revenue.
+              </td>
             </tr>
 
-            <tr 
-              v-else 
-              v-for="item in paginatedRevenue" 
-              :key="item.id || item.Timestamp" 
+            <tr
+              v-else
+              v-for="item in paginatedRevenue"
+              :key="item.id || item.Timestamp"
               class="hover:bg-white/20 dark:hover:bg-slate-800/40"
             >
-              <td class="py-2 px-3">{{ item.Tanggal ? item.Tanggal.substring(0, 10) : '-' }}</td>
-              <td class="py-2 px-3 font-medium">{{ item.Divisi || '-' }}</td>
-              <td class="py-2 px-3">{{ item.Platform || '-' }}</td>
-              <td class="py-2 px-3 font-semibold text-theme">{{ formatRupiah(item.Revenue) }}</td>
-              
-              <td  v-if="store.canEditPage('unit-' + selectedUnitName)" 
-              class="py-2 px-3 text-center space-x-2" style="display:inline-flex">
+              <td class="py-2 px-3">
+                {{ item.Tanggal ? item.Tanggal.substring(0, 10) : "-" }}
+              </td>
+              <td class="py-2 px-3 font-medium">{{ item.Divisi || "-" }}</td>
+              <td class="py-2 px-3">{{ item.Platform || "-" }}</td>
+              <td class="py-2 px-3 font-semibold text-theme">
+                {{ formatRupiah(item.Revenue) }}
+              </td>
+
+              <td
+                v-if="store.canEditPage('unit-' + selectedUnitName)"
+                class="py-2 px-3 text-center space-x-2"
+                style="display: inline-flex"
+              >
                 <button
-                  @click="store.openModal('revenue', item)" 
+                  @click="store.openModal('revenue', item)"
                   class="text-theme hover:text-theme p-1 cursor-pointer"
                   title="Edit Revenue"
                 >
                   <i class="fa-solid fa-pen"></i>
                 </button>
-                <button 
-              
-                @click="hapusRevenue(item.id || item.Timestamp)" class="text-rose-500 hover:text-rose-600 cursor-pointer">
+                <button
+                  @click="hapusRevenue(item.id || item.Timestamp)"
+                  class="text-rose-500 hover:text-rose-600 cursor-pointer"
+                >
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </td>
@@ -263,25 +395,31 @@
       </div>
 
       <!-- Footer Pagination Kontrol -->
-      <div v-if="itemsPerPage !== 'ALL' && totalPages > 1" class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-xs text-slate-400">
+      <div
+        v-if="itemsPerPage !== 'ALL' && totalPages > 1"
+        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-xs text-slate-400"
+      >
         <div>
-          Menampilkan {{ startItem }} - {{ endItem }} dari {{ sortedRevenue.length }} data
+          Menampilkan {{ startItem }} - {{ endItem }} dari
+          {{ sortedRevenue.length }} data
         </div>
         <div class="flex items-center gap-1.5">
-          <button 
-            @click="currentPage--" 
+          <button
+            @click="currentPage--"
             :disabled="currentPage === 1"
             class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
           >
             <i class="fa-solid fa-chevron-left text-[10px]"></i>
           </button>
 
-          <span class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-bold">
+          <span
+            class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-bold"
+          >
             {{ currentPage }} / {{ totalPages }}
           </span>
 
-          <button 
-            @click="currentPage++" 
+          <button
+            @click="currentPage++"
             :disabled="currentPage === totalPages"
             class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
           >
@@ -294,31 +432,41 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
-import { store } from '../store';
-import { api } from '../services/api';
-import Chart from 'chart.js/auto';
+import { ref, computed, watch, onMounted } from "vue";
+import { store } from "../store";
+import { api } from "../services/api";
+import Chart from "chart.js/auto";
 
 const MONTH_NAMES = [
-  'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-  'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
 ];
 
 const selectedUnitName = computed(() => {
-  if (store.currentPage.startsWith('unit-')) {
-    return store.currentPage.replace('unit-', '').toUpperCase();
+  if (store.currentPage.startsWith("unit-")) {
+    return store.currentPage.replace("unit-", "").toUpperCase();
   }
-  return 'NHP';
+  return "NHP";
 });
 
-const filterMonth = ref('ALL');
-const filterDivisi = ref('ALL');
-const filterPlatform = ref('ALL');
+const filterMonth = ref("ALL");
+const filterDivisi = ref("ALL");
+const filterPlatform = ref("ALL");
 
 // State Pagination & Sorting
 const currentPage = ref(1);
-const itemsPerPage = ref('25');
-const sortKey = ref('Tanggal');
+const itemsPerPage = ref("25");
+const sortKey = ref("Tanggal");
 const sortAsc = ref(false);
 
 const chartUnitMonthlyTrendRef = ref(null);
@@ -327,11 +475,11 @@ let trendChartInstance = null;
 let platformChartInstance = null;
 
 const formatRupiah = (val) => {
-  if (!val) return 'Rp 0';
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    maximumFractionDigits: 0
+  if (!val) return "Rp 0";
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0,
   }).format(val);
 };
 
@@ -357,36 +505,46 @@ const globalTargetTotal = computed(() => {
 
 const filteredRevenue = computed(() => {
   const allRevenue = store.db.revenue || [];
-  
-  return allRevenue.filter(item => {
+
+  return allRevenue.filter((item) => {
     if (item.Unit !== selectedUnitName.value) return false;
     if (!isDateInFilter(item.Tanggal)) return false;
 
-    if (filterMonth.value !== 'ALL' && item.Tanggal) {
+    if (filterMonth.value !== "ALL" && item.Tanggal) {
       const month = new Date(item.Tanggal).getMonth();
       if (month !== Number(filterMonth.value)) return false;
     }
 
-    if (filterDivisi.value !== 'ALL' && item.Divisi !== filterDivisi.value) return false;
-    if (filterPlatform.value !== 'ALL' && item.Platform !== filterPlatform.value) return false;
+    if (filterDivisi.value !== "ALL" && item.Divisi !== filterDivisi.value)
+      return false;
+    if (
+      filterPlatform.value !== "ALL" &&
+      item.Platform !== filterPlatform.value
+    )
+      return false;
 
     return true;
   });
 });
 
 const totalFilteredRevenue = computed(() => {
-  return filteredRevenue.value.reduce((acc, curr) => acc + Number(curr.Revenue || 0), 0);
+  return filteredRevenue.value.reduce(
+    (acc, curr) => acc + Number(curr.Revenue || 0),
+    0,
+  );
 });
 
 const globalContribution = computed(() => {
-  if (!globalTargetTotal.value) return '0.0';
-  return ((totalFilteredRevenue.value / globalTargetTotal.value) * 100).toFixed(1);
+  if (!globalTargetTotal.value) return "0.0";
+  return ((totalFilteredRevenue.value / globalTargetTotal.value) * 100).toFixed(
+    1,
+  );
 });
 
 // Rekap Bulanan Terurut Kronologis
 const monthlyRecap = computed(() => {
   const recapMap = {};
-  filteredRevenue.value.forEach(item => {
+  filteredRevenue.value.forEach((item) => {
     if (!item.Tanggal) return;
     const mIdx = new Date(item.Tanggal).getMonth();
     if (isNaN(mIdx)) return;
@@ -397,38 +555,43 @@ const monthlyRecap = computed(() => {
   return Object.keys(recapMap)
     .map(Number)
     .sort((a, b) => a - b)
-    .map(idx => ({
+    .map((idx) => ({
       bulan: MONTH_NAMES[idx],
-      revenue: recapMap[idx]
+      revenue: recapMap[idx],
     }));
 });
 
 const quarterlyRecap = computed(() => {
-  const qMap = { 'Q1 (Jan - Mar)': 0, 'Q2 (Apr - Jun)': 0, 'Q3 (Jul - Sep)': 0, 'Q4 (Okt - Des)': 0 };
-  
-  filteredRevenue.value.forEach(item => {
+  const qMap = {
+    "Q1 (Jan - Mar)": 0,
+    "Q2 (Apr - Jun)": 0,
+    "Q3 (Jul - Sep)": 0,
+    "Q4 (Okt - Des)": 0,
+  };
+
+  filteredRevenue.value.forEach((item) => {
     if (!item.Tanggal) return;
     const month = new Date(item.Tanggal).getMonth();
     const rev = Number(item.Revenue || 0);
 
-    if (month >= 0 && month <= 2) qMap['Q1 (Jan - Mar)'] += rev;
-    else if (month >= 3 && month <= 5) qMap['Q2 (Apr - Jun)'] += rev;
-    else if (month >= 6 && month <= 8) qMap['Q3 (Jul - Sep)'] += rev;
-    else if (month >= 9 && month <= 11) qMap['Q4 (Okt - Des)'] += rev;
+    if (month >= 0 && month <= 2) qMap["Q1 (Jan - Mar)"] += rev;
+    else if (month >= 3 && month <= 5) qMap["Q2 (Apr - Jun)"] += rev;
+    else if (month >= 6 && month <= 8) qMap["Q3 (Jul - Sep)"] += rev;
+    else if (month >= 9 && month <= 11) qMap["Q4 (Okt - Des)"] += rev;
   });
 
-  return Object.keys(qMap).map(q => ({ quarter: q, revenue: qMap[q] }));
+  return Object.keys(qMap).map((q) => ({ quarter: q, revenue: qMap[q] }));
 });
 
 const detailRecap = computed(() => {
   const map = {};
-  filteredRevenue.value.forEach(item => {
-    const key = `${item.Divisi || 'Lainnya'} - ${item.Platform || 'Lainnya'}`;
+  filteredRevenue.value.forEach((item) => {
+    const key = `${item.Divisi || "Lainnya"} - ${item.Platform || "Lainnya"}`;
     if (!map[key]) map[key] = 0;
     map[key] += Number(item.Revenue || 0);
   });
 
-  return Object.keys(map).map(k => ({ label: k, revenue: map[k] }));
+  return Object.keys(map).map((k) => ({ label: k, revenue: map[k] }));
 });
 
 // Sorting Logic
@@ -443,13 +606,13 @@ const sortedRevenue = computed(() => {
 
 // Pagination Calculations
 const totalPages = computed(() => {
-  if (itemsPerPage.value === 'ALL') return 1;
+  if (itemsPerPage.value === "ALL") return 1;
   const perPage = Number(itemsPerPage.value);
   return Math.ceil(sortedRevenue.value.length / perPage) || 1;
 });
 
 const paginatedRevenue = computed(() => {
-  if (itemsPerPage.value === 'ALL') return sortedRevenue.value;
+  if (itemsPerPage.value === "ALL") return sortedRevenue.value;
   const perPage = Number(itemsPerPage.value);
   const start = (currentPage.value - 1) * perPage;
   return sortedRevenue.value.slice(start, start + perPage);
@@ -481,24 +644,29 @@ const sortTable = (key) => {
 
 const hapusRevenue = (docId) => {
   store.openAlert(
-    'Konfirmasi Hapus',
-    'Apakah Anda yakin ingin menghapus data ini?',
+    "Konfirmasi Hapus",
+    "Apakah Anda yakin ingin menghapus data ini?",
     async () => {
       store.isLoading = true;
       try {
-        const res = await api.deleteData('revenues', docId);
+        const res = await api.deleteData("revenues", docId);
         if (res.success) {
           await store.loadFullDatabase();
         } else {
-          store.openAlert('Gagal', 'Gagal menghapus: ' + res.message, null, 'warning');
+          store.openAlert(
+            "Gagal",
+            "Gagal menghapus: " + res.message,
+            null,
+            "warning",
+          );
         }
       } catch (err) {
-        store.openAlert('Error', 'Error: ' + err.message, null, 'warning');
+        store.openAlert("Error", "Error: " + err.message, null, "warning");
       } finally {
         store.isLoading = false;
       }
     },
-    'warning'
+    "warning",
   );
 };
 
@@ -509,45 +677,60 @@ const initCharts = () => {
   if (platformChartInstance) platformChartInstance.destroy();
 
   trendChartInstance = new Chart(chartUnitMonthlyTrendRef.value, {
-    type: 'line',
+    type: "line",
     data: {
-      labels: monthlyRecap.value.map(m => m.bulan.substring(0, 3)),
-      datasets: [{
-        label: 'Revenue',
-        data: monthlyRecap.value.map(m => m.revenue),
-        borderColor: '#10b981',
-        backgroundColor: 'rgba(16, 185, 129, 0.1)',
-        fill: true,
-        tension: 0.3,
-        pointRadius: 4,
-        pointHoverRadius: 6
-      }]
+      labels: monthlyRecap.value.map((m) => m.bulan.substring(0, 3)),
+      datasets: [
+        {
+          label: "Revenue",
+          data: monthlyRecap.value.map((m) => m.revenue),
+          borderColor: "#10b981",
+          backgroundColor: "rgba(16, 185, 129, 0.1)",
+          fill: true,
+          tension: 0.3,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        },
+      ],
     },
-    options: { responsive: true, maintainAspectRatio: false }
+    options: { responsive: true, maintainAspectRatio: false },
   });
 
   const platformData = {};
-  filteredRevenue.value.forEach(i => {
-    const p = i.Platform || 'Lainnya';
+  filteredRevenue.value.forEach((i) => {
+    const p = i.Platform || "Lainnya";
     platformData[p] = (platformData[p] || 0) + Number(i.Revenue || 0);
   });
 
   platformChartInstance = new Chart(chartUnitPlatformRef.value, {
-    type: 'doughnut',
+    type: "doughnut",
     data: {
       labels: Object.keys(platformData),
-      datasets: [{
-        data: Object.values(platformData),
-        backgroundColor: ['#3b82f6', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899']
-      }]
+      datasets: [
+        {
+          data: Object.values(platformData),
+          backgroundColor: [
+            "#3b82f6",
+            "#0ea5e9",
+            "#10b981",
+            "#f59e0b",
+            "#8b5cf6",
+            "#ec4899",
+          ],
+        },
+      ],
     },
-    options: { responsive: true, maintainAspectRatio: false }
+    options: { responsive: true, maintainAspectRatio: false },
   });
 };
 
-watch([filteredRevenue, selectedUnitName], () => {
-  initCharts();
-}, { deep: true });
+watch(
+  [filteredRevenue, selectedUnitName],
+  () => {
+    initCharts();
+  },
+  { deep: true },
+);
 
 onMounted(() => {
   initCharts();

@@ -1,59 +1,98 @@
 <!-- src/views/PageProgress.vue -->
 <template>
   <div class="space-y-4 md:space-y-6">
-    
     <!-- HEADER BAR: TITLE & CONTROLS -->
-    <div class="glass-card p-4 md:p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+    <div
+      class="glass-card p-4 md:p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10"
+    >
       <div>
-        <h3 class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+        <h3
+          class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"
+        >
           <i class="fa-solid fa-kanban text-emerald-600"></i>
           Board Progres Program Tim
         </h3>
         <p class="text-[11px] md:text-xs text-slate-400 mt-0.5">
-          {{ isSpvOrAdmin ? 'Kelola dan tugaskan program kerja ke staff divisi.' : 'Pantau dan perbarui progres program kerja yang ditugaskan kepada Anda.' }}
+          {{
+            isSpvOrAdmin
+              ? "Kelola dan tugaskan program kerja ke staff divisi."
+              : "Pantau dan perbarui progres program kerja yang ditugaskan kepada Anda."
+          }}
         </p>
       </div>
 
       <!-- Action & Filter Controls -->
       <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap relative">
-        
         <!-- Toggle Quick Filter: Tugas Saya -->
-        <button 
-          @click="filterMyTasks = !filterMyTasks" 
+        <button
+          @click="filterMyTasks = !filterMyTasks"
           type="button"
           class="px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border"
-          :class="filterMyTasks ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'"
+          :class="
+            filterMyTasks
+              ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+          "
         >
-          <i class="fa-solid" :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"></i>
-          <span>{{ filterMyTasks ? 'Tugas Saya' : 'Semua Tugas' }}</span>
+          <i
+            class="fa-solid"
+            :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"
+          ></i>
+          <span>{{ filterMyTasks ? "Tugas Saya" : "Semua Tugas" }}</span>
         </button>
 
         <!-- FILTER 1: CHECKBOX MULTI-UNIT -->
         <div class="relative">
-          <button 
+          <button
             @click.stop="toggleFilterMenu('unit')"
-            type="button" 
+            type="button"
             class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
           >
             <i class="fa-solid fa-building text-blue-500"></i>
-            <span>Unit ({{ selectedUnits.length ? selectedUnits.length : 'Semua' }})</span>
+            <span
+              >Unit ({{
+                selectedUnits.length ? selectedUnits.length : "Semua"
+              }})</span
+            >
             <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"></i>
           </button>
 
-          <div 
-            v-if="activeFilterMenu === 'unit'" 
+          <div
+            v-if="activeFilterMenu === 'unit'"
             @click.stop
             class="absolute right-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
           >
-            <div class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800">
-              <span class="text-[11px] font-bold text-slate-700 dark:text-slate-200">Filter Unit</span>
-              <button type="button" @click="toggleAllUnits" class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer">
-                {{ selectedUnits.length === masterUnits.length ? 'Reset' : 'Semua' }}
+            <div
+              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+            >
+              <span
+                class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
+                >Filter Unit</span
+              >
+              <button
+                type="button"
+                @click="toggleAllUnits"
+                class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer"
+              >
+                {{
+                  selectedUnits.length === masterUnits.length
+                    ? "Reset"
+                    : "Semua"
+                }}
               </button>
             </div>
             <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-              <label v-for="u in masterUnits" :key="u.code" class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
-                <input type="checkbox" :value="u.code" v-model="selectedUnits" class="accent-emerald-600 rounded cursor-pointer">
+              <label
+                v-for="u in masterUnits"
+                :key="u.code"
+                class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+              >
+                <input
+                  type="checkbox"
+                  :value="u.code"
+                  v-model="selectedUnits"
+                  class="accent-emerald-600 rounded cursor-pointer"
+                />
                 <span class="truncate">Unit {{ u.code }}</span>
               </label>
             </div>
@@ -62,30 +101,56 @@
 
         <!-- FILTER 2: CHECKBOX MULTI-DIVISI -->
         <div class="relative">
-          <button 
+          <button
             @click.stop="toggleFilterMenu('divisi')"
-            type="button" 
+            type="button"
             class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
           >
             <i class="fa-solid fa-sitemap text-amber-500"></i>
-            <span>Divisi ({{ selectedDivisions.length ? selectedDivisions.length : 'Semua' }})</span>
+            <span
+              >Divisi ({{
+                selectedDivisions.length ? selectedDivisions.length : "Semua"
+              }})</span
+            >
             <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"></i>
           </button>
 
-          <div 
-            v-if="activeFilterMenu === 'divisi'" 
+          <div
+            v-if="activeFilterMenu === 'divisi'"
             @click.stop
             class="absolute right-0 mt-2 w-60 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
           >
-            <div class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800">
-              <span class="text-[11px] font-bold text-slate-700 dark:text-slate-200">Filter Divisi</span>
-              <button type="button" @click="toggleAllDivisions" class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer">
-                {{ selectedDivisions.length === availableDivisions.length ? 'Reset' : 'Semua' }}
+            <div
+              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+            >
+              <span
+                class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
+                >Filter Divisi</span
+              >
+              <button
+                type="button"
+                @click="toggleAllDivisions"
+                class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer"
+              >
+                {{
+                  selectedDivisions.length === availableDivisions.length
+                    ? "Reset"
+                    : "Semua"
+                }}
               </button>
             </div>
             <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-              <label v-for="div in availableDivisions" :key="div" class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
-                <input type="checkbox" :value="div" v-model="selectedDivisions" class="accent-emerald-600 rounded cursor-pointer">
+              <label
+                v-for="div in availableDivisions"
+                :key="div"
+                class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+              >
+                <input
+                  type="checkbox"
+                  :value="div"
+                  v-model="selectedDivisions"
+                  class="accent-emerald-600 rounded cursor-pointer"
+                />
                 <span class="truncate">{{ div }}</span>
               </label>
             </div>
@@ -94,30 +159,56 @@
 
         <!-- FILTER 3: CHECKBOX MULTI-PIC BOARD -->
         <div class="relative">
-          <button 
+          <button
             @click.stop="toggleFilterMenu('pic')"
-            type="button" 
+            type="button"
             class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
           >
             <i class="fa-solid fa-user-gear text-emerald-600"></i>
-            <span>PIC ({{ selectedPics.length ? selectedPics.length : 'Semua' }})</span>
+            <span
+              >PIC ({{
+                selectedPics.length ? selectedPics.length : "Semua"
+              }})</span
+            >
             <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"></i>
           </button>
 
-          <div 
-            v-if="activeFilterMenu === 'pic'" 
+          <div
+            v-if="activeFilterMenu === 'pic'"
             @click.stop
             class="absolute right-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
           >
-            <div class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800">
-              <span class="text-[11px] font-bold text-slate-700 dark:text-slate-200">Filter PIC Board</span>
-              <button type="button" @click="toggleAllPics" class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer">
-                {{ selectedPics.length === registeredUsers.length ? 'Reset' : 'Semua' }}
+            <div
+              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+            >
+              <span
+                class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
+                >Filter PIC Board</span
+              >
+              <button
+                type="button"
+                @click="toggleAllPics"
+                class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer"
+              >
+                {{
+                  selectedPics.length === registeredUsers.length
+                    ? "Reset"
+                    : "Semua"
+                }}
               </button>
             </div>
             <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-              <label v-for="user in registeredUsers" :key="user.id" class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
-                <input type="checkbox" :value="user.id" v-model="selectedPics" class="accent-emerald-600 rounded cursor-pointer">
+              <label
+                v-for="user in registeredUsers"
+                :key="user.id"
+                class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+              >
+                <input
+                  type="checkbox"
+                  :value="user.id"
+                  v-model="selectedPics"
+                  class="accent-emerald-600 rounded cursor-pointer"
+                />
                 <span class="truncate">{{ user.nama }}</span>
               </label>
             </div>
@@ -125,11 +216,11 @@
         </div>
 
         <!-- Tombol Tambah Program -->
-        <button 
+        <button
           v-if="isSpvOrAdmin"
           @click="openAddModal"
           type="button"
-          class="bg-theme-gradient text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+          class="bg-button text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
         >
           <i class="fa-solid fa-plus text-xs"></i>
           <span>Tambah Program</span>
@@ -139,125 +230,222 @@
 
     <!-- METRIK STATISTIK PROGRAM -->
     <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 md:gap-4 relative z-0">
-      <div class="glass-card p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800">
-        <span class="text-[10px] text-slate-400 font-medium block">Total Program</span>
-        <h4 class="text-base md:text-xl font-black text-slate-800 dark:text-slate-100 mt-0.5">
+      <div
+        class="glass-card p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800"
+      >
+        <span class="text-[10px] text-slate-400 font-medium block"
+          >Total Program</span
+        >
+        <h4
+          class="text-base md:text-xl font-black text-slate-800 dark:text-slate-100 mt-0.5"
+        >
           {{ filteredPrograms.length }}
         </h4>
       </div>
-      <div class="glass-card p-3.5 rounded-2xl border border-blue-500/20 bg-blue-500/5">
-        <span class="text-[10px] text-blue-600 dark:text-blue-400 font-medium block">In Progress</span>
-        <h4 class="text-base md:text-xl font-black text-blue-700 dark:text-blue-300 mt-0.5">
-          {{ countByStatus('In Progress') }}
+      <div
+        class="glass-card p-3.5 rounded-2xl border border-blue-500/20 bg-blue-500/5"
+      >
+        <span
+          class="text-[10px] text-blue-600 dark:text-blue-400 font-medium block"
+          >In Progress</span
+        >
+        <h4
+          class="text-base md:text-xl font-black text-blue-700 dark:text-blue-300 mt-0.5"
+        >
+          {{ countByStatus("In Progress") }}
         </h4>
       </div>
-      <div class="glass-card p-3.5 rounded-2xl border border-amber-500/20 bg-amber-500/5">
-        <span class="text-[10px] text-amber-600 dark:text-amber-400 font-medium block">In Review / H-7</span>
-        <h4 class="text-base md:text-xl font-black text-amber-700 dark:text-amber-300 mt-0.5">
+      <div
+        class="glass-card p-3.5 rounded-2xl border border-amber-500/20 bg-amber-500/5"
+      >
+        <span
+          class="text-[10px] text-amber-600 dark:text-amber-400 font-medium block"
+          >In Review / H-7</span
+        >
+        <h4
+          class="text-base md:text-xl font-black text-amber-700 dark:text-amber-300 mt-0.5"
+        >
           {{ warningProgramsCount }}
         </h4>
       </div>
-      <div class="glass-card p-3.5 rounded-2xl border border-rose-500/20 bg-rose-500/5">
-        <span class="text-[10px] text-rose-600 dark:text-rose-400 font-medium block">Overdue (Terlewat)</span>
-        <h4 class="text-base md:text-xl font-black text-rose-700 dark:text-rose-300 mt-0.5">
+      <div
+        class="glass-card p-3.5 rounded-2xl border border-rose-500/20 bg-rose-500/5"
+      >
+        <span
+          class="text-[10px] text-rose-600 dark:text-rose-400 font-medium block"
+          >Overdue (Terlewat)</span
+        >
+        <h4
+          class="text-base md:text-xl font-black text-rose-700 dark:text-rose-300 mt-0.5"
+        >
           {{ overdueProgramsCount }}
         </h4>
       </div>
-      <div class="glass-card p-3.5 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1">
-        <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium block">Completed</span>
-        <h4 class="text-base md:text-xl font-black text-emerald-700 dark:text-emerald-300 mt-0.5">
-          {{ countByStatus('Completed') }}
+      <div
+        class="glass-card p-3.5 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1"
+      >
+        <span
+          class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium block"
+          >Completed</span
+        >
+        <h4
+          class="text-base md:text-xl font-black text-emerald-700 dark:text-emerald-300 mt-0.5"
+        >
+          {{ countByStatus("Completed") }}
         </h4>
       </div>
     </div>
 
     <!-- KANBAN BOARD 4 KOLOM DRAGGABLE -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-3.5 md:gap-4 items-start relative z-0">
-      <div 
-        v-for="status in columns" 
+    <div
+      class="grid grid-cols-1 md:grid-cols-4 gap-3.5 md:gap-4 items-start relative z-0"
+    >
+      <div
+        v-for="status in columns"
         :key="status"
         @dragover.prevent
         @drop="onDrop($event, status)"
         class="glass-card p-3 rounded-2xl space-y-3 bg-slate-100/50 dark:bg-slate-900/40 min-h-[480px]"
       >
-        <div class="flex items-center justify-between px-1 pb-1 border-b border-slate-200/80 dark:border-slate-800">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full" :class="getColumnDotColor(status)"></span>
+        <div
+          class="flex items-center justify-between px-1 pb-1 border-b border-slate-200/80 dark:border-slate-800"
+        >
+          <h4
+            class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5"
+          >
+            <span
+              class="w-2 h-2 rounded-full"
+              :class="getColumnDotColor(status)"
+            ></span>
             {{ status }}
           </h4>
-          <span class="text-[10px] font-extrabold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+          <span
+            class="text-[10px] font-extrabold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20"
+          >
             {{ getItemsByStatus(status).length }}
           </span>
         </div>
 
-        <div class="space-y-2.5 max-h-[72vh] overflow-y-auto pr-0.5 [scrollbar-width:none]">
-          <div 
-            v-for="(item, index) in getItemsByStatus(status)" 
+        <div
+          class="space-y-2.5 max-h-[72vh] overflow-y-auto pr-0.5 [scrollbar-width:none]"
+        >
+          <div
+            v-for="(item, index) in getItemsByStatus(status)"
             :key="item.id || item.Timestamp"
             :draggable="canUserEditItem(item)"
-            @dragstart="canUserEditItem(item) ? onDragStart($event, item) : null"
+            @dragstart="
+              canUserEditItem(item) ? onDragStart($event, item) : null
+            "
             @click="openDetailModal(item)"
             class="glass-card p-3 rounded-xl space-y-2 border bg-white/90 dark:bg-slate-900/90 shadow-sm transition-all relative overflow-hidden group"
             :class="[
-              canUserEditItem(item) ? 'cursor-grab active:cursor-grabbing hover:border-emerald-500/50' : 'cursor-pointer opacity-90 hover:border-slate-400',
-              isUserAssigned(item) ? 'border-emerald-500/40 ring-1 ring-emerald-500/20' : 'border-white/50 dark:border-slate-800'
+              canUserEditItem(item)
+                ? 'cursor-grab active:cursor-grabbing hover:border-emerald-500/50'
+                : 'cursor-pointer opacity-90 hover:border-slate-400',
+              isUserAssigned(item)
+                ? 'border-emerald-500/40 ring-1 ring-emerald-500/20'
+                : 'border-white/50 dark:border-slate-800',
             ]"
           >
             <div class="flex items-center justify-between text-[9px]">
               <div class="flex items-center gap-1">
-                <span class="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold flex items-center justify-center text-[8px]">
+                <span
+                  class="w-4 h-4 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold flex items-center justify-center text-[8px]"
+                >
                   #{{ index + 1 }}
                 </span>
-                <span class="font-bold text-emerald-600 uppercase bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+                <span
+                  class="font-bold text-emerald-600 uppercase bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20"
+                >
                   {{ item.division || item.Divisi }}
                 </span>
               </div>
-              <span class="font-bold text-slate-500 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">
+              <span
+                class="font-bold text-slate-500 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded"
+              >
                 Unit {{ item.unit || item.Unit }}
               </span>
             </div>
 
-            <h5 class="font-bold text-xs text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug group-hover:text-emerald-600 transition-colors">
+            <h5
+              class="font-bold text-xs text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug group-hover:text-emerald-600 transition-colors"
+            >
               {{ item.title || item.Judul }}
             </h5>
 
-            <p v-if="item.description || item.Deskripsi" class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-tight">
+            <p
+              v-if="item.description || item.Deskripsi"
+              class="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-2 leading-tight"
+            >
               {{ item.description || item.Deskripsi }}
             </p>
 
             <div class="flex items-center justify-between text-[9px] pt-0.5">
-              <span class="text-slate-400">DL: <strong class="text-slate-700 dark:text-slate-300">{{ formatDate(item.deadline || item.Deadline) }}</strong></span>
-              <span class="font-bold px-1.5 py-0.5 rounded flex items-center gap-1" :class="getDeadlineBadgeClass(item)">
-                <i class="fa-solid text-[8px]" :class="getDeadlineIconClass(item)"></i>
+              <span class="text-slate-400"
+                >DL:
+                <strong class="text-slate-700 dark:text-slate-300">{{
+                  formatDate(item.deadline || item.Deadline)
+                }}</strong></span
+              >
+              <span
+                class="font-bold px-1.5 py-0.5 rounded flex items-center gap-1"
+                :class="getDeadlineBadgeClass(item)"
+              >
+                <i
+                  class="fa-solid text-[8px]"
+                  :class="getDeadlineIconClass(item)"
+                ></i>
                 {{ getDeadlineText(item) }}
               </span>
             </div>
 
             <!-- Footer Multi-PIC Avatar & Progress Bar -->
-            <div class="space-y-1 pt-1.5 border-t border-slate-100 dark:border-slate-800/80">
+            <div
+              class="space-y-1 pt-1.5 border-t border-slate-100 dark:border-slate-800/80"
+            >
               <div class="flex justify-between items-center text-[9px]">
-                <div class="flex items-center gap-1 overflow-x-auto max-w-[140px] [scrollbar-width:none]">
-                  <i class="fa-solid fa-users text-emerald-600 text-[10px] shrink-0"></i>
-                  <span 
-                    v-for="(name, pIdx) in getAssignedNamesList(item)" 
+                <div
+                  class="flex items-center gap-1 overflow-x-auto max-w-[140px] [scrollbar-width:none]"
+                >
+                  <i
+                    class="fa-solid fa-users text-emerald-600 text-[10px] shrink-0"
+                  ></i>
+                  <span
+                    v-for="(name, pIdx) in getAssignedNamesList(item)"
                     :key="pIdx"
                     class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold px-1.5 py-0.5 rounded text-[8px] whitespace-nowrap border border-slate-200 dark:border-slate-700"
                   >
                     {{ name }}
                   </span>
-                  <span v-if="getAssignedNamesList(item).length === 0" class="text-slate-400 italic">Unassigned</span>
+                  <span
+                    v-if="getAssignedNamesList(item).length === 0"
+                    class="text-slate-400 italic"
+                    >Unassigned</span
+                  >
                 </div>
 
-                <span class="font-bold text-emerald-600 shrink-0">{{ item.progress || item.Progress || 0 }}%</span>
+                <span class="font-bold text-emerald-600 shrink-0"
+                  >{{ item.progress || item.Progress || 0 }}%</span
+                >
               </div>
 
-              <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
-                <div class="bg-emerald-600 h-full rounded-full transition-all duration-300" :style="{ width: `${Math.min(item.progress || item.Progress || 0, 100)}%` }"></div>
+              <div
+                class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden"
+              >
+                <div
+                  class="bg-emerald-600 h-full rounded-full transition-all duration-300"
+                  :style="{
+                    width: `${Math.min(item.progress || item.Progress || 0, 100)}%`,
+                  }"
+                ></div>
               </div>
             </div>
           </div>
 
-          <div v-if="getItemsByStatus(status).length === 0" class="text-center py-12 text-slate-400 text-[11px] border-2 border-dashed border-slate-200 dark:border-slate-800/60 rounded-xl">
+          <div
+            v-if="getItemsByStatus(status).length === 0"
+            class="text-center py-12 text-slate-400 text-[11px] border-2 border-dashed border-slate-200 dark:border-slate-800/60 rounded-xl"
+          >
             Tidak ada program
           </div>
         </div>
@@ -266,109 +454,181 @@
 
     <!-- MODAL EDIT / DETAIL PROGRAM -->
     <Teleport to="body">
-      <div v-if="isModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm" @click.self="isModalOpen = false">
-        <div class="w-full max-w-xl glass-card bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
-          
-          <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+      <div
+        v-if="isModalOpen"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm"
+        @click.self="isModalOpen = false"
+      >
+        <div
+          class="w-full max-w-xl glass-card bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
+        >
+          <div
+            class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
+          >
             <div>
-              <span class="text-[10px] font-bold text-emerald-600 uppercase bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              <span
+                class="text-[10px] font-bold text-emerald-600 uppercase bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20"
+              >
                 Unit {{ activeItem.unit }} • {{ activeItem.division }}
               </span>
-              <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm md:text-base mt-1">
-                {{ isEdit ? (isSpvOrAdmin ? 'Edit Program Kerja' : 'Update Progres Program') : 'Tambah Program Kerja Baru' }}
+              <h3
+                class="font-bold text-slate-800 dark:text-slate-100 text-sm md:text-base mt-1"
+              >
+                {{
+                  isEdit
+                    ? isSpvOrAdmin
+                      ? "Edit Program Kerja"
+                      : "Update Progres Program"
+                    : "Tambah Program Kerja Baru"
+                }}
               </h3>
             </div>
-            <button type="button" @click="isModalOpen = false" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+            <button
+              type="button"
+              @click="isModalOpen = false"
+              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            >
               <i class="fa-solid fa-xmark text-lg"></i>
             </button>
           </div>
 
           <form @submit.prevent="saveProgram" class="space-y-4 text-xs">
             <div>
-              <label class="block text-slate-500 font-medium mb-1">Nama Program / Milestone:</label>
-              <input 
-                v-model="activeItem.title" 
-                type="text" 
-                required 
+              <label class="block text-slate-500 font-medium mb-1"
+                >Nama Program / Milestone:</label
+              >
+              <input
+                v-model="activeItem.title"
+                type="text"
+                required
                 :disabled="!isSpvOrAdmin"
                 class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none disabled:bg-slate-100 dark:disabled:bg-slate-800"
-              >
+              />
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label class="block text-slate-500 font-medium mb-1">Unit Usaha:</label>
-                <select 
-                  v-model="activeItem.unit" 
+                <label class="block text-slate-500 font-medium mb-1"
+                  >Unit Usaha:</label
+                >
+                <select
+                  v-model="activeItem.unit"
                   :disabled="!isSpvOrAdmin"
                   class="w-full glass-input rounded-xl px-3 py-2 dark:bg-slate-800 text-slate-800 dark:text-slate-100 outline-none disabled:opacity-70"
                 >
-                  <option v-for="u in masterUnits" :key="u.code" :value="u.code">{{ u.code }} - {{ u.name }}</option>
+                  <option
+                    v-for="u in masterUnits"
+                    :key="u.code"
+                    :value="u.code"
+                  >
+                    {{ u.code }} - {{ u.name }}
+                  </option>
                 </select>
               </div>
 
               <div>
-                <label class="block text-slate-500 font-medium mb-1">Divisi (Master):</label>
-                <select 
-                  v-model="activeItem.division" 
+                <label class="block text-slate-500 font-medium mb-1"
+                  >Divisi (Master):</label
+                >
+                <select
+                  v-model="activeItem.division"
                   :disabled="!isSpvOrAdmin"
                   class="w-full glass-input rounded-xl px-3 py-2 dark:bg-slate-800 text-slate-800 dark:text-slate-100 outline-none disabled:opacity-70"
                 >
-                  <option v-for="div in availableDivisions" :key="div" :value="div">{{ div }}</option>
+                  <option
+                    v-for="div in availableDivisions"
+                    :key="div"
+                    :value="div"
+                  >
+                    {{ div }}
+                  </option>
                 </select>
               </div>
             </div>
 
             <!-- MODAL DROPDOWN CHECKBOX PIC USER ASSIGNMENT -->
             <div class="relative">
-              <label class="block text-slate-500 font-medium mb-1">Assign Penanggung Jawab (PIC Staff):</label>
-              
-              <button 
+              <label class="block text-slate-500 font-medium mb-1"
+                >Assign Penanggung Jawab (PIC Staff):</label
+              >
+
+              <button
                 @click.stop="isModalPicDropdownOpen = !isModalPicDropdownOpen"
-                type="button" 
+                type="button"
                 :disabled="!isSpvOrAdmin"
                 class="w-full glass-input rounded-xl px-3 py-2.5 text-xs text-left dark:bg-slate-800 text-slate-800 dark:text-slate-100 flex justify-between items-center outline-none disabled:opacity-70 cursor-pointer"
               >
                 <span class="font-semibold truncate">
-                  {{ activeItem.assignedPicIds && activeItem.assignedPicIds.length > 0 ? getSelectedModalPicNames() : '-- Pilih PIC Staff --' }}
+                  {{
+                    activeItem.assignedPicIds &&
+                    activeItem.assignedPicIds.length > 0
+                      ? getSelectedModalPicNames()
+                      : "-- Pilih PIC Staff --"
+                  }}
                 </span>
-                <i class="fa-solid fa-chevron-down text-[10px] opacity-60 ml-2"></i>
+                <i
+                  class="fa-solid fa-chevron-down text-[10px] opacity-60 ml-2"
+                ></i>
               </button>
 
               <!-- Popover Menu Checkbox Staff -->
-              <div 
-                v-if="isModalPicDropdownOpen" 
+              <div
+                v-if="isModalPicDropdownOpen"
                 @click.stop
                 class="absolute left-0 right-0 mt-1 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-2xl border border-slate-200 dark:border-slate-800 z-50 space-y-2"
               >
-                <div class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800">
-                  <span class="text-[11px] font-bold text-slate-700 dark:text-slate-200">Pilih Staff PIC</span>
-                  <button type="button" @click="activeItem.assignedPicIds = registeredUsers.map(u => u.id)" class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer">
+                <div
+                  class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+                >
+                  <span
+                    class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
+                    >Pilih Staff PIC</span
+                  >
+                  <button
+                    type="button"
+                    @click="
+                      activeItem.assignedPicIds = registeredUsers.map(
+                        (u) => u.id,
+                      )
+                    "
+                    class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer"
+                  >
                     Pilih Semua
                   </button>
                 </div>
 
                 <div class="space-y-1 max-h-40 overflow-y-auto pr-1">
-                  <label 
-                    v-for="user in registeredUsers" 
-                    :key="user.id" 
+                  <label
+                    v-for="user in registeredUsers"
+                    :key="user.id"
                     class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
                   >
-                    <input 
-                      type="checkbox" 
-                      :value="user.id" 
+                    <input
+                      type="checkbox"
+                      :value="user.id"
                       v-model="activeItem.assignedPicIds"
                       class="accent-emerald-600 rounded cursor-pointer"
-                    >
+                    />
                     <div class="truncate">
-                      <span class="font-semibold text-slate-800 dark:text-slate-200">{{ user.nama }}</span>
-                      <span class="text-[10px] text-slate-400 ml-1 font-normal">({{ user.role }})</span>
+                      <span
+                        class="font-semibold text-slate-800 dark:text-slate-200"
+                        >{{ user.nama }}</span
+                      >
+                      <span class="text-[10px] text-slate-400 ml-1 font-normal"
+                        >({{ user.role }})</span
+                      >
                     </div>
                   </label>
                 </div>
 
-                <div class="flex justify-end pt-1 border-t border-slate-100 dark:border-slate-800">
-                  <button type="button" @click="isModalPicDropdownOpen = false" class="bg-emerald-600 text-white font-bold px-3 py-1 rounded-lg text-[10px]">
+                <div
+                  class="flex justify-end pt-1 border-t border-slate-100 dark:border-slate-800"
+                >
+                  <button
+                    type="button"
+                    @click="isModalPicDropdownOpen = false"
+                    class="bg-emerald-600 text-white font-bold px-3 py-1 rounded-lg text-[10px]"
+                  >
                     Selesai
                   </button>
                 </div>
@@ -378,20 +638,24 @@
             <!-- Target Deadline & Status -->
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-slate-500 font-medium mb-1">Target Deadline:</label>
-                <input 
-                  v-model="activeItem.deadline" 
-                  type="date" 
-                  required 
+                <label class="block text-slate-500 font-medium mb-1"
+                  >Target Deadline:</label
+                >
+                <input
+                  v-model="activeItem.deadline"
+                  type="date"
+                  required
                   :disabled="!isSpvOrAdmin"
                   class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none disabled:bg-slate-100 dark:disabled:bg-slate-800"
-                >
+                />
               </div>
 
               <div>
-                <label class="block text-slate-500 font-medium mb-1">Status Kanban:</label>
-                <select 
-                  v-model="activeItem.status" 
+                <label class="block text-slate-500 font-medium mb-1"
+                  >Status Kanban:</label
+                >
+                <select
+                  v-model="activeItem.status"
                   class="w-full glass-input rounded-xl px-3 py-2 dark:bg-slate-800 text-slate-800 dark:text-slate-100 outline-none font-semibold"
                 >
                   <option value="To Do">To Do</option>
@@ -405,58 +669,76 @@
             <!-- Progres Slider -->
             <div>
               <div class="flex justify-between items-center mb-1">
-                <label class="block text-slate-500 font-medium">Progres Saat Ini (%):</label>
-                <span class="font-bold text-emerald-600 text-sm">{{ activeItem.progress }}%</span>
+                <label class="block text-slate-500 font-medium"
+                  >Progres Saat Ini (%):</label
+                >
+                <span class="font-bold text-emerald-600 text-sm"
+                  >{{ activeItem.progress }}%</span
+                >
               </div>
-              <input 
-                v-model.number="activeItem.progress" 
-                type="range" 
-                min="0" 
-                max="100" 
+              <input
+                v-model.number="activeItem.progress"
+                type="range"
+                min="0"
+                max="100"
                 class="w-full accent-emerald-600 cursor-pointer"
-              >
+              />
             </div>
 
             <!-- Deskripsi -->
             <div>
-              <label class="block text-slate-500 font-medium mb-1">Deskripsi & Catatan Output Program:</label>
-              <textarea 
-                v-model="activeItem.description" 
-                rows="4" 
-                placeholder="Rincian deskripsi atau progres terbaru..." 
+              <label class="block text-slate-500 font-medium mb-1"
+                >Deskripsi & Catatan Output Program:</label
+              >
+              <textarea
+                v-model="activeItem.description"
+                rows="4"
+                placeholder="Rincian deskripsi atau progres terbaru..."
                 class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none resize-y min-h-[90px]"
               ></textarea>
             </div>
 
             <!-- Modal Footer Controls -->
-            <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
-              <button 
-                v-if="isEdit && canUserDeleteItem(activeItem)" 
-                @click="deleteProgram" 
-                type="button" 
+            <div
+              class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800"
+            >
+              <button
+                v-if="isEdit && canUserDeleteItem(activeItem)"
+                @click="deleteProgram"
+                type="button"
                 :disabled="isSubmitting"
                 class="text-rose-500 font-bold hover:underline cursor-pointer disabled:opacity-40 flex items-center gap-1.5"
               >
-                <i v-if="isSubmitting" class="fa-solid fa-spinner fa-spin text-xs"></i>
-                <span>{{ isSubmitting ? 'Deleting...' : 'Hapus Program' }}</span>
+                <i
+                  v-if="isSubmitting"
+                  class="fa-solid fa-spinner fa-spin text-xs"
+                ></i>
+                <span>{{
+                  isSubmitting ? "Deleting..." : "Hapus Program"
+                }}</span>
               </button>
-                
+
               <div class="flex gap-2 ml-auto">
-                <button 
-                  @click="isModalOpen = false" 
-                  type="button" 
+                <button
+                  @click="isModalOpen = false"
+                  type="button"
                   :disabled="isSubmitting"
                   class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl font-bold cursor-pointer disabled:opacity-50"
                 >
                   Batal
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   :disabled="isSubmitting"
-                  class="bg-theme-gradient text-white px-5 py-2 rounded-xl font-bold shadow-md cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                  class="bg-button text-white px-5 py-2 rounded-xl font-bold shadow-md cursor-pointer flex items-center gap-2 disabled:opacity-50"
                 >
-                  <i v-if="isSubmitting" class="fa-solid fa-circle-notch fa-spin text-xs"></i>
-                  <span>{{ isSubmitting ? 'Memproses...' : 'Simpan Progres' }}</span>
+                  <i
+                    v-if="isSubmitting"
+                    class="fa-solid fa-circle-notch fa-spin text-xs"
+                  ></i>
+                  <span>{{
+                    isSubmitting ? "Memproses..." : "Simpan Progres"
+                  }}</span>
                 </button>
               </div>
             </div>
@@ -464,16 +746,15 @@
         </div>
       </div>
     </Teleport>
-
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue';
-import { store } from '../store/index.js';
-import { api } from '../services/api.js';
+import { ref, reactive, computed, onMounted, onUnmounted, watch } from "vue";
+import { store } from "../store/index.js";
+import { api } from "../services/api.js";
 
-const columns = ['To Do', 'In Progress', 'In Review', 'Completed'];
+const columns = ["To Do", "In Progress", "In Review", "Completed"];
 
 const activeFilterMenu = ref(null);
 const selectedUnits = ref([]);
@@ -488,14 +769,14 @@ const isSubmitting = ref(false);
 
 const activeItem = reactive({
   id: null,
-  title: '',
-  unit: 'NHP',
-  division: '',
-  deadline: '',
+  title: "",
+  unit: "NHP",
+  division: "",
+  deadline: "",
   progress: 0,
-  status: 'To Do',
-  description: '',
-  assignedPicIds: []
+  status: "To Do",
+  description: "",
+  assignedPicIds: [],
 });
 
 const handleOutsideClick = () => {
@@ -504,7 +785,7 @@ const handleOutsideClick = () => {
 };
 
 onMounted(() => {
-  window.addEventListener('click', handleOutsideClick);
+  window.addEventListener("click", handleOutsideClick);
   if (!isSuperadmin.value && currentUser.value) {
     if (!isSpvOrAdmin.value) {
       filterMyTasks.value = true;
@@ -513,48 +794,68 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener('click', handleOutsideClick);
+  window.removeEventListener("click", handleOutsideClick);
 });
-
 
 const toggleFilterMenu = (name) => {
   activeFilterMenu.value = activeFilterMenu.value === name ? null : name;
 };
 
 const masterUnits = computed(() => {
-  return store.db?.master?.unitList || [
-    { code: 'NHP', name: 'Nur Hidayah Press' },
-    { code: 'NHC', name: 'Nur Hidayah Creative' },
-    { code: 'KG', name: 'Karta Grafika' }
-  ];
+  return (
+    store.db?.master?.unitList || [
+      { code: "NHP", name: "Nur Hidayah Press" },
+      { code: "NHC", name: "Nur Hidayah Creative" },
+      { code: "KG", name: "Karta Grafika" },
+    ]
+  );
 });
 
 const availableDivisions = computed(() => {
-  return store.db?.master?.divisiList || [
-    'CS Deal', 'Zona 1A', 'Zona 1B', 'Zona 2', 'Zona 3', 'Digital Marketing', 'Offline', 'Penerbitan & Cetak', 'Produksi & Logistik'
-  ];
+  return (
+    store.db?.master?.divisiList || [
+      "CS Deal",
+      "Zona 1A",
+      "Zona 1B",
+      "Zona 2",
+      "Zona 3",
+      "Digital Marketing",
+      "Offline",
+      "Penerbitan & Cetak",
+      "Produksi & Logistik",
+    ]
+  );
 });
 
 const registeredUsers = computed(() => store.db?.users || []);
 const programs = computed(() => store.db?.programs || store.programs || []);
 
 const currentUser = computed(() => store.currentUser || {});
-const isSuperadmin = computed(() => currentUser.value?.role?.toUpperCase() === 'SUPERADMIN');
-const isSpvOrAdmin = computed(() => ['SUPERADMIN', 'SPV', 'ADMIN'].includes(currentUser.value?.role?.toUpperCase()));
+const isSuperadmin = computed(
+  () => currentUser.value?.role?.toUpperCase() === "SUPERADMIN",
+);
+const isSpvOrAdmin = computed(() =>
+  ["SUPERADMIN", "SPV", "ADMIN"].includes(
+    currentUser.value?.role?.toUpperCase(),
+  ),
+);
 
 const toggleAllUnits = () => {
-  if (selectedUnits.value.length === masterUnits.value.length) selectedUnits.value = [];
-  else selectedUnits.value = masterUnits.value.map(u => u.code);
+  if (selectedUnits.value.length === masterUnits.value.length)
+    selectedUnits.value = [];
+  else selectedUnits.value = masterUnits.value.map((u) => u.code);
 };
 
 const toggleAllDivisions = () => {
-  if (selectedDivisions.value.length === availableDivisions.value.length) selectedDivisions.value = [];
+  if (selectedDivisions.value.length === availableDivisions.value.length)
+    selectedDivisions.value = [];
   else selectedDivisions.value = [...availableDivisions.value];
 };
 
 const toggleAllPics = () => {
-  if (selectedPics.value.length === registeredUsers.value.length) selectedPics.value = [];
-  else selectedPics.value = registeredUsers.value.map(u => u.id);
+  if (selectedPics.value.length === registeredUsers.value.length)
+    selectedPics.value = [];
+  else selectedPics.value = registeredUsers.value.map((u) => u.id);
 };
 
 // Pengecekan Presisi PIC Staff
@@ -562,18 +863,27 @@ const isUserAssigned = (program, userId, userNama) => {
   if (!program) return false;
 
   const targetId = userId || currentUser.value?.id || currentUser.value?.email;
-  const targetNama = userNama || currentUser.value?.nama || currentUser.value?.email;
+  const targetNama =
+    userNama || currentUser.value?.nama || currentUser.value?.email;
 
-  if (Array.isArray(program.assignedPicIds) && program.assignedPicIds.length > 0) {
+  if (
+    Array.isArray(program.assignedPicIds) &&
+    program.assignedPicIds.length > 0
+  ) {
     if (program.assignedPicIds.includes(targetId)) return true;
   }
 
-  if (Array.isArray(program.assignedUsers) && program.assignedUsers.length > 0) {
+  if (
+    Array.isArray(program.assignedUsers) &&
+    program.assignedUsers.length > 0
+  ) {
     if (targetNama && program.assignedUsers.includes(targetNama)) return true;
   }
 
   if (program.picName && targetNama) {
-    return program.picName.toLowerCase().includes(String(targetNama).toLowerCase());
+    return program.picName
+      .toLowerCase()
+      .includes(String(targetNama).toLowerCase());
   }
 
   return false;
@@ -593,134 +903,169 @@ const canUserDeleteItem = (item) => {
 };
 
 const filteredPrograms = computed(() => {
-  return programs.value.filter(p => {
+  return programs.value.filter((p) => {
     const pUnit = p.unit || p.Unit;
     const pDiv = p.division || p.Divisi;
     const assignedIds = p.assignedPicIds || (p.picId ? [p.picId] : []);
     const currentId = currentUser.value?.id || currentUser.value?.email;
 
-    const matchUnit = selectedUnits.value.length === 0 || selectedUnits.value.includes(pUnit);
-    const matchDiv = selectedDivisions.value.length === 0 || selectedDivisions.value.includes(pDiv);
-    
+    const matchUnit =
+      selectedUnits.value.length === 0 || selectedUnits.value.includes(pUnit);
+    const matchDiv =
+      selectedDivisions.value.length === 0 ||
+      selectedDivisions.value.includes(pDiv);
+
     let matchUserAccess = true;
     if (!isSpvOrAdmin.value) {
       matchUserAccess = isUserAssigned(p) || p.createdBy === currentId;
     }
 
     const matchMyTask = !filterMyTasks.value || isUserAssigned(p);
-    const matchPic = selectedPics.value.length === 0 || assignedIds.some(id => selectedPics.value.includes(id));
+    const matchPic =
+      selectedPics.value.length === 0 ||
+      assignedIds.some((id) => selectedPics.value.includes(id));
 
     return matchUnit && matchDiv && matchUserAccess && matchMyTask && matchPic;
   });
 });
 
-const getItemsByStatus = (status) => filteredPrograms.value.filter(p => (p.status || p.Status) === status);
+const getItemsByStatus = (status) =>
+  filteredPrograms.value.filter((p) => (p.status || p.Status) === status);
 const countByStatus = (status) => getItemsByStatus(status).length;
 
 const warningProgramsCount = computed(() => {
   const today = new Date();
-  return filteredPrograms.value.filter(p => {
+  return filteredPrograms.value.filter((p) => {
     const st = p.status || p.Status;
     const prg = p.progress || p.Progress || 0;
     const dlStr = p.deadline || p.Deadline;
-    if (st === 'Completed' || prg >= 100) return false;
-    const diffDays = Math.ceil((new Date(dlStr) - today) / (1000 * 60 * 60 * 24));
+    if (st === "Completed" || prg >= 100) return false;
+    const diffDays = Math.ceil(
+      (new Date(dlStr) - today) / (1000 * 60 * 60 * 24),
+    );
     return diffDays >= 0 && diffDays <= 7;
   }).length;
 });
 
 const overdueProgramsCount = computed(() => {
   const today = new Date();
-  return filteredPrograms.value.filter(p => {
+  return filteredPrograms.value.filter((p) => {
     const st = p.status || p.Status;
     const prg = p.progress || p.Progress || 0;
     const dlStr = p.deadline || p.Deadline;
-    return st !== 'Completed' && prg < 100 && new Date(dlStr) < today;
+    return st !== "Completed" && prg < 100 && new Date(dlStr) < today;
   }).length;
 });
 
-const getDaysDiff = (dlStr) => Math.ceil((new Date(dlStr) - new Date()) / (1000 * 60 * 60 * 24));
+const getDaysDiff = (dlStr) =>
+  Math.ceil((new Date(dlStr) - new Date()) / (1000 * 60 * 60 * 24));
 
 const getDeadlineBadgeClass = (item) => {
   const st = item.status || item.Status;
   const prg = item.progress || item.Progress || 0;
-  if (st === 'Completed' || prg >= 100) return 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20';
+  if (st === "Completed" || prg >= 100)
+    return "bg-emerald-500/10 text-emerald-600 border border-emerald-500/20";
   const diff = getDaysDiff(item.deadline || item.Deadline);
-  if (diff < 0) return 'bg-rose-500/10 text-rose-600 border border-rose-500/20 animate-pulse';
-  if (diff <= 7) return 'bg-amber-500/10 text-amber-600 border border-amber-500/20';
-  return 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400';
+  if (diff < 0)
+    return "bg-rose-500/10 text-rose-600 border border-rose-500/20 animate-pulse";
+  if (diff <= 7)
+    return "bg-amber-500/10 text-amber-600 border border-amber-500/20";
+  return "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400";
 };
 
 const getDeadlineIconClass = (item) => {
   const st = item.status || item.Status;
   const prg = item.progress || item.Progress || 0;
-  if (st === 'Completed' || prg >= 100) return 'fa-circle-check';
+  if (st === "Completed" || prg >= 100) return "fa-circle-check";
   const diff = getDaysDiff(item.deadline || item.Deadline);
-  return diff < 0 ? 'fa-triangle-exclamation' : (diff <= 7 ? 'fa-clock' : 'fa-calendar-day');
+  return diff < 0
+    ? "fa-triangle-exclamation"
+    : diff <= 7
+      ? "fa-clock"
+      : "fa-calendar-day";
 };
 
 const getDeadlineText = (item) => {
   const st = item.status || item.Status;
   const prg = item.progress || item.Progress || 0;
-  if (st === 'Completed' || prg >= 100) return 'Selesai';
+  if (st === "Completed" || prg >= 100) return "Selesai";
   const diff = getDaysDiff(item.deadline || item.Deadline);
   if (diff < 0) return `Terlewat (${Math.abs(diff)} hr)`;
-  if (diff === 0) return 'Hari ini!';
-  return diff <= 7 ? `H-${diff}` : 'On Track';
+  if (diff === 0) return "Hari ini!";
+  return diff <= 7 ? `H-${diff}` : "On Track";
 };
 
 const getColumnDotColor = (status) => {
   switch (status) {
-    case 'To Do': return 'bg-slate-400';
-    case 'In Progress': return 'bg-blue-500';
-    case 'In Review': return 'bg-amber-500';
-    case 'Completed': return 'bg-emerald-500';
-    default: return 'bg-slate-400';
+    case "To Do":
+      return "bg-slate-400";
+    case "In Progress":
+      return "bg-blue-500";
+    case "In Review":
+      return "bg-amber-500";
+    case "Completed":
+      return "bg-emerald-500";
+    default:
+      return "bg-slate-400";
   }
 };
 
-const formatDate = (dateStr) => dateStr ? new Date(dateStr).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : '-';
+const formatDate = (dateStr) =>
+  dateStr
+    ? new Date(dateStr).toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "short",
+      })
+    : "-";
 
 const getAssignedNamesList = (item) => {
-  if (item.assignedUsers && item.assignedUsers.length > 0) return item.assignedUsers;
+  if (item.assignedUsers && item.assignedUsers.length > 0)
+    return item.assignedUsers;
   if (item.picName || item.PIC) return [item.picName || item.PIC];
   if (item.assignedPicIds && item.assignedPicIds.length > 0) {
-    return registeredUsers.value.filter(u => item.assignedPicIds.includes(u.id)).map(u => u.nama);
+    return registeredUsers.value
+      .filter((u) => item.assignedPicIds.includes(u.id))
+      .map((u) => u.nama);
   }
   return [];
 };
 
 const getSelectedModalPicNames = () => {
   if (!activeItem.assignedPicIds || !Array.isArray(activeItem.assignedPicIds)) {
-    return '-- Pilih PIC Staff --';
+    return "-- Pilih PIC Staff --";
   }
-  
-  const selectedUsers = registeredUsers.value.filter(u => 
-    activeItem.assignedPicIds.includes(u.id)
+
+  const selectedUsers = registeredUsers.value.filter((u) =>
+    activeItem.assignedPicIds.includes(u.id),
   );
 
-  if (selectedUsers.length === 0) return '-- Pilih PIC Staff --';
-  return selectedUsers.map(u => u.nama).join(', ');
+  if (selectedUsers.length === 0) return "-- Pilih PIC Staff --";
+  return selectedUsers.map((u) => u.nama).join(", ");
 };
 
-const onDragStart = (e, item) => e.dataTransfer.setData('itemId', item.id || item.Timestamp);
+const onDragStart = (e, item) =>
+  e.dataTransfer.setData("itemId", item.id || item.Timestamp);
 
 const onDrop = async (e, status) => {
-  const itemId = e.dataTransfer.getData('itemId');
-  const item = programs.value.find(p => (p.id || p.Timestamp) == itemId);
+  const itemId = e.dataTransfer.getData("itemId");
+  const item = programs.value.find((p) => (p.id || p.Timestamp) == itemId);
   if (item && canUserEditItem(item)) {
     item.status = status;
     item.Status = status;
-    if (status === 'Completed') {
+    if (status === "Completed") {
       item.progress = 100;
       item.Progress = 100;
     }
     store.isLoading = true;
     try {
       if (api && api.saveProgramData) await api.saveProgramData(item);
-      store.addNotification('Status Diperbarui', `Program "${item.title || item.Judul}" dipindah ke ${status}`, 'info');
+      store.addNotification(
+        "Status Diperbarui",
+        `Program "${item.title || item.Judul}" dipindah ke ${status}`,
+        "info",
+      );
     } catch (err) {
-      store.addNotification('Gagal Update', err.message, 'warning');
+      store.addNotification("Gagal Update", err.message, "warning");
     } finally {
       store.isLoading = false;
     }
@@ -731,14 +1076,14 @@ const openAddModal = () => {
   isEdit.value = false;
   Object.assign(activeItem, {
     id: Date.now(),
-    title: '',
-    unit: 'NHP',
-    division: 'Digital Marketing',
-    deadline: new Date().toISOString().split('T')[0],
+    title: "",
+    unit: "NHP",
+    division: "Digital Marketing",
+    deadline: new Date().toISOString().split("T")[0],
     progress: 0,
-    status: 'To Do',
-    description: '',
-    assignedPicIds: []
+    status: "To Do",
+    description: "",
+    assignedPicIds: [],
   });
   isModalPicDropdownOpen.value = false;
   isModalOpen.value = true;
@@ -760,14 +1105,15 @@ const openEditModal = (item) => {
 
   Object.assign(activeItem, {
     ...item,
-    unit: item.unit || item.Unit || 'NHP',
-    division: item.division || item.Divisi || 'Digital Marketing',
-    title: item.title || item.Judul || '',
-    description: item.description || item.Deskripsi || '',
-    deadline: item.deadline || item.Deadline || new Date().toISOString().split('T')[0],
+    unit: item.unit || item.Unit || "NHP",
+    division: item.division || item.Divisi || "Digital Marketing",
+    title: item.title || item.Judul || "",
+    description: item.description || item.Deskripsi || "",
+    deadline:
+      item.deadline || item.Deadline || new Date().toISOString().split("T")[0],
     progress: Number(item.progress || item.Progress || 0),
-    status: item.status || item.Status || 'To Do',
-    assignedPicIds: picIds
+    status: item.status || item.Status || "To Do",
+    assignedPicIds: picIds,
   });
   isModalPicDropdownOpen.value = false;
   isModalOpen.value = true;
@@ -775,14 +1121,18 @@ const openEditModal = (item) => {
 
 const saveProgram = async () => {
   if (!activeItem.title) {
-    store.addNotification('Peringatan', 'Judul program kerja wajib diisi', 'warning');
+    store.addNotification(
+      "Peringatan",
+      "Judul program kerja wajib diisi",
+      "warning",
+    );
     return;
   }
 
-  const selectedUsers = registeredUsers.value.filter(u => 
-    activeItem.assignedPicIds.includes(u.id)
+  const selectedUsers = registeredUsers.value.filter((u) =>
+    activeItem.assignedPicIds.includes(u.id),
   );
-  const picNames = selectedUsers.map(u => u.nama);
+  const picNames = selectedUsers.map((u) => u.nama);
 
   store.isLoading = true;
   try {
@@ -791,24 +1141,30 @@ const saveProgram = async () => {
       id: activeItem.id || Date.now(),
       assignedPicIds: activeItem.assignedPicIds,
       assignedUsers: picNames,
-      picName: picNames.join(', '),
-      createdBy: activeItem.createdBy || store.currentUser?.email || ''
+      picName: picNames.join(", "),
+      createdBy: activeItem.createdBy || store.currentUser?.email || "",
     };
 
     await api.saveProgramData(payload);
 
     if (!store.db.programs) store.db.programs = [];
-    const idx = store.db.programs.findIndex(p => String(p.id) === String(payload.id));
+    const idx = store.db.programs.findIndex(
+      (p) => String(p.id) === String(payload.id),
+    );
     if (idx !== -1) {
       store.db.programs[idx] = payload;
     } else {
       store.db.programs.unshift(payload);
     }
 
-    store.addNotification('Berhasil', 'Program kerja berhasil disimpan', 'success');
+    store.addNotification(
+      "Berhasil",
+      "Program kerja berhasil disimpan",
+      "success",
+    );
     isModalOpen.value = false;
   } catch (err) {
-    store.addNotification('Gagal', err.message, 'warning');
+    store.addNotification("Gagal", err.message, "warning");
   } finally {
     store.isLoading = false;
   }
@@ -816,12 +1172,16 @@ const saveProgram = async () => {
 
 const deleteProgram = () => {
   if (!canUserDeleteItem(activeItem)) {
-    store.addNotification('Akses Ditolak', 'Hanya pembuat program atau SPV yang dapat menghapus program ini.', 'warning');
+    store.addNotification(
+      "Akses Ditolak",
+      "Hanya pembuat program atau SPV yang dapat menghapus program ini.",
+      "warning",
+    );
     return;
   }
 
   store.openAlert(
-    'Konfirmasi Hapus',
+    "Konfirmasi Hapus",
     `Apakah Anda yakin ingin menghapus program "${activeItem.title}"?`,
     async () => {
       isSubmitting.value = true;
@@ -831,31 +1191,36 @@ const deleteProgram = () => {
         }
 
         if (store.db.programs) {
-          const idx = store.db.programs.findIndex(p => (p.id || p.Timestamp) === activeItem.id);
+          const idx = store.db.programs.findIndex(
+            (p) => (p.id || p.Timestamp) === activeItem.id,
+          );
           if (idx !== -1) store.db.programs.splice(idx, 1);
         }
 
-        store.addNotification('Dihapus', 'Program kerja berhasil dihapus', 'warning');
+        store.addNotification(
+          "Dihapus",
+          "Program kerja berhasil dihapus",
+          "warning",
+        );
         isModalOpen.value = false;
       } catch (err) {
-        store.addNotification('Gagal Menghapus', err.message, 'warning');
+        store.addNotification("Gagal Menghapus", err.message, "warning");
       } finally {
         isSubmitting.value = false;
       }
     },
-    'warning'
+    "warning",
   );
 };
 
 watch(
   () => store.activeModal,
   (newModal) => {
-    if (newModal === 'progress') {
+    if (newModal === "progress") {
       openAddModal();
       store.closeModal(); // Bersihkan sinyal di store agar tidak bentrok
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
-
 </script>
