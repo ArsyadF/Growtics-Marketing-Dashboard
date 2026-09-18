@@ -19,26 +19,40 @@
 } */
 
  /* Default Warna Utama (Hijau) */
-:root {
+/* :root {
   --primary-color: rgb(5 150 105);
   --primary-light: rgb(5 150 105);
   --primary-text: rgb(5 150 105);
+} */
+
+ /* Default Warna Utama (Hijau) */
+:root {
+  --primary-color: #255446;
+  --primary-light: #229065;
+  --primary-text: #255446;
 }
 
 /* Utilitas Tailwind Kustom menggunakan CSS Variable */
-/* .bg-theme-gradient {
-  background-image: linear-gradient(to top right, var(--primary-color), var(--primary-light));
-} */
-
 .bg-theme-gradient {
+  background-image: linear-gradient(to top right, var(--primary-color), var(--primary-light));
+}
+
+/* .bg-theme-gradient {
   background-color: var(--primary-color);
-  background-image: none; /* Memastikan tidak ada sisa gradien dari utilitas lain */
+  background-image: none;   
+}
+Memastikan tidak ada sisa gradien dari utilitas lain */
+
+.bg-button {
+  background-color: var(--primary-color);
+  /* background-image: none;    */
 }
 
 
 .text-theme {
   color: var(--primary-text);
 }
+
 .border-theme {
   border-color: var(--primary-text);
 }
