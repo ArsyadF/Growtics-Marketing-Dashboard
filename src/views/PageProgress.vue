@@ -1,18 +1,19 @@
 <!-- src/views/PageProgress.vue -->
 <template>
   <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
-    <!-- HEADER BAR: TITLE, DISPLAY MODE & CONTROLS -->
+    <!-- HEADER BAR: LAYOUT 2 KOLOM RAPI & RINGKAS -->
     <div
-      class="glass-card p-4 md:p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10"
+      class="glass-card p-4 md:p-5 rounded-2xl flex flex-cols-1 md:flex-cols-2 lg:flex-cols-1 gap-4 items-center justify-between relative z-10"
     >
-      <div>
+      <!-- KOLOM 1: JUDUL & SUBDESKRIPSI (4-5 KOLOM LG) -->
+      <div class="lg:col-span-4 xl:col-span-5 space-y-1">
         <h3
           class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"
         >
           <i class="fa-solid fa-kanban text-emerald-600"></i>
-          Board Progres Program Tim
+          <span>Board Progres Program Tim</span>
         </h3>
-        <p class="text-[11px] md:text-xs text-slate-400 mt-0.5">
+        <p class="text-[11px] md:text-xs text-slate-400 leading-tight">
           {{
             isSpvOrAdmin
               ? "Kelola dan tugaskan program kerja ke staff divisi."
@@ -21,15 +22,15 @@
         </p>
       </div>
 
-      <!-- Action & Filter Controls -->
+      <!-- KOLOM 2: FILTER & TOMBOL AKSI (7-8 KOLOM LG - RIGHT ALIGNED) -->
       <div
-        class="hidden md:block flex items-center gap-2 flex-wrap sm:flex-nowrap relative"
+        class="hidden md:flex lg:col-span-8 xl:col-span-7 flex-wrap items-center justify-start md:justify-end gap-2"
       >
         <!-- Toggle Quick Filter: Tugas Saya -->
         <button
           @click="filterMyTasks = !filterMyTasks"
           type="button"
-          class="px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border"
+          class="px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border shrink-0"
           :class="
             filterMyTasks
               ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
@@ -43,190 +44,181 @@
           <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
         </button>
 
-        <!-- FILTER DESKTOP ONLY (HIDDEN DI MOBILE) -->
-        <div class="hidden md:flex items-center gap-2">
-          <!-- FILTER 1: CHECKBOX MULTI-UNIT -->
-          <div class="relative">
-            <button
-              @click.stop="toggleFilterMenu('unit')"
-              type="button"
-              class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
+        <!-- FILTER 1: MULTI-UNIT -->
+        <div class="relative shrink-0">
+          <button
+            @click.stop="toggleFilterMenu('unit')"
+            type="button"
+            class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700"
+          >
+            <i class="fa-solid fa-building text-blue-500"></i>
+            <span
+              >Unit ({{
+                selectedUnits.length ? selectedUnits.length : "Semua"
+              }})</span
             >
-              <i class="fa-solid fa-building text-blue-500"></i>
-              <span
-                >Unit ({{
-                  selectedUnits.length ? selectedUnits.length : "Semua"
-                }})</span
-              >
-              <i
-                class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"
-              ></i>
-            </button>
+            <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"></i>
+          </button>
 
+          <div
+            v-if="activeFilterMenu === 'unit'"
+            @click.stop
+            class="absolute right-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
+          >
             <div
-              v-if="activeFilterMenu === 'unit'"
-              @click.stop
-              class="absolute left-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
+              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
             >
-              <div
-                class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+              <span
+                class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
+                >Filter Unit</span
               >
-                <span
-                  class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
-                  >Filter Unit</span
-                >
-                <button
-                  type="button"
-                  @click="toggleAllUnits"
-                  class="text-[10px] font-bold text-emerald-600 hover:underline"
-                >
-                  {{
-                    selectedUnits.length === masterUnits.length
-                      ? "Reset"
-                      : "Semua"
-                  }}
-                </button>
-              </div>
-              <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-                <label
-                  v-for="u in masterUnits"
-                  :key="u.code"
-                  class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
-                >
-                  <input
-                    type="checkbox"
-                    :value="u.code"
-                    v-model="selectedUnits"
-                    class="accent-emerald-600 rounded"
-                  />
-                  <span class="truncate">Unit {{ u.code }}</span>
-                </label>
-              </div>
+              <button
+                type="button"
+                @click="toggleAllUnits"
+                class="text-[10px] font-bold text-emerald-600 hover:underline"
+              >
+                {{
+                  selectedUnits.length === masterUnits.length
+                    ? "Reset"
+                    : "Semua"
+                }}
+              </button>
             </div>
-          </div>
-
-          <!-- FILTER 2: CHECKBOX MULTI-DIVISI -->
-          <div class="relative">
-            <button
-              @click.stop="toggleFilterMenu('divisi')"
-              type="button"
-              class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
-            >
-              <i class="fa-solid fa-sitemap text-amber-500"></i>
-              <span
-                >Divisi ({{
-                  selectedDivisions.length ? selectedDivisions.length : "Semua"
-                }})</span
+            <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+              <label
+                v-for="u in masterUnits"
+                :key="u.code"
+                class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
               >
-              <i
-                class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"
-              ></i>
-            </button>
-
-            <div
-              v-if="activeFilterMenu === 'divisi'"
-              @click.stop
-              class="absolute left-0 mt-2 w-60 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
-            >
-              <div
-                class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
-              >
-                <span
-                  class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
-                  >Filter Divisi</span
-                >
-                <button
-                  type="button"
-                  @click="toggleAllDivisions"
-                  class="text-[10px] font-bold text-emerald-600 hover:underline"
-                >
-                  {{
-                    selectedDivisions.length === availableDivisions.length
-                      ? "Reset"
-                      : "Semua"
-                  }}
-                </button>
-              </div>
-              <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-                <label
-                  v-for="div in availableDivisions"
-                  :key="div"
-                  class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
-                >
-                  <input
-                    type="checkbox"
-                    :value="div"
-                    v-model="selectedDivisions"
-                    class="accent-emerald-600 rounded"
-                  />
-                  <span class="truncate">{{ div }}</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <!-- FILTER 3: CHECKBOX MULTI-PIC -->
-          <div class="relative">
-            <button
-              @click.stop="toggleFilterMenu('pic')"
-              type="button"
-              class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
-            >
-              <i class="fa-solid fa-user-gear text-emerald-600"></i>
-              <span
-                >PIC ({{
-                  selectedPics.length ? selectedPics.length : "Semua"
-                }})</span
-              >
-              <i
-                class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"
-              ></i>
-            </button>
-
-            <div
-              v-if="activeFilterMenu === 'pic'"
-              @click.stop
-              class="absolute left-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
-            >
-              <div
-                class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
-              >
-                <span
-                  class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
-                  >Filter PIC Board</span
-                >
-                <button
-                  type="button"
-                  @click="toggleAllPics"
-                  class="text-[10px] font-bold text-emerald-600 hover:underline"
-                >
-                  {{
-                    selectedPics.length === registeredUsers.length
-                      ? "Reset"
-                      : "Semua"
-                  }}
-                </button>
-              </div>
-              <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-                <label
-                  v-for="user in registeredUsers"
-                  :key="user.id"
-                  class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
-                >
-                  <input
-                    type="checkbox"
-                    :value="user.id"
-                    v-model="selectedPics"
-                    class="accent-emerald-600 rounded"
-                  />
-                  <span class="truncate">{{ user.nama }}</span>
-                </label>
-              </div>
+                <input
+                  type="checkbox"
+                  :value="u.code"
+                  v-model="selectedUnits"
+                  class="accent-emerald-600 rounded"
+                />
+                <span class="truncate">Unit {{ u.code }}</span>
+              </label>
             </div>
           </div>
         </div>
 
-        <!-- Tombol Tambah Program -->
+        <!-- FILTER 2: MULTI-DIVISI -->
+        <div class="relative shrink-0">
+          <button
+            @click.stop="toggleFilterMenu('divisi')"
+            type="button"
+            class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700"
+          >
+            <i class="fa-solid fa-sitemap text-amber-500"></i>
+            <span
+              >Divisi ({{
+                selectedDivisions.length ? selectedDivisions.length : "Semua"
+              }})</span
+            >
+            <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"></i>
+          </button>
+
+          <div
+            v-if="activeFilterMenu === 'divisi'"
+            @click.stop
+            class="absolute right-0 mt-2 w-60 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
+          >
+            <div
+              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+            >
+              <span
+                class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
+                >Filter Divisi</span
+              >
+              <button
+                type="button"
+                @click="toggleAllDivisions"
+                class="text-[10px] font-bold text-emerald-600 hover:underline"
+              >
+                {{
+                  selectedDivisions.length === availableDivisions.length
+                    ? "Reset"
+                    : "Semua"
+                }}
+              </button>
+            </div>
+            <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+              <label
+                v-for="div in availableDivisions"
+                :key="div"
+                class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+              >
+                <input
+                  type="checkbox"
+                  :value="div"
+                  v-model="selectedDivisions"
+                  class="accent-emerald-600 rounded"
+                />
+                <span class="truncate">{{ div }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- FILTER 3: MULTI-PIC -->
+        <div class="relative shrink-0">
+          <button
+            @click.stop="toggleFilterMenu('pic')"
+            type="button"
+            class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700"
+          >
+            <i class="fa-solid fa-user-gear text-emerald-600"></i>
+            <span
+              >PIC ({{
+                selectedPics.length ? selectedPics.length : "Semua"
+              }})</span
+            >
+            <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"></i>
+          </button>
+
+          <div
+            v-if="activeFilterMenu === 'pic'"
+            @click.stop
+            class="absolute right-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
+          >
+            <div
+              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+            >
+              <span
+                class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
+                >Filter PIC Board</span
+              >
+              <button
+                type="button"
+                @click="toggleAllPics"
+                class="text-[10px] font-bold text-emerald-600 hover:underline"
+              >
+                {{
+                  selectedPics.length === registeredUsers.length
+                    ? "Reset"
+                    : "Semua"
+                }}
+              </button>
+            </div>
+            <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+              <label
+                v-for="user in registeredUsers"
+                :key="user.id"
+                class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+              >
+                <input
+                  type="checkbox"
+                  :value="user.id"
+                  v-model="selectedPics"
+                  class="accent-emerald-600 rounded"
+                />
+                <span class="truncate">{{ user.nama }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- TOMBOL TAMBAH PROGRAM -->
         <button
           v-if="isSpvOrAdmin"
           @click="openAddModal"
@@ -234,7 +226,7 @@
           class="bg-button text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
         >
           <i class="fa-solid fa-plus text-xs"></i>
-          <span class="hidden sm:inline">Tambah Program</span>
+          <span>Tambah Program</span>
         </button>
       </div>
     </div>
@@ -242,7 +234,7 @@
     <!-- METRIK STATISTIK PROGRAM -->
     <div class="grid grid-cols-4 sm:grid-cols-5 gap-2.5 md:gap-4 relative z-0">
       <div
-        class="glass-card p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800"
+        class="glass-card flex flex-col justify-between p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800"
       >
         <span class="text-[10px] text-slate-400 font-medium block"
           >Total Program</span
@@ -254,7 +246,7 @@
         </h4>
       </div>
       <div
-        class="glass-card p-3.5 rounded-2xl border border-blue-500/20 bg-blue-500/5"
+        class="glass-card flex flex-col justify-between p-3.5 rounded-2xl border border-blue-500/20 bg-blue-500/5"
       >
         <span
           class="text-[10px] text-blue-600 dark:text-blue-400 font-medium block"
@@ -267,7 +259,7 @@
         </h4>
       </div>
       <div
-        class="glass-card p-3.5 rounded-2xl border border-amber-500/20 bg-amber-500/5"
+        class="glass-card flex flex-col justify-between p-3.5 rounded-2xl border border-amber-500/20 bg-amber-500/5"
       >
         <span
           class="text-[10px] text-amber-600 dark:text-amber-400 font-medium block"
@@ -280,7 +272,7 @@
         </h4>
       </div>
       <div
-        class="glass-card p-3.5 rounded-2xl border border-rose-500/20 bg-rose-500/5"
+        class="glass-card flex flex-col justify-between p-3.5 rounded-2xl border border-rose-500/20 bg-rose-500/5"
       >
         <span
           class="text-[10px] text-rose-600 dark:text-rose-400 font-medium block"
@@ -293,7 +285,7 @@
         </h4>
       </div>
       <div
-        class="glass-card p-3.5 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1"
+        class="glass-card flex flex-col justify-between p-3.5 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1"
       >
         <span
           class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium block"
@@ -306,6 +298,7 @@
         </h4>
       </div>
 
+      <!-- FITUR 1: TOGGLE DISPLAY MODE DESKTOP (KANBAN / LIST) -->
       <div
         class="block sm:hidden glass-card rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1"
       >
@@ -313,7 +306,7 @@
           <button
             @click="filterMyTasks = !filterMyTasks"
             type="button"
-            class="md:hidden px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border"
+            class="lg:hidden p-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border"
             :class="
               filterMyTasks
                 ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
@@ -331,10 +324,10 @@
             v-if="isSpvOrAdmin"
             @click="openAddModal"
             type="button"
-            class="md:hidden bg-button text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+            class="lg:hidden bg-button text-white font-bold p-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
           >
             <i class="fa-solid fa-plus text-xs"></i>
-            <span class="md:hidden sm:inline"> Program</span>
+            <span class="lg:hidden sm:inline"> Tugas</span>
           </button>
         </div>
 
@@ -378,7 +371,75 @@
       </div>
     </div>
 
-    <!-- FITUR 1: TOGGLE DISPLAY MODE (KANBAN / LIST) -->
+    <!-- FITUR 1: TOGGLE DISPLAY MODE MOBILE (KANBAN / LIST) -->
+
+    <div class="hidden sm:flex flex items-center gap-2 p-1 justify-end">
+      <div class="hidden lg:flex col-span-2 sm:col-span-1">
+        <div class="flex items-center gap-2 p-2 justify-between">
+          <button
+            @click="filterMyTasks = !filterMyTasks"
+            type="button"
+            class="lg:hidden p-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border"
+            :class="
+              filterMyTasks
+                ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+            "
+          >
+            <i
+              class="fa-solid"
+              :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"
+            ></i>
+            <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
+          </button>
+          <!-- Tombol Tambah Program -->
+          <button
+            v-if="isSpvOrAdmin"
+            @click="openAddModal"
+            type="button"
+            class="lg:hidden bg-button text-white font-bold p-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+          >
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span class="lg:hidden sm:inline"> Tugas</span>
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700"
+      >
+        <span class="text-xs font-bold text-slate-400 px-1">Mode Tampilan</span>
+
+        <button
+          @click="displayMode = 'kanban'"
+          type="button"
+          class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+          :class="
+            displayMode === 'kanban'
+              ? 'bg-emerald-600 text-white shadow-xs'
+              : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+          "
+          title="Tampilan Kanban / Thumbnail"
+        >
+          <i class="fa-solid fa-table-columns"></i>
+          <span class="hidden sm:inline">Board</span>
+        </button>
+        <button
+          @click="displayMode = 'list'"
+          type="button"
+          class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+          :class="
+            displayMode === 'list'
+              ? 'bg-emerald-600 text-white shadow-xs'
+              : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+          "
+          title="Tampilan Ringkas / List Tabel"
+        >
+          <i class="fa-solid fa-list-check"></i>
+          <span class="hidden sm:inline">Ringkas</span>
+        </button>
+      </div>
+    </div>
 
     <!-- FITUR 2: MOBILE HEADER SWITCHER UNTUK KANBAN (TAMPIL DI LAYAR HP SAAT MODE KANBAN) -->
     <div
