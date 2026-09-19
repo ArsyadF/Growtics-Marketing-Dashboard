@@ -476,6 +476,7 @@
         <div
           class="glass-card w-full max-w-lg bg-white/95 dark:bg-slate-900/95 rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
         >
+          <!-- HEADER MODAL -->
           <div
             class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
           >
@@ -507,6 +508,7 @@
           </div>
 
           <form @submit.prevent="saveTicket" class="space-y-3 text-xs">
+            <!-- INPUT NAMA & KONTAK (+ TOMBOL WA) -->
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-slate-500 font-medium mb-1"
@@ -525,16 +527,32 @@
                 <label class="block text-slate-500 font-medium mb-1"
                   >Kontak (WA / Email)</label
                 >
-                <input
-                  v-model="form.contact"
-                  type="text"
-                  :disabled="!canCreateOrEdit"
-                  placeholder="08xxxxxxx"
-                  class="w-full glass-input rounded-xl p-2.5 outline-none disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
-                />
+                <div class="flex gap-1.5">
+                  <input
+                    v-model="form.contact"
+                    type="text"
+                    :disabled="!canCreateOrEdit"
+                    placeholder="08xxxxxxx"
+                    class="w-full glass-input rounded-xl p-2.5 outline-none disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
+                  />
+                  <!-- TOMBOL HUBUNGI WHATSAPP -->
+                  <a
+                    v-if="form.contact"
+                    :href="
+                      getWaLink(form.contact, form.customerName, form.ticketNo)
+                    "
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 rounded-xl flex items-center justify-center shrink-0 transition-all shadow-sm"
+                    title="Hubungi via WhatsApp"
+                  >
+                    <i class="fa-brands fa-whatsapp text-base"></i>
+                  </a>
+                </div>
               </div>
             </div>
 
+            <!-- UNIT & KATEGORI MASALAH -->
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-slate-500 font-medium mb-1"
@@ -582,6 +600,7 @@
               </div>
             </div>
 
+            <!-- PRIORITAS & STATUS -->
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-slate-500 font-medium mb-1"
@@ -615,18 +634,65 @@
               </div>
             </div>
 
+            <!-- RINCIAN KELUAHAN -->
             <div>
               <label class="block text-slate-500 font-medium mb-1"
                 >Rincian Keluhan / Aduan</label
               >
               <textarea
                 v-model="form.description"
-                rows="4"
+                rows="3"
                 required
                 :disabled="!canCreateOrEdit"
                 placeholder="Jelaskan detail aduan pelanggan..."
-                class="w-full glass-input rounded-xl p-2.5 outline-none resize-y min-h-[90px] disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
+                class="w-full glass-input rounded-xl p-2.5 outline-none resize-y min-h-[80px] disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
               ></textarea>
+            </div>
+
+            <!-- FEATURE: INPUT & PREVIEW GAMBAR / BUKTI FOTO -->
+            <div class="space-y-1.5">
+              <label class="block text-slate-500 font-medium"
+                >Foto Bukti Aduan / Lampiran</label
+              >
+
+              <!-- Preview Gambar Jika Ada -->
+              <div
+                v-if="form.imageUrl"
+                class="relative w-full max-h-48 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/50 flex justify-center items-center"
+              >
+                <img
+                  :src="form.imageUrl"
+                  alt="Bukti Aduan"
+                  class="max-h-48 object-contain w-auto"
+                />
+                <button
+                  v-if="canCreateOrEdit"
+                  type="button"
+                  @click="removeImage"
+                  class="absolute top-2 right-2 w-7 h-7 rounded-full bg-rose-500/80 text-white flex items-center justify-center hover:bg-rose-600 transition-colors cursor-pointer"
+                  title="Hapus Foto"
+                >
+                  <i class="fa-solid fa-trash text-xs"></i>
+                </button>
+              </div>
+
+              <!-- Input Upload File -->
+              <div v-if="canCreateOrEdit && !form.imageUrl">
+                <label
+                  class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-slate-200 dark:border-slate-700/80 rounded-2xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+                >
+                  <div class="flex items-center gap-2 text-slate-500">
+                    <i class="fa-solid fa-camera text-base text-theme"></i>
+                    <span class="text-xs font-semibold">Unggah Foto Bukti</span>
+                  </div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    @change="handleImageUpload"
+                    class="hidden"
+                  />
+                </label>
+              </div>
             </div>
 
             <!-- Info Pembuat Tiket -->
@@ -637,6 +703,7 @@
               Dibuat oleh: {{ form.createdBy }}
             </div>
 
+            <!-- FOOTER MODAL CONTROLS -->
             <div
               class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center"
             >
@@ -1147,5 +1214,43 @@ const deleteTicket = (item) => {
     },
     "warning",
   );
+};
+
+// 1. Fungsi Format & Redirect Link WhatsApp
+const getWaLink = (contact, name, ticketNo) => {
+  if (!contact) return "#";
+  // Bersihkan karakter non-digit dan ubah awalan 0 menjadi 62
+  let phone = contact.replace(/[^0-9]/g, "");
+  if (phone.startsWith("0")) {
+    phone = "62" + phone.slice(1);
+  }
+
+  const text = encodeURIComponent(
+    `Halo *${name || "Pelanggan"}*,\nKami dari Tim Support terkait Tiket Aduan *#${ticketNo}*. Ada yang bisa kami bantu?`,
+  );
+  return `https://wa.me/${phone}?text=${text}`;
+};
+
+// 2. Fungsi Handle Upload Gambar (Base64)
+const handleImageUpload = (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  // Batasi ukuran file maks 2MB jika diperlukan
+  if (file.size > 2 * 1024 * 1024) {
+    alert("Ukuran foto maksimal 2MB!");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    form.imageUrl = e.target.result; // Menyimpan gambar sebagai data Base64
+  };
+  reader.readAsDataURL(file);
+};
+
+// 3. Fungsi Hapus Gambar
+const removeImage = () => {
+  form.imageUrl = "";
 };
 </script>

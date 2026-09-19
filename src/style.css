@@ -26,22 +26,66 @@
 } */
 
  /* Default Warna Utama (Hijau) */
-:root {
+/* :root {
   --primary-color: #255446;
   --primary-light: #229065;
   --primary-text: #255446;
-}
+} */
 
 /* Utilitas Tailwind Kustom menggunakan CSS Variable */
-.bg-theme-gradient {
+/* .bg-theme-gradient {
   background-image: linear-gradient(to top right, var(--primary-color), var(--primary-light));
-}
+} */
 
 /* .bg-theme-gradient {
   background-color: var(--primary-color);
   background-image: none;   
 }
 Memastikan tidak ada sisa gradien dari utilitas lain */
+
+
+/* 1. DAFTARKAN 3 VARIABEL WARNA SEBAGAI <color> (AGAR BISA ANIMAi/TRANSISI) */
+@property --primary-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #255446; /* Awal (from) */
+}
+
+@property --primary-via {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #207355; /* Tengah (via) */
+}
+
+@property --primary-light {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #229065; /* Akhir (to) */
+}
+
+/* 2. ROOT VARIABLE DEFAULT */
+:root {
+  --primary-color: #255446;
+  --primary-via: #207355;
+  --primary-light: #229065;
+  --primary-text: #255446;
+}
+
+/* 3. UTILITAS GRADIEN 3 WARNA DENGAN TRANSISI HALUS */
+.bg-theme-gradient {
+  background-image: linear-gradient(
+    to top right,
+    var(--primary-color),
+    var(--primary-via),
+    var(--primary-light)
+  );
+  /* Menerapkan transisi 700ms pada ketiga variabel warna */
+  transition: 
+    --primary-color 700ms cubic-bezier(0.4, 0, 0.2, 1),
+    --primary-via 700ms cubic-bezier(0.4, 0, 0.2, 1),
+    --primary-light 700ms cubic-bezier(0.4, 0, 0.2, 1),
+    all 700ms cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 .bg-button {
   background-color: var(--primary-color);

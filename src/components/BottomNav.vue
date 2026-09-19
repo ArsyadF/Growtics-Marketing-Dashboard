@@ -375,9 +375,9 @@
           >
             <button
               @click.stop="togglePopup('add')"
-              class="absolute -top-4 w-14 h-14 bg-white text-theme dark:bg-slate-800 dark:text-emerald-400 rounded-full shadow-lg flex items-center justify-center text-xl transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-900 z-20 focus:outline-none"
+              class="absolute -top-4 w-14 h-14 bg-white text-theme dark:bg-slate-800 dark:text-theme rounded-full shadow-lg flex items-center justify-center text-xl transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-900 z-20 focus:outline-none"
               :class="{
-                '!bg-emerald-100 dark:!bg-slate-700': activePopup === 'add',
+                '!bg-slate-200 dark:!bg-slate-700': activePopup === 'add',
               }"
             >
               <i
