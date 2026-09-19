@@ -1,11 +1,11 @@
 <!-- src/views/PageProgress.vue -->
 <template>
   <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
-    <!-- HEADER BAR: LAYOUT PERSIS KODE AWAL + FILTER STATUS -->
+    <!-- HEADER BAR: LAYOUT 2 KOLOM RAPI & RINGKAS -->
     <div
-      class="glass-card p-4 md:p-5 rounded-2xl flex flex-cols-1 md:flex-cols-2 lg:flex-cols-1 gap-4 items-center justify-between relative z-10"
+      class="glass-card p-4 md:p-5 rounded-2xl grid grid-cols-1 lg:grid-cols-12 gap-4 items-center relative z-10"
     >
-      <!-- KOLOM 1: JUDUL & SUBDESKRIPSI -->
+      <!-- KOLOM 1: JUDUL & SUBDESKRIPSI (4-5 KOLOM LG) -->
       <div class="lg:col-span-4 xl:col-span-5 space-y-1">
         <h3
           class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"
@@ -22,9 +22,9 @@
         </p>
       </div>
 
-      <!-- KOLOM 2: FILTER & TOMBOL AKSI -->
+      <!-- KOLOM 2: FILTER & TOMBOL AKSI (7-8 KOLOM LG - RIGHT ALIGNED) -->
       <div
-        class="hidden md:flex lg:col-span-8 xl:col-span-7 flex-wrap items-center justify-start md:justify-end gap-2"
+        class="hidden md:flex lg:col-span-8 xl:col-span-7 flex-wrap items-center justify-start lg:justify-end gap-2"
       >
         <!-- Toggle Quick Filter: Tugas Saya -->
         <button
@@ -44,7 +44,7 @@
           <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
         </button>
 
-        <!-- FILTER STATUS PROGRES (TAMBAHAN PURE FILTER) -->
+        <!-- FILTER STATUS PROGRES (BARU) -->
         <div class="relative shrink-0">
           <button
             @click.stop="toggleFilterMenu('status')"
@@ -78,7 +78,9 @@
                 class="text-[10px] font-bold text-emerald-600 hover:underline"
               >
                 {{
-                  selectedStatuses.length === columns.length ? "Reset" : "Semua"
+                  selectedStatuses.length === columns.length
+                    ? "Reset"
+                    : "Semua"
                 }}
               </button>
             </div>
@@ -293,10 +295,10 @@
       </div>
     </div>
 
-    <!-- METRIK STATISTIK PROGRAM (DENGAN REVISI CLASS P-[14PX]) -->
+    <!-- METRIK STATISTIK PROGRAM -->
     <div class="grid grid-cols-4 sm:grid-cols-5 gap-2.5 md:gap-4 relative z-0">
       <div
-        class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-slate-100 dark:border-slate-800"
+        class="glass-card flex flex-col justify-between p-4 rounded-2xl border border-slate-100 dark:border-slate-800"
       >
         <span class="text-[10px] text-slate-400 font-medium block"
           >Total Program</span
@@ -308,7 +310,7 @@
         </h4>
       </div>
       <div
-        class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-blue-500/20 bg-blue-500/5"
+        class="glass-card flex flex-col justify-between p-4 rounded-2xl border border-blue-500/20 bg-blue-500/5"
       >
         <span
           class="text-[10px] text-blue-600 dark:text-blue-400 font-medium block"
@@ -321,7 +323,7 @@
         </h4>
       </div>
       <div
-        class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-amber-500/20 bg-amber-500/5"
+        class="glass-card flex flex-col justify-between p-4 rounded-2xl border border-amber-500/20 bg-amber-500/5"
       >
         <span
           class="text-[10px] text-amber-600 dark:text-amber-400 font-medium block"
@@ -334,7 +336,7 @@
         </h4>
       </div>
       <div
-        class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-rose-500/20 bg-rose-500/5"
+        class="glass-card flex flex-col justify-between p-4 rounded-2xl border border-rose-500/20 bg-rose-500/5"
       >
         <span
           class="text-[10px] text-rose-600 dark:text-rose-400 font-medium block"
@@ -347,7 +349,7 @@
         </h4>
       </div>
       <div
-        class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1"
+        class="glass-card flex flex-col justify-between p-4 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1"
       >
         <span
           class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium block"
@@ -434,6 +436,7 @@
     </div>
 
     <!-- FITUR 1: TOGGLE DISPLAY MODE MOBILE (KANBAN / LIST) -->
+
     <div class="hidden sm:flex flex items-center gap-2 p-1 justify-end">
       <div class="hidden lg:flex col-span-2 sm:col-span-1">
         <div class="flex items-center gap-2 p-2 justify-between">
@@ -502,7 +505,7 @@
       </div>
     </div>
 
-    <!-- FITUR 2: MOBILE HEADER SWITCHER UNTUK KANBAN -->
+    <!-- FITUR 2: MOBILE HEADER SWITCHER UNTUK KANBAN (TAMPIL DI LAYAR HP SAAT MODE KANBAN) -->
     <div
       v-if="displayMode === 'kanban'"
       class="md:hidden glass-card p-2.5 rounded-2xl bg-white/90 dark:bg-slate-900/90 flex items-center justify-between border border-slate-200 dark:border-slate-800"
@@ -706,7 +709,7 @@
       </div>
     </div>
 
-    <!-- MODE 2: RINGKAS / LIST TABLE VIEW -->
+    <!-- MODE 2: RINGKAS / LIST TABLE VIEW (MUDAH DI-TRACK SAAT DATA SANGAT BANYAK) -->
     <div
       v-else-if="displayMode === 'list'"
       class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xs"
@@ -719,9 +722,9 @@
             >
               <th class="p-3 w-10 text-center">#</th>
               <th class="p-3">Judul Program</th>
-              <th class="p-3">Status</th>
               <th class="p-3">Unit / Divisi</th>
               <th class="p-3">PIC Staff</th>
+              <th class="p-3">Status</th>
               <th class="p-3">Deadline</th>
               <th class="p-3 text-center">Progres</th>
               <th class="p-3 text-right">Aksi</th>
@@ -750,17 +753,6 @@
               </td>
               <td class="p-3 whitespace-nowrap">
                 <span
-                  class="font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 w-max"
-                  :class="
-                    getColumnDotColor(item.status || item.Status) +
-                    ' text-white'
-                  "
-                >
-                  {{ item.status || item.Status }}
-                </span>
-              </td>
-              <td class="p-3 whitespace-nowrap">
-                <span
                   class="font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded text-[10px] border border-emerald-500/20 mr-1"
                 >
                   {{ item.unit || item.Unit }}
@@ -782,7 +774,17 @@
                   </span>
                 </div>
               </td>
-
+              <td class="p-3 whitespace-nowrap">
+                <span
+                  class="font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 w-max"
+                  :class="
+                    getColumnDotColor(item.status || item.Status) +
+                    ' text-white'
+                  "
+                >
+                  {{ item.status || item.Status }}
+                </span>
+              </td>
               <td class="p-3 whitespace-nowrap">
                 <span
                   :class="getDeadlineBadgeClass(item)"
@@ -1142,7 +1144,7 @@
       </button>
     </div>
 
-    <!-- MODAL FILTER BOTTOM SHEET KHUSUS MOBILE (DROPDOWN ACCORDION STYLE) -->
+    <!-- MODAL FILTER BOTTOM SHEET KHUSUS MOBILE -->
     <Teleport to="body">
       <div
         v-if="isMobileFilterOpen"
@@ -1170,267 +1172,170 @@
             </button>
           </div>
 
-          <div class="space-y-3 text-xs">
-            <!-- 1. DROPDOWN ACCORDION: STATUS -->
-            <div
-              class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
-            >
-              <button
-                type="button"
-                @click="
-                  mobileAccordion =
-                    mobileAccordion === 'status' ? null : 'status'
-                "
-                class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between font-bold text-slate-700 dark:text-slate-200"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-list-check text-purple-500"></i>
-                  <span>Status Progres</span>
-                  <span
-                    v-if="selectedStatuses.length"
-                    class="bg-purple-500/10 text-purple-600 px-2 py-0.5 rounded-full text-[10px]"
-                  >
-                    {{ selectedStatuses.length }}
-                  </span>
-                </div>
-                <i
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
-                  :class="{ 'rotate-180': mobileAccordion === 'status' }"
-                ></i>
-              </button>
-
-              <div
-                v-if="mobileAccordion === 'status'"
-                class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
-              >
-                <div class="flex justify-end pb-1">
-                  <button
-                    type="button"
-                    @click="toggleAllStatuses"
-                    class="text-[10px] font-bold text-emerald-600"
-                  >
-                    {{
-                      selectedStatuses.length === columns.length
-                        ? "Reset"
-                        : "Pilih Semua"
-                    }}
-                  </button>
-                </div>
-                <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
-                  <label
-                    v-for="st in columns"
-                    :key="st"
-                    class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
-                  >
-                    <input
-                      type="checkbox"
-                      :value="st"
-                      v-model="selectedStatuses"
-                      class="accent-emerald-600 rounded"
-                    />
+          <div class="space-y-4 text-xs">
+            <!-- 0. Filter Status (BARU) -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center">
+                <label
+                  class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5"
+                >
+                  <i class="fa-solid fa-list-check text-purple-500"></i> Status Progres
+                </label>
+                <button
+                  type="button"
+                  @click="toggleAllStatuses"
+                  class="text-[10px] font-bold text-emerald-600"
+                >
+                  {{
+                    selectedStatuses.length === columns.length
+                      ? "Reset"
+                      : "Pilih Semua"
+                  }}
+                </button>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <label
+                  v-for="st in columns"
+                  :key="st"
+                  class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
+                >
+                  <input
+                    type="checkbox"
+                    :value="st"
+                    v-model="selectedStatuses"
+                    class="accent-emerald-600 rounded"
+                  />
+                  <span class="flex items-center gap-1.5 truncate text-[11px]">
                     <span
-                      class="flex items-center gap-1.5 truncate text-[11px]"
-                    >
-                      <span
-                        class="w-2 h-2 rounded-full shrink-0"
-                        :class="getColumnDotColor(st)"
-                      ></span>
-                      <span>{{ st }}</span>
-                    </span>
-                  </label>
-                </div>
+                      class="w-2 h-2 rounded-full shrink-0"
+                      :class="getColumnDotColor(st)"
+                    ></span>
+                    <span>{{ st }}</span>
+                  </span>
+                </label>
               </div>
             </div>
 
-            <!-- 2. DROPDOWN ACCORDION: UNIT -->
+            <!-- 1. Filter Unit -->
             <div
-              class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
+              class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800"
             >
-              <button
-                type="button"
-                @click="
-                  mobileAccordion = mobileAccordion === 'unit' ? null : 'unit'
-                "
-                class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between font-bold text-slate-700 dark:text-slate-200"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-building text-blue-500"></i>
-                  <span>Unit Usaha</span>
-                  <span
-                    v-if="selectedUnits.length"
-                    class="bg-blue-500/10 text-blue-600 px-2 py-0.5 rounded-full text-[10px]"
-                  >
-                    {{ selectedUnits.length }}
-                  </span>
-                </div>
-                <i
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
-                  :class="{ 'rotate-180': mobileAccordion === 'unit' }"
-                ></i>
-              </button>
-
-              <div
-                v-if="mobileAccordion === 'unit'"
-                class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
-              >
-                <div class="flex justify-end pb-1">
-                  <button
-                    type="button"
-                    @click="toggleAllUnits"
-                    class="text-[10px] font-bold text-emerald-600"
-                  >
-                    {{
-                      selectedUnits.length === masterUnits.length
-                        ? "Reset"
-                        : "Pilih Semua"
-                    }}
-                  </button>
-                </div>
-                <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
-                  <label
-                    v-for="u in masterUnits"
-                    :key="u.code"
-                    class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
-                  >
-                    <input
-                      type="checkbox"
-                      :value="u.code"
-                      v-model="selectedUnits"
-                      class="accent-emerald-600 rounded"
-                    />
-                    <span class="truncate text-[11px]">Unit {{ u.code }}</span>
-                  </label>
-                </div>
+              <div class="flex justify-between items-center">
+                <label
+                  class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5"
+                >
+                  <i class="fa-solid fa-building text-blue-500"></i> Unit Usaha
+                </label>
+                <button
+                  type="button"
+                  @click="toggleAllUnits"
+                  class="text-[10px] font-bold text-emerald-600"
+                >
+                  {{
+                    selectedUnits.length === masterUnits.length
+                      ? "Reset"
+                      : "Pilih Semua"
+                  }}
+                </button>
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <label
+                  v-for="u in masterUnits"
+                  :key="u.code"
+                  class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
+                >
+                  <input
+                    type="checkbox"
+                    :value="u.code"
+                    v-model="selectedUnits"
+                    class="accent-emerald-600 rounded"
+                  />
+                  <span class="truncate">Unit {{ u.code }}</span>
+                </label>
               </div>
             </div>
 
-            <!-- 3. DROPDOWN ACCORDION: DIVISI -->
+            <!-- 2. Filter Divisi -->
             <div
-              class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
+              class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800"
             >
-              <button
-                type="button"
-                @click="
-                  mobileAccordion =
-                    mobileAccordion === 'divisi' ? null : 'divisi'
-                "
-                class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between font-bold text-slate-700 dark:text-slate-200"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-sitemap text-amber-500"></i>
-                  <span>Divisi</span>
-                  <span
-                    v-if="selectedDivisions.length"
-                    class="bg-amber-500/10 text-amber-600 px-2 py-0.5 rounded-full text-[10px]"
-                  >
-                    {{ selectedDivisions.length }}
-                  </span>
-                </div>
-                <i
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
-                  :class="{ 'rotate-180': mobileAccordion === 'divisi' }"
-                ></i>
-              </button>
-
-              <div
-                v-if="mobileAccordion === 'divisi'"
-                class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
-              >
-                <div class="flex justify-end pb-1">
-                  <button
-                    type="button"
-                    @click="toggleAllDivisions"
-                    class="text-[10px] font-bold text-emerald-600"
-                  >
-                    {{
-                      selectedDivisions.length === availableDivisions.length
-                        ? "Reset"
-                        : "Pilih Semua"
-                    }}
-                  </button>
-                </div>
-                <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
-                  <label
-                    v-for="div in availableDivisions"
-                    :key="div"
-                    class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
-                  >
-                    <input
-                      type="checkbox"
-                      :value="div"
-                      v-model="selectedDivisions"
-                      class="accent-emerald-600 rounded"
-                    />
-                    <span class="truncate text-[11px]">{{ div }}</span>
-                  </label>
-                </div>
+              <div class="flex justify-between items-center">
+                <label
+                  class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5"
+                >
+                  <i class="fa-solid fa-sitemap text-amber-500"></i> Divisi
+                </label>
+                <button
+                  type="button"
+                  @click="toggleAllDivisions"
+                  class="text-[10px] font-bold text-emerald-600"
+                >
+                  {{
+                    selectedDivisions.length === availableDivisions.length
+                      ? "Reset"
+                      : "Pilih Semua"
+                  }}
+                </button>
+              </div>
+              <div class="grid grid-cols-2 gap-2 max-h-36 overflow-y-auto pr-1">
+                <label
+                  v-for="div in availableDivisions"
+                  :key="div"
+                  class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
+                >
+                  <input
+                    type="checkbox"
+                    :value="div"
+                    v-model="selectedDivisions"
+                    class="accent-emerald-600 rounded"
+                  />
+                  <span class="truncate text-[11px]">{{ div }}</span>
+                </label>
               </div>
             </div>
 
-            <!-- 4. DROPDOWN ACCORDION: PIC -->
+            <!-- 3. Filter PIC -->
             <div
-              class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
+              class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800"
             >
-              <button
-                type="button"
-                @click="
-                  mobileAccordion = mobileAccordion === 'pic' ? null : 'pic'
-                "
-                class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between font-bold text-slate-700 dark:text-slate-200"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-user-gear text-emerald-600"></i>
-                  <span>PIC Penanggung Jawab</span>
-                  <span
-                    v-if="selectedPics.length"
-                    class="bg-emerald-500/10 text-emerald-600 px-2 py-0.5 rounded-full text-[10px]"
-                  >
-                    {{ selectedPics.length }}
-                  </span>
-                </div>
-                <i
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
-                  :class="{ 'rotate-180': mobileAccordion === 'pic' }"
-                ></i>
-              </button>
-
-              <div
-                v-if="mobileAccordion === 'pic'"
-                class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
-              >
-                <div class="flex justify-end pb-1">
-                  <button
-                    type="button"
-                    @click="toggleAllPics"
-                    class="text-[10px] font-bold text-emerald-600"
-                  >
-                    {{
-                      selectedPics.length === registeredUsers.length
-                        ? "Reset"
-                        : "Pilih Semua"
-                    }}
-                  </button>
-                </div>
-                <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto">
-                  <label
-                    v-for="user in registeredUsers"
-                    :key="user.id"
-                    class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
-                  >
-                    <input
-                      type="checkbox"
-                      :value="user.id"
-                      v-model="selectedPics"
-                      class="accent-emerald-600 rounded"
-                    />
-                    <span class="truncate text-[11px]">{{ user.nama }}</span>
-                  </label>
-                </div>
+              <div class="flex justify-between items-center">
+                <label
+                  class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5"
+                >
+                  <i class="fa-solid fa-user-gear text-emerald-600"></i> PIC
+                  Penanggung Jawab
+                </label>
+                <button
+                  type="button"
+                  @click="toggleAllPics"
+                  class="text-[10px] font-bold text-emerald-600"
+                >
+                  {{
+                    selectedPics.length === registeredUsers.length
+                      ? "Reset"
+                      : "Pilih Semua"
+                  }}
+                </button>
+              </div>
+              <div class="grid grid-cols-2 gap-2 max-h-36 overflow-y-auto pr-1">
+                <label
+                  v-for="user in registeredUsers"
+                  :key="user.id"
+                  class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
+                >
+                  <input
+                    type="checkbox"
+                    :value="user.id"
+                    v-model="selectedPics"
+                    class="accent-emerald-600 rounded"
+                  />
+                  <span class="truncate text-[11px]">{{ user.nama }}</span>
+                </label>
               </div>
             </div>
           </div>
 
-          <!-- Footer Actions Mobile -->
+          <!-- Footer Actions -->
           <div
             class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 gap-3"
           >
@@ -1467,7 +1372,6 @@ import { api } from "../services/api.js";
 
 const columns = ["To Do", "In Progress", "In Review", "Completed"];
 const isMobileFilterOpen = ref(false);
-const mobileAccordion = ref(null); // State kontrol dropdown accordion mobile
 const displayMode = ref("kanban");
 const mobileStatusIndex = ref(1);
 
@@ -1503,7 +1407,7 @@ const prevMobileStatus = () => {
 };
 
 const activeFilterMenu = ref(null);
-const selectedStatuses = ref([]);
+const selectedStatuses = ref([]); // State Filter Status Baru
 const selectedUnits = ref([]);
 const selectedDivisions = ref([]);
 const selectedPics = ref([]);
