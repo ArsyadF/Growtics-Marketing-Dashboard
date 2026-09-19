@@ -1,7 +1,7 @@
 <!-- src/views/PageProgress.vue -->
 <template>
-  <div class="space-y-4 md:space-y-6">
-    <!-- HEADER BAR: TITLE & CONTROLS -->
+  <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
+    <!-- HEADER BAR: TITLE, DISPLAY MODE & CONTROLS -->
     <div
       class="glass-card p-4 md:p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10"
     >
@@ -22,7 +22,9 @@
       </div>
 
       <!-- Action & Filter Controls -->
-      <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap relative">
+      <div
+        class="hidden md:block flex items-center gap-2 flex-wrap sm:flex-nowrap relative"
+      >
         <!-- Toggle Quick Filter: Tugas Saya -->
         <button
           @click="filterMyTasks = !filterMyTasks"
@@ -30,7 +32,7 @@
           class="px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border"
           :class="
             filterMyTasks
-              ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm'
+              ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
               : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
           "
         >
@@ -38,179 +40,188 @@
             class="fa-solid"
             :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"
           ></i>
-          <span>{{ filterMyTasks ? "Tugas Saya" : "Semua Tugas" }}</span>
+          <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
         </button>
 
-        <!-- FILTER 1: CHECKBOX MULTI-UNIT -->
-        <div class="relative">
-          <button
-            @click.stop="toggleFilterMenu('unit')"
-            type="button"
-            class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
-          >
-            <i class="fa-solid fa-building text-blue-500"></i>
-            <span
-              >Unit ({{
-                selectedUnits.length ? selectedUnits.length : "Semua"
-              }})</span
+        <!-- FILTER DESKTOP ONLY (HIDDEN DI MOBILE) -->
+        <div class="hidden md:flex items-center gap-2">
+          <!-- FILTER 1: CHECKBOX MULTI-UNIT -->
+          <div class="relative">
+            <button
+              @click.stop="toggleFilterMenu('unit')"
+              type="button"
+              class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
             >
-            <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"></i>
-          </button>
-
-          <div
-            v-if="activeFilterMenu === 'unit'"
-            @click.stop
-            class="absolute right-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
-          >
-            <div
-              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
-            >
+              <i class="fa-solid fa-building text-blue-500"></i>
               <span
-                class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
-                >Filter Unit</span
+                >Unit ({{
+                  selectedUnits.length ? selectedUnits.length : "Semua"
+                }})</span
               >
-              <button
-                type="button"
-                @click="toggleAllUnits"
-                class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer"
+              <i
+                class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"
+              ></i>
+            </button>
+
+            <div
+              v-if="activeFilterMenu === 'unit'"
+              @click.stop
+              class="absolute left-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
+            >
+              <div
+                class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
               >
-                {{
-                  selectedUnits.length === masterUnits.length
-                    ? "Reset"
-                    : "Semua"
-                }}
-              </button>
-            </div>
-            <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-              <label
-                v-for="u in masterUnits"
-                :key="u.code"
-                class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
-              >
-                <input
-                  type="checkbox"
-                  :value="u.code"
-                  v-model="selectedUnits"
-                  class="accent-emerald-600 rounded cursor-pointer"
-                />
-                <span class="truncate">Unit {{ u.code }}</span>
-              </label>
+                <span
+                  class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
+                  >Filter Unit</span
+                >
+                <button
+                  type="button"
+                  @click="toggleAllUnits"
+                  class="text-[10px] font-bold text-emerald-600 hover:underline"
+                >
+                  {{
+                    selectedUnits.length === masterUnits.length
+                      ? "Reset"
+                      : "Semua"
+                  }}
+                </button>
+              </div>
+              <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                <label
+                  v-for="u in masterUnits"
+                  :key="u.code"
+                  class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+                >
+                  <input
+                    type="checkbox"
+                    :value="u.code"
+                    v-model="selectedUnits"
+                    class="accent-emerald-600 rounded"
+                  />
+                  <span class="truncate">Unit {{ u.code }}</span>
+                </label>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- FILTER 2: CHECKBOX MULTI-DIVISI -->
-        <div class="relative">
-          <button
-            @click.stop="toggleFilterMenu('divisi')"
-            type="button"
-            class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
-          >
-            <i class="fa-solid fa-sitemap text-amber-500"></i>
-            <span
-              >Divisi ({{
-                selectedDivisions.length ? selectedDivisions.length : "Semua"
-              }})</span
+          <!-- FILTER 2: CHECKBOX MULTI-DIVISI -->
+          <div class="relative">
+            <button
+              @click.stop="toggleFilterMenu('divisi')"
+              type="button"
+              class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
             >
-            <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"></i>
-          </button>
-
-          <div
-            v-if="activeFilterMenu === 'divisi'"
-            @click.stop
-            class="absolute right-0 mt-2 w-60 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
-          >
-            <div
-              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
-            >
+              <i class="fa-solid fa-sitemap text-amber-500"></i>
               <span
-                class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
-                >Filter Divisi</span
+                >Divisi ({{
+                  selectedDivisions.length ? selectedDivisions.length : "Semua"
+                }})</span
               >
-              <button
-                type="button"
-                @click="toggleAllDivisions"
-                class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer"
+              <i
+                class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"
+              ></i>
+            </button>
+
+            <div
+              v-if="activeFilterMenu === 'divisi'"
+              @click.stop
+              class="absolute left-0 mt-2 w-60 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
+            >
+              <div
+                class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
               >
-                {{
-                  selectedDivisions.length === availableDivisions.length
-                    ? "Reset"
-                    : "Semua"
-                }}
-              </button>
-            </div>
-            <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-              <label
-                v-for="div in availableDivisions"
-                :key="div"
-                class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
-              >
-                <input
-                  type="checkbox"
-                  :value="div"
-                  v-model="selectedDivisions"
-                  class="accent-emerald-600 rounded cursor-pointer"
-                />
-                <span class="truncate">{{ div }}</span>
-              </label>
+                <span
+                  class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
+                  >Filter Divisi</span
+                >
+                <button
+                  type="button"
+                  @click="toggleAllDivisions"
+                  class="text-[10px] font-bold text-emerald-600 hover:underline"
+                >
+                  {{
+                    selectedDivisions.length === availableDivisions.length
+                      ? "Reset"
+                      : "Semua"
+                  }}
+                </button>
+              </div>
+              <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                <label
+                  v-for="div in availableDivisions"
+                  :key="div"
+                  class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+                >
+                  <input
+                    type="checkbox"
+                    :value="div"
+                    v-model="selectedDivisions"
+                    class="accent-emerald-600 rounded"
+                  />
+                  <span class="truncate">{{ div }}</span>
+                </label>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- FILTER 3: CHECKBOX MULTI-PIC BOARD -->
-        <div class="relative">
-          <button
-            @click.stop="toggleFilterMenu('pic')"
-            type="button"
-            class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
-          >
-            <i class="fa-solid fa-user-gear text-emerald-600"></i>
-            <span
-              >PIC ({{
-                selectedPics.length ? selectedPics.length : "Semua"
-              }})</span
+          <!-- FILTER 3: CHECKBOX MULTI-PIC -->
+          <div class="relative">
+            <button
+              @click.stop="toggleFilterMenu('pic')"
+              type="button"
+              class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer"
             >
-            <i class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"></i>
-          </button>
-
-          <div
-            v-if="activeFilterMenu === 'pic'"
-            @click.stop
-            class="absolute right-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
-          >
-            <div
-              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
-            >
+              <i class="fa-solid fa-user-gear text-emerald-600"></i>
               <span
-                class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
-                >Filter PIC Board</span
+                >PIC ({{
+                  selectedPics.length ? selectedPics.length : "Semua"
+                }})</span
               >
-              <button
-                type="button"
-                @click="toggleAllPics"
-                class="text-[10px] font-bold text-emerald-600 hover:underline cursor-pointer"
+              <i
+                class="fa-solid fa-chevron-down text-[10px] ml-1 opacity-60"
+              ></i>
+            </button>
+
+            <div
+              v-if="activeFilterMenu === 'pic'"
+              @click.stop
+              class="absolute left-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-200 dark:border-slate-700 z-30 space-y-2"
+            >
+              <div
+                class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
               >
-                {{
-                  selectedPics.length === registeredUsers.length
-                    ? "Reset"
-                    : "Semua"
-                }}
-              </button>
-            </div>
-            <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-              <label
-                v-for="user in registeredUsers"
-                :key="user.id"
-                class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
-              >
-                <input
-                  type="checkbox"
-                  :value="user.id"
-                  v-model="selectedPics"
-                  class="accent-emerald-600 rounded cursor-pointer"
-                />
-                <span class="truncate">{{ user.nama }}</span>
-              </label>
+                <span
+                  class="text-[11px] font-bold text-slate-700 dark:text-slate-200"
+                  >Filter PIC Board</span
+                >
+                <button
+                  type="button"
+                  @click="toggleAllPics"
+                  class="text-[10px] font-bold text-emerald-600 hover:underline"
+                >
+                  {{
+                    selectedPics.length === registeredUsers.length
+                      ? "Reset"
+                      : "Semua"
+                  }}
+                </button>
+              </div>
+              <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                <label
+                  v-for="user in registeredUsers"
+                  :key="user.id"
+                  class="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg"
+                >
+                  <input
+                    type="checkbox"
+                    :value="user.id"
+                    v-model="selectedPics"
+                    class="accent-emerald-600 rounded"
+                  />
+                  <span class="truncate">{{ user.nama }}</span>
+                </label>
+              </div>
             </div>
           </div>
         </div>
@@ -223,13 +234,13 @@
           class="bg-button text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
         >
           <i class="fa-solid fa-plus text-xs"></i>
-          <span>Tambah Program</span>
+          <span class="hidden sm:inline">Tambah Program</span>
         </button>
       </div>
     </div>
 
     <!-- METRIK STATISTIK PROGRAM -->
-    <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 md:gap-4 relative z-0">
+    <div class="grid grid-cols-4 sm:grid-cols-5 gap-2.5 md:gap-4 relative z-0">
       <div
         class="glass-card p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800"
       >
@@ -294,21 +305,142 @@
           {{ countByStatus("Completed") }}
         </h4>
       </div>
+
+      <div
+        class="block sm:hidden glass-card rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1"
+      >
+        <div class="flex items-center gap-2 p-2 justify-between">
+          <button
+            @click="filterMyTasks = !filterMyTasks"
+            type="button"
+            class="md:hidden px-3 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border"
+            :class="
+              filterMyTasks
+                ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+            "
+          >
+            <i
+              class="fa-solid"
+              :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"
+            ></i>
+            <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
+          </button>
+          <!-- Tombol Tambah Program -->
+          <button
+            v-if="isSpvOrAdmin"
+            @click="openAddModal"
+            type="button"
+            class="md:hidden bg-button text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+          >
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span class="md:hidden sm:inline"> Program</span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 p-2 justify-between">
+          <span class="text-xs font-bold text-slate-400 px-1"
+            >Mode Tampilan</span
+          >
+          <div
+            class="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700"
+          >
+            <button
+              @click="displayMode = 'kanban'"
+              type="button"
+              class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+              :class="
+                displayMode === 'kanban'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+              "
+              title="Tampilan Kanban / Thumbnail"
+            >
+              <i class="fa-solid fa-table-columns"></i>
+              <span class="hidden sm:inline">Board</span>
+            </button>
+            <button
+              @click="displayMode = 'list'"
+              type="button"
+              class="px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1 cursor-pointer"
+              :class="
+                displayMode === 'list'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+              "
+              title="Tampilan Ringkas / List Tabel"
+            >
+              <i class="fa-solid fa-list-check"></i>
+              <span class="hidden sm:inline">Ringkas</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- KANBAN BOARD 4 KOLOM DRAGGABLE -->
+    <!-- FITUR 1: TOGGLE DISPLAY MODE (KANBAN / LIST) -->
+
+    <!-- FITUR 2: MOBILE HEADER SWITCHER UNTUK KANBAN (TAMPIL DI LAYAR HP SAAT MODE KANBAN) -->
     <div
+      v-if="displayMode === 'kanban'"
+      class="md:hidden glass-card p-2.5 rounded-2xl bg-white/90 dark:bg-slate-900/90 flex items-center justify-between border border-slate-200 dark:border-slate-800"
+    >
+      <div class="flex items-center gap-2">
+        <span
+          class="w-3 h-3 rounded-full"
+          :class="getColumnDotColor(mobileActiveStatus)"
+        ></span>
+        <h4
+          class="text-xs font-bold uppercase text-slate-800 dark:text-slate-100"
+        >
+          {{ mobileActiveStatus }}
+        </h4>
+        <span
+          class="text-[10px] font-black text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full"
+        >
+          {{ getItemsByStatus(mobileActiveStatus).length }}
+        </span>
+      </div>
+
+      <!-- Arrow Navigation untuk Pindah Status di Mobile -->
+      <div class="flex items-center gap-1">
+        <button
+          @click="prevMobileStatus"
+          type="button"
+          class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs active:scale-90 transition-transform cursor-pointer"
+        >
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+
+        <span class="text-[10px] font-bold text-slate-400 px-1">
+          {{ mobileStatusIndex + 1 }}/{{ columns.length }}
+        </span>
+
+        <button
+          @click="nextMobileStatus"
+          type="button"
+          class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-xs active:scale-90 transition-transform cursor-pointer"
+        >
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- MODE 1: KANBAN BOARD VIEW -->
+    <div
+      v-if="displayMode === 'kanban'"
       class="grid grid-cols-1 md:grid-cols-4 gap-3.5 md:gap-4 items-start relative z-0"
     >
       <div
-        v-for="status in columns"
+        v-for="status in visibleColumns"
         :key="status"
         @dragover.prevent
         @drop="onDrop($event, status)"
         class="glass-card p-3 rounded-2xl space-y-3 bg-slate-100/50 dark:bg-slate-900/40 min-h-[480px]"
       >
+        <!-- Title Column Desktop -->
         <div
-          class="flex items-center justify-between px-1 pb-1 border-b border-slate-200/80 dark:border-slate-800"
+          class="hidden md:flex items-center justify-between px-1 pb-1 border-b border-slate-200/80 dark:border-slate-800"
         >
           <h4
             class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5"
@@ -337,7 +469,7 @@
               canUserEditItem(item) ? onDragStart($event, item) : null
             "
             @click="openDetailModal(item)"
-            class="glass-card p-3 rounded-xl space-y-2 border bg-white/90 dark:bg-slate-900/90 shadow-sm transition-all relative overflow-hidden group"
+            class="glass-card p-3 rounded-xl space-y-2 border bg-white/90 dark:bg-slate-900/90 shadow-xs transition-all relative overflow-hidden group"
             :class="[
               canUserEditItem(item)
                 ? 'cursor-grab active:cursor-grabbing hover:border-emerald-500/50'
@@ -452,11 +584,121 @@
       </div>
     </div>
 
+    <!-- MODE 2: RINGKAS / LIST TABLE VIEW (MUDAH DI-TRACK SAAT DATA SANGAT BANYAK) -->
+    <div
+      v-else-if="displayMode === 'list'"
+      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xs"
+    >
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr
+              class="bg-slate-100/80 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800 font-bold uppercase text-[10px]"
+            >
+              <th class="p-3 w-10 text-center">#</th>
+              <th class="p-3">Judul Program</th>
+              <th class="p-3">Unit / Divisi</th>
+              <th class="p-3">PIC Staff</th>
+              <th class="p-3">Status</th>
+              <th class="p-3">Deadline</th>
+              <th class="p-3 text-center">Progres</th>
+              <th class="p-3 text-right">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
+            <tr
+              v-for="(item, idx) in filteredPrograms"
+              :key="item.id || item.Timestamp"
+              @click="openDetailModal(item)"
+              class="hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer transition-colors"
+            >
+              <td class="p-3 text-center font-bold text-slate-400">
+                {{ idx + 1 }}
+              </td>
+              <td
+                class="p-3 font-bold text-slate-800 dark:text-slate-100 max-w-xs"
+              >
+                <p class="truncate">{{ item.title || item.Judul }}</p>
+                <p
+                  v-if="item.description || item.Deskripsi"
+                  class="text-[10px] text-slate-400 font-normal truncate"
+                >
+                  {{ item.description || item.Deskripsi }}
+                </p>
+              </td>
+              <td class="p-3 whitespace-nowrap">
+                <span
+                  class="font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded text-[10px] border border-emerald-500/20 mr-1"
+                >
+                  {{ item.unit || item.Unit }}
+                </span>
+                <span class="text-slate-500 dark:text-slate-400 text-[10px]">
+                  {{ item.division || item.Divisi }}
+                </span>
+              </td>
+              <td class="p-3 whitespace-nowrap">
+                <div
+                  class="flex items-center gap-1 max-w-[150px] overflow-hidden truncate"
+                >
+                  <span
+                    v-for="(name, pIdx) in getAssignedNamesList(item)"
+                    :key="pIdx"
+                    class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded text-[10px]"
+                  >
+                    {{ name }}
+                  </span>
+                </div>
+              </td>
+              <td class="p-3 whitespace-nowrap">
+                <span
+                  class="font-bold px-2 py-0.5 rounded text-[10px] flex items-center gap-1 w-max"
+                  :class="
+                    getColumnDotColor(item.status || item.Status) +
+                    ' text-white'
+                  "
+                >
+                  {{ item.status || item.Status }}
+                </span>
+              </td>
+              <td class="p-3 whitespace-nowrap">
+                <span
+                  :class="getDeadlineBadgeClass(item)"
+                  class="px-2 py-0.5 rounded text-[10px] font-bold"
+                >
+                  {{ formatDate(item.deadline || item.Deadline) }}
+                </span>
+              </td>
+              <td
+                class="p-3 text-center whitespace-nowrap font-bold text-emerald-600"
+              >
+                {{ item.progress || item.Progress || 0 }}%
+              </td>
+              <td class="p-3 text-right whitespace-nowrap">
+                <button
+                  type="button"
+                  @click.stop="openDetailModal(item)"
+                  class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-emerald-600"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+              </td>
+            </tr>
+
+            <tr v-if="filteredPrograms.length === 0">
+              <td colspan="8" class="text-center py-8 text-slate-400 text-xs">
+                Tidak ada data program kerja.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- MODAL EDIT / DETAIL PROGRAM -->
     <Teleport to="body">
       <div
         v-if="isModalOpen"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-xs"
         @click.self="isModalOpen = false"
       >
         <div
@@ -747,6 +989,209 @@
       </div>
     </Teleport>
   </div>
+  <!-- ------------------ KONTEN UTAMA KANBAN / LIST DISINI ------------------ -->
+
+  <!-- TOMBOL FILTER MELAYANG KHUSUS MOBILE (FLOATING ACTION BUTTON) -->
+  <div class="md:hidden fixed bottom-20 right-4 z-40">
+    <button
+      @click="isMobileFilterOpen = true"
+      type="button"
+      class="flex flex-col text-slate-400 items-center justify-center text-lg active:scale-95 transition-transform cursor-pointer"
+      title="Buka Filter Program"
+    >
+      <div class="relative">
+        <i
+          class="fa-solid fa-filter flex items-center justify-center w-11 h-11 rounded-full bg-button text-white text-base shadow-lg shadow-emerald-600/30"
+        ></i>
+        <!-- Indikator Aktif Jika Filter Terpasang -->
+        <span
+          v-if="
+            selectedUnits.length ||
+            selectedDivisions.length ||
+            selectedPics.length
+          "
+          class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-400 border-2 border-white dark:border-slate-900 rounded-full"
+        ></span>
+      </div>
+      <span
+        class="text-[11px] font-bold text-slate-600 dark:text-slate-300 mt-1"
+        >Filter</span
+      >
+    </button>
+  </div>
+
+  <!-- MODAL FILTER BOTTOM SHEET KHUSUS MOBILE -->
+  <Teleport to="body">
+    <div
+      v-if="isMobileFilterOpen"
+      class="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 backdrop-blur-xs md:hidden"
+      @click.self="isMobileFilterOpen = false"
+    >
+      <div
+        class="w-full glass-card bg-white dark:bg-slate-900 rounded-t-3xl p-5 shadow-2xl space-y-4 border-t border-slate-200 dark:border-slate-800 max-h-[85vh] overflow-y-auto animate-in slide-in-from-bottom duration-200"
+      >
+        <div
+          class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800"
+        >
+          <h3
+            class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
+          >
+            <i class="fa-solid fa-sliders text-emerald-600"></i>
+            Filter Program Kerja
+          </h3>
+          <button
+            type="button"
+            @click="isMobileFilterOpen = false"
+            class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+          >
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <div class="space-y-4 text-xs">
+          <!-- 1. Filter Unit -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <label
+                class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5"
+              >
+                <i class="fa-solid fa-building text-blue-500"></i> Unit Usaha
+              </label>
+              <button
+                type="button"
+                @click="toggleAllUnits"
+                class="text-[10px] font-bold text-emerald-600"
+              >
+                {{
+                  selectedUnits.length === masterUnits.length
+                    ? "Reset"
+                    : "Pilih Semua"
+                }}
+              </button>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <label
+                v-for="u in masterUnits"
+                :key="u.code"
+                class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
+              >
+                <input
+                  type="checkbox"
+                  :value="u.code"
+                  v-model="selectedUnits"
+                  class="accent-emerald-600 rounded"
+                />
+                <span class="truncate">Unit {{ u.code }}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 2. Filter Divisi -->
+          <div
+            class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800"
+          >
+            <div class="flex justify-between items-center">
+              <label
+                class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5"
+              >
+                <i class="fa-solid fa-sitemap text-amber-500"></i> Divisi
+              </label>
+              <button
+                type="button"
+                @click="toggleAllDivisions"
+                class="text-[10px] font-bold text-emerald-600"
+              >
+                {{
+                  selectedDivisions.length === availableDivisions.length
+                    ? "Reset"
+                    : "Pilih Semua"
+                }}
+              </button>
+            </div>
+            <div class="grid grid-cols-2 gap-2 max-h-36 overflow-y-auto pr-1">
+              <label
+                v-for="div in availableDivisions"
+                :key="div"
+                class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
+              >
+                <input
+                  type="checkbox"
+                  :value="div"
+                  v-model="selectedDivisions"
+                  class="accent-emerald-600 rounded"
+                />
+                <span class="truncate text-[11px]">{{ div }}</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 3. Filter PIC -->
+          <div
+            class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800"
+          >
+            <div class="flex justify-between items-center">
+              <label
+                class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5"
+              >
+                <i class="fa-solid fa-user-gear text-emerald-600"></i> PIC
+                Penanggung Jawab
+              </label>
+              <button
+                type="button"
+                @click="toggleAllPics"
+                class="text-[10px] font-bold text-emerald-600"
+              >
+                {{
+                  selectedPics.length === registeredUsers.length
+                    ? "Reset"
+                    : "Pilih Semua"
+                }}
+              </button>
+            </div>
+            <div class="grid grid-cols-2 gap-2 max-h-36 overflow-y-auto pr-1">
+              <label
+                v-for="user in registeredUsers"
+                :key="user.id"
+                class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-medium"
+              >
+                <input
+                  type="checkbox"
+                  :value="user.id"
+                  v-model="selectedPics"
+                  class="accent-emerald-600 rounded"
+                />
+                <span class="truncate text-[11px]">{{ user.nama }}</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Actions -->
+        <div
+          class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 gap-3"
+        >
+          <button
+            type="button"
+            @click="
+              selectedUnits = [];
+              selectedDivisions = [];
+              selectedPics = [];
+            "
+            class="w-1/2 py-2.5 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs"
+          >
+            Reset Filter
+          </button>
+          <button
+            type="button"
+            @click="isMobileFilterOpen = false"
+            class="w-1/2 py-2.5 rounded-xl bg-button text-white font-bold text-xs shadow-md"
+          >
+            Terapkan
+          </button>
+        </div>
+      </div>
+    </div>
+  </Teleport>
 </template>
 
 <script setup>
@@ -755,6 +1200,43 @@ import { store } from "../store/index.js";
 import { api } from "../services/api.js";
 
 const columns = ["To Do", "In Progress", "In Review", "Completed"];
+const isMobileFilterOpen = ref(false);
+// Mode Tampilan State (Kanban / List)
+const displayMode = ref("kanban");
+
+// Mobile Single Column Navigation Index (Default: 1 => 'In Progress')
+const mobileStatusIndex = ref(1);
+
+const isMobileScreen = ref(false);
+
+const checkScreenSize = () => {
+  isMobileScreen.value = window.innerWidth < 768;
+};
+
+const mobileActiveStatus = computed(() => columns[mobileStatusIndex.value]);
+
+const visibleColumns = computed(() => {
+  if (isMobileScreen.value) {
+    return [mobileActiveStatus.value];
+  }
+  return columns;
+});
+
+const nextMobileStatus = () => {
+  if (mobileStatusIndex.value < columns.length - 1) {
+    mobileStatusIndex.value++;
+  } else {
+    mobileStatusIndex.value = 0;
+  }
+};
+
+const prevMobileStatus = () => {
+  if (mobileStatusIndex.value > 0) {
+    mobileStatusIndex.value--;
+  } else {
+    mobileStatusIndex.value = columns.length - 1;
+  }
+};
 
 const activeFilterMenu = ref(null);
 const selectedUnits = ref([]);
@@ -785,6 +1267,8 @@ const handleOutsideClick = () => {
 };
 
 onMounted(() => {
+  checkScreenSize();
+  window.addEventListener("resize", checkScreenSize);
   window.addEventListener("click", handleOutsideClick);
   if (!isSuperadmin.value && currentUser.value) {
     if (!isSpvOrAdmin.value) {
@@ -794,6 +1278,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  window.removeEventListener("resize", checkScreenSize);
   window.removeEventListener("click", handleOutsideClick);
 });
 
@@ -1089,7 +1574,6 @@ const openAddModal = () => {
   isModalOpen.value = true;
 };
 
-// 1. DIBUATKAN ALIAS openDetailModal SESUAI DENGAN TEMPLATE
 const openDetailModal = (item) => {
   openEditModal(item);
 };
@@ -1218,7 +1702,7 @@ watch(
   (newModal) => {
     if (newModal === "progress") {
       openAddModal();
-      store.closeModal(); // Bersihkan sinyal di store agar tidak bentrok
+      store.closeModal();
     }
   },
   { immediate: true },

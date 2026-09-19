@@ -326,12 +326,160 @@
       </div>
     </div>
   </section>
+
+  <!-- ==================== MOBILE FLOATING ACTION BUTTON (FAB) FILTER ==================== -->
+  <div class="md:hidden fixed bottom-20 right-4 z-40">
+    <button
+      @click="isFilterModalOpen = true"
+      class="flex flex-col text-slate-400 mb-4 items-center justify-center text-lg active:scale-95 transition-transform cursor-pointer"
+      title="Buka Filter Tanggal"
+    >
+      <i
+        class="fa-solid fa-filter flex items-center justify-center w-10 h-10 rounded-full bg-button text-white text-sm shadow-md"
+      ></i>
+      <span class="text-[12px] mt-1">Filter</span>
+    </button>
+  </div>
+
+  <!-- ==================== POPUP MODAL FILTER TANGGAL (MOBILE) ==================== -->
+  <Teleport to="body">
+    <div
+      v-if="isFilterModalOpen"
+      class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity"
+      @click.self="isFilterModalOpen = false"
+    >
+      <div
+        class="absolute mb-20 w-full max-w-sm glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 animate-in fade-in slide-in-from-bottom-4 duration-200"
+      >
+        <div
+          class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
+        >
+          <h3
+            class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
+          >
+            <i class="fa-solid fa-filter text-theme"></i>
+            Filter Rentang Tanggal
+          </h3>
+          <button
+            @click="isFilterModalOpen = false"
+            class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer transition-colors"
+          >
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <label
+              class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
+              >Tanggal Mulai:</label
+            >
+            <input
+              v-model="tempStartDate"
+              type="date"
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme transition-colors"
+            />
+          </div>
+          <div>
+            <label
+              class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
+              >Tanggal Akhir:</label
+            >
+            <input
+              v-model="tempEndDate"
+              type="date"
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme transition-colors"
+            />
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 pt-2">
+          <button
+            @click="resetFilterMobile"
+            class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl font-bold text-xs transition-all text-center cursor-pointer"
+          >
+            Reset
+          </button>
+          <button
+            @click="applyFilterMobile"
+            class="flex-1 bg-button text-white py-2.5 rounded-xl font-bold text-xs transition-all shadow-md text-center cursor-pointer hover:opacity-95"
+          >
+            Terapkan
+          </button>
+        </div>
+      </div>
+    </div>
+  </Teleport>
 </template>
 
 <script setup>
 import { computed, ref, onMounted, watch } from "vue";
 import { store } from "../store";
 import Chart from "chart.js/auto";
+
+const isFilterModalOpen = ref(false);
+watch(
+  () => store.filterDates,
+  (newDates) => {
+    tempStartDate.value = newDates.start;
+    tempEndDate.value = newDates.end;
+  },
+  { deep: true },
+);
+
+// --- FILTER ACTIONS ---
+const applyFilter = () => {
+  store.filterDates.start = tempStartDate.value;
+  store.filterDates.end = tempEndDate.value;
+};
+
+const resetFilter = () => {
+  const startOfYear = getStartOfYearString();
+  const today = getTodayString();
+
+  tempStartDate.value = startOfYear;
+  tempEndDate.value = today;
+
+  store.filterDates.start = startOfYear;
+  store.filterDates.end = today;
+};
+
+const applyFilterMobile = () => {
+  applyFilter();
+  isFilterModalOpen.value = false;
+};
+
+const resetFilterMobile = () => {
+  resetFilter();
+  isFilterModalOpen.value = false;
+};
+
+// State Sementara Input Tanggal
+const tempStartDate = ref("");
+const tempEndDate = ref("");
+
+// --- HELPER DATES ---
+function getTodayString() {
+  return new Date().toISOString().split("T")[0];
+}
+
+function getStartOfYearString() {
+  const currentYear = new Date().getFullYear();
+  return `${currentYear}-01-01`;
+}
+
+// --- INITIALIZATION ---
+onMounted(() => {
+  if (!store.filterDates.start) {
+    store.filterDates.start = getStartOfYearString();
+  }
+  if (!store.filterDates.end) {
+    store.filterDates.end = getTodayString();
+  }
+
+  tempStartDate.value = store.filterDates.start;
+  tempEndDate.value = store.filterDates.end;
+});
 
 const MONTH_NAMES = [
   "Jan",
