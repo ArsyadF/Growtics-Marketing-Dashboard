@@ -1,10 +1,9 @@
-<!-- src/views/pageleads.vue -->
+<!-- src/views/PageLeads.vue -->
 <template>
   <section id="page-leads" class="page-section space-y-4 md:space-y-6">
     <!-- Header Section -->
     <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
       <div>
-        <!-- <h2 class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100">Leads & Campaign</h2> -->
         <p class="text-slate-500 dark:text-slate-400 text-xs md:text-sm">
           Progres Campaign, Database Leads, Follow Up, & Pesanan.
         </p>
@@ -54,11 +53,11 @@
       </div>
     </div>
 
-    <!-- 2. Layout 3 Kolom Sejajar: Rekap Bulan, Rekap Triwulan, Grafik Trend Line + Dot (RATA ATAS) -->
+    <!-- 2. Layout 3 Kolom Sejajar -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
       <!-- Kolom 1: Rekap Leads Per Bulan -->
       <div
-        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full"
+        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
       >
         <div>
           <h3
@@ -101,7 +100,7 @@
 
       <!-- Kolom 2: Rekap Leads Per Triwulan -->
       <div
-        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full"
+        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
       >
         <div>
           <h3
@@ -118,7 +117,7 @@
               <p class="text-xs font-bold text-slate-500 dark:text-slate-400">
                 {{ q.quarter }}
               </p>
-              <p class="text-xs md:text-sm font-bold from-[#149B73]">
+              <p class="text-xs md:text-sm font-bold text-emerald-600">
                 {{ q.total.toLocaleString("id-ID") }}
               </p>
             </div>
@@ -126,17 +125,17 @@
         </div>
       </div>
 
-      <!-- Kolom 3: Grafik Trend Leads Bulanan (Presisi Round Dots Anti Gepeng) -->
+      <!-- Kolom 3: Grafik Trend Leads Bulanan -->
       <div
-        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-start h-full"
+        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
       >
         <div>
           <div class="flex justify-between items-center mb-3">
             <h3
               class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm flex items-center gap-1.5"
             >
-              <i class="fa-solid fa-chart-line from-[#149B73]"></i>Grafik Trend
-              Leads Bulanan
+              <i class="fa-solid fa-chart-line text-emerald-600"></i>Grafik
+              Trend Leads Bulanan
             </h3>
             <span class="text-[10px] text-slate-400 font-medium"
               >Tahun {{ new Date().getFullYear() }}</span
@@ -150,9 +149,7 @@
             Belum ada data grafik.
           </div>
 
-          <!-- HTML/CSS + SVG Container Campuran -->
           <div v-else class="relative h-52 w-full pt-4">
-            <!-- Grid Lines Background -->
             <div
               class="absolute inset-x-0 top-6 bottom-8 flex flex-col justify-between pointer-events-none"
             >
@@ -167,7 +164,6 @@
               ></div>
             </div>
 
-            <!-- Area Garis Line SVG -->
             <svg
               class="w-full h-36 overflow-visible relative z-0"
               viewBox="0 0 300 100"
@@ -191,7 +187,6 @@
               />
             </svg>
 
-            <!-- HTML Absolute Bulatan (Dot) - Garansi Anti Gepeng/Lonjong -->
             <div class="absolute inset-x-0 top-4 h-36 z-10 pointer-events-none">
               <div
                 v-for="(pt, idx) in chartPointsHTML"
@@ -199,12 +194,9 @@
                 class="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto group cursor-pointer"
                 :style="{ left: `${pt.xPct}%`, top: `${pt.yPct}%` }"
               >
-                <!-- Dot Outer Rings & Core -->
                 <div
-                  class="w-4 h-4 rounded-full bg-white border-2 border-[#1caa80] shadow-md transition-transform duration-200 group-hover:scale-125 group-hover:bg-blue-500"
+                  class="w-4 h-4 rounded-full bg-white border-2 border-[#1caa80] shadow-md transition-transform duration-200 group-hover:scale-125 group-hover:bg-emerald-500"
                 ></div>
-
-                <!-- Tooltip Popup Nominal -->
                 <div
                   class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-[9px] font-bold py-1 px-2 rounded-md shadow-lg whitespace-nowrap pointer-events-none"
                 >
@@ -213,7 +205,6 @@
               </div>
             </div>
 
-            <!-- Label Bulan X-Axis -->
             <div
               class="flex justify-between items-center text-[10px] text-slate-400 font-medium mt-2 px-1"
             >
@@ -230,44 +221,175 @@
       </div>
     </div>
 
-    <!-- 3. Management Data Table Realtime Firestore (Scrollable & Paginated) -->
-    <div class="glass-card p-4 md:p-6 rounded-2xl md:rounded-1xl space-y-4">
+    <!-- 3. Management Data Table dengan Bulk Action & Sorting -->
+    <div class="glass-card p-4 md:p-6 rounded-2xl space-y-4">
       <div
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
       >
-        <h3
-          class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm"
-        >
-          Manajemen Data Leads
-        </h3>
         <div class="flex items-center gap-2">
-          <span class="text-xs text-slate-400">Tampilkan:</span>
-          <select
-            v-model="limit"
-            @change="currentPage = 1"
-            class="glass-input rounded-xl p-1.5 text-xs outline-none dark:bg-slate-800"
+          <h3
+            class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm"
           >
-            <option value="25">25</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-            <option value="ALL">Semua</option>
-          </select>
+            Manajemen Data Leads
+          </h3>
+          <span
+            v-if="selectedIds.length > 0"
+            class="text-[10px] text-purple-600 font-bold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
+          >
+            {{ selectedIds.length }} Dipilih
+          </span>
+        </div>
+
+        <!-- Controls: Bulk Action & Page Size -->
+        <div
+          class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end"
+        >
+          <div v-if="selectedIds.length > 0" class="flex items-center gap-1.5">
+            <button
+              @click="clearSelection"
+              class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold px-2.5 py-1.5 rounded-xl text-xs transition-all flex items-center gap-1 cursor-pointer"
+            >
+              <i class="fa-solid fa-xmark"></i>
+              <span>Batal</span>
+            </button>
+            <button
+              v-if="store.canEditPage('leads')"
+              @click="promptBulkDelete"
+              class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer"
+            >
+              <i class="fa-solid fa-trash"></i>
+              <span>Hapus ({{ selectedIds.length }})</span>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-1.5">
+            <span class="text-xs text-slate-400">Tampilkan:</span>
+            <select
+              v-model="limit"
+              @change="currentPage = 1"
+              class="glass-input rounded-xl p-1.5 text-xs outline-none dark:bg-slate-800"
+            >
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+              <option value="ALL">Semua</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <!-- Area Scrollable Tabel dengan Sticky Header -->
+      <!-- Area Scrollable Tabel dengan Sticky Header & Sorting -->
       <div class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1">
         <table class="min-w-full text-xs text-left">
           <thead
             class="bg-white/80 dark:bg-slate-800/90 text-slate-400 sticky top-0 backdrop-blur-md z-10"
           >
             <tr>
-              <th class="py-2.5 px-3">Tanggal</th>
-              <th class="py-2.5 px-3">Unit</th>
-              <th class="py-2.5 px-3">Campaign</th>
-              <th class="py-2.5 px-3">Leads</th>
-              <th class="py-2.5 px-3">FU</th>
-              <th class="py-2.5 px-3">Pesanan</th>
+              <th class="py-2.5 px-3 w-8 text-center">
+                <input
+                  type="checkbox"
+                  :checked="isAllSelected"
+                  @change="toggleSelectAll"
+                  class="accent-purple-600 rounded cursor-pointer w-3.5 h-3.5"
+                  title="Pilih Semua di Halaman Ini"
+                />
+              </th>
+              <th
+                @click="sortTable('Tanggal')"
+                class="py-2.5 px-3 cursor-pointer select-none"
+              >
+                Tanggal
+                <i
+                  class="fa-solid text-[10px] ml-1"
+                  :class="
+                    sortKey === 'Tanggal'
+                      ? sortAsc
+                        ? 'fa-sort-up text-purple-600'
+                        : 'fa-sort-down text-purple-600'
+                      : 'fa-sort text-slate-300'
+                  "
+                ></i>
+              </th>
+              <th
+                @click="sortTable('Unit')"
+                class="py-2.5 px-3 cursor-pointer select-none"
+              >
+                Unit
+                <i
+                  class="fa-solid text-[10px] ml-1"
+                  :class="
+                    sortKey === 'Unit'
+                      ? sortAsc
+                        ? 'fa-sort-up text-purple-600'
+                        : 'fa-sort-down text-purple-600'
+                      : 'fa-sort text-slate-300'
+                  "
+                ></i>
+              </th>
+              <th
+                @click="sortTable('Campaign')"
+                class="py-2.5 px-3 cursor-pointer select-none"
+              >
+                Campaign
+                <i
+                  class="fa-solid text-[10px] ml-1"
+                  :class="
+                    sortKey === 'Campaign'
+                      ? sortAsc
+                        ? 'fa-sort-up text-purple-600'
+                        : 'fa-sort-down text-purple-600'
+                      : 'fa-sort text-slate-300'
+                  "
+                ></i>
+              </th>
+              <th
+                @click="sortTable('DatabaseLeads')"
+                class="py-2.5 px-3 cursor-pointer select-none"
+              >
+                Leads
+                <i
+                  class="fa-solid text-[10px] ml-1"
+                  :class="
+                    sortKey === 'DatabaseLeads'
+                      ? sortAsc
+                        ? 'fa-sort-up text-purple-600'
+                        : 'fa-sort-down text-purple-600'
+                      : 'fa-sort text-slate-300'
+                  "
+                ></i>
+              </th>
+              <th
+                @click="sortTable('FollowUp')"
+                class="py-2.5 px-3 cursor-pointer select-none"
+              >
+                FU
+                <i
+                  class="fa-solid text-[10px] ml-1"
+                  :class="
+                    sortKey === 'FollowUp'
+                      ? sortAsc
+                        ? 'fa-sort-up text-purple-600'
+                        : 'fa-sort-down text-purple-600'
+                      : 'fa-sort text-slate-300'
+                  "
+                ></i>
+              </th>
+              <th
+                @click="sortTable('Pesanan')"
+                class="py-2.5 px-3 cursor-pointer select-none"
+              >
+                Pesanan
+                <i
+                  class="fa-solid text-[10px] ml-1"
+                  :class="
+                    sortKey === 'Pesanan'
+                      ? sortAsc
+                        ? 'fa-sort-up text-purple-600'
+                        : 'fa-sort-down text-purple-600'
+                      : 'fa-sort text-slate-300'
+                  "
+                ></i>
+              </th>
               <th
                 v-if="store.canEditPage('leads')"
                 class="py-2.5 px-3 text-center"
@@ -278,49 +400,63 @@
           </thead>
           <tbody class="divide-y dark:divide-slate-800/80">
             <tr v-if="store.isLoading">
-              <td colspan="7" class="text-center py-4 text-slate-400">
+              <td colspan="8" class="text-center py-4 text-slate-400">
                 Memuat data leads...
               </td>
             </tr>
             <tr v-else-if="paginatedLeads.length === 0">
-              <td colspan="7" class="text-center py-4 text-slate-400">
+              <td colspan="8" class="text-center py-4 text-slate-400">
                 Tidak ada data leads terfilter.
               </td>
             </tr>
             <tr
               v-else
               v-for="l in paginatedLeads"
-              :key="l.id || l.Timestamp"
+              :key="getLeadId(l)"
               class="hover:bg-white/20 dark:hover:bg-slate-800/40"
+              :class="{
+                'bg-purple-500/10 dark:bg-purple-500/20': selectedIds.includes(
+                  getLeadId(l),
+                ),
+              }"
             >
+              <td class="py-2 px-3 text-center" @click.stop>
+                <input
+                  type="checkbox"
+                  :value="getLeadId(l)"
+                  v-model="selectedIds"
+                  class="accent-purple-600 rounded cursor-pointer w-3.5 h-3.5"
+                />
+              </td>
               <td class="py-2 px-3">
                 {{ l.Tanggal ? String(l.Tanggal).substring(0, 10) : "-" }}
               </td>
               <td class="py-2 px-3 font-bold">{{ l.Unit || "-" }}</td>
-              <td class="py-2 px-3">{{ l.Campaign || 0 }}</td>
+              <td class="py-2 px-3">
+                {{ (Number(l.Campaign) || 0).toLocaleString("id-ID") }}
+              </td>
               <td class="py-2 px-3 text-theme font-semibold">
-                {{ l.DatabaseLeads || 0 }}
+                {{ (Number(l.DatabaseLeads) || 0).toLocaleString("id-ID") }}
               </td>
               <td class="py-2 px-3 text-amber-500 font-semibold">
-                {{ l.FollowUp || 0 }}
+                {{ (Number(l.FollowUp) || 0).toLocaleString("id-ID") }}
               </td>
               <td class="py-2 px-3 text-emerald-500 font-semibold">
-                {{ l.Pesanan || 0 }}
+                {{ (Number(l.Pesanan) || 0).toLocaleString("id-ID") }}
               </td>
               <td
                 v-if="store.canEditPage('leads')"
-                class="py-2 px-3 text-center"
-                style="display: inline-flex"
+                class="py-2 px-3 text-center whitespace-nowrap"
               >
                 <button
                   @click="store.openModal('leads', l)"
-                  class="text-theme hover:text-theme p-1 mr-2 cursor-pointer"
+                  class="text-theme hover:text-theme p-1 mr-1 cursor-pointer"
                   title="Edit Leads"
                 >
                   <i class="fa-solid fa-pen-to-square"></i>
                 </button>
                 <button
-                  @click="deleteLeads(l.id || l.Timestamp)"
+                  @click="promptSingleDelete(getLeadId(l))"
                   class="text-rose-500 hover:text-rose-600 p-1 cursor-pointer"
                   title="Hapus Leads"
                 >
@@ -366,16 +502,82 @@
         </div>
       </div>
     </div>
+
+    <!-- MODAL CUSTOM POPUP CONFIRMATION (GANTI ALERT/DEFAULT POPUP) -->
+    <Teleport to="body">
+      <div
+        v-if="confirmModal.isOpen"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm"
+        @click.self="closeConfirmModal"
+      >
+        <div
+          class="glass-card bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-2xl max-w-sm w-full space-y-4 border border-slate-100 dark:border-slate-800"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-500 shrink-0"
+            >
+              <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">
+                {{ confirmModal.title }}
+              </h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                {{ confirmModal.message }}
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
+          >
+            <button
+              @click="closeConfirmModal"
+              type="button"
+              class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
+            >
+              Batal
+            </button>
+            <button
+              @click="executeConfirmAction"
+              type="button"
+              :disabled="store.isLoading"
+              class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            >
+              <i v-if="store.isLoading" class="fa-solid fa-spinner fa-spin"></i>
+              <span>Ya, Hapus</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </section>
 </template>
 
 <script setup>
-import { computed, ref, watch } from "vue";
+import { computed, ref, reactive, watch } from "vue";
 import { store } from "../store";
 import { api } from "../services/api";
 
 const currentPage = ref(1);
 const limit = ref("25");
+
+// State untuk Sorting
+const sortKey = ref("Tanggal");
+const sortAsc = ref(false);
+
+// State untuk Bulk Select
+const selectedIds = ref([]);
+
+// State Custom Modal Popup Konfirmasi (Bukan Alert)
+const confirmModal = reactive({
+  isOpen: false,
+  title: "",
+  message: "",
+  targetId: null,
+  isBulk: false,
+});
 
 const MONTH_NAMES = [
   "Januari",
@@ -391,6 +593,10 @@ const MONTH_NAMES = [
   "November",
   "Desember",
 ];
+
+function getLeadId(lead) {
+  return lead.id || lead.Timestamp;
+}
 
 function isDateInFilter(dateStr) {
   if (!dateStr) return false;
@@ -408,6 +614,41 @@ const filteredLeads = computed(() => {
   return list.filter((l) => isDateInFilter(l.Tanggal));
 });
 
+// Computed Data terurut
+const sortedLeads = computed(() => {
+  return [...filteredLeads.value].sort((a, b) => {
+    let modifier = sortAsc.value ? 1 : -1;
+    let aVal = a[sortKey.value];
+    let bVal = b[sortKey.value];
+
+    if (
+      ["Campaign", "DatabaseLeads", "FollowUp", "Pesanan"].includes(
+        sortKey.value,
+      )
+    ) {
+      aVal = Number(aVal || 0);
+      bVal = Number(bVal || 0);
+    } else {
+      aVal = String(aVal || "").toLowerCase();
+      bVal = String(bVal || "").toLowerCase();
+    }
+
+    if (aVal < bVal) return -1 * modifier;
+    if (aVal > bVal) return 1 * modifier;
+    return 0;
+  });
+});
+
+const sortTable = (key) => {
+  if (sortKey.value === key) {
+    sortAsc.value = !sortAsc.value;
+  } else {
+    sortKey.value = key;
+    sortAsc.value = true;
+  }
+};
+
+// Summary metrics
 const sumCamp = computed(() =>
   filteredLeads.value.reduce((s, l) => s + Number(l.Campaign || 0), 0),
 );
@@ -428,35 +669,59 @@ const pctOrderPerCamp = computed(() =>
 const totalPages = computed(() => {
   if (limit.value === "ALL") return 1;
   const perPage = Number(limit.value);
-  return Math.ceil(filteredLeads.value.length / perPage) || 1;
+  return Math.ceil(sortedLeads.value.length / perPage) || 1;
 });
 
 const paginatedLeads = computed(() => {
-  if (limit.value === "ALL") return filteredLeads.value;
+  if (limit.value === "ALL") return sortedLeads.value;
   const perPage = Number(limit.value);
   const start = (currentPage.value - 1) * perPage;
-  return filteredLeads.value.slice(start, start + perPage);
+  return sortedLeads.value.slice(start, start + perPage);
 });
 
 const startItem = computed(() => {
-  if (filteredLeads.value.length === 0) return 0;
+  if (sortedLeads.value.length === 0) return 0;
   return (currentPage.value - 1) * Number(limit.value) + 1;
 });
 
 const endItem = computed(() => {
   const end = currentPage.value * Number(limit.value);
-  return Math.min(end, filteredLeads.value.length);
+  return Math.min(end, sortedLeads.value.length);
 });
+
+// Checkbox Select All / Deselect
+const isAllSelected = computed(() => {
+  if (paginatedLeads.value.length === 0) return false;
+  return paginatedLeads.value.every((l) =>
+    selectedIds.value.includes(getLeadId(l)),
+  );
+});
+
+const toggleSelectAll = () => {
+  if (isAllSelected.value) {
+    const pageIds = paginatedLeads.value.map((l) => getLeadId(l));
+    selectedIds.value = selectedIds.value.filter((id) => !pageIds.includes(id));
+  } else {
+    const pageIds = paginatedLeads.value.map((l) => getLeadId(l));
+    const newSelected = new Set([...selectedIds.value, ...pageIds]);
+    selectedIds.value = Array.from(newSelected);
+  }
+};
+
+const clearSelection = () => {
+  selectedIds.value = [];
+};
 
 watch(
   () => store.filterDates,
   () => {
     currentPage.value = 1;
+    clearSelection();
   },
   { deep: true },
 );
 
-// Rekap Bulanan (Kronologis Jan -> Des)
+// Rekap Bulanan
 const monthlyRecap = computed(() => {
   const recapMap = {};
   filteredLeads.value.forEach((item) => {
@@ -501,7 +766,7 @@ const quarterlyRecap = computed(() => {
   return Object.keys(qMap).map((q) => ({ quarter: q, total: qMap[q] }));
 });
 
-// PERHITUNGAN GRAFIK LINE & HTML DOTS ANTI GEPENG
+// Perhitungan Grafik
 const chartPointsHTML = computed(() => {
   const data = monthlyRecap.value;
   if (data.length === 0) return [];
@@ -511,7 +776,7 @@ const chartPointsHTML = computed(() => {
 
   return data.map((d, i) => {
     const xPct = data.length === 1 ? 50 : i * stepXPct;
-    const yPct = 85 - (d.total / maxVal) * 70; // Rentang 15% - 85% Y-axis
+    const yPct = 85 - (d.total / maxVal) * 70;
     return { xPct, yPct, val: d.total };
   });
 });
@@ -537,33 +802,53 @@ const areaPath = computed(() => {
   return `${linePath.value} L ${lastX} 100 L ${firstX} 100 Z`;
 });
 
-function deleteLeads(docId) {
-  if (!docId) return;
+// FUNGSI UNTUK MEMBUKA CUSTOM MODAL POPUP (TANPA ALERT)
+const promptSingleDelete = (docId) => {
+  confirmModal.isOpen = true;
+  confirmModal.title = "Hapus Data Leads";
+  confirmModal.message = "Apakah Anda yakin ingin menghapus data leads ini?";
+  confirmModal.targetId = docId;
+  confirmModal.isBulk = false;
+};
 
-  store.openAlert(
-    "Konfirmasi Hapus",
-    "Hapus data leads ini?",
-    async () => {
-      store.isLoading = true;
-      try {
-        const res = await api.deleteData("leads", docId);
-        if (res.success) {
-          await store.loadFullDatabase();
-        } else {
-          store.openAlert(
-            "Gagal",
-            "Gagal menghapus: " + res.message,
-            null,
-            "warning",
-          );
-        }
-      } catch (err) {
-        store.openAlert("Error", "Error: " + err.message, null, "warning");
-      } finally {
-        store.isLoading = false;
+const promptBulkDelete = () => {
+  if (selectedIds.value.length === 0) return;
+  confirmModal.isOpen = true;
+  confirmModal.title = "Hapus Banyak Data Leads";
+  confirmModal.message = `Apakah Anda yakin ingin menghapus ${selectedIds.value.length} data leads terpilih secara permanen?`;
+  confirmModal.targetId = null;
+  confirmModal.isBulk = true;
+};
+
+const closeConfirmModal = () => {
+  confirmModal.isOpen = false;
+  confirmModal.targetId = null;
+  confirmModal.isBulk = false;
+};
+
+// EKSEKUSI PENGHAPUSAN SETELAH DIKONFIRMASI DI MODAL
+const executeConfirmAction = async () => {
+  store.isLoading = true;
+  try {
+    if (confirmModal.isBulk) {
+      for (const docId of selectedIds.value) {
+        await api.deleteData("leads", docId);
       }
-    },
-    "warning",
-  );
-}
+      clearSelection();
+    } else if (confirmModal.targetId) {
+      const res = await api.deleteData("leads", confirmModal.targetId);
+      if (res.success) {
+        selectedIds.value = selectedIds.value.filter(
+          (id) => id !== confirmModal.targetId,
+        );
+      }
+    }
+    await store.loadFullDatabase();
+  } catch (err) {
+    console.error("Gagal menghapus data:", err);
+  } finally {
+    store.isLoading = false;
+    closeConfirmModal();
+  }
+};
 </script>
