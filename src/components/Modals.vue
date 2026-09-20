@@ -47,27 +47,40 @@
             </select>
           </div>
 
-          <div>
-            <label class="block text-xs mb-1 font-medium">Revenue (Rp)</label>
-            <input
-              type="text"
-              v-model="displayRevRevenue"
-              @input="
-                handleInputFormatted(
-                  $event,
-                  formRev,
-                  'Revenue',
-                  'displayRevRevenue',
-                )
-              "
-              required
-              placeholder="0"
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
-            />
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs mb-1 font-medium">Revenue (Rp)</label>
+              <input
+                type="text"
+                v-model="displayRevRevenue"
+                @input="
+                  handleInputFormatted(
+                    $event,
+                    formRev,
+                    'Revenue',
+                    'displayRevRevenue',
+                  )
+                "
+                required
+                placeholder="0"
+                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+              />
+            </div>
+            <div>
+              <label class="block text-xs mb-1 font-medium"
+                >Jumlah Pesanan (Pcs/Order)</label
+              >
+              <input
+                type="number"
+                v-model.number="formRev.JumlahPesanan"
+                required
+                placeholder="0"
+                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+              />
+            </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
-            <!-- DIVISI DINAMIS FROM STORE -->
             <div>
               <label class="block text-xs mb-1 font-medium">Divisi</label>
               <select
@@ -86,7 +99,6 @@
               </select>
             </div>
 
-            <!-- PLATFORM DINAMIS FROM STORE -->
             <div>
               <label class="block text-xs mb-1 font-medium">Platform</label>
               <select
@@ -110,6 +122,7 @@
             class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
           >
             <button
+              type="button"
               @click="store.closeModal()"
               class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-bold"
             >
@@ -161,11 +174,13 @@
               <label class="block text-xs mb-1 font-medium">Unit Usaha</label>
               <select
                 v-model="formLeads.Unit"
+                required
                 class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none"
               >
-                <option value="NHP">NHP</option>
-                <option value="NHC">NHC</option>
-                <option value="KG">KG</option>
+                <option value="" disabled>-- Pilih Unit --</option>
+                <option v-for="u in masterUnits" :key="u.code" :value="u.code">
+                  {{ u.code }} - {{ u.name }}
+                </option>
               </select>
             </div>
           </div>
@@ -224,6 +239,7 @@
             class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
           >
             <button
+              type="button"
               @click="store.closeModal()"
               class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-bold"
             >
@@ -275,11 +291,13 @@
             <label class="block text-xs mb-1 font-medium">Unit Usaha</label>
             <select
               v-model="formPromo.Unit"
+              required
               class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none"
             >
-              <option value="NHP">NHP</option>
-              <option value="NHC">NHC</option>
-              <option value="KG">KG</option>
+              <option value="" disabled>-- Pilih Unit --</option>
+              <option v-for="u in masterUnits" :key="u.code" :value="u.code">
+                {{ u.code }} - {{ u.name }}
+              </option>
             </select>
           </div>
 
@@ -308,6 +326,7 @@
             class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
           >
             <button
+              type="button"
               @click="store.closeModal()"
               class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-bold"
             >
@@ -361,53 +380,11 @@
               class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
             />
           </div>
-          <div>
-            <label class="block text-xs mb-1">Target NHP (Rp)</label>
+          <div v-for="u in masterUnits" :key="u.code">
+            <label class="block text-xs mb-1">Target {{ u.code }} (Rp)</label>
             <input
-              type="text"
-              v-model="displayTargetNHP"
-              @input="
-                handleInputFormatted(
-                  $event,
-                  formTarget,
-                  'TargetNHP',
-                  'displayTargetNHP',
-                )
-              "
-              required
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
-            />
-          </div>
-          <div>
-            <label class="block text-xs mb-1">Target NHC (Rp)</label>
-            <input
-              type="text"
-              v-model="displayTargetNHC"
-              @input="
-                handleInputFormatted(
-                  $event,
-                  formTarget,
-                  'TargetNHC',
-                  'displayTargetNHC',
-                )
-              "
-              required
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
-            />
-          </div>
-          <div>
-            <label class="block text-xs mb-1">Target KG (Rp)</label>
-            <input
-              type="text"
-              v-model="displayTargetKG"
-              @input="
-                handleInputFormatted(
-                  $event,
-                  formTarget,
-                  'TargetKG',
-                  'displayTargetKG',
-                )
-              "
+              type="number"
+              v-model.number="formTarget['Target' + u.code]"
               required
               class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
             />
@@ -491,9 +468,9 @@
               v-model="formUser.unit"
               class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none"
             >
-              <option value="NHP">Unit NHP</option>
-              <option value="NHC">Unit NHC</option>
-              <option value="KG">Unit KG</option>
+              <option v-for="u in masterUnits" :key="u.code" :value="u.code">
+                Unit {{ u.code }}
+              </option>
             </select>
           </div>
           <button
@@ -549,7 +526,7 @@
       </div>
     </div>
 
-    <!-- 7. Modal Alert / Konfirmasi (Pengganti alert() & confirm() JS) -->
+    <!-- 7. Modal Alert / Konfirmasi -->
     <div
       v-if="store.activeModal === 'alert'"
       class="fixed inset-0 bg-slate-950/70 z-[60] flex justify-center items-center p-4 backdrop-blur-md"
@@ -557,7 +534,6 @@
       <div
         class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-sm p-6 space-y-4 text-center shadow-2xl"
       >
-        <!-- Ikon Alert -->
         <div
           class="w-12 h-12 rounded-2xl mx-auto flex items-center justify-center text-xl"
           :class="
@@ -589,7 +565,6 @@
           </p>
         </div>
 
-        <!-- Tombol Aksi -->
         <div class="flex gap-2 pt-2">
           <button
             v-if="store.alertPayload.onConfirm"
@@ -610,9 +585,7 @@
     </div>
   </div>
 
-  <!-- ==================================================== -->
-  <!-- 1. MODAL TAMBAH PROGRESS KANBAN (GLOBAL) -->
-  <!-- ==================================================== -->
+  <!-- 8. MODAL KANBAN PROGRESS -->
   <div
     v-if="store.activeModal === 'progress'"
     class="fixed inset-0 bg-slate-950/70 z-50 flex justify-center items-center p-4 backdrop-blur-md"
@@ -654,9 +627,9 @@
               required
               class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none"
             >
-              <option value="NHP">NHP</option>
-              <option value="NHC">NHC</option>
-              <option value="KG">KG</option>
+              <option v-for="u in masterUnits" :key="u.code" :value="u.code">
+                {{ u.code }} - {{ u.name }}
+              </option>
             </select>
           </div>
           <div>
@@ -666,13 +639,9 @@
               required
               class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none"
             >
-              <option value="CS Deal">CS Deal</option>
-              <option value="Zona 1A">Zona 1A</option>
-              <option value="Zona 1B">Zona 1B</option>
-              <option value="Zona 2">Zona 2</option>
-              <option value="Zona 3">Zona 3</option>
-              <option value="Digital Marketing">Digital Marketing</option>
-              <option value="Offline">Offline</option>
+              <option v-for="div in availableDivisions" :key="div" :value="div">
+                {{ div }}
+              </option>
             </select>
           </div>
         </div>
@@ -726,9 +695,7 @@
     </div>
   </div>
 
-  <!-- ==================================================== -->
-  <!-- 2. MODAL TAMBAH LAPORAN DIVISI / SPV (GLOBAL) -->
-  <!-- ==================================================== -->
+  <!-- 9. MODAL LAPORAN SPV -->
   <div
     v-if="store.activeModal === 'spv-report'"
     class="fixed inset-0 bg-slate-950/70 z-50 flex justify-center items-center p-4 backdrop-blur-md"
@@ -768,13 +735,9 @@
               required
               class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none"
             >
-              <option value="CS Deal">CS Deal</option>
-              <option value="Zona 1A">Zona 1A</option>
-              <option value="Zona 1B">Zona 1B</option>
-              <option value="Zona 2">Zona 2</option>
-              <option value="Zona 3">Zona 3</option>
-              <option value="Digital Marketing">Digital Marketing</option>
-              <option value="Offline">Offline</option>
+              <option v-for="div in availableDivisions" :key="div" :value="div">
+                {{ div }}
+              </option>
             </select>
           </div>
         </div>
@@ -820,7 +783,6 @@ import { ref, reactive, computed, watch } from "vue";
 import { store } from "../store";
 import { api } from "../services/api";
 
-// --- HELPER FUNCTION FORMAT RIBUAN ---
 function formatThousand(val) {
   if (val === null || val === undefined || val === "") return "";
   const cleanVal = String(val).replace(/\D/g, "");
@@ -828,15 +790,10 @@ function formatThousand(val) {
   return new Intl.NumberFormat("id-ID").format(cleanVal);
 }
 
-// Variables untuk Binding Tampilan Input Rupiah
 const displayRevRevenue = ref("");
 const displayPromoBiaya = ref("");
 const displayTargetTahunIni = ref("");
-const displayTargetNHP = ref("");
-const displayTargetNHC = ref("");
-const displayTargetKG = ref("");
 
-// Handler Event @input
 function handleInputFormatted(
   event,
   targetFormObj,
@@ -856,19 +813,13 @@ function handleInputFormatted(
     displayPromoBiaya.value = formatted;
   else if (displayRefName === "displayTargetTahunIni")
     displayTargetTahunIni.value = formatted;
-  else if (displayRefName === "displayTargetNHP")
-    displayTargetNHP.value = formatted;
-  else if (displayRefName === "displayTargetNHC")
-    displayTargetNHC.value = formatted;
-  else if (displayRefName === "displayTargetKG")
-    displayTargetKG.value = formatted;
 }
 
-// --- REACTIVE FORM STATES ---
 const formRev = reactive({
   Tanggal: new Date().toISOString().split("T")[0],
   Unit: "NHP",
   Revenue: 0,
+  JumlahPesanan: 0,
   Divisi: "CS Deal",
   Platform: "Shopee",
 });
@@ -890,9 +841,6 @@ const formPromo = reactive({
 
 const formTarget = reactive({
   TargetTahunIni: 0,
-  TargetNHP: 0,
-  TargetNHC: 0,
-  TargetKG: 0,
 });
 
 const formUser = reactive({
@@ -907,407 +855,28 @@ const formPasscode = reactive({
   code: "0",
 });
 
-// --- COMPUTED EDIT STATES ---
 const isEditRevenue = computed(() => {
-  if (store.activeModal !== "revenue" || !store.editPayload) return false;
-  const p = store.editPayload;
-  return !!(
-    p.id ||
-    p.Timestamp ||
-    p.Revenue !== undefined ||
-    p.revenue !== undefined
-  );
+  if (store.activeModal !== "revenue" || !store.selectedItemForEdit)
+    return false;
+  const p = store.selectedItemForEdit;
+  return !!(p.id || p.Timestamp || p.Revenue !== undefined);
 });
 
 const isEditLeads = computed(() => {
-  if (store.activeModal !== "leads" || !store.editPayload) return false;
-  const p = store.editPayload;
-  return !!(
-    p.id ||
-    p.Timestamp ||
-    p.Campaign !== undefined ||
-    p.DatabaseLeads !== undefined
-  );
+  if (store.activeModal !== "leads" || !store.selectedItemForEdit) return false;
+  const p = store.selectedItemForEdit;
+  return !!(p.id || p.Timestamp || p.Campaign !== undefined);
 });
 
 const isEditPromo = computed(() => {
-  if (store.activeModal !== "promo" || !store.editPayload) return false;
-  const p = store.editPayload;
-  return !!(
-    p.id ||
-    p.Timestamp ||
-    p.BiayaPromosi !== undefined ||
-    p.biayaPromosi !== undefined
-  );
+  if (store.activeModal !== "promo" || !store.selectedItemForEdit) return false;
+  const p = store.selectedItemForEdit;
+  return !!(p.id || p.Timestamp || p.BiayaPromosi !== undefined);
 });
 
 const isEditUser = computed(
-  () => store.activeModal === "user" && !!store.editPayload?.id,
+  () => store.activeModal === "user" && !!store.selectedItemForEdit?.id,
 );
-
-// --- WATCHER UTAMA UNTUK SINKRONISASI SEMUA MODAL ---
-watch(
-  () => store.activeModal,
-  (newVal) => {
-    if (!newVal) return;
-
-    const raw = store.editPayload
-      ? JSON.parse(JSON.stringify(store.editPayload))
-      : null;
-
-    if (newVal === "revenue") {
-      if (
-        raw &&
-        (raw.id ||
-          raw.Timestamp ||
-          raw.Revenue !== undefined ||
-          raw.revenue !== undefined)
-      ) {
-        formRev.Tanggal =
-          raw.Tanggal || raw.tanggal
-            ? String(raw.Tanggal || raw.tanggal).substring(0, 10)
-            : new Date().toISOString().split("T")[0];
-        formRev.Unit = raw.Unit || raw.unit || "NHP";
-        formRev.Revenue = Number(raw.Revenue ?? raw.revenue ?? 0);
-        formRev.Divisi = raw.Divisi || raw.divisi || "CS Deal";
-        formRev.Platform = raw.Platform || raw.platform || "Shopee";
-      } else {
-        const defaultUnit = raw?.Unit || raw?.unit || "NHP";
-        formRev.Tanggal = new Date().toISOString().split("T")[0];
-        formRev.Unit = defaultUnit;
-        formRev.Revenue = 0;
-        formRev.Divisi = "CS Deal";
-        formRev.Platform = "Shopee";
-      }
-      displayRevRevenue.value = formatThousand(formRev.Revenue);
-    } else if (newVal === "leads") {
-      if (
-        raw &&
-        (raw.id ||
-          raw.Timestamp ||
-          raw.Campaign !== undefined ||
-          raw.DatabaseLeads !== undefined)
-      ) {
-        formLeads.Tanggal =
-          raw.Tanggal || raw.tanggal
-            ? String(raw.Tanggal || raw.tanggal).substring(0, 10)
-            : new Date().toISOString().split("T")[0];
-        formLeads.Unit = raw.Unit || raw.unit || "NHP";
-        formLeads.Campaign = Number(raw.Campaign ?? raw.campaign ?? 0);
-        formLeads.DatabaseLeads = Number(
-          raw.DatabaseLeads ?? raw.databaseLeads ?? 0,
-        );
-        formLeads.FollowUp = Number(raw.FollowUp ?? raw.followUp ?? 0);
-        formLeads.Pesanan = Number(raw.Pesanan ?? raw.pesanan ?? 0);
-      } else {
-        const defaultUnit = raw?.Unit || raw?.unit || "NHP";
-        formLeads.Tanggal = new Date().toISOString().split("T")[0];
-        formLeads.Unit = defaultUnit;
-        formLeads.Campaign = 0;
-        formLeads.DatabaseLeads = 0;
-        formLeads.FollowUp = 0;
-        formLeads.Pesanan = 0;
-      }
-    } else if (newVal === "promo") {
-      if (
-        raw &&
-        (raw.id ||
-          raw.Timestamp ||
-          raw.BiayaPromosi !== undefined ||
-          raw.biayaPromosi !== undefined)
-      ) {
-        formPromo.Tanggal =
-          raw.Tanggal || raw.tanggal
-            ? String(raw.Tanggal || raw.tanggal).substring(0, 10)
-            : new Date().toISOString().split("T")[0];
-        formPromo.Unit = raw.Unit || raw.unit || "NHP";
-        formPromo.BiayaPromosi = Number(
-          raw.BiayaPromosi ?? raw.biayaPromosi ?? 0,
-        );
-      } else {
-        const defaultUnit = raw?.Unit || raw?.unit || "NHP";
-        formPromo.Tanggal = new Date().toISOString().split("T")[0];
-        formPromo.Unit = defaultUnit;
-        formPromo.BiayaPromosi = 0;
-      }
-      displayPromoBiaya.value = formatThousand(formPromo.BiayaPromosi);
-    } else if (newVal === "target") {
-      if (store.db.master) {
-        Object.assign(formTarget, JSON.parse(JSON.stringify(store.db.master)));
-      }
-      displayTargetTahunIni.value = formatThousand(formTarget.TargetTahunIni);
-      displayTargetNHP.value = formatThousand(formTarget.TargetNHP);
-      displayTargetNHC.value = formatThousand(formTarget.TargetNHC);
-      displayTargetKG.value = formatThousand(formTarget.TargetKG);
-    } else if (newVal === "user") {
-      if (raw && raw.id) {
-        Object.assign(formUser, {
-          name: raw.nama || raw.name || "",
-          email: raw.email || "",
-          password: "",
-          role: raw.role || "ADMIN_UNIT",
-          unit: Array.isArray(raw.aksesUnit)
-            ? raw.aksesUnit[0]
-            : raw.unit || "NHP",
-        });
-      } else {
-        Object.assign(formUser, {
-          name: "",
-          email: "",
-          password: "",
-          role: "ADMIN_UNIT",
-          unit: "NHP",
-        });
-      }
-    } else if (newVal === "kodeakses") {
-      formPasscode.code = String(store.db.master?.KodeAkses || "0");
-    }
-  },
-  { immediate: true },
-);
-
-// --- SAVE ACTIONS TO FIRESTORE WITH NOTIFICATIONS ---
-
-async function saveRevenue() {
-  store.isLoading = true;
-  try {
-    const rawData = store.editPayload
-      ? JSON.parse(JSON.stringify(store.editPayload))
-      : {};
-    const docId = rawData.id || rawData.Timestamp;
-
-    if (isEditRevenue.value && docId) {
-      await api.updateData("revenues", docId, formRev);
-      store.addNotification(
-        "Revenue Diperbarui",
-        `Revenue Unit ${formRev.Unit} diubah menjadi Rp ${formatThousand(formRev.Revenue)}`,
-        "warning",
-      );
-    } else {
-      await api.saveData("revenues", formRev);
-      store.addNotification(
-        "Revenue Ditambahkan",
-        `Revenue baru Unit ${formRev.Unit} sebesar Rp ${formatThousand(formRev.Revenue)} berhasil disimpan`,
-        "success",
-      );
-    }
-    await store.loadFullDatabase();
-    store.closeModal();
-  } catch (err) {
-    store.addNotification(
-      "Gagal Menyimpan",
-      `Gagal menyimpan Revenue: ${err.message}`,
-      "danger",
-    );
-    store.openAlert(
-      "Gagal Menyimpan",
-      "Gagal menyimpan Revenue: " + err.message,
-      null,
-      "warning",
-    );
-  } finally {
-    store.isLoading = false;
-  }
-}
-
-async function saveLeads() {
-  store.isLoading = true;
-  try {
-    const rawData = store.editPayload
-      ? JSON.parse(JSON.stringify(store.editPayload))
-      : {};
-    const docId = rawData.id || rawData.Timestamp;
-
-    if (isEditLeads.value && docId) {
-      await api.updateData("leads", docId, formLeads);
-      store.addNotification(
-        "Data Leads Diperbarui",
-        `Data Leads Unit ${formLeads.Unit} berhasil diperbarui`,
-        "warning",
-      );
-    } else {
-      await api.saveData("leads", formLeads);
-      store.addNotification(
-        "Leads Ditambahkan",
-        `Data Leads baru Unit ${formLeads.Unit} berhasil dicatat`,
-        "success",
-      );
-    }
-    await store.loadFullDatabase();
-    store.closeModal();
-  } catch (err) {
-    store.addNotification(
-      "Gagal Menyimpan",
-      `Gagal menyimpan Leads: ${err.message}`,
-      "danger",
-    );
-    store.openAlert(
-      "Gagal Menyimpan",
-      "Gagal menyimpan Leads: " + err.message,
-      null,
-      "warning",
-    );
-  } finally {
-    store.isLoading = false;
-  }
-}
-
-async function savePromo() {
-  store.isLoading = true;
-  try {
-    const rawData = store.editPayload
-      ? JSON.parse(JSON.stringify(store.editPayload))
-      : {};
-    const docId = rawData.id || rawData.Timestamp;
-
-    if (isEditPromo.value && docId) {
-      await api.updateData("promosi", docId, formPromo);
-      store.addNotification(
-        "Biaya Promosi Diubah",
-        `Promosi Unit ${formPromo.Unit} diperbarui menjadi Rp ${formatThousand(formPromo.BiayaPromosi)}`,
-        "warning",
-      );
-    } else {
-      await api.saveData("promosi", formPromo);
-      store.addNotification(
-        "Biaya Promosi Dicatat",
-        `Iklan Unit ${formPromo.Unit} sebesar Rp ${formatThousand(formPromo.BiayaPromosi)} berhasil disimpan`,
-        "success",
-      );
-    }
-    await store.loadFullDatabase();
-    store.closeModal();
-  } catch (err) {
-    store.addNotification(
-      "Gagal Menyimpan",
-      `Gagal menyimpan Biaya Promosi: ${err.message}`,
-      "danger",
-    );
-    store.openAlert(
-      "Gagal Menyimpan",
-      "Gagal menyimpan Biaya Promosi: " + err.message,
-      null,
-      "warning",
-    );
-  } finally {
-    store.isLoading = false;
-  }
-}
-
-async function saveTargets() {
-  store.isLoading = true;
-  try {
-    const res = await api.saveMasterTargets(formTarget);
-    if (res.success) {
-      store.addNotification(
-        "Target Revenue Diperbarui",
-        `Master target tahunan berhasil disesuaikan`,
-        "warning",
-      );
-      await store.loadFullDatabase();
-      store.closeModal();
-    } else {
-      store.openAlert("Perhatian", res.message, null, "warning");
-    }
-  } catch (err) {
-    store.addNotification("Gagal Menyimpan Target", err.message, "danger");
-    store.openAlert(
-      "Gagal Menyimpan",
-      "Gagal menyimpan Target: " + err.message,
-      null,
-      "warning",
-    );
-  } finally {
-    store.isLoading = false;
-  }
-}
-
-async function saveUser() {
-  store.isLoading = true;
-  try {
-    const payload = {
-      nama: formUser.name,
-      email: formUser.email,
-      password: formUser.password,
-      role: formUser.role,
-      aksesUnit:
-        formUser.role === "SUPERADMIN" ? ["NHP", "NHC", "KG"] : [formUser.unit],
-      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(formUser.name)}`,
-    };
-
-    if (isEditUser.value) {
-      await api.updateData("Users", store.editPayload.id, payload);
-      store.addNotification(
-        "Akses Pengguna Diubah",
-        `Data akun ${formUser.name} telah diperbarui`,
-        "warning",
-      );
-    } else {
-      await api.saveData("Users", payload);
-      store.addNotification(
-        "Pengguna Baru Ditambah",
-        `Akun pengguna ${formUser.name} (${formUser.role}) telah dibuat`,
-        "success",
-      );
-    }
-    await store.loadFullDatabase();
-    store.closeModal();
-  } catch (err) {
-    store.addNotification("Gagal Menyimpan Pengguna", err.message, "danger");
-    store.openAlert(
-      "Gagal Menyimpan",
-      "Gagal menyimpan Pengguna: " + err.message,
-      null,
-      "warning",
-    );
-  } finally {
-    store.isLoading = false;
-  }
-}
-
-async function savePasscode() {
-  store.isLoading = true;
-  try {
-    const res = await api.saveMasterTargets({ KodeAkses: formPasscode.code });
-    if (res.success) {
-      store.db.master.KodeAkses = formPasscode.code;
-      store.addNotification(
-        "Passcode Diperbarui",
-        "Passcode publik berhasil diubah",
-        "warning",
-      );
-      store.closeModal();
-      store.openAlert(
-        "Berhasil",
-        "Passcode Publik berhasil diperbarui!",
-        null,
-        "success",
-      );
-    } else {
-      store.openAlert("Perhatian", res.message, null, "warning");
-    }
-  } catch (err) {
-    store.addNotification("Gagal Update Passcode", err.message, "danger");
-    store.openAlert(
-      "Gagal Menyimpan",
-      "Gagal memperbarui Passcode: " + err.message,
-      null,
-      "warning",
-    );
-  } finally {
-    store.isLoading = false;
-  }
-}
-
-function handleAlertConfirm() {
-  if (
-    store.alertPayload.onConfirm &&
-    typeof store.alertPayload.onConfirm === "function"
-  ) {
-    store.alertPayload.onConfirm();
-  }
-  store.closeAlert();
-}
 
 const masterUnits = computed(() => {
   return (
@@ -1319,7 +888,6 @@ const masterUnits = computed(() => {
   );
 });
 
-// Computed Data Master Divisi
 const availableDivisions = computed(() => {
   return (
     store.db?.master?.divisiList || [
@@ -1330,13 +898,10 @@ const availableDivisions = computed(() => {
       "Zona 3",
       "Digital Marketing",
       "Offline",
-      "Penerbitan & Cetak",
-      "Produksi & Logistik",
     ]
   );
 });
 
-// Computed Data Master Platform
 const availablePlatforms = computed(() => {
   return (
     store.db?.master?.platformList || [
@@ -1355,6 +920,279 @@ const availablePlatforms = computed(() => {
   );
 });
 
+watch(
+  () => store.activeModal,
+  (newVal) => {
+    if (!newVal) return;
+
+    const raw = store.selectedItemForEdit
+      ? JSON.parse(JSON.stringify(store.selectedItemForEdit))
+      : null;
+
+    const defaultUnitCode = masterUnits.value[0]?.code || "NHP";
+
+    if (newVal === "revenue") {
+      if (raw && (raw.id || raw.Timestamp || raw.Revenue !== undefined)) {
+        formRev.Tanggal = raw.Tanggal
+          ? String(raw.Tanggal).substring(0, 10)
+          : new Date().toISOString().split("T")[0];
+        formRev.Unit = raw.Unit || defaultUnitCode;
+        formRev.Revenue = Number(raw.Revenue ?? 0);
+        formRev.JumlahPesanan = Number(raw.JumlahPesanan ?? raw.pesanan ?? 0);
+        formRev.Divisi = raw.Divisi || availableDivisions.value[0] || "CS Deal";
+        formRev.Platform =
+          raw.Platform || availablePlatforms.value[0] || "Shopee";
+      } else {
+        formRev.Tanggal = new Date().toISOString().split("T")[0];
+        formRev.Unit = raw?.Unit || defaultUnitCode;
+        formRev.Revenue = 0;
+        formRev.JumlahPesanan = 0;
+        formRev.Divisi = availableDivisions.value[0] || "CS Deal";
+        formRev.Platform = availablePlatforms.value[0] || "Shopee";
+      }
+      displayRevRevenue.value = formatThousand(formRev.Revenue);
+    } else if (newVal === "leads") {
+      if (raw && (raw.id || raw.Timestamp || raw.Campaign !== undefined)) {
+        formLeads.Tanggal = raw.Tanggal
+          ? String(raw.Tanggal).substring(0, 10)
+          : new Date().toISOString().split("T")[0];
+        formLeads.Unit = raw.Unit || defaultUnitCode;
+        formLeads.Campaign = Number(raw.Campaign ?? 0);
+        formLeads.DatabaseLeads = Number(raw.DatabaseLeads ?? 0);
+        formLeads.FollowUp = Number(raw.FollowUp ?? 0);
+        formLeads.Pesanan = Number(raw.Pesanan ?? 0);
+      } else {
+        formLeads.Tanggal = new Date().toISOString().split("T")[0];
+        formLeads.Unit = raw?.Unit || defaultUnitCode;
+        formLeads.Campaign = 0;
+        formLeads.DatabaseLeads = 0;
+        formLeads.FollowUp = 0;
+        formLeads.Pesanan = 0;
+      }
+    } else if (newVal === "promo") {
+      if (raw && (raw.id || raw.Timestamp || raw.BiayaPromosi !== undefined)) {
+        formPromo.Tanggal = raw.Tanggal
+          ? String(raw.Tanggal).substring(0, 10)
+          : new Date().toISOString().split("T")[0];
+        formPromo.Unit = raw.Unit || defaultUnitCode;
+        formPromo.BiayaPromosi = Number(raw.BiayaPromosi ?? 0);
+      } else {
+        formPromo.Tanggal = new Date().toISOString().split("T")[0];
+        formPromo.Unit = raw?.Unit || defaultUnitCode;
+        formPromo.BiayaPromosi = 0;
+      }
+      displayPromoBiaya.value = formatThousand(formPromo.BiayaPromosi);
+    } else if (newVal === "target") {
+      if (store.db.master) {
+        Object.assign(formTarget, JSON.parse(JSON.stringify(store.db.master)));
+      }
+      displayTargetTahunIni.value = formatThousand(formTarget.TargetTahunIni);
+    } else if (newVal === "user") {
+      if (raw && raw.id) {
+        Object.assign(formUser, {
+          name: raw.nama || raw.name || "",
+          email: raw.email || "",
+          password: "",
+          role: raw.role || "ADMIN_UNIT",
+          unit: Array.isArray(raw.aksesUnit)
+            ? raw.aksesUnit[0]
+            : raw.unit || defaultUnitCode,
+        });
+      } else {
+        Object.assign(formUser, {
+          name: "",
+          email: "",
+          password: "",
+          role: "ADMIN_UNIT",
+          unit: defaultUnitCode,
+        });
+      }
+    } else if (newVal === "kodeakses") {
+      formPasscode.code = String(store.db.master?.KodeAkses || "0");
+    }
+  },
+  { immediate: true },
+);
+
+async function saveRevenue() {
+  store.isLoading = true;
+  try {
+    const rawData = store.selectedItemForEdit || {};
+    const docId = rawData.id || rawData.Timestamp;
+
+    if (isEditRevenue.value && docId) {
+      await api.updateData("revenues", docId, formRev);
+      store.addNotification(
+        "Revenue Diperbarui",
+        `Revenue Unit ${formRev.Unit} diperbarui`,
+        "warning",
+      );
+    } else {
+      await api.saveData("revenues", formRev);
+      store.addNotification(
+        "Revenue Ditambahkan",
+        `Revenue baru Unit ${formRev.Unit} disimpan`,
+        "success",
+      );
+    }
+    await store.loadFullDatabase();
+    store.closeModal();
+  } catch (err) {
+    store.openAlert("Gagal Menyimpan", err.message, null, "warning");
+  } finally {
+    store.isLoading = false;
+  }
+}
+
+async function saveLeads() {
+  store.isLoading = true;
+  try {
+    const rawData = store.selectedItemForEdit || {};
+    const docId = rawData.id || rawData.Timestamp;
+
+    if (isEditLeads.value && docId) {
+      await api.updateData("leads", docId, formLeads);
+      store.addNotification(
+        "Leads Diperbarui",
+        `Data Leads ${formLeads.Unit} diperbarui`,
+        "warning",
+      );
+    } else {
+      await api.saveData("leads", formLeads);
+      store.addNotification(
+        "Leads Ditambahkan",
+        `Data Leads ${formLeads.Unit} disimpan`,
+        "success",
+      );
+    }
+    await store.loadFullDatabase();
+    store.closeModal();
+  } catch (err) {
+    store.openAlert("Gagal Menyimpan", err.message, null, "warning");
+  } finally {
+    store.isLoading = false;
+  }
+}
+
+async function savePromo() {
+  store.isLoading = true;
+  try {
+    const rawData = store.selectedItemForEdit || {};
+    const docId = rawData.id || rawData.Timestamp;
+
+    if (isEditPromo.value && docId) {
+      await api.updateData("promosi", docId, formPromo);
+      store.addNotification(
+        "Promosi Diperbarui",
+        `Promosi Unit ${formPromo.Unit} diperbarui`,
+        "warning",
+      );
+    } else {
+      await api.saveData("promosi", formPromo);
+      store.addNotification(
+        "Promosi Ditambahkan",
+        `Promosi Unit ${formPromo.Unit} disimpan`,
+        "success",
+      );
+    }
+    await store.loadFullDatabase();
+    store.closeModal();
+  } catch (err) {
+    store.openAlert("Gagal Menyimpan", err.message, null, "warning");
+  } finally {
+    store.isLoading = false;
+  }
+}
+
+async function saveTargets() {
+  store.isLoading = true;
+  try {
+    const res = await api.saveMasterTargetsOnly(formTarget);
+    if (res.success) {
+      store.addNotification(
+        "Target Diperbarui",
+        "Master target tahunan disesuaikan",
+        "warning",
+      );
+      await store.loadFullDatabase();
+      store.closeModal();
+    }
+  } catch (err) {
+    store.openAlert("Gagal Menyimpan", err.message, null, "warning");
+  } finally {
+    store.isLoading = false;
+  }
+}
+
+async function saveUser() {
+  store.isLoading = true;
+  try {
+    const payload = {
+      nama: formUser.name,
+      email: formUser.email,
+      password: formUser.password,
+      role: formUser.role,
+      aksesUnit:
+        formUser.role === "SUPERADMIN"
+          ? masterUnits.value.map((u) => u.code)
+          : [formUser.unit],
+      avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(formUser.name)}`,
+    };
+
+    if (isEditUser.value) {
+      await api.updateData("Users", store.selectedItemForEdit.id, payload);
+      store.addNotification(
+        "Pengguna Diubah",
+        `Akun ${formUser.name} diperbarui`,
+        "warning",
+      );
+    } else {
+      await api.saveData("Users", payload);
+      store.addNotification(
+        "Pengguna Ditambah",
+        `Akun ${formUser.name} telah dibuat`,
+        "success",
+      );
+    }
+    await store.loadFullDatabase();
+    store.closeModal();
+  } catch (err) {
+    store.openAlert("Gagal Menyimpan", err.message, null, "warning");
+  } finally {
+    store.isLoading = false;
+  }
+}
+
+async function savePasscode() {
+  store.isLoading = true;
+  try {
+    const res = await api.saveMasterData({ KodeAkses: formPasscode.code });
+    if (res.success) {
+      store.db.master.KodeAkses = formPasscode.code;
+      store.addNotification(
+        "Passcode Diperbarui",
+        "Passcode publik berhasil diubah",
+        "warning",
+      );
+      store.closeModal();
+    }
+  } catch (err) {
+    store.openAlert("Gagal Menyimpan", err.message, null, "warning");
+  } finally {
+    store.isLoading = false;
+  }
+}
+
+function handleAlertConfirm() {
+  if (
+    store.alertPayload.onConfirm &&
+    typeof store.alertPayload.onConfirm === "function"
+  ) {
+    store.alertPayload.onConfirm();
+  }
+  store.closeAlert();
+}
+
 const formProgress = reactive({
   title: "",
   unit: "NHP",
@@ -1365,7 +1203,6 @@ const formProgress = reactive({
   progress: 0,
 });
 
-// Reactive Form State untuk Laporan SPV
 const formSpv = reactive({
   tanggal: new Date().toISOString().split("T")[0],
   divisi: "CS Deal",
@@ -1373,7 +1210,6 @@ const formSpv = reactive({
   kendala: "",
 });
 
-// Function Save Progress Kanban
 const saveProgress = async () => {
   store.isLoading = true;
   try {
@@ -1382,14 +1218,11 @@ const saveProgress = async () => {
       ...formProgress,
       createdBy: store.currentUser?.id || store.currentUser?.email,
     };
-
     if (api && api.saveProgramData) {
       await api.saveProgramData(payload);
     }
-
     if (!store.db.programs) store.db.programs = [];
     store.db.programs.unshift(payload);
-
     store.addNotification(
       "Berhasil",
       "Program kerja berhasil ditambahkan",
@@ -1403,7 +1236,6 @@ const saveProgress = async () => {
   }
 };
 
-// Function Save Laporan SPV
 const saveSpvReport = async () => {
   store.isLoading = true;
   try {
@@ -1412,14 +1244,11 @@ const saveSpvReport = async () => {
       ...formSpv,
       pembuat: store.currentUser?.nama || store.currentUser?.email,
     };
-
     if (api && api.saveSpvReportData) {
       await api.saveSpvReportData(payload);
     }
-
     if (!store.db.spvReports) store.db.spvReports = [];
     store.db.spvReports.unshift(payload);
-
     store.addNotification(
       "Berhasil",
       "Laporan Divisi berhasil disimpan",

@@ -13,8 +13,8 @@
           Manajemen Master Data & Target System
         </h3>
         <p class="text-[11px] md:text-xs text-slate-400 mt-0.5">
-          Kelola entitas utama secara independen. Perubahan pada tiap bagian
-          disave secara terpisah.
+          Kelola entitas utama secara independen. Perubahan disimpan secara
+          terpisah.
         </p>
       </div>
     </div>
@@ -36,7 +36,7 @@
           @click="saveTargetsOnly"
           :disabled="savingState.targets"
           type="button"
-          class="bg-button hover:bg-button text-white font-bold px-3.5 py-1.5 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+          class="bg-button text-white font-bold px-3.5 py-1.5 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
         >
           <i
             class="fa-solid fa-floppy-disk"
@@ -58,36 +58,14 @@
             class="w-full glass-input rounded-xl px-3 py-2 font-bold text-emerald-600 outline-none dark:bg-slate-800"
           />
         </div>
-        <div>
+        <div v-for="u in unitList" :key="u.code">
           <label class="block text-slate-500 font-semibold mb-1"
-            >Target Unit NHP:</label
+            >Target Unit {{ u.code }}:</label
           >
           <input
-            v-model.number="targets.TargetNHP"
+            v-model.number="targets['Target' + u.code]"
             type="number"
-            placeholder="Rp Target NHP"
-            class="w-full glass-input rounded-xl px-3 py-2 font-bold text-slate-800 dark:text-slate-100 outline-none dark:bg-slate-800"
-          />
-        </div>
-        <div>
-          <label class="block text-slate-500 font-semibold mb-1"
-            >Target Unit NHC:</label
-          >
-          <input
-            v-model.number="targets.TargetNHC"
-            type="number"
-            placeholder="Rp Target NHC"
-            class="w-full glass-input rounded-xl px-3 py-2 font-bold text-slate-800 dark:text-slate-100 outline-none dark:bg-slate-800"
-          />
-        </div>
-        <div>
-          <label class="block text-slate-500 font-semibold mb-1"
-            >Target Unit KG:</label
-          >
-          <input
-            v-model.number="targets.TargetKG"
-            type="number"
-            placeholder="Rp Target KG"
+            :placeholder="'Rp Target ' + u.code"
             class="w-full glass-input rounded-xl px-3 py-2 font-bold text-slate-800 dark:text-slate-100 outline-none dark:bg-slate-800"
           />
         </div>
@@ -150,25 +128,70 @@
           <div
             v-for="(u, idx) in unitList"
             :key="idx"
-            class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-xs"
+            class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-xs gap-2"
           >
-            <div>
-              <span
-                class="font-black text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded text-[10px] mr-1.5 uppercase border border-blue-500/20"
+            <!-- Mode Edit Unit -->
+            <template v-if="editingUnitIndex === idx">
+              <input
+                v-model="editingUnitCode"
+                type="text"
+                class="w-20 glass-input rounded-lg px-2 py-1 uppercase font-bold text-blue-600 dark:bg-slate-900"
+              />
+              <input
+                v-model="editingUnitName"
+                type="text"
+                class="flex-1 glass-input rounded-lg px-2 py-1 text-slate-700 dark:text-slate-200 dark:bg-slate-900"
+              />
+              <button
+                @click="saveEditUnit(idx)"
+                type="button"
+                class="text-emerald-600 hover:text-emerald-700 p-1"
+                title="Simpan"
               >
-                {{ u.code }}
-              </span>
-              <span class="font-semibold text-slate-700 dark:text-slate-200">{{
-                u.name
-              }}</span>
-            </div>
-            <button
-              @click="removeUnit(idx)"
-              type="button"
-              class="text-slate-400 hover:text-rose-500 p-1 cursor-pointer"
-            >
-              <i class="fa-solid fa-trash-can text-xs"></i>
-            </button>
+                <i class="fa-solid fa-check"></i>
+              </button>
+              <button
+                @click="cancelEditUnit"
+                type="button"
+                class="text-slate-400 hover:text-slate-600 p-1"
+                title="Batal"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </template>
+
+            <!-- Mode Display Unit -->
+            <template v-else>
+              <div class="flex items-center gap-1.5 flex-1 truncate">
+                <span
+                  class="font-black text-blue-600 dark:text-blue-400 bg-blue-500/10 px-1.5 py-0.5 rounded text-[10px] uppercase border border-blue-500/20 shrink-0"
+                >
+                  {{ u.code }}
+                </span>
+                <span
+                  class="font-semibold text-slate-700 dark:text-slate-200 truncate"
+                  >{{ u.name }}</span
+                >
+              </div>
+              <div class="flex items-center gap-1">
+                <button
+                  @click="startEditUnit(idx)"
+                  type="button"
+                  class="text-slate-400 hover:text-blue-500 p-1 cursor-pointer"
+                  title="Edit Unit"
+                >
+                  <i class="fa-solid fa-pen text-xs"></i>
+                </button>
+                <button
+                  @click="removeUnit(idx)"
+                  type="button"
+                  class="text-slate-400 hover:text-rose-500 p-1 cursor-pointer"
+                  title="Hapus Unit"
+                >
+                  <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
+              </div>
+            </template>
           </div>
         </div>
       </div>
@@ -220,18 +243,58 @@
           <div
             v-for="(d, idx) in divisiList"
             :key="idx"
-            class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-xs"
+            class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-xs gap-2"
           >
-            <span class="font-semibold text-slate-700 dark:text-slate-200">{{
-              d
-            }}</span>
-            <button
-              @click="removeDivisi(idx)"
-              type="button"
-              class="text-slate-400 hover:text-rose-500 p-1 cursor-pointer"
-            >
-              <i class="fa-solid fa-trash-can text-xs"></i>
-            </button>
+            <!-- Mode Edit Divisi -->
+            <template v-if="editingDivisiIndex === idx">
+              <input
+                v-model="editingDivisiName"
+                type="text"
+                class="flex-1 glass-input rounded-lg px-2 py-1 text-slate-700 dark:text-slate-200 dark:bg-slate-900"
+              />
+              <button
+                @click="saveEditDivisi(idx)"
+                type="button"
+                class="text-emerald-600 hover:text-emerald-700 p-1"
+                title="Simpan"
+              >
+                <i class="fa-solid fa-check"></i>
+              </button>
+              <button
+                @click="cancelEditDivisi"
+                type="button"
+                class="text-slate-400 hover:text-slate-600 p-1"
+                title="Batal"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </template>
+
+            <!-- Mode Display Divisi -->
+            <template v-else>
+              <span
+                class="font-semibold text-slate-700 dark:text-slate-200 truncate flex-1"
+                >{{ d }}</span
+              >
+              <div class="flex items-center gap-1">
+                <button
+                  @click="startEditDivisi(idx)"
+                  type="button"
+                  class="text-slate-400 hover:text-emerald-600 p-1 cursor-pointer"
+                  title="Edit Divisi"
+                >
+                  <i class="fa-solid fa-pen text-xs"></i>
+                </button>
+                <button
+                  @click="removeDivisi(idx)"
+                  type="button"
+                  class="text-slate-400 hover:text-rose-500 p-1 cursor-pointer"
+                  title="Hapus Divisi"
+                >
+                  <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
+              </div>
+            </template>
           </div>
         </div>
       </div>
@@ -283,18 +346,58 @@
           <div
             v-for="(p, idx) in platformList"
             :key="idx"
-            class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-xs"
+            class="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-xs gap-2"
           >
-            <span class="font-semibold text-slate-700 dark:text-slate-200">{{
-              p
-            }}</span>
-            <button
-              @click="removePlatform(idx)"
-              type="button"
-              class="text-slate-400 hover:text-rose-500 p-1 cursor-pointer"
-            >
-              <i class="fa-solid fa-trash-can text-xs"></i>
-            </button>
+            <!-- Mode Edit Platform -->
+            <template v-if="editingPlatformIndex === idx">
+              <input
+                v-model="editingPlatformName"
+                type="text"
+                class="flex-1 glass-input rounded-lg px-2 py-1 text-slate-700 dark:text-slate-200 dark:bg-slate-900"
+              />
+              <button
+                @click="saveEditPlatform(idx)"
+                type="button"
+                class="text-purple-600 hover:text-purple-700 p-1"
+                title="Simpan"
+              >
+                <i class="fa-solid fa-check"></i>
+              </button>
+              <button
+                @click="cancelEditPlatform"
+                type="button"
+                class="text-slate-400 hover:text-slate-600 p-1"
+                title="Batal"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </template>
+
+            <!-- Mode Display Platform -->
+            <template v-else>
+              <span
+                class="font-semibold text-slate-700 dark:text-slate-200 truncate flex-1"
+                >{{ p }}</span
+              >
+              <div class="flex items-center gap-1">
+                <button
+                  @click="startEditPlatform(idx)"
+                  type="button"
+                  class="text-slate-400 hover:text-purple-600 p-1 cursor-pointer"
+                  title="Edit Platform"
+                >
+                  <i class="fa-solid fa-pen text-xs"></i>
+                </button>
+                <button
+                  @click="removePlatform(idx)"
+                  type="button"
+                  class="text-slate-400 hover:text-rose-500 p-1 cursor-pointer"
+                  title="Hapus Platform"
+                >
+                  <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
+              </div>
+            </template>
           </div>
         </div>
       </div>
@@ -304,10 +407,9 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { store } from "../store/index.js";
-import { api } from "../services/api.js";
+import { store } from "../store";
+import { api } from "../services/api";
 
-// Status loading indikator independen
 const savingState = reactive({
   targets: false,
   units: false,
@@ -318,18 +420,26 @@ const savingState = reactive({
 const unitList = ref([]);
 const divisiList = ref([]);
 const platformList = ref([]);
-
 const targets = reactive({
   TargetTahunIni: 1000000000,
-  TargetNHP: 400000000,
-  TargetNHC: 350000000,
-  TargetKG: 250000000,
 });
 
+// State Form Tambah Baru
 const newUnitCode = ref("");
 const newUnitName = ref("");
 const newDivisiName = ref("");
 const newPlatformName = ref("");
+
+// State Inline Edit Item
+const editingUnitIndex = ref(null);
+const editingUnitCode = ref("");
+const editingUnitName = ref("");
+
+const editingDivisiIndex = ref(null);
+const editingDivisiName = ref("");
+
+const editingPlatformIndex = ref(null);
+const editingPlatformName = ref("");
 
 onMounted(() => {
   const master = store.db?.master || {};
@@ -348,8 +458,6 @@ onMounted(() => {
     "Zona 3",
     "Digital Marketing",
     "Offline",
-    "Penerbitan & Cetak",
-    "Produksi & Logistik",
   ];
 
   platformList.value = master.platformList || [
@@ -367,23 +475,61 @@ onMounted(() => {
   ];
 
   targets.TargetTahunIni = Number(master.TargetTahunIni || 1000000000);
-  targets.TargetNHP = Number(master.TargetNHP || 400000000);
-  targets.TargetNHC = Number(master.TargetNHC || 350000000);
-  targets.TargetKG = Number(master.TargetKG || 250000000);
+  unitList.value.forEach((u) => {
+    targets["Target" + u.code] = Number(master["Target" + u.code] || 300000000);
+  });
 });
 
-// Helper tambah / hapus item lokal
+// --- HELPER INLINE EDIT UNIT USAHA ---
+const startEditUnit = (idx) => {
+  editingUnitIndex.value = idx;
+  editingUnitCode.value = unitList.value[idx].code;
+  editingUnitName.value = unitList.value[idx].name;
+};
+
+const saveEditUnit = (idx) => {
+  if (!editingUnitCode.value.trim() || !editingUnitName.value.trim()) return;
+  unitList.value[idx] = {
+    code: editingUnitCode.value.trim().toUpperCase(),
+    name: editingUnitName.value.trim(),
+  };
+  cancelEditUnit();
+};
+
+const cancelEditUnit = () => {
+  editingUnitIndex.value = null;
+  editingUnitCode.value = "";
+  editingUnitName.value = "";
+};
+
 const addUnit = () => {
   if (!newUnitCode.value.trim() || !newUnitName.value.trim()) return;
-  unitList.value.push({
-    code: newUnitCode.value.trim().toUpperCase(),
-    name: newUnitName.value.trim(),
-  });
+  const code = newUnitCode.value.trim().toUpperCase();
+  unitList.value.push({ code, name: newUnitName.value.trim() });
+  if (targets["Target" + code] === undefined) targets["Target" + code] = 0;
   newUnitCode.value = "";
   newUnitName.value = "";
 };
+
 const removeUnit = (idx) => {
   unitList.value.splice(idx, 1);
+};
+
+// --- HELPER INLINE EDIT DIVISI ---
+const startEditDivisi = (idx) => {
+  editingDivisiIndex.value = idx;
+  editingDivisiName.value = divisiList.value[idx];
+};
+
+const saveEditDivisi = (idx) => {
+  if (!editingDivisiName.value.trim()) return;
+  divisiList.value[idx] = editingDivisiName.value.trim();
+  cancelEditDivisi();
+};
+
+const cancelEditDivisi = () => {
+  editingDivisiIndex.value = null;
+  editingDivisiName.value = "";
 };
 
 const addDivisi = () => {
@@ -391,8 +537,26 @@ const addDivisi = () => {
   divisiList.value.push(newDivisiName.value.trim());
   newDivisiName.value = "";
 };
+
 const removeDivisi = (idx) => {
   divisiList.value.splice(idx, 1);
+};
+
+// --- HELPER INLINE EDIT PLATFORM ---
+const startEditPlatform = (idx) => {
+  editingPlatformIndex.value = idx;
+  editingPlatformName.value = platformList.value[idx];
+};
+
+const saveEditPlatform = (idx) => {
+  if (!editingPlatformName.value.trim()) return;
+  platformList.value[idx] = editingPlatformName.value.trim();
+  cancelEditPlatform();
+};
+
+const cancelEditPlatform = () => {
+  editingPlatformIndex.value = null;
+  editingPlatformName.value = "";
 };
 
 const addPlatform = () => {
@@ -400,19 +564,16 @@ const addPlatform = () => {
   platformList.value.push(newPlatformName.value.trim());
   newPlatformName.value = "";
 };
+
 const removePlatform = (idx) => {
   platformList.value.splice(idx, 1);
 };
 
-// 1. Simpan Hanya Target Revenue
+// --- SIMPAN TERPISAH KE FIRESTORE ---
 const saveTargetsOnly = async () => {
   savingState.targets = true;
   if (!store.db.master) store.db.master = {};
-
-  store.db.master.TargetTahunIni = targets.TargetTahunIni;
-  store.db.master.TargetNHP = targets.TargetNHP;
-  store.db.master.TargetNHC = targets.TargetNHC;
-  store.db.master.TargetKG = targets.TargetKG;
+  Object.assign(store.db.master, targets);
 
   try {
     if (api && api.saveMasterTargetsOnly) {
@@ -420,7 +581,7 @@ const saveTargetsOnly = async () => {
     }
     store.addNotification(
       "Target Disimpan",
-      "Master target revenue berhasil diperbarui",
+      "Master target revenue diperbarui",
       "success",
     );
   } catch (err) {
@@ -430,7 +591,6 @@ const saveTargetsOnly = async () => {
   }
 };
 
-// 2. Simpan Hanya Master Unit Usaha
 const saveUnitsOnly = async () => {
   savingState.units = true;
   if (!store.db.master) store.db.master = {};
@@ -442,7 +602,7 @@ const saveUnitsOnly = async () => {
     }
     store.addNotification(
       "Unit Disimpan",
-      "Master unit usaha berhasil diperbarui",
+      "Master unit usaha diperbarui",
       "success",
     );
   } catch (err) {
@@ -452,7 +612,6 @@ const saveUnitsOnly = async () => {
   }
 };
 
-// 3. Simpan Hanya Master Divisi
 const saveDivisionsOnly = async () => {
   savingState.divisions = true;
   if (!store.db.master) store.db.master = {};
@@ -464,7 +623,7 @@ const saveDivisionsOnly = async () => {
     }
     store.addNotification(
       "Divisi Disimpan",
-      "Master divisi berhasil diperbarui",
+      "Master divisi diperbarui",
       "success",
     );
   } catch (err) {
@@ -474,7 +633,6 @@ const saveDivisionsOnly = async () => {
   }
 };
 
-// 4. Simpan Hanya Master Platform Sales
 const savePlatformsOnly = async () => {
   savingState.platforms = true;
   if (!store.db.master) store.db.master = {};
@@ -486,7 +644,7 @@ const savePlatformsOnly = async () => {
     }
     store.addNotification(
       "Platform Disimpan",
-      "Master platform sales berhasil diperbarui",
+      "Master platform sales diperbarui",
       "success",
     );
   } catch (err) {

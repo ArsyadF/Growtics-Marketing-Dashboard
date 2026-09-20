@@ -101,7 +101,7 @@
         </div>
       </div>
 
-      <!-- TABLE LAYOUT FIXED UNTUK KONTROL MOBILE -->
+      <!-- TABLE LAYOUT -->
       <div class="w-full overflow-x-auto">
         <table
           class="w-full text-left text-xs table-fixed min-w-[620px] md:min-w-full"
@@ -147,7 +147,6 @@
                     selectedReportIds.includes(rep.id),
                 }"
               >
-                <!-- CHECKBOX -->
                 <td class="p-2 md:p-3 text-center" @click.stop>
                   <input
                     type="checkbox"
@@ -157,7 +156,6 @@
                   />
                 </td>
 
-                <!-- BADGE UNIT -->
                 <td class="p-2 md:p-3" @click="toggleExpand(rep.id)">
                   <span
                     class="text-[8px] md:text-[9px] font-bold px-1.5 py-0.5 rounded-full border uppercase inline-block truncate max-w-full"
@@ -171,7 +169,6 @@
                   </span>
                 </td>
 
-                <!-- JUDUL & PERIODE DENGAN TRUNCATE (...) -->
                 <td
                   class="p-2 md:p-3 cursor-pointer overflow-hidden"
                   @click="toggleExpand(rep.id)"
@@ -201,7 +198,6 @@
                   </span>
                 </td>
 
-                <!-- NOMINAL PENJUALAN -->
                 <td
                   class="p-2 md:p-3 text-right font-black text-emerald-600 whitespace-nowrap cursor-pointer text-[11px] md:text-xs"
                   @click="toggleExpand(rep.id)"
@@ -209,7 +205,6 @@
                   Rp {{ formatNumber(rep.ringkasan?.penjualan) }}
                 </td>
 
-                <!-- TANGGAL RILIS -->
                 <td
                   class="p-2 md:p-3 text-center text-slate-500 text-[10px] md:text-[11px] whitespace-nowrap cursor-pointer"
                   @click="toggleExpand(rep.id)"
@@ -217,7 +212,6 @@
                   {{ rep.releaseDate }}
                 </td>
 
-                <!-- ACTION BUTTONS -->
                 <td class="p-2 md:p-3 text-right whitespace-nowrap">
                   <div class="flex items-center justify-end gap-1">
                     <button
@@ -262,8 +256,14 @@
                   <div class="space-y-1">
                     <strong
                       class="text-[11px] md:text-xs font-bold text-slate-800 dark:text-slate-100 uppercase"
-                      >1. Ringkasan Pesanan & Penjualan (Seluruh Unit)</strong
                     >
+                      1. Ringkasan Pesanan & Penjualan ({{
+                        rep.unit === "ALL"
+                          ? "KONSOLIDASI: " +
+                            (rep.selectedUnits?.join(", ") || "Semua Unit")
+                          : "Unit " + rep.unit
+                      }})
+                    </strong>
                     <div
                       class="grid grid-cols-3 gap-2 md:gap-3 text-center bg-white dark:bg-slate-800 p-2.5 md:p-3 rounded-xl border border-slate-200 dark:border-slate-700"
                     >
@@ -465,12 +465,12 @@
         Belum Ada Laporan Terdaftar
       </h4>
       <p class="text-xs text-slate-400 max-w-xs mx-auto">
-        Klik tombol "Buat Laporan Baru" untuk menyusun laporan per unit atau
-        konsolidasi seluruh unit.
+        Klik tombol "+ Laporan" untuk menyusun laporan per unit atau konsolidasi
+        seluruh unit.
       </p>
     </div>
 
-    <!-- MODAL FORM LAPORAN PEKANAN -->
+    <!-- MODAL FORM LAPORAN PEKANAN DENGAN LIVE PREVIEW & CHECKBOX UNIT -->
     <Teleport to="body">
       <div
         v-if="isModalOpen"
@@ -478,7 +478,7 @@
         @click.self="isModalOpen = false"
       >
         <div
-          class="w-full max-w-3xl glass-card bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[92vh] overflow-y-auto"
+          class="w-full max-w-4xl glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 md:p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[92vh] overflow-y-auto"
         >
           <div
             class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
@@ -504,7 +504,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label class="block text-slate-500 font-medium mb-1"
-                  >Unit Usaha Laporan:</label
+                  >Tipe Unit Laporan:</label
                 >
                 <select
                   v-model="form.unit"
@@ -548,6 +548,173 @@
                   @change="onPeriodOrUnitChange"
                   class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none dark:bg-slate-800"
                 />
+              </div>
+            </div>
+
+            <!-- CHECKBOX SELEKSI UNIT UNTUK KONSOLIDASI -->
+            <div
+              v-if="form.unit === 'ALL'"
+              class="p-3 bg-purple-500/5 dark:bg-purple-500/10 rounded-2xl border border-purple-500/20 space-y-2"
+            >
+              <div class="flex justify-between items-center">
+                <label
+                  class="block text-xs font-bold text-purple-700 dark:text-purple-300"
+                >
+                  <i class="fa-solid fa-list-check mr-1"></i>Pilih Unit Yang
+                  Dikonsolidasikan:
+                </label>
+                <span class="text-[10px] text-purple-600 font-bold">
+                  {{ form.selectedUnits.length }} Unit Terpilih
+                </span>
+              </div>
+              <div class="flex flex-wrap gap-4 pt-1">
+                <label
+                  v-for="u in masterUnits"
+                  :key="u.code"
+                  class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-200"
+                >
+                  <input
+                    type="checkbox"
+                    :value="u.code"
+                    v-model="form.selectedUnits"
+                    @change="onPeriodOrUnitChange"
+                    class="accent-purple-600 rounded cursor-pointer w-4 h-4"
+                  />
+                  <span>{{ u.code }} ({{ u.name }})</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- LIVE PREVIEW DATAGRID SEBELUM SIMPAN -->
+            <div
+              class="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3"
+            >
+              <div class="flex items-center justify-between">
+                <h4
+                  class="font-bold text-xs text-slate-800 dark:text-slate-100 flex items-center gap-1.5"
+                >
+                  <i class="fa-solid fa-chart-pie text-emerald-500"></i>
+                  Live Preview Rekap Data Terhitung (Verifikasi Data)
+                </h4>
+                <button
+                  type="button"
+                  @click="autoFetchMetrics"
+                  class="text-[10px] font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-1 cursor-pointer"
+                >
+                  <i class="fa-solid fa-rotate-right"></i> Hitung Ulang
+                </button>
+              </div>
+
+              <!-- RINGKASAN REKAP LEADS & PENJUALAN -->
+              <div
+                class="grid grid-cols-3 gap-2 text-center bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700"
+              >
+                <div>
+                  <span class="text-[10px] text-slate-400 block"
+                    >Total Penawaran</span
+                  >
+                  <strong class="text-emerald-600 text-xs font-black">{{
+                    formatNumber(form.ringkasan.penawaran)
+                  }}</strong>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-400 block"
+                    >Total Pesanan</span
+                  >
+                  <strong class="text-emerald-600 text-xs font-black">{{
+                    formatNumber(form.ringkasan.pesanan)
+                  }}</strong>
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-400 block"
+                    >Total Penjualan</span
+                  >
+                  <strong class="text-emerald-600 text-xs font-black"
+                    >Rp {{ formatNumber(form.ringkasan.penjualan) }}</strong
+                  >
+                </div>
+              </div>
+
+              <!-- PREVIEW RINCIAN LEADS PER UNIT -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-[11px]">
+                <div
+                  class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1"
+                >
+                  <span
+                    class="font-bold text-slate-700 dark:text-slate-200 block text-[10px] uppercase border-b pb-1"
+                    >Detail Leads & Campaign</span
+                  >
+                  <table class="w-full text-left">
+                    <thead>
+                      <tr class="text-slate-400 border-b">
+                        <th class="py-1">Unit</th>
+                        <th class="py-1">Leads</th>
+                        <th class="py-1">Penawaran</th>
+                        <th class="py-1">FollowUp</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="previewLeadsRows.length === 0">
+                        <td colspan="4" class="text-center py-2 text-slate-400">
+                          Tidak ada data leads di rentang unit ini.
+                        </td>
+                      </tr>
+                      <tr
+                        v-else
+                        v-for="(row, idx) in previewLeadsRows"
+                        :key="idx"
+                        class="border-b border-slate-100 dark:border-slate-800"
+                      >
+                        <td class="py-1 font-semibold">{{ row.unit }}</td>
+                        <td class="py-1">{{ formatNumber(row.leads) }}</td>
+                        <td class="py-1">{{ formatNumber(row.campaign) }}</td>
+                        <td class="py-1">{{ formatNumber(row.fu) }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- PREVIEW RINCIAN REVENUE PER CHANNEL -->
+                <div
+                  class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1"
+                >
+                  <span
+                    class="font-bold text-slate-700 dark:text-slate-200 block text-[10px] uppercase border-b pb-1"
+                    >Detail Penjualan Per Channel/Unit</span
+                  >
+                  <table class="w-full text-left">
+                    <thead>
+                      <tr class="text-slate-400 border-b">
+                        <th class="py-1">Channel & Unit</th>
+                        <th class="py-1 text-right">Pesanan</th>
+                        <th class="py-1 text-right">Penjualan</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-if="previewSalesRows.length === 0">
+                        <td colspan="3" class="text-center py-2 text-slate-400">
+                          Tidak ada data penjualan di rentang unit ini.
+                        </td>
+                      </tr>
+                      <tr
+                        v-else
+                        v-for="(row, idx) in previewSalesRows"
+                        :key="idx"
+                        class="border-b border-slate-100 dark:border-slate-800"
+                      >
+                        <td class="py-1 font-semibold truncate max-w-[120px]">
+                          {{ row.channel }}
+                        </td>
+                        <td class="py-1 text-right">
+                          {{ formatNumber(row.pesanan) }}
+                        </td>
+                        <td class="py-1 text-right text-emerald-600 font-bold">
+                          Rp {{ formatNumber(row.penjualan) }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
@@ -804,7 +971,12 @@
                 </h2>
                 <p class="text-xs md:text-sm text-slate-600">
                   Periode: {{ printActiveReport.periode }} | Unit:
-                  {{ printActiveReport.unit }}
+                  {{
+                    printActiveReport.unit === "ALL"
+                      ? printActiveReport.selectedUnits?.join(", ") ||
+                        "Semua Unit"
+                      : printActiveReport.unit
+                  }}
                 </p>
               </div>
 
@@ -1020,7 +1192,11 @@
         </h2>
         <p class="text-sm text-slate-600">
           Periode: {{ printActiveReport.periode }} | Unit:
-          {{ printActiveReport.unit }}
+          {{
+            printActiveReport.unit === "ALL"
+              ? printActiveReport.selectedUnits?.join(", ") || "Semua Unit"
+              : printActiveReport.unit
+          }}
         </p>
       </div>
 
@@ -1205,6 +1381,7 @@ const reports = computed(() => store.db?.spvReports || store.spvReports || []);
 
 const form = reactive({
   unit: "NHP",
+  selectedUnits: ["NHP", "NHC", "KG"],
   title: "",
   startDate: "",
   endDate: "",
@@ -1288,6 +1465,16 @@ const clearBulkSelection = () => {
   selectedReportIds.value = [];
 };
 
+// HELPER FILTER UNIT TERPILIH
+const isUnitAllowed = (unitCode, targetUnit, selectedUnitsList = []) => {
+  if (targetUnit === "ALL") {
+    if (!selectedUnitsList || selectedUnitsList.length === 0) return true;
+    return selectedUnitsList.includes(unitCode);
+  }
+  return unitCode === targetUnit;
+};
+
+// AUTO FETCH METRICS DIPERBAIKI DENGAN FILTER CHECKBOX UNIT
 const autoFetchMetrics = () => {
   if (!form.startDate || !form.endDate) return;
 
@@ -1296,6 +1483,8 @@ const autoFetchMetrics = () => {
 
   const startStr = form.startDate;
   const endStr = form.endDate;
+  const targetUnit = form.unit;
+  const allowedUnits = form.selectedUnits || [];
 
   let sumPenawaranTotal = 0;
   let sumPesananTotal = 0;
@@ -1303,7 +1492,13 @@ const autoFetchMetrics = () => {
 
   leadsList.forEach((item) => {
     const itemDate = item.Tanggal ? String(item.Tanggal).substring(0, 10) : "";
-    if (itemDate >= startStr && itemDate <= endStr) {
+    const itemUnit = item.Unit || item.unit || "";
+
+    if (
+      itemDate >= startStr &&
+      itemDate <= endStr &&
+      isUnitAllowed(itemUnit, targetUnit, allowedUnits)
+    ) {
       sumPenawaranTotal += Number(item.Campaign || item.campaign || 0);
       sumPesananTotal += Number(
         item.Pesanan || item.JumlahPesanan || item.pesanan || 0,
@@ -1313,7 +1508,13 @@ const autoFetchMetrics = () => {
 
   revenuesList.forEach((item) => {
     const itemDate = item.Tanggal ? String(item.Tanggal).substring(0, 10) : "";
-    if (itemDate >= startStr && itemDate <= endStr) {
+    const itemUnit = item.Unit || item.unit || "";
+
+    if (
+      itemDate >= startStr &&
+      itemDate <= endStr &&
+      isUnitAllowed(itemUnit, targetUnit, allowedUnits)
+    ) {
       sumPenjualanRpTotal += Number(
         item.Revenue || item.Nominal || item.penjualan || item.omset || 0,
       );
@@ -1335,6 +1536,7 @@ const getPemasaranRows = (rep) => {
   const leadsList = store.db?.leads || [];
   const startStr = rep.startDate;
   const endStr = rep.endDate;
+  const allowedUnits = rep.selectedUnits || [];
 
   const unitMap = {};
   leadsList.forEach((item) => {
@@ -1344,7 +1546,7 @@ const getPemasaranRows = (rep) => {
     if (
       dStr >= startStr &&
       dStr <= endStr &&
-      (rep.unit === "ALL" || u === rep.unit)
+      isUnitAllowed(u, rep.unit, allowedUnits)
     ) {
       if (!unitMap[u]) unitMap[u] = { leads: 0, campaign: 0, fu: 0 };
       unitMap[u].leads += Number(item.DatabaseLeads || 0);
@@ -1376,6 +1578,7 @@ const getPenjualanRows = (rep) => {
   const revenuesList = store.db?.revenue || store.db?.revenues || [];
   const startStr = rep.startDate;
   const endStr = rep.endDate;
+  const allowedUnits = rep.selectedUnits || [];
 
   const channelMap = {};
   revenuesList.forEach((item) => {
@@ -1387,7 +1590,7 @@ const getPenjualanRows = (rep) => {
     if (
       dStr >= startStr &&
       dStr <= endStr &&
-      (rep.unit === "ALL" || u === rep.unit)
+      isUnitAllowed(u, rep.unit, allowedUnits)
     ) {
       if (!channelMap[key]) channelMap[key] = { pesanan: 0, penjualan: 0 };
       channelMap[key].pesanan += Number(
@@ -1413,6 +1616,10 @@ const getPenjualanTotal = (rep) => {
     { pesanan: 0, penjualan: 0 },
   );
 };
+
+// LIVE PREVIEW COMPUTED PROPERTIES UNTUK MODAL INPUT
+const previewLeadsRows = computed(() => getPemasaranRows(form));
+const previewSalesRows = computed(() => getPenjualanRows(form));
 
 const duplicateReport = async (rep) => {
   store.isLoading = true;
@@ -1555,6 +1762,7 @@ const formatText = (editorId, command) => {
   handleEditorInput(editorId);
 };
 
+// GENERATE BULK KONSOLIDASI DIPERBAIKI (HANYA AMBIL UNIT PADA LAPORAN YANG DIPILIH)
 const generateBulkConsolidation = () => {
   const targetReports = reports.value.filter((r) =>
     selectedReportIds.value.includes(r.id),
@@ -1567,8 +1775,15 @@ const generateBulkConsolidation = () => {
   let mergedPrograms = [];
   let mergedCS = [];
   let mergedKendala = [];
+  const uniqueUnits = new Set();
 
   targetReports.forEach((r) => {
+    if (r.unit && r.unit !== "ALL") {
+      uniqueUnits.add(r.unit);
+    } else if (r.selectedUnits && Array.isArray(r.selectedUnits)) {
+      r.selectedUnits.forEach((u) => uniqueUnits.add(u));
+    }
+
     if (r.programList) mergedPrograms.push(...r.programList);
     if (r.aktivitasCS)
       mergedCS.push(`<strong>[${r.unit}]</strong><br/>${r.aktivitasCS}`);
@@ -1576,13 +1791,19 @@ const generateBulkConsolidation = () => {
       mergedKendala.push(`<strong>[${r.unit}]</strong><br/>${r.kendala}`);
   });
 
+  const selectedUnitsList = Array.from(uniqueUnits);
+  if (selectedUnitsList.length === 0) {
+    masterUnits.value.forEach((u) => uniqueUnits.add(u.code));
+  }
+
   const todayStr = new Date().toISOString().split("T")[0];
 
   form.unit = "ALL";
+  form.selectedUnits = Array.from(uniqueUnits);
   form.startDate = todayStr;
   form.endDate = todayStr;
   form.periode = `KONSOLIDASI ${targetReports.length} LAPORAN PEKANAN`;
-  form.title = `LAPORAN KONSOLIDASI DIREKSI (${targetReports.length} PEKAN/UNIT)`;
+  form.title = `LAPORAN KONSOLIDASI DIREKSI (${form.selectedUnits.join(", ")})`;
 
   form.programList = mergedPrograms;
   form.aktivitasCS = mergedCS.join("<br/><hr class='my-2'/><br/>");
@@ -1616,7 +1837,9 @@ const onPeriodOrUnitChange = () => {
     const pEnd = formatDateIndo(form.endDate);
     form.periode = `${pStart} – ${pEnd}`;
     const unitTag =
-      form.unit === "ALL" ? "SELURUH UNIT (KONSOLIDASI)" : `UNIT ${form.unit}`;
+      form.unit === "ALL"
+        ? `KONSOLIDASI (${form.selectedUnits.join(", ") || "Semua"})`
+        : `UNIT ${form.unit}`;
     form.title = `LAPORAN PEKANAN - ${unitTag} (${form.periode})`;
   }
   autoFetchMetrics();
@@ -1636,6 +1859,7 @@ const openAddReportModal = () => {
   form.endDate = today.toISOString().split("T")[0];
   form.unit =
     selectedUnitFilter.value !== "ALL" ? selectedUnitFilter.value : "ALL";
+  form.selectedUnits = masterUnits.value.map((u) => u.code);
 
   onPeriodOrUnitChange();
   form.aktivitasCS = "";
@@ -1654,6 +1878,8 @@ const openEditReport = (rep) => {
   isEdit.value = true;
   activeId.value = rep.id;
   form.unit = rep.unit;
+  form.selectedUnits =
+    rep.selectedUnits || masterUnits.value.map((u) => u.code);
   form.startDate = rep.startDate || new Date().toISOString().split("T")[0];
   form.endDate = rep.endDate || new Date().toISOString().split("T")[0];
   form.title = rep.title;
@@ -1664,6 +1890,7 @@ const openEditReport = (rep) => {
   form.kendala = rep.kendala || "";
 
   isModalOpen.value = true;
+  autoFetchMetrics();
   nextTick(() => {
     if (document.getElementById("csEditor"))
       document.getElementById("csEditor").innerHTML = form.aktivitasCS;
@@ -1814,7 +2041,6 @@ watch(
   font-family: "Calibri", "Segoe UI", sans-serif !important;
 }
 
-/* STYLING EDITOR & LIST AGAR TETAP TERJAGA */
 :deep(.rich-editor-content ul),
 .rich-editor-box :deep(ul) {
   list-style-type: disc !important;
@@ -1853,7 +2079,6 @@ watch(
   display: none;
 }
 
-/* FIX STYLING PRINT UTAMA */
 @media print {
   body * {
     visibility: hidden !important;
