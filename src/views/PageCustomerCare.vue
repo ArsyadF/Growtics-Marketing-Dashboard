@@ -18,7 +18,7 @@
         </p>
       </div>
 
-      <!-- Tombol Tambah HANYA untuk User dengan Hak Edit / Admin / SPV / Superadmin -->
+      <!-- Tombol Tambah -->
       <button
         v-if="canCreateOrEdit"
         @click="openAddModal"
@@ -29,7 +29,7 @@
       </button>
     </div>
 
-    <!-- STATISTIK RINGKAS (4 CARDS) -->
+    <!-- STATISTIK RINGKAS -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
       <div
         class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex items-center gap-3"
@@ -145,7 +145,7 @@
         >
           <option value="">Semua Unit</option>
           <option v-for="u in masterUnits" :key="u.code" :value="u.code">
-            {{ u.code }}
+            {{ u.code }} - {{ u.name }}
           </option>
         </select>
 
@@ -171,7 +171,7 @@
       </div>
     </div>
 
-    <!-- ACTION BAR SELEKSI MASSAL (BULK ACTION BAR) -->
+    <!-- ACTION BAR SELEKSI MASSAL -->
     <transition
       enter-active-class="transition duration-200 ease-out"
       enter-from-class="opacity-0 -translate-y-2"
@@ -190,7 +190,6 @@
         </div>
 
         <div class="flex items-center gap-2 flex-wrap">
-          <!-- Dropdown Status Massal -->
           <div v-if="canCreateOrEdit" class="flex items-center gap-1">
             <span class="text-[11px] opacity-80">Status:</span>
             <select
@@ -204,7 +203,6 @@
             </select>
           </div>
 
-          <!-- Dropdown Prioritas Massal -->
           <div v-if="canCreateOrEdit" class="flex items-center gap-1">
             <span class="text-[11px] opacity-80">Prioritas:</span>
             <select
@@ -218,7 +216,6 @@
             </select>
           </div>
 
-          <!-- Tombol Trigger Terapkan Edit Massal -->
           <button
             v-if="canCreateOrEdit && (bulkStatus || bulkPriority)"
             @click="applyBulkEdit"
@@ -228,7 +225,6 @@
             <span>Terapkan</span>
           </button>
 
-          <!-- Hapus Massal -->
           <button
             @click="bulkDelete"
             class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1 rounded-lg font-bold flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
@@ -247,7 +243,7 @@
       </div>
     </transition>
 
-    <!-- TABEL ADUAN (Klik Baris Untuk Buka Detail Popup) -->
+    <!-- TABEL ADUAN -->
     <div
       class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-3xl border border-slate-100 dark:border-slate-800/80 shadow-md overflow-hidden"
     >
@@ -257,7 +253,6 @@
             <tr
               class="bg-slate-100/70 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 border-b border-slate-200/60 dark:border-slate-800 select-none"
             >
-              <!-- Checkbox Select All -->
               <th class="p-3.5 w-10 text-center">
                 <input
                   type="checkbox"
@@ -267,7 +262,6 @@
                 />
               </th>
 
-              <!-- Sort: No Tiket -->
               <th
                 @click="sortBy('ticketNo')"
                 class="p-3.5 font-bold cursor-pointer hover:text-emerald-600 transition-colors"
@@ -278,7 +272,6 @@
                 </div>
               </th>
 
-              <!-- Sort: Pelanggan -->
               <th
                 @click="sortBy('customerName')"
                 class="p-3.5 font-bold cursor-pointer hover:text-emerald-600 transition-colors"
@@ -289,7 +282,6 @@
                 </div>
               </th>
 
-              <!-- Sort: Unit -->
               <th
                 @click="sortBy('unit')"
                 class="p-3.5 font-bold cursor-pointer hover:text-emerald-600 transition-colors"
@@ -302,7 +294,6 @@
 
               <th class="p-3.5 font-bold">Kategori / Masalah</th>
 
-              <!-- Sort: Prioritas -->
               <th
                 @click="sortBy('priority')"
                 class="p-3.5 font-bold text-center cursor-pointer hover:text-emerald-600 transition-colors"
@@ -313,7 +304,6 @@
                 </div>
               </th>
 
-              <!-- Sort: Status -->
               <th
                 @click="sortBy('status')"
                 class="p-3.5 font-bold text-center cursor-pointer hover:text-emerald-600 transition-colors"
@@ -324,7 +314,6 @@
                 </div>
               </th>
 
-              <!-- Sort: Tanggal -->
               <th
                 @click="sortBy('date')"
                 class="p-3.5 font-bold cursor-pointer hover:text-emerald-600 transition-colors"
@@ -346,7 +335,6 @@
               class="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition-colors cursor-pointer group"
               :class="{ 'bg-emerald-500/5': selectedIds.includes(item.id) }"
             >
-              <!-- Checkbox Row -->
               <td class="p-3.5 text-center" @click.stop>
                 <input
                   type="checkbox"
@@ -356,12 +344,10 @@
                 />
               </td>
 
-              <!-- Tiket ID -->
               <td class="p-3.5 font-mono font-bold text-theme">
                 #{{ item.ticketNo || item.id }}
               </td>
 
-              <!-- Pelanggan -->
               <td class="p-3.5">
                 <p
                   class="font-bold text-slate-800 dark:text-slate-100 group-hover:text-theme transition-colors"
@@ -373,7 +359,6 @@
                 </p>
               </td>
 
-              <!-- Unit -->
               <td class="p-3.5 font-semibold">
                 <span
                   class="px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/50"
@@ -382,7 +367,6 @@
                 </span>
               </td>
 
-              <!-- Deskripsi Masalah -->
               <td class="p-3.5 max-w-xs">
                 <p
                   class="font-semibold text-slate-700 dark:text-slate-200 truncate"
@@ -394,7 +378,6 @@
                 </p>
               </td>
 
-              <!-- Prioritas Badge -->
               <td class="p-3.5 text-center">
                 <span
                   :class="getPriorityClass(item.priority)"
@@ -404,7 +387,6 @@
                 </span>
               </td>
 
-              <!-- Status Badge -->
               <td class="p-3.5 text-center">
                 <span
                   :class="getStatusClass(item.status)"
@@ -415,12 +397,10 @@
                 </span>
               </td>
 
-              <!-- Tanggal -->
               <td class="p-3.5 text-slate-500 whitespace-nowrap">
                 {{ formatDate(item.date) }}
               </td>
 
-              <!-- Tombol Aksi -->
               <td class="p-3.5 text-center" @click.stop>
                 <div class="flex items-center justify-center gap-1.5">
                   <button
@@ -439,7 +419,6 @@
                     ></i>
                   </button>
 
-                  <!-- Tombol Hapus: Superadmin/SPV ATAU Pembuat Tiket Sendiri -->
                   <button
                     v-if="canDeleteItem(item)"
                     @click="deleteTicket(item)"
@@ -452,7 +431,6 @@
               </td>
             </tr>
 
-            <!-- STATE JIKA DATA KOSONG -->
             <tr v-if="filteredTickets.length === 0">
               <td colspan="9" class="p-8 text-center text-slate-400">
                 <i class="fa-solid fa-folder-open text-3xl mb-2 opacity-40"></i>
@@ -476,7 +454,6 @@
         <div
           class="glass-card w-full max-w-lg bg-white/95 dark:bg-slate-900/95 rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
         >
-          <!-- HEADER MODAL -->
           <div
             class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
           >
@@ -508,7 +485,6 @@
           </div>
 
           <form @submit.prevent="saveTicket" class="space-y-3 text-xs">
-            <!-- INPUT NAMA & KONTAK (+ TOMBOL WA) -->
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-slate-500 font-medium mb-1"
@@ -535,7 +511,6 @@
                     placeholder="08xxxxxxx"
                     class="w-full glass-input rounded-xl p-2.5 outline-none disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
                   />
-                  <!-- TOMBOL HUBUNGI WHATSAPP -->
                   <a
                     v-if="form.contact"
                     :href="
@@ -552,7 +527,6 @@
               </div>
             </div>
 
-            <!-- UNIT & KATEGORI MASALAH -->
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-slate-500 font-medium mb-1"
@@ -600,7 +574,6 @@
               </div>
             </div>
 
-            <!-- PRIORITAS & STATUS -->
             <div class="grid grid-cols-2 gap-3">
               <div>
                 <label class="block text-slate-500 font-medium mb-1"
@@ -634,7 +607,6 @@
               </div>
             </div>
 
-            <!-- RINCIAN KELUAHAN -->
             <div>
               <label class="block text-slate-500 font-medium mb-1"
                 >Rincian Keluhan / Aduan</label
@@ -649,27 +621,27 @@
               ></textarea>
             </div>
 
-            <!-- FEATURE: INPUT & PREVIEW GAMBAR / BUKTI FOTO -->
+            <!-- PREVIEW GAMBAR & INPUT UPLOAD -->
             <div class="space-y-1.5">
               <label class="block text-slate-500 font-medium"
                 >Foto Bukti Aduan / Lampiran</label
               >
 
-              <!-- Preview Gambar Jika Ada -->
+              <!-- Preview Gambar -->
               <div
                 v-if="form.imageUrl"
-                class="relative w-full max-h-48 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/50 flex justify-center items-center"
+                class="relative w-full max-h-48 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/50 flex justify-center items-center p-2"
               >
                 <img
                   :src="form.imageUrl"
                   alt="Bukti Aduan"
-                  class="max-h-48 object-contain w-auto"
+                  class="max-h-44 object-contain w-auto rounded-lg"
                 />
                 <button
                   v-if="canCreateOrEdit"
                   type="button"
                   @click="removeImage"
-                  class="absolute top-2 right-2 w-7 h-7 rounded-full bg-rose-500/80 text-white flex items-center justify-center hover:bg-rose-600 transition-colors cursor-pointer"
+                  class="absolute top-2 right-2 w-7 h-7 rounded-full bg-rose-500/80 text-white flex items-center justify-center hover:bg-rose-600 transition-colors cursor-pointer shadow-md"
                   title="Hapus Foto"
                 >
                   <i class="fa-solid fa-trash text-xs"></i>
@@ -695,7 +667,6 @@
               </div>
             </div>
 
-            <!-- Info Pembuat Tiket -->
             <div
               v-if="form.createdBy"
               class="text-[10px] text-slate-400 italic"
@@ -703,7 +674,6 @@
               Dibuat oleh: {{ form.createdBy }}
             </div>
 
-            <!-- FOOTER MODAL CONTROLS -->
             <div
               class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center"
             >
@@ -751,29 +721,25 @@ const filterUnit = ref("");
 const filterStatus = ref("");
 const filterPriority = ref("");
 
-// --- STATE SELEKSI MASSAL & SORT ---
 const selectedIds = ref([]);
 const sortField = ref("date");
 const sortOrder = ref("desc");
 
-// State penampung pilihan edit massal (Belum dieksekusi sebelum klik Terapkan)
 const bulkStatus = ref("");
 const bulkPriority = ref("");
 
-// Reset Pilihan Bulk Action
 const resetBulkSelection = () => {
   selectedIds.value = [];
   bulkStatus.value = "";
   bulkPriority.value = "";
 };
 
-// --- ESEKUSI EDIT MASSAL SETELAH TRIGGER BUTTON "TERAPKAN" ---
 const applyBulkEdit = async () => {
   if (selectedIds.value.length === 0) return;
   if (!bulkStatus.value && !bulkPriority.value) {
     store.addNotification(
       "Peringatan",
-      "Pilih minimal satu perubahan (Status atau Prioritas)",
+      "Pilih minimal satu perubahan",
       "warning",
     );
     return;
@@ -786,26 +752,16 @@ const applyBulkEdit = async () => {
       if (ticket) {
         if (bulkStatus.value) ticket.status = bulkStatus.value;
         if (bulkPriority.value) ticket.priority = bulkPriority.value;
-
-        if (api && api.saveAduanData) {
-          return api.saveAduanData(ticket);
-        }
+        if (api && api.saveAduanData) return api.saveAduanData(ticket);
       }
     });
 
     await Promise.all(updatePromises);
-
-    let changesText = [];
-    if (bulkStatus.value) changesText.push(`Status: ${bulkStatus.value}`);
-    if (bulkPriority.value)
-      changesText.push(`Prioritas: ${bulkPriority.value}`);
-
     store.addNotification(
       "Berhasil",
-      `Perubahan (${changesText.join(", ")}) diterapkan pada ${selectedIds.value.length} tiket.`,
+      `Perubahan diterapkan pada ${selectedIds.value.length} tiket.`,
       "success",
     );
-
     resetBulkSelection();
   } catch (err) {
     store.addNotification("Gagal", err.message, "warning");
@@ -820,48 +776,46 @@ const isSubmitting = ref(false);
 
 const currentUser = computed(() => store.currentUser || {});
 
-// User yang bisa EDIT / TAMBAH
 const canCreateOrEdit = computed(() => {
   const role = currentUser.value?.role?.toUpperCase();
   if (["SUPERADMIN", "SPV", "ADMIN"].includes(role)) return true;
   return store.canEditPage("aduan");
 });
 
-// Penentu Izin Hapus Spesifik: Superadmin/SPV bisa semua, User canEdit hanya bisa data miliknya sendiri
 const canDeleteItem = (item) => {
   if (!item) return false;
-
   const role = currentUser.value?.role?.toUpperCase();
 
-  // 1. Superadmin & SPV bebas menghapus apa saja
   if (["SUPERADMIN", "SPV"].includes(role)) return true;
 
-  // 2. Jika user punya hak edit di modul aduan
   if (store.canEditPage("aduan")) {
     const userEmail = (currentUser.value?.email || "").toLowerCase();
     const userId = (currentUser.value?.id || "").toLowerCase();
     const creator = (item.createdBy || item.createdByEmail || "").toLowerCase();
 
     if (!creator) return false;
-
     return (
       (userEmail && creator === userEmail) || (userId && creator === userId)
     );
   }
-
   return false;
 };
 
-const masterUnits = computed(
-  () =>
-    store.db?.master?.unitList || [
-      { code: "NHP", name: "Nur Hidayah Press" },
-      { code: "NHC", name: "Nur Hidayah Creative" },
-      { code: "KG", name: "Karta Grafika" },
-    ],
-);
+// INTEGRASI MASTER DATA UNIT USAHA Fleksibel
+const masterUnits = computed(() => {
+  const m = store.db?.master;
+  if (m?.unitList && Array.isArray(m.unitList)) return m.unitList;
+  if (m?.units && Array.isArray(m.units)) return m.units;
 
-const tickets = computed(() => store.db?.aduanList || store.aduanList || []);
+  // Default master unit jika database master belum diinisialisasi
+  return [
+    { code: "NHP", name: "Nur Hidayah Press" },
+    { code: "NHC", name: "Nur Hidayah Creative" },
+    { code: "KG", name: "Karta Grafika" },
+  ];
+});
+
+const tickets = computed(() => store.db?.aduanList || []);
 
 const form = reactive({
   id: null,
@@ -873,6 +827,7 @@ const form = reactive({
   priority: "Sedang",
   status: "Open",
   description: "",
+  imageUrl: "",
   date: "",
   createdBy: "",
 });
@@ -880,7 +835,6 @@ const form = reactive({
 const countByStatus = (st) =>
   tickets.value.filter((t) => t.status === st).length;
 
-// --- LOGIKA FILTER & SORT TABEL ---
 const filteredTickets = computed(() => {
   let list = tickets.value.filter((item) => {
     const q = searchQuery.value.toLowerCase();
@@ -899,7 +853,6 @@ const filteredTickets = computed(() => {
     return matchSearch && matchUnit && matchStatus && matchPriority;
   });
 
-  // Urutkan data berdasarkan sortField & sortOrder
   list.sort((a, b) => {
     let valA = a[sortField.value] || "";
     let valB = b[sortField.value] || "";
@@ -915,7 +868,6 @@ const filteredTickets = computed(() => {
   return list;
 });
 
-// Fungsi Trigger Sort
 const sortBy = (field) => {
   if (sortField.value === field) {
     sortOrder.value = sortOrder.value === "asc" ? "desc" : "asc";
@@ -925,7 +877,6 @@ const sortBy = (field) => {
   }
 };
 
-// Icon Indikator Sort
 const getSortIcon = (field) => {
   if (sortField.value !== field) return "fa-sort opacity-30 text-[10px]";
   return sortOrder.value === "asc"
@@ -933,7 +884,6 @@ const getSortIcon = (field) => {
     : "fa-sort-down text-emerald-600";
 };
 
-// --- LOGIKA CENTANG MASSAL (SELECT ALL) ---
 const isAllSelected = computed(() => {
   if (filteredTickets.value.length === 0) return false;
   return filteredTickets.value.every((t) => selectedIds.value.includes(t.id));
@@ -947,86 +897,27 @@ const toggleSelectAll = () => {
   }
 };
 
-// --- FITUR BULK EDIT STATUS & PRIORITAS ---
-const bulkUpdateStatus = async (newStatus) => {
-  if (!newStatus || selectedIds.value.length === 0) return;
-
-  store.isLoading = true;
-  try {
-    const updatePromises = selectedIds.value.map((id) => {
-      const ticket = tickets.value.find((t) => String(t.id) === String(id));
-      if (ticket) {
-        ticket.status = newStatus;
-        if (api && api.saveAduanData) return api.saveAduanData(ticket);
-      }
-    });
-
-    await Promise.all(updatePromises);
-    store.addNotification(
-      "Berhasil",
-      `Status ${selectedIds.value.length} tiket diperbarui menjadi ${newStatus}`,
-      "success",
-    );
-    selectedIds.value = [];
-  } catch (err) {
-    store.addNotification("Gagal", err.message, "warning");
-  } finally {
-    store.isLoading = false;
-  }
-};
-
-const bulkUpdatePriority = async (newPriority) => {
-  if (!newPriority || selectedIds.value.length === 0) return;
-
-  store.isLoading = true;
-  try {
-    const updatePromises = selectedIds.value.map((id) => {
-      const ticket = tickets.value.find((t) => String(t.id) === String(id));
-      if (ticket) {
-        ticket.priority = newPriority;
-        if (api && api.saveAduanData) return api.saveAduanData(ticket);
-      }
-    });
-
-    await Promise.all(updatePromises);
-    store.addNotification(
-      "Berhasil",
-      `Prioritas ${selectedIds.value.length} tiket diperbarui menjadi ${newPriority}`,
-      "success",
-    );
-    selectedIds.value = [];
-  } catch (err) {
-    store.addNotification("Gagal", err.message, "warning");
-  } finally {
-    store.isLoading = false;
-  }
-};
-
-// --- FITUR BULK DELETE DENGAN VALIDASI HAK MILIK ---
 const bulkDelete = () => {
   if (selectedIds.value.length === 0) return;
 
   const targetTickets = tickets.value.filter((t) =>
     selectedIds.value.includes(t.id),
   );
-
-  // Pisahkan tiket yang boleh dihapus dan tiket yang ditolak
   const deletableTickets = targetTickets.filter((t) => canDeleteItem(t));
   const forbiddenCount = targetTickets.length - deletableTickets.length;
 
   if (deletableTickets.length === 0) {
     store.addNotification(
       "Akses Ditolak",
-      `Seluruh ${targetTickets.length} tiket yang dicentang bukan milik Anda dan tidak dapat dihapus.`,
+      "Tiket yang dipilih bukan milik Anda.",
       "warning",
     );
     return;
   }
 
   let confirmMsg = `Yakin menghapus ${deletableTickets.length} tiket aduan?`;
-  if (forbiddenCount > 0) {
-    confirmMsg += ` (${forbiddenCount} tiket milik user lain akan dilewati/tidak terhapus)`;
-  }
+  if (forbiddenCount > 0)
+    confirmMsg += ` (${forbiddenCount} tiket milik user lain akan dilewati)`;
 
   store.openAlert(
     "Konfirmasi Hapus Massal",
@@ -1040,7 +931,6 @@ const bulkDelete = () => {
 
         await Promise.all(deletePromises);
 
-        // Hapus data terhapus dari reactive store
         deletableTickets.forEach((t) => {
           const idx = store.db.aduanList.findIndex(
             (item) => String(item.id) === String(t.id),
@@ -1048,20 +938,11 @@ const bulkDelete = () => {
           if (idx !== -1) store.db.aduanList.splice(idx, 1);
         });
 
-        if (forbiddenCount > 0) {
-          store.addNotification(
-            "Hapus Parsial",
-            `${deletableTickets.length} tiket milik Anda berhasil dihapus. ${forbiddenCount} tiket gagal dihapus karena bukan milik Anda.`,
-            "warning",
-          );
-        } else {
-          store.addNotification(
-            "Berhasil",
-            `${deletableTickets.length} tiket aduan berhasil dihapus.`,
-            "success",
-          );
-        }
-
+        store.addNotification(
+          "Berhasil",
+          `${deletableTickets.length} tiket aduan berhasil dihapus.`,
+          "success",
+        );
         selectedIds.value = [];
       } catch (err) {
         store.addNotification("Gagal", err.message, "warning");
@@ -1128,6 +1009,7 @@ const openAddModal = () => {
     priority: "Sedang",
     status: "Open",
     description: "",
+    imageUrl: "",
     date: new Date().toISOString().split("T")[0],
     createdBy: store.currentUser?.email || store.currentUser?.id || "",
   });
@@ -1136,7 +1018,10 @@ const openAddModal = () => {
 
 const openDetailModal = (item) => {
   isEdit.value = true;
-  Object.assign(form, { ...item });
+  Object.assign(form, {
+    imageUrl: item.imageUrl || item.ImageUrl || item.image || "",
+    ...item,
+  });
   isModalOpen.value = true;
 };
 
@@ -1145,7 +1030,8 @@ const saveTicket = async () => {
   isSubmitting.value = true;
   try {
     const payload = {
-      ...form,
+      ...JSON.parse(JSON.stringify(form)),
+      imageUrl: form.imageUrl, // MEMASTIKAN FOTO BASE64 IKUT DENGAN TEGAS SAAT SIMPAN
       createdBy:
         form.createdBy ||
         currentUser.value?.email ||
@@ -1185,7 +1071,7 @@ const deleteTicket = (item) => {
   if (!canDeleteItem(item)) {
     store.addNotification(
       "Akses Ditolak",
-      "Anda hanya dapat menghapus tiket aduan yang Anda buat sendiri.",
+      "Anda hanya dapat menghapus tiket milik sendiri.",
       "warning",
     );
     return;
@@ -1216,14 +1102,10 @@ const deleteTicket = (item) => {
   );
 };
 
-// 1. Fungsi Format & Redirect Link WhatsApp
 const getWaLink = (contact, name, ticketNo) => {
   if (!contact) return "#";
-  // Bersihkan karakter non-digit dan ubah awalan 0 menjadi 62
   let phone = contact.replace(/[^0-9]/g, "");
-  if (phone.startsWith("0")) {
-    phone = "62" + phone.slice(1);
-  }
+  if (phone.startsWith("0")) phone = "62" + phone.slice(1);
 
   const text = encodeURIComponent(
     `Halo *${name || "Pelanggan"}*,\nKami dari Tim Support terkait Tiket Aduan *#${ticketNo}*. Ada yang bisa kami bantu?`,
@@ -1231,25 +1113,38 @@ const getWaLink = (contact, name, ticketNo) => {
   return `https://wa.me/${phone}?text=${text}`;
 };
 
-// 2. Fungsi Handle Upload Gambar (Base64)
 const handleImageUpload = (event) => {
   const file = event.target.files[0];
   if (!file) return;
 
-  // Batasi ukuran file maks 2MB jika diperlukan
-  if (file.size > 2 * 1024 * 1024) {
-    alert("Ukuran foto maksimal 2MB!");
-    return;
-  }
-
   const reader = new FileReader();
   reader.onload = (e) => {
-    form.imageUrl = e.target.result; // Menyimpan gambar sebagai data Base64
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      const MAX_WIDTH = 800;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > MAX_WIDTH) {
+        height = Math.round((height * MAX_WIDTH) / width);
+        width = MAX_WIDTH;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+
+      form.imageUrl = canvas.toDataURL("image/jpeg", 0.7);
+    };
+    img.src = e.target.result;
   };
+
   reader.readAsDataURL(file);
 };
 
-// 3. Fungsi Hapus Gambar
 const removeImage = () => {
   form.imageUrl = "";
 };

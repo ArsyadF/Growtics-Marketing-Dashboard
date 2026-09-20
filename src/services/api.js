@@ -81,7 +81,7 @@ export const api = {
     }
   },
 
-  // 3. Ambil Seluruh Data Database (Termasuk Master Settings, Programs, Aduan, & SPV Reports)
+  // 3. Ambil Seluruh Data Database
   async getAllData() {
     try {
       const [revSnap, promoSnap, leadsSnap, usersSnap, targetSnap, passcodeSnap, masterSnap, programsSnap, aduanSnap, spvReportsSnap] = await Promise.all([
@@ -101,8 +101,17 @@ export const api = {
       const promo = promoSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
       const leads = leadsSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
       const programs = programsSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
-      const aduanList = aduanSnap.docs.map(d => ({ id: d.id, ...d.data() }));
       const spvReports = spvReportsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      // Normalisasi data aduan agar imageUrl selalu terbaca
+      const aduanList = aduanSnap.docs.map(d => {
+        const data = d.data();
+        return {
+          id: d.id,
+          ...data,
+          imageUrl: data.imageUrl || data.ImageUrl || data.image || data.Image || ""
+        };
+      });
       
       const users = usersSnap.docs.map(d => {
         const u = d.data();
@@ -229,7 +238,7 @@ export const api = {
     }
   },
 
-  // 7. Simpan/Update Target & Master Data secara Aman (Non-Destruktif dengan Merge)
+  // 7. Simpan/Update Target & Master Data
   async saveMasterData(masterPayload) {
     try {
       if (masterPayload.KodeAkses !== undefined) {
@@ -259,47 +268,41 @@ export const api = {
     }
   },
 
-  // 8. Simpan/Update Single Program Kanban ke Firestore
- // Di dalam src/services/api.js
+  // 8. Program Kanban
+  async saveProgramData(programItem) {
+    try {
+      const docId = String(programItem.id || programItem.Timestamp || Date.now());
+      const docRef = doc(firestoreDb, "programs", docId);
+      
+      const assignedPicIds = Array.isArray(programItem.assignedPicIds) 
+        ? programItem.assignedPicIds 
+        : (programItem.picId ? [programItem.picId] : []);
 
-// Dalam src/services/api.js
+      const assignedUsers = Array.isArray(programItem.assignedUsers)
+        ? programItem.assignedUsers
+        : [];
 
-async saveProgramData(programItem) {
-  try {
-    const docId = String(programItem.id || programItem.Timestamp || Date.now());
-    const docRef = doc(firestoreDb, "programs", docId);
-    
-    // Pastikan ID user yang ditugaskan disimpan sebagai Array
-    const assignedPicIds = Array.isArray(programItem.assignedPicIds) 
-      ? programItem.assignedPicIds 
-      : (programItem.picId ? [programItem.picId] : []);
+      const payload = {
+        unit: programItem.unit || programItem.Unit || 'NHP',
+        division: programItem.division || programItem.Divisi || '',
+        title: programItem.title || programItem.Judul || '',
+        description: programItem.description || programItem.Deskripsi || '',
+        deadline: programItem.deadline || programItem.Deadline || '',
+        progress: Number(programItem.progress || programItem.Progress || 0),
+        status: programItem.status || programItem.Status || 'To Do',
+        assignedPicIds: assignedPicIds, 
+        assignedUsers: assignedUsers,
+        picName: programItem.picName || assignedUsers.join(', '),
+        updatedAt: Date.now()
+      };
 
-    const assignedUsers = Array.isArray(programItem.assignedUsers)
-      ? programItem.assignedUsers
-      : [];
-
-    const payload = {
-      unit: programItem.unit || programItem.Unit || 'NHP',
-      division: programItem.division || programItem.Divisi || '',
-      title: programItem.title || programItem.Judul || '',
-      description: programItem.description || programItem.Deskripsi || '',
-      deadline: programItem.deadline || programItem.Deadline || '',
-      progress: Number(programItem.progress || programItem.Progress || 0),
-      status: programItem.status || programItem.Status || 'To Do',
-      // SIMPAN KEDUA ARRAY INI
-      assignedPicIds: assignedPicIds, 
-      assignedUsers: assignedUsers,
-      picName: programItem.picName || assignedUsers.join(', '),
-      updatedAt: Date.now()
-    };
-
-    await setDoc(docRef, payload, { merge: true });
-    return { success: true, message: "Program berhasil disimpan!", id: docId };
-  } catch (err) {
-    console.error("Gagal menyimpan program progress:", err);
-    return { success: false, message: err.message };
-  }
-},
+      await setDoc(docRef, payload, { merge: true });
+      return { success: true, message: "Program berhasil disimpan!", id: docId };
+    } catch (err) {
+      console.error("Gagal menyimpan program progress:", err);
+      return { success: false, message: err.message };
+    }
+  },
 
   async deleteProgramData(programId) {
     return await this.deleteData('programs', String(programId));
@@ -360,34 +363,33 @@ async saveProgramData(programItem) {
     }
   },
 
-  // 10. Pengelolaan Aduan Layanan (Customer Care) Spesifik Firestore
-  // src/services/api.js
-async saveAduanData(aduanItem) {
-  try {
-    const docId = String(aduanItem.id || Date.now());
-    const docRef = doc(firestoreDb, "aduan", docId);
+  // 10. Pengelolaan Aduan Layanan (PERBAIKAN: imageUrl ditambahkan ke payload)
+  async saveAduanData(aduanItem) {
+    try {
+      const docId = String(aduanItem.id || Date.now());
+      const docRef = doc(firestoreDb, "aduan", docId);
 
-    const payload = {
-      ticketNo: aduanItem.ticketNo || ('TCK-' + Math.floor(1000 + Math.random() * 9000)),
-      customerName: aduanItem.customerName || '',
-      contact: aduanItem.contact || '',
-      unit: aduanItem.unit || 'NHP',
-      category: aduanItem.category || 'Lain-lain',
-      priority: aduanItem.priority || 'Sedang',
-      status: aduanItem.status || 'Open',
-      description: aduanItem.description || '',
-      date: aduanItem.date || new Date().toISOString().split('T')[0],
-      // PASTI KAN FIELD INI TERSIMPAN KE FIRESTORE
-      createdBy: aduanItem.createdBy || ''
-    };
+      const payload = {
+        ticketNo: aduanItem.ticketNo || ('TCK-' + Math.floor(1000 + Math.random() * 9000)),
+        customerName: aduanItem.customerName || '',
+        contact: aduanItem.contact || '',
+        unit: aduanItem.unit || 'NHP',
+        category: aduanItem.category || 'Lain-lain',
+        priority: aduanItem.priority || 'Sedang',
+        status: aduanItem.status || 'Open',
+        description: aduanItem.description || '',
+        imageUrl: aduanItem.imageUrl || aduanItem.ImageUrl || aduanItem.image || '', // FIELD TERSIMPAN KE FIRESTORE
+        date: aduanItem.date || new Date().toISOString().split('T')[0],
+        createdBy: aduanItem.createdBy || ''
+      };
 
-    await setDoc(docRef, payload, { merge: true });
-    return { success: true, message: "Aduan berhasil disimpan!", id: docId };
-  } catch (err) {
-    console.error("Gagal menyimpan aduan:", err);
-    return { success: false, message: err.message };
-  }
-},
+      await setDoc(docRef, payload, { merge: true });
+      return { success: true, message: "Aduan berhasil disimpan!", id: docId };
+    } catch (err) {
+      console.error("Gagal menyimpan aduan:", err);
+      return { success: false, message: err.message };
+    }
+  },
 
   async deleteAduanData(aduanId) {
     return await this.deleteData('aduan', String(aduanId));
@@ -400,11 +402,25 @@ async saveAduanData(aduanItem) {
       const docRef = doc(firestoreDb, "spv_reports", docId);
 
       const payload = {
-        tanggal: reportItem.tanggal || new Date().toISOString().split('T')[0],
-        divisi: reportItem.divisi || '',
-        capaian: reportItem.capaian || '',
+        unit: reportItem.unit || 'NHP',
+        selectedUnits: Array.isArray(reportItem.selectedUnits) ? reportItem.selectedUnits : [],
+        salesVariables: Array.isArray(reportItem.salesVariables) ? reportItem.salesVariables : [],
+        title: reportItem.title || '',
+        startDate: reportItem.startDate || '',
+        endDate: reportItem.endDate || '',
+        periode: reportItem.periode || '',
+        ringkasan: {
+          penawaran: Number(reportItem.ringkasan?.penawaran || 0),
+          pesanan: Number(reportItem.ringkasan?.pesanan || 0),
+          penjualan: Number(reportItem.ringkasan?.penjualan || 0)
+        },
+        programList: Array.isArray(reportItem.programList) ? reportItem.programList : [],
+        aktivitasCS: reportItem.aktivitasCS || '',
         kendala: reportItem.kendala || '',
-        pembuat: reportItem.pembuat || ''
+        author: reportItem.author || '',
+        originalAuthors: Array.isArray(reportItem.originalAuthors) ? reportItem.originalAuthors : null,
+        releaseDate: reportItem.releaseDate || new Date().toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" }),
+        updatedAt: Date.now()
       };
 
       await setDoc(docRef, payload, { merge: true });
@@ -469,42 +485,7 @@ async saveAduanData(aduanItem) {
     }
   },
 
-  // Tambahkan / Perbarui metode berikut di dalam objek api pada src/services/api.js
-
-  // 11. Pengelolaan Laporan Divisi SPV Pekanan (Diperbarui agar mendukung skema lengkap)
-  async saveSpvReportData(reportItem) {
-    try {
-      const docId = String(reportItem.id || Date.now());
-      const docRef = doc(firestoreDb, "spv_reports", docId);
-
-      const payload = {
-        unit: reportItem.unit || 'NHP',
-        title: reportItem.title || '',
-        startDate: reportItem.startDate || '',
-        endDate: reportItem.endDate || '',
-        periode: reportItem.periode || '',
-        ringkasan: {
-          penawaran: Number(reportItem.ringkasan?.penawaran || 0),
-          pesanan: Number(reportItem.ringkasan?.pesanan || 0),
-          penjualan: Number(reportItem.ringkasan?.penjualan || 0)
-        },
-        programList: Array.isArray(reportItem.programList) ? reportItem.programList : [],
-        aktivitasCS: reportItem.aktivitasCS || '',
-        kendala: reportItem.kendala || '',
-        author: reportItem.author || '',
-        releaseDate: reportItem.releaseDate || new Date().toISOString().split('T')[0],
-        updatedAt: Date.now()
-      };
-
-      await setDoc(docRef, payload, { merge: true });
-      return { success: true, message: "Laporan SPV berhasil disimpan!", id: docId };
-    } catch (err) {
-      console.error("Gagal menyimpan laporan SPV:", err);
-      return { success: false, message: err.message };
-    }
-  },
-
-  // Helper Tambahan: Kalkulasi Metrik Sales Otomatis dari Firestore Collections (revenues & leads)
+  // 13. Metrik Sales Otomatis
   async getSalesMetricsByDateRange(startDate, endDate, unitFilter = "ALL") {
     try {
       const [revSnap, leadsSnap] = await Promise.all([
@@ -520,7 +501,6 @@ async saveAduanData(aduanItem) {
       let totalPesanan = 0;
       let totalPenjualan = 0;
 
-      // Hitung Penawaran dari koleksi 'leads'
       leadsSnap.docs.forEach((d) => {
         const item = d.data();
         const itemDate = new Date(item.Tanggal || item.date || item.Timestamp);
@@ -530,7 +510,6 @@ async saveAduanData(aduanItem) {
         }
       });
 
-      // Hitung Pesanan & Penjualan (Rp) dari koleksi 'revenues'
       revSnap.docs.forEach((d) => {
         const item = d.data();
         const itemDate = new Date(item.Tanggal || item.date || item.Timestamp);
@@ -551,6 +530,4 @@ async saveAduanData(aduanItem) {
       return { penawaran: 0, pesanan: 0, penjualan: 0 };
     }
   }
-
 };
-
