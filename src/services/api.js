@@ -467,6 +467,90 @@ async saveAduanData(aduanItem) {
       console.error("Gagal simpan platform:", err);
       throw err;
     }
+  },
+
+  // Tambahkan / Perbarui metode berikut di dalam objek api pada src/services/api.js
+
+  // 11. Pengelolaan Laporan Divisi SPV Pekanan (Diperbarui agar mendukung skema lengkap)
+  async saveSpvReportData(reportItem) {
+    try {
+      const docId = String(reportItem.id || Date.now());
+      const docRef = doc(firestoreDb, "spv_reports", docId);
+
+      const payload = {
+        unit: reportItem.unit || 'NHP',
+        title: reportItem.title || '',
+        startDate: reportItem.startDate || '',
+        endDate: reportItem.endDate || '',
+        periode: reportItem.periode || '',
+        ringkasan: {
+          penawaran: Number(reportItem.ringkasan?.penawaran || 0),
+          pesanan: Number(reportItem.ringkasan?.pesanan || 0),
+          penjualan: Number(reportItem.ringkasan?.penjualan || 0)
+        },
+        programList: Array.isArray(reportItem.programList) ? reportItem.programList : [],
+        aktivitasCS: reportItem.aktivitasCS || '',
+        kendala: reportItem.kendala || '',
+        author: reportItem.author || '',
+        releaseDate: reportItem.releaseDate || new Date().toISOString().split('T')[0],
+        updatedAt: Date.now()
+      };
+
+      await setDoc(docRef, payload, { merge: true });
+      return { success: true, message: "Laporan SPV berhasil disimpan!", id: docId };
+    } catch (err) {
+      console.error("Gagal menyimpan laporan SPV:", err);
+      return { success: false, message: err.message };
+    }
+  },
+
+  // Helper Tambahan: Kalkulasi Metrik Sales Otomatis dari Firestore Collections (revenues & leads)
+  async getSalesMetricsByDateRange(startDate, endDate, unitFilter = "ALL") {
+    try {
+      const [revSnap, leadsSnap] = await Promise.all([
+        getDocs(collection(firestoreDb, "revenues")),
+        getDocs(collection(firestoreDb, "leads"))
+      ]);
+
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+
+      let totalPenawaran = 0;
+      let totalPesanan = 0;
+      let totalPenjualan = 0;
+
+      // Hitung Penawaran dari koleksi 'leads'
+      leadsSnap.docs.forEach((d) => {
+        const item = d.data();
+        const itemDate = new Date(item.Tanggal || item.date || item.Timestamp);
+        const itemUnit = item.Unit || item.unit;
+        if (itemDate >= start && itemDate <= end && (unitFilter === "ALL" || itemUnit === unitFilter)) {
+          totalPenawaran += Number(item.JumlahPenawaran || item.penawaran || 1);
+        }
+      });
+
+      // Hitung Pesanan & Penjualan (Rp) dari koleksi 'revenues'
+      revSnap.docs.forEach((d) => {
+        const item = d.data();
+        const itemDate = new Date(item.Tanggal || item.date || item.Timestamp);
+        const itemUnit = item.Unit || item.unit;
+        if (itemDate >= start && itemDate <= end && (unitFilter === "ALL" || itemUnit === unitFilter)) {
+          totalPesanan += Number(item.JumlahPesanan || item.pesanan || 1);
+          totalPenjualan += Number(item.Nominal || item.penjualan || item.omset || 0);
+        }
+      });
+
+      return {
+        penawaran: totalPenawaran,
+        pesanan: totalPesanan,
+        penjualan: totalPenjualan
+      };
+    } catch (err) {
+      console.error("Gagal menghitung metrik sales:", err);
+      return { penawaran: 0, pesanan: 0, penjualan: 0 };
+    }
   }
 
 };
+

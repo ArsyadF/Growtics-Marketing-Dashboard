@@ -344,3 +344,34 @@ background: linear-gradient(135deg, #f3f3f3 0%, #e8e8e873 50%, #a1a1a157 100%)
   scrollbar-width: none;  /* Firefox */
 }
 
+/* Styling Khusus Cetak & Ekspor PDF */
+@media print {
+  /* Sembunyikan elemen navigasi & UI web */
+  header,
+  nav,
+  .bottom-nav,
+  .no-print,
+  button,
+  select,
+  .glass-card:not(.print-active) {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  /* Area khusus cetak */
+  .print-area {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .page-break {
+    page-break-before: always;
+  }
+}
