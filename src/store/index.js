@@ -21,18 +21,21 @@ export const store = reactive({
     end: new Date().toISOString().split('T')[0]
   },
 
-  // Database State Global
+  // Database State Global (Dideklarasikan lengkap agar terdeteksi reaktif sejak awal)
   db: {
     revenue: [],
     promo: [],
     leads: [],
     users: [],
     programs: [], // Untuk Kanban Program Tim
-    master: {}    // Terhubung ke Target & Master Entitas
+    aduanList: [], // Data Tiket Aduan Customer Care
+    spvReports: [], // Data Laporan Pekanan SPV
+    master: {}    // Terhubung ke Target & Master Entitas Unit
   },
 
   // Centralized Modal & Alert Management
-  activeModal: null, // 'login', 'revenue', 'leads', 'promo', 'target', 'user', 'kodeakses', 'alert'
+  activeModal: null, // 'login', 'revenue', 'leads', 'promo', 'target', 'user', 'kodeakses', 'alert', dll.
+  selectedItemForEdit: null,
   editPayload: null,
   alertPayload: {
     title: '',
@@ -47,16 +50,7 @@ export const store = reactive({
   activeThemeColor: localStorage.getItem('APP_THEME_COLOR') || '#149B73',
 
   // Preset Warna Aksen
-  // colorPresets: [
-  //   { id: 'green', name: 'Hijau', hex: '#0db988', lightHex: '#2EE59D' },
-  //   { id: 'orange', name: 'Kuning Oranye', hex: '#fec159', lightHex: '#FBBF24' },
-  //   { id: 'blue', name: 'Biru', hex: '#50a3fb', lightHex: '#59b4ff' },
-  //   { id: 'rose', name: 'Pink', hex: '#ff718f', lightHex: '#ff889a' },
-  //   { id: 'tosca', name: 'Tosca', hex: '#0D9488', lightHex: '#2DD4BF' },
-  //   { id: 'red', name: 'Merah', hex: '#DC2626', lightHex: '#F87171' }
-  // ],
-
-    colorPresets: [
+  colorPresets: [
     { id: 'green', name: 'Hijau', hex: '#0db988', lightHex: '#2EE59D' },
     { id: 'orange', name: 'Kuning Oranye', hex: '#F59E0B', lightHex: '#FBBF24' },
     { id: 'blue', name: 'Biru', hex: '#3195ff', lightHex: '#59b4ff' },
@@ -134,7 +128,7 @@ export const store = reactive({
     this.alertPayload = { title: '', message: '', type: 'info', onConfirm: null };
   },
 
-openModal(modalName, itemData = null) {
+  openModal(modalName, itemData = null) {
     this.activeModal = modalName;
     this.selectedItemForEdit = itemData;
   },
@@ -143,7 +137,6 @@ openModal(modalName, itemData = null) {
     this.activeModal = null;
     this.selectedItemForEdit = null;
   },
-  
 
   // --- METHODS NOTIFIKASI ---
   notifications: JSON.parse(localStorage.getItem('APP_NOTIFICATIONS')) || [
@@ -179,46 +172,58 @@ openModal(modalName, itemData = null) {
 
   // --- DATABASE OPERATIONS ---
   async loadFullDatabase() {
-  this.isLoading = true;
-  try {
-    const res = await api.getAllData();
-    this.parseDB(res);
+    this.isLoading = true;
+    try {
+      const res = await api.getAllData();
+      this.parseDB(res);
 
-    // Sync Data User Aktif jika sudah login
-    if (this.currentUser && this.currentUser.email) {
-      const foundUser = this.db.users.find(u => 
-        (u.email && u.email.toLowerCase() === this.currentUser.email.toLowerCase()) || 
-        (u.Email && u.Email.toLowerCase() === this.currentUser.email.toLowerCase())
-      );
-      if (foundUser) {
-        this.setCurrentUser({
-          ...this.currentUser,
-          ...foundUser
-        });
+      // Sync Data User Aktif jika sudah login
+      if (this.currentUser && this.currentUser.email) {
+        const foundUser = this.db.users.find(u => 
+          (u.email && u.email.toLowerCase() === this.currentUser.email.toLowerCase()) || 
+          (u.Email && u.Email.toLowerCase() === this.currentUser.email.toLowerCase())
+        );
+        if (foundUser) {
+          this.setCurrentUser({
+            ...this.currentUser,
+            ...foundUser
+          });
+        }
       }
+    } catch (err) {
+      console.error("Gagal memuat data dari Firestore:", err);
+    } finally {
+      this.isLoading = false;
     }
-  } catch (err) {
-    console.error("Gagal memuat data dari Firestore:", err);
-  } finally {
-    this.isLoading = false;
-  }
-},
+  },
 
- parseDB(data) {
-  if (!data) return;
-  const parsed = typeof data === 'string' ? JSON.parse(data) : data;
+  parseDB(data) {
+    if (!data) return;
+    const parsed = typeof data === 'string' ? JSON.parse(data) : data;
 
-  this.db.revenue = Array.isArray(parsed.revenue) ? parsed.revenue : [];
-  this.db.promo = Array.isArray(parsed.promo) ? parsed.promo : (Array.isArray(parsed.promosi) ? parsed.promosi : []);
-  this.db.leads = Array.isArray(parsed.leads) ? parsed.leads : [];
-  this.db.users = Array.isArray(parsed.users) ? parsed.users : [];
-  this.db.programs = Array.isArray(parsed.programs) ? parsed.programs : [];
-  this.db.master = parsed.master || parsed.settings || {};
-  
-  // MAP DATA FIRESTORE (Dengan pengamanan Array.isArray dan fallback nama properti)
-  this.db.aduanList = Array.isArray(parsed.aduanList) ? parsed.aduanList : (Array.isArray(parsed.aduan) ? parsed.aduan : []);
-  this.db.spvReports = Array.isArray(parsed.spvReports) ? parsed.spvReports : (Array.isArray(parsed.spv_reports) ? parsed.spv_reports : []);
-},
+    this.db.revenue = Array.isArray(parsed.revenue) ? parsed.revenue : [];
+    this.db.promo = Array.isArray(parsed.promo) ? parsed.promo : (Array.isArray(parsed.promosi) ? parsed.promosi : []);
+    this.db.leads = Array.isArray(parsed.leads) ? parsed.leads : [];
+    this.db.users = Array.isArray(parsed.users) ? parsed.users : [];
+    this.db.programs = Array.isArray(parsed.programs) ? parsed.programs : [];
+    this.db.master = parsed.master || parsed.settings || {};
+    
+    // PEMETAAN DATA TIKET ADUAN
+    // Memastikan gambar Base64 terpetakan sempurna walaupun nama kunci variabel berbeda dari server (imageUrl/ImageUrl/image)
+    const rawAduan = Array.isArray(parsed.aduanList) 
+      ? parsed.aduanList 
+      : (Array.isArray(parsed.aduan) ? parsed.aduan : []);
+
+    this.db.aduanList = rawAduan.map(item => ({
+      ...item,
+      imageUrl: item.imageUrl || item.ImageUrl || item.image || item.Image || ""
+    }));
+
+    // PEMETAAN DATA LAPORAN PEKANAN SPV
+    this.db.spvReports = Array.isArray(parsed.spvReports) 
+      ? parsed.spvReports 
+      : (Array.isArray(parsed.spv_reports) ? parsed.spv_reports : []);
+  },
 
   setCurrentUser(user) {
     this.currentUser = user;
@@ -241,44 +246,25 @@ openModal(modalName, itemData = null) {
   },
 
   // --- PERMISSIONS & ROUTING ---
-  canAccessPage(pageId) {
-    if (pageId === 'profile') return true;
+  canAccessPage(pageKey) {
+    if (pageKey === 'profile') return true;
     if (!this.isAccessGranted) return false;
+    if (!this.currentUser) return pageKey === 'main';
 
-    if (!this.currentUser) {
-      if (pageId === 'main') return true; 
-      return false;
-    }
-    
-    const role = this.currentUser.role || this.currentUser.Role;
+    const role = (this.currentUser.role || this.currentUser.Role || '').toUpperCase();
     if (role === 'SUPERADMIN') return true;
-    
-    const perms = this.currentUser.permissions;
-    if (perms && perms[pageId] !== undefined) {
-      return !!perms[pageId]?.access;
+
+    if (this.currentUser.permissions && this.currentUser.permissions[pageKey]) {
+      return !!this.currentUser.permissions[pageKey].access;
     }
 
-    return true;
+    return true; // Fallback jika perizinan belum di-set
   },
-
-  // Di dalam objek store pada src/store/index.js
-
-canAccessPage(pageKey) {
-  if (!this.currentUser) return pageKey === 'main';
-  const role = (this.currentUser.role || this.currentUser.Role || '').toUpperCase();
-  if (role === 'SUPERADMIN') return true;
-
-  if (this.currentUser.permissions && this.currentUser.permissions[pageKey]) {
-    return !!this.currentUser.permissions[pageKey].access;
-  }
-
-  return true; // Fallback jika perizinan belum diset
-},
 
   canEditPage(pageId) {
     if (!this.currentUser) return false;
     
-    const role = this.currentUser.role || this.currentUser.Role;
+    const role = (this.currentUser.role || this.currentUser.Role || '').toUpperCase();
     if (role === 'SUPERADMIN') return true;
     
     const perms = this.currentUser.permissions;

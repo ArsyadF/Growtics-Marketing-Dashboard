@@ -101,7 +101,7 @@
         </div>
       </div>
 
-      <!-- TABLE LAYOUT -->
+      <!-- TABLE LAYOUT MAIN -->
       <div class="w-full overflow-x-auto">
         <table
           class="w-full text-left text-xs table-fixed min-w-[620px] md:min-w-full"
@@ -373,22 +373,77 @@
                     </div>
                   </div>
 
+                  <!-- TABEL DETAIL PENJUALAN DINAMIS & SORTABLE -->
                   <div
                     class="bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700 space-y-2"
                   >
-                    <strong
-                      class="text-xs font-bold text-slate-800 dark:text-slate-100 uppercase"
-                      >4. Detail Penjualan</strong
-                    >
+                    <div class="flex justify-between items-center">
+                      <strong
+                        class="text-xs font-bold text-slate-800 dark:text-slate-100 uppercase"
+                        >4. Detail Penjualan</strong
+                      >
+                      <span class="text-[10px] text-slate-400"
+                        >* Klik header untuk mengurutkan data</span
+                      >
+                    </div>
                     <div class="overflow-x-auto">
                       <table
                         class="w-full text-xs text-left border-collapse border"
                       >
                         <thead>
-                          <tr class="bg-slate-100 dark:bg-slate-700/50">
-                            <th class="border p-1.5">Unit / Channel</th>
-                            <th class="border p-1.5">Pesanan</th>
-                            <th class="border p-1.5">Penjualan (Rp)</th>
+                          <tr
+                            class="bg-slate-100 dark:bg-slate-700/50 select-none"
+                          >
+                            <th
+                              v-if="isVarActive(rep, 'unit')"
+                              @click="sortSalesRows('unit')"
+                              class="border p-1.5 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600"
+                            >
+                              Unit
+                              <i
+                                class="fa-solid fa-sort text-[9px] opacity-60"
+                              ></i>
+                            </th>
+                            <th
+                              v-if="isVarActive(rep, 'divisi')"
+                              @click="sortSalesRows('divisi')"
+                              class="border p-1.5 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600"
+                            >
+                              Divisi
+                              <i
+                                class="fa-solid fa-sort text-[9px] opacity-60"
+                              ></i>
+                            </th>
+                            <th
+                              v-if="isVarActive(rep, 'channel')"
+                              @click="sortSalesRows('channel')"
+                              class="border p-1.5 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600"
+                            >
+                              Channel/Platform
+                              <i
+                                class="fa-solid fa-sort text-[9px] opacity-60"
+                              ></i>
+                            </th>
+                            <th
+                              v-if="isVarActive(rep, 'pesanan')"
+                              @click="sortSalesRows('pesanan')"
+                              class="border p-1.5 text-right cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600"
+                            >
+                              Pesanan
+                              <i
+                                class="fa-solid fa-sort text-[9px] opacity-60"
+                              ></i>
+                            </th>
+                            <th
+                              v-if="isVarActive(rep, 'penjualan')"
+                              @click="sortSalesRows('penjualan')"
+                              class="border p-1.5 text-right cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600"
+                            >
+                              Penjualan (Rp)
+                              <i
+                                class="fa-solid fa-sort text-[9px] opacity-60"
+                              ></i>
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
@@ -396,32 +451,64 @@
                             v-for="(row, idx) in getPenjualanRows(rep)"
                             :key="idx"
                           >
-                            <td class="border p-1.5 font-semibold">
+                            <td
+                              v-if="isVarActive(rep, 'unit')"
+                              class="border p-1.5 font-semibold"
+                            >
+                              {{ row.unit }}
+                            </td>
+                            <td
+                              v-if="isVarActive(rep, 'divisi')"
+                              class="border p-1.5"
+                            >
+                              {{ row.divisi }}
+                            </td>
+                            <td
+                              v-if="isVarActive(rep, 'channel')"
+                              class="border p-1.5 font-semibold"
+                            >
                               {{ row.channel }}
                             </td>
-                            <td class="border p-1.5">
+                            <td
+                              v-if="isVarActive(rep, 'pesanan')"
+                              class="border p-1.5 text-right"
+                            >
                               {{
                                 row.pesanan > 0
                                   ? formatNumber(row.pesanan)
                                   : "-"
                               }}
                             </td>
-                            <td class="border p-1.5">
+                            <td
+                              v-if="isVarActive(rep, 'penjualan')"
+                              class="border p-1.5 text-right font-bold text-emerald-600"
+                            >
                               Rp {{ formatNumber(row.penjualan) }}
                             </td>
                           </tr>
                           <tr
                             class="font-bold bg-slate-50 dark:bg-slate-700/30"
                           >
-                            <td class="border p-1.5">TOTAL</td>
-                            <td class="border p-1.5">
+                            <td
+                              :colspan="getSalesTotalLabelColspan(rep)"
+                              class="border p-1.5"
+                            >
+                              TOTAL
+                            </td>
+                            <td
+                              v-if="isVarActive(rep, 'pesanan')"
+                              class="border p-1.5 text-right"
+                            >
                               {{
                                 getPenjualanTotal(rep).pesanan > 0
                                   ? formatNumber(getPenjualanTotal(rep).pesanan)
                                   : "-"
                               }}
                             </td>
-                            <td class="border p-1.5">
+                            <td
+                              v-if="isVarActive(rep, 'penjualan')"
+                              class="border p-1.5 text-right text-emerald-600"
+                            >
                               Rp
                               {{
                                 formatNumber(getPenjualanTotal(rep).penjualan)
@@ -444,6 +531,16 @@
                       class="rich-editor-content export-override-font text-xs leading-relaxed"
                       v-html="rep.kendala"
                     ></div>
+                  </div>
+
+                  <div
+                    class="text-[10px] text-slate-400 pt-2 border-t border-slate-200 dark:border-slate-800 italic"
+                  >
+                    {{
+                      rep.originalAuthors
+                        ? `Laporan disusun oleh ${rep.author || "SPV"} (Konsolidasi dari laporan unit karya: ${rep.originalAuthors.join(", ")})`
+                        : `Penyusun: ${rep.author || "SPV Unit"}`
+                    }}
                   </div>
                 </td>
               </tr>
@@ -470,7 +567,7 @@
       </p>
     </div>
 
-    <!-- MODAL FORM LAPORAN PEKANAN DENGAN LIVE PREVIEW & CHECKBOX UNIT -->
+    <!-- MODAL FORM LAPORAN PEKANAN DENGAN LIVE PREVIEW & CHECKBOX VARIABLE -->
     <Teleport to="body">
       <div
         v-if="isModalOpen"
@@ -585,6 +682,67 @@
               </div>
             </div>
 
+            <!-- CHECKBOX PILIHAN VARIABEL UNTUK DETAIL PENJUALAN -->
+            <div
+              class="p-3 bg-blue-500/5 dark:bg-blue-500/10 rounded-2xl border border-blue-500/20 space-y-2"
+            >
+              <label
+                class="block text-xs font-bold text-blue-700 dark:text-blue-300"
+              >
+                <i class="fa-solid fa-sliders mr-1"></i>Pilih Variabel Tampilan
+                Detail Penjualan:
+              </label>
+              <div
+                class="flex flex-wrap gap-4 text-xs font-semibold text-slate-700 dark:text-slate-200"
+              >
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value="unit"
+                    v-model="form.salesVariables"
+                    class="accent-blue-600 rounded cursor-pointer w-4 h-4"
+                  />
+                  <span>Unit Usaha</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value="divisi"
+                    v-model="form.salesVariables"
+                    class="accent-blue-600 rounded cursor-pointer w-4 h-4"
+                  />
+                  <span>Divisi</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value="channel"
+                    v-model="form.salesVariables"
+                    class="accent-blue-600 rounded cursor-pointer w-4 h-4"
+                  />
+                  <span>Channel / Platform</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value="pesanan"
+                    v-model="form.salesVariables"
+                    class="accent-blue-600 rounded cursor-pointer w-4 h-4"
+                  />
+                  <span>Jumlah Pesanan</span>
+                </label>
+                <label class="flex items-center gap-1.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value="penjualan"
+                    v-model="form.salesVariables"
+                    class="accent-blue-600 rounded cursor-pointer w-4 h-4"
+                  />
+                  <span>Total Penjualan (Rp)</span>
+                </label>
+              </div>
+            </div>
+
             <!-- LIVE PREVIEW DATAGRID SEBELUM SIMPAN -->
             <div
               class="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-3"
@@ -674,7 +832,7 @@
                   </table>
                 </div>
 
-                <!-- PREVIEW RINCIAN REVENUE PER CHANNEL -->
+                <!-- PREVIEW RINCIAN REVENUE PER CHANNEL MODAL -->
                 <div
                   class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1"
                 >
@@ -682,38 +840,93 @@
                     class="font-bold text-slate-700 dark:text-slate-200 block text-[10px] uppercase border-b pb-1"
                     >Detail Penjualan Per Channel/Unit</span
                   >
-                  <table class="w-full text-left">
-                    <thead>
-                      <tr class="text-slate-400 border-b">
-                        <th class="py-1">Channel & Unit</th>
-                        <th class="py-1 text-right">Pesanan</th>
-                        <th class="py-1 text-right">Penjualan</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-if="previewSalesRows.length === 0">
-                        <td colspan="3" class="text-center py-2 text-slate-400">
-                          Tidak ada data penjualan di rentang unit ini.
-                        </td>
-                      </tr>
-                      <tr
-                        v-else
-                        v-for="(row, idx) in previewSalesRows"
-                        :key="idx"
-                        class="border-b border-slate-100 dark:border-slate-800"
-                      >
-                        <td class="py-1 font-semibold truncate max-w-[120px]">
-                          {{ row.channel }}
-                        </td>
-                        <td class="py-1 text-right">
-                          {{ formatNumber(row.pesanan) }}
-                        </td>
-                        <td class="py-1 text-right text-emerald-600 font-bold">
-                          Rp {{ formatNumber(row.penjualan) }}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                  <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                      <thead>
+                        <tr class="text-slate-400 border-b select-none">
+                          <th
+                            v-if="isVarActive(form, 'unit')"
+                            @click="sortSalesRows('unit')"
+                            class="py-1 cursor-pointer"
+                          >
+                            Unit
+                          </th>
+                          <th
+                            v-if="isVarActive(form, 'divisi')"
+                            @click="sortSalesRows('divisi')"
+                            class="py-1 cursor-pointer"
+                          >
+                            Divisi
+                          </th>
+                          <th
+                            v-if="isVarActive(form, 'channel')"
+                            @click="sortSalesRows('channel')"
+                            class="py-1 cursor-pointer"
+                          >
+                            Channel
+                          </th>
+                          <th
+                            v-if="isVarActive(form, 'pesanan')"
+                            @click="sortSalesRows('pesanan')"
+                            class="py-1 text-right cursor-pointer"
+                          >
+                            Pesanan
+                          </th>
+                          <th
+                            v-if="isVarActive(form, 'penjualan')"
+                            @click="sortSalesRows('penjualan')"
+                            class="py-1 text-right cursor-pointer"
+                          >
+                            Penjualan
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-if="previewSalesRows.length === 0">
+                          <td
+                            :colspan="getSalesTotalLabelColspan(form) + 2"
+                            class="text-center py-2 text-slate-400"
+                          >
+                            Tidak ada data penjualan di rentang unit ini.
+                          </td>
+                        </tr>
+                        <tr
+                          v-else
+                          v-for="(row, idx) in previewSalesRows"
+                          :key="idx"
+                          class="border-b border-slate-100 dark:border-slate-800"
+                        >
+                          <td
+                            v-if="isVarActive(form, 'unit')"
+                            class="py-1 font-semibold"
+                          >
+                            {{ row.unit }}
+                          </td>
+                          <td v-if="isVarActive(form, 'divisi')" class="py-1">
+                            {{ row.divisi }}
+                          </td>
+                          <td
+                            v-if="isVarActive(form, 'channel')"
+                            class="py-1 font-semibold truncate max-w-[100px]"
+                          >
+                            {{ row.channel }}
+                          </td>
+                          <td
+                            v-if="isVarActive(form, 'pesanan')"
+                            class="py-1 text-right"
+                          >
+                            {{ formatNumber(row.pesanan) }}
+                          </td>
+                          <td
+                            v-if="isVarActive(form, 'penjualan')"
+                            class="py-1 text-right text-emerald-600 font-bold"
+                          >
+                            Rp {{ formatNumber(row.penjualan) }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
@@ -730,7 +943,16 @@
               />
             </div>
 
-            <!-- RICH TEXT EDITOR 1 -->
+            <!-- HIDDEN FILE INPUT UNTUK UPLOAD GAMBAR EDITOR -->
+            <input
+              type="file"
+              ref="editorImageInput"
+              accept="image/*"
+              class="hidden"
+              @change="handleImageUpload"
+            />
+
+            <!-- RICH TEXT EDITOR 1: AKTIVITAS UNIT -->
             <div>
               <label class="block text-slate-500 font-medium mb-1"
                 >Aktivitas Unit (Rich Text Editor):</label
@@ -792,6 +1014,21 @@
                   >
                     abc
                   </button>
+
+                  <div
+                    class="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"
+                  ></div>
+
+                  <!-- TOMBOL IMPORT GAMBAR -->
+                  <button
+                    type="button"
+                    @click="triggerImageUpload('csEditor')"
+                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1"
+                    title="Sisipkan Gambar"
+                  >
+                    <i class="fa-solid fa-image"></i>
+                    <span class="text-[10px]">Gambar</span>
+                  </button>
                 </div>
                 <div
                   id="csEditor"
@@ -802,7 +1039,7 @@
               </div>
             </div>
 
-            <!-- RICH TEXT EDITOR 2 -->
+            <!-- RICH TEXT EDITOR 2: KENDALA & SOLUSI -->
             <div>
               <label class="block text-slate-500 font-medium mb-1"
                 >Catatan / Kendala & Solusi Tindak Lanjut:</label
@@ -864,6 +1101,21 @@
                   >
                     abc
                   </button>
+
+                  <div
+                    class="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"
+                  ></div>
+
+                  <!-- TOMBOL IMPORT GAMBAR -->
+                  <button
+                    type="button"
+                    @click="triggerImageUpload('kendalaEditor')"
+                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1"
+                    title="Sisipkan Gambar"
+                  >
+                    <i class="fa-solid fa-image"></i>
+                    <span class="text-[10px]">Gambar</span>
+                  </button>
                 </div>
                 <div
                   id="kendalaEditor"
@@ -914,7 +1166,7 @@
           class="w-full max-w-4xl glass-card bg-white dark:bg-slate-900 rounded-3xl p-4 md:p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[92vh] flex flex-col"
         >
           <div
-            class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 shrink-0"
+            class="row md:flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 shrink-0"
           >
             <div>
               <h3
@@ -1092,6 +1344,7 @@
                 </table>
               </div>
 
+              <!-- DETAIL PENJUALAN EKSPOR PREVIEW -->
               <div class="border p-3 md:p-4 rounded-lg space-y-2">
                 <h3
                   class="font-bold text-xs md:text-sm border-b pb-1 text-emerald-800 uppercase"
@@ -1103,9 +1356,36 @@
                 >
                   <thead>
                     <tr class="bg-slate-100">
-                      <th class="border p-1.5 md:p-2">Unit / Channel</th>
-                      <th class="border p-1.5 md:p-2">Pesanan</th>
-                      <th class="border p-1.5 md:p-2">Penjualan (Rp)</th>
+                      <th
+                        v-if="isVarActive(printActiveReport, 'unit')"
+                        class="border p-1.5 md:p-2"
+                      >
+                        Unit
+                      </th>
+                      <th
+                        v-if="isVarActive(printActiveReport, 'divisi')"
+                        class="border p-1.5 md:p-2"
+                      >
+                        Divisi
+                      </th>
+                      <th
+                        v-if="isVarActive(printActiveReport, 'channel')"
+                        class="border p-1.5 md:p-2"
+                      >
+                        Channel / Platform
+                      </th>
+                      <th
+                        v-if="isVarActive(printActiveReport, 'pesanan')"
+                        class="border p-1.5 md:p-2 text-right"
+                      >
+                        Pesanan
+                      </th>
+                      <th
+                        v-if="isVarActive(printActiveReport, 'penjualan')"
+                        class="border p-1.5 md:p-2 text-right"
+                      >
+                        Penjualan (Rp)
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1113,19 +1393,48 @@
                       v-for="(row, idx) in getPenjualanRows(printActiveReport)"
                       :key="idx"
                     >
-                      <td class="border p-1.5 md:p-2 font-semibold">
+                      <td
+                        v-if="isVarActive(printActiveReport, 'unit')"
+                        class="border p-1.5 md:p-2 font-semibold"
+                      >
+                        {{ row.unit }}
+                      </td>
+                      <td
+                        v-if="isVarActive(printActiveReport, 'divisi')"
+                        class="border p-1.5 md:p-2"
+                      >
+                        {{ row.divisi }}
+                      </td>
+                      <td
+                        v-if="isVarActive(printActiveReport, 'channel')"
+                        class="border p-1.5 md:p-2 font-semibold"
+                      >
                         {{ row.channel }}
                       </td>
-                      <td class="border p-1.5 md:p-2">
+                      <td
+                        v-if="isVarActive(printActiveReport, 'pesanan')"
+                        class="border p-1.5 md:p-2 text-right"
+                      >
                         {{ row.pesanan > 0 ? formatNumber(row.pesanan) : "-" }}
                       </td>
-                      <td class="border p-1.5 md:p-2">
+                      <td
+                        v-if="isVarActive(printActiveReport, 'penjualan')"
+                        class="border p-1.5 md:p-2 text-right"
+                      >
                         Rp {{ formatNumber(row.penjualan) }}
                       </td>
                     </tr>
                     <tr class="font-bold bg-slate-100">
-                      <td class="border p-1.5 md:p-2">TOTAL</td>
-                      <td class="border p-1.5 md:p-2">
+                      <td
+                        :colspan="getSalesTotalLabelColspan(printActiveReport)"
+                        class="border p-1.5 md:p-2"
+                      >
+                        TOTAL
+                      </td>
+                      <td
+                        v-if="isVarActive(printActiveReport, 'pesanan')"
+                        class="border p-1.5 md:p-2 text-right"
+                      >
                         {{
                           getPenjualanTotal(printActiveReport).pesanan > 0
                             ? formatNumber(
@@ -1134,7 +1443,10 @@
                             : "-"
                         }}
                       </td>
-                      <td class="border p-1.5 md:p-2">
+                      <td
+                        v-if="isVarActive(printActiveReport, 'penjualan')"
+                        class="border p-1.5 md:p-2 text-right"
+                      >
                         Rp
                         {{
                           formatNumber(
@@ -1162,14 +1474,20 @@
               <div class="flex justify-between text-xs pt-6 border-t mt-6">
                 <div>
                   <p>Penyusun Laporan:</p>
-                  <br /><br />
-                  <p class="font-bold text-xs md:text-sm">
+                  <p class="font-bold text-xs md:text-sm mt-1">
                     {{ printActiveReport.author || "SPV Unit" }}
+                  </p>
+                  <p
+                    v-if="printActiveReport.originalAuthors"
+                    class="text-[10px] text-slate-500 italic mt-0.5"
+                  >
+                    (Konsolidasi karya dari:
+                    {{ printActiveReport.originalAuthors.join(", ") }})
                   </p>
                 </div>
                 <div class="text-right">
                   <p>Tanggal Diterbitkan:</p>
-                  <p class="font-bold text-xs md:text-sm">
+                  <p class="font-bold text-xs md:text-sm mt-1">
                     {{ printActiveReport.releaseDate }}
                   </p>
                 </div>
@@ -1286,9 +1604,36 @@
         <table class="w-full text-left text-sm border-collapse border">
           <thead>
             <tr class="bg-slate-100">
-              <th class="border p-2">Unit / Channel</th>
-              <th class="border p-2">Pesanan</th>
-              <th class="border p-2">Penjualan (Rp)</th>
+              <th
+                v-if="isVarActive(printActiveReport, 'unit')"
+                class="border p-2"
+              >
+                Unit
+              </th>
+              <th
+                v-if="isVarActive(printActiveReport, 'divisi')"
+                class="border p-2"
+              >
+                Divisi
+              </th>
+              <th
+                v-if="isVarActive(printActiveReport, 'channel')"
+                class="border p-2"
+              >
+                Channel / Platform
+              </th>
+              <th
+                v-if="isVarActive(printActiveReport, 'pesanan')"
+                class="border p-2 text-right"
+              >
+                Pesanan
+              </th>
+              <th
+                v-if="isVarActive(printActiveReport, 'penjualan')"
+                class="border p-2 text-right"
+              >
+                Penjualan (Rp)
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -1296,22 +1641,58 @@
               v-for="(row, idx) in getPenjualanRows(printActiveReport)"
               :key="idx"
             >
-              <td class="border p-2 font-semibold">{{ row.channel }}</td>
-              <td class="border p-2">
+              <td
+                v-if="isVarActive(printActiveReport, 'unit')"
+                class="border p-2 font-semibold"
+              >
+                {{ row.unit }}
+              </td>
+              <td
+                v-if="isVarActive(printActiveReport, 'divisi')"
+                class="border p-2"
+              >
+                {{ row.divisi }}
+              </td>
+              <td
+                v-if="isVarActive(printActiveReport, 'channel')"
+                class="border p-2 font-semibold"
+              >
+                {{ row.channel }}
+              </td>
+              <td
+                v-if="isVarActive(printActiveReport, 'pesanan')"
+                class="border p-2 text-right"
+              >
                 {{ row.pesanan > 0 ? formatNumber(row.pesanan) : "-" }}
               </td>
-              <td class="border p-2">Rp {{ formatNumber(row.penjualan) }}</td>
+              <td
+                v-if="isVarActive(printActiveReport, 'penjualan')"
+                class="border p-2 text-right"
+              >
+                Rp {{ formatNumber(row.penjualan) }}
+              </td>
             </tr>
             <tr class="font-bold bg-slate-100">
-              <td class="border p-2">TOTAL</td>
-              <td class="border p-2">
+              <td
+                :colspan="getSalesTotalLabelColspan(printActiveReport)"
+                class="border p-2"
+              >
+                TOTAL
+              </td>
+              <td
+                v-if="isVarActive(printActiveReport, 'pesanan')"
+                class="border p-2 text-right"
+              >
                 {{
                   getPenjualanTotal(printActiveReport).pesanan > 0
                     ? formatNumber(getPenjualanTotal(printActiveReport).pesanan)
                     : "-"
                 }}
               </td>
-              <td class="border p-2">
+              <td
+                v-if="isVarActive(printActiveReport, 'penjualan')"
+                class="border p-2 text-right"
+              >
                 Rp
                 {{
                   formatNumber(getPenjualanTotal(printActiveReport).penjualan)
@@ -1335,14 +1716,22 @@
       <div class="flex justify-between text-xs pt-8 border-t mt-6">
         <div>
           <p>Penyusun Laporan:</p>
-          <br /><br />
-          <p class="font-bold text-sm">
+          <p class="font-bold text-sm mt-1">
             {{ printActiveReport.author || "SPV Unit" }}
+          </p>
+          <p
+            v-if="printActiveReport.originalAuthors"
+            class="text-[10px] text-slate-500 italic mt-0.5"
+          >
+            (Konsolidasi karya dari:
+            {{ printActiveReport.originalAuthors.join(", ") }})
           </p>
         </div>
         <div class="text-right">
           <p>Tanggal Diterbitkan:</p>
-          <p class="font-bold text-sm">{{ printActiveReport.releaseDate }}</p>
+          <p class="font-bold text-sm mt-1">
+            {{ printActiveReport.releaseDate }}
+          </p>
         </div>
       </div>
     </div>
@@ -1366,6 +1755,10 @@ const selectedReportIds = ref([]);
 const sortKey = ref("releaseDate");
 const sortAsc = ref(false);
 
+// State sorting internal tabel detail penjualan
+const salesSortKey = ref("penjualan");
+const salesSortAsc = ref(false);
+
 const masterUnits = computed(() => {
   return (
     store.db?.master?.unitList ||
@@ -1382,6 +1775,7 @@ const reports = computed(() => store.db?.spvReports || store.spvReports || []);
 const form = reactive({
   unit: "NHP",
   selectedUnits: ["NHP", "NHC", "KG"],
+  salesVariables: ["unit", "divisi", "channel", "pesanan", "penjualan"],
   title: "",
   startDate: "",
   endDate: "",
@@ -1390,6 +1784,7 @@ const form = reactive({
   programList: [],
   aktivitasCS: "",
   kendala: "",
+  originalAuthors: null,
 });
 
 const isSuperadmin = computed(
@@ -1437,6 +1832,15 @@ const sortTable = (key) => {
   }
 };
 
+const sortSalesRows = (key) => {
+  if (salesSortKey.value === key) {
+    salesSortAsc.value = !salesSortAsc.value;
+  } else {
+    salesSortKey.value = key;
+    salesSortAsc.value = true;
+  }
+};
+
 const toggleExpand = (id) => {
   const idx = expandedReportIds.value.indexOf(id);
   if (idx !== -1) {
@@ -1465,6 +1869,20 @@ const clearBulkSelection = () => {
   selectedReportIds.value = [];
 };
 
+// HELPER CHECKBOX VARIABEL AKTIF
+const isVarActive = (repObj, varName) => {
+  if (!repObj || !repObj.salesVariables) return true;
+  return repObj.salesVariables.includes(varName);
+};
+
+const getSalesTotalLabelColspan = (repObj) => {
+  let count = 0;
+  if (isVarActive(repObj, "unit")) count++;
+  if (isVarActive(repObj, "divisi")) count++;
+  if (isVarActive(repObj, "channel")) count++;
+  return count > 0 ? count : 1;
+};
+
 // HELPER FILTER UNIT TERPILIH
 const isUnitAllowed = (unitCode, targetUnit, selectedUnitsList = []) => {
   if (targetUnit === "ALL") {
@@ -1474,21 +1892,17 @@ const isUnitAllowed = (unitCode, targetUnit, selectedUnitsList = []) => {
   return unitCode === targetUnit;
 };
 
-// AUTO FETCH METRICS DIPERBAIKI DENGAN FILTER CHECKBOX UNIT
+// LOGIKA KALKULASI RINGKASAN PRESISI & SINRON SESUAI TABEL DETAIL PENJUALAN
 const autoFetchMetrics = () => {
   if (!form.startDate || !form.endDate) return;
 
   const leadsList = store.db?.leads || [];
-  const revenuesList = store.db?.revenue || store.db?.revenues || [];
-
   const startStr = form.startDate;
   const endStr = form.endDate;
   const targetUnit = form.unit;
   const allowedUnits = form.selectedUnits || [];
 
   let sumPenawaranTotal = 0;
-  let sumPesananTotal = 0;
-  let sumPenjualanRpTotal = 0;
 
   leadsList.forEach((item) => {
     const itemDate = item.Tanggal ? String(item.Tanggal).substring(0, 10) : "";
@@ -1500,34 +1914,15 @@ const autoFetchMetrics = () => {
       isUnitAllowed(itemUnit, targetUnit, allowedUnits)
     ) {
       sumPenawaranTotal += Number(item.Campaign || item.campaign || 0);
-      sumPesananTotal += Number(
-        item.Pesanan || item.JumlahPesanan || item.pesanan || 0,
-      );
     }
   });
 
-  revenuesList.forEach((item) => {
-    const itemDate = item.Tanggal ? String(item.Tanggal).substring(0, 10) : "";
-    const itemUnit = item.Unit || item.unit || "";
-
-    if (
-      itemDate >= startStr &&
-      itemDate <= endStr &&
-      isUnitAllowed(itemUnit, targetUnit, allowedUnits)
-    ) {
-      sumPenjualanRpTotal += Number(
-        item.Revenue || item.Nominal || item.penjualan || item.omset || 0,
-      );
-      if (sumPesananTotal === 0) {
-        sumPesananTotal += Number(item.JumlahPesanan || item.pesanan || 0);
-      }
-    }
-  });
+  const salesTotals = getPenjualanTotal(form);
 
   form.ringkasan = {
     penawaran: sumPenawaranTotal,
-    pesanan: sumPesananTotal,
-    penjualan: sumPenjualanRpTotal,
+    pesanan: salesTotals.pesanan,
+    penjualan: salesTotals.penjualan,
   };
 };
 
@@ -1583,27 +1978,45 @@ const getPenjualanRows = (rep) => {
   const channelMap = {};
   revenuesList.forEach((item) => {
     const dStr = item.Tanggal ? String(item.Tanggal).substring(0, 10) : "";
-    const u = item.Unit || item.unit || "";
+    const u = item.Unit || item.unit || "Umum";
+    const d = item.Divisi || item.divisi || "Pemasaran";
     const p = item.Platform || item.platform || "Direct";
-    const key = `${p} ${u}`.trim();
+    const key = `${u}_${d}_${p}`;
 
     if (
       dStr >= startStr &&
       dStr <= endStr &&
       isUnitAllowed(u, rep.unit, allowedUnits)
     ) {
-      if (!channelMap[key]) channelMap[key] = { pesanan: 0, penjualan: 0 };
+      if (!channelMap[key]) {
+        channelMap[key] = {
+          unit: u,
+          divisi: d,
+          channel: p,
+          pesanan: 0,
+          penjualan: 0,
+        };
+      }
       channelMap[key].pesanan += Number(
-        item.JumlahPesanan || item.pesanan || 0,
+        item.JumlahPesanan || item.pesanan || item.Order || 0,
       );
       channelMap[key].penjualan += Number(item.Revenue || item.Nominal || 0);
     }
   });
 
-  return Object.keys(channelMap).map((k) => ({
-    channel: k,
-    ...channelMap[k],
-  }));
+  const list = Object.values(channelMap);
+
+  // Sorting interaktif baris detail penjualan
+  return list.sort((a, b) => {
+    let modifier = salesSortAsc.value ? 1 : -1;
+    let aVal = a[salesSortKey.value] || 0;
+    let bVal = b[salesSortKey.value] || 0;
+
+    if (typeof aVal === "string") {
+      return aVal.localeCompare(bVal) * modifier;
+    }
+    return (aVal - bVal) * modifier;
+  });
 };
 
 const getPenjualanTotal = (rep) => {
@@ -1762,7 +2175,7 @@ const formatText = (editorId, command) => {
   handleEditorInput(editorId);
 };
 
-// GENERATE BULK KONSOLIDASI DIPERBAIKI (HANYA AMBIL UNIT PADA LAPORAN YANG DIPILIH)
+// GENERATE KONSOLIDASI DENGAN TRACKING PEMBUAT/AUTHOR ASLI
 const generateBulkConsolidation = () => {
   const targetReports = reports.value.filter((r) =>
     selectedReportIds.value.includes(r.id),
@@ -1776,6 +2189,7 @@ const generateBulkConsolidation = () => {
   let mergedCS = [];
   let mergedKendala = [];
   const uniqueUnits = new Set();
+  const authorsSet = new Set();
 
   targetReports.forEach((r) => {
     if (r.unit && r.unit !== "ALL") {
@@ -1784,11 +2198,17 @@ const generateBulkConsolidation = () => {
       r.selectedUnits.forEach((u) => uniqueUnits.add(u));
     }
 
+    if (r.author) authorsSet.add(r.author);
+
     if (r.programList) mergedPrograms.push(...r.programList);
     if (r.aktivitasCS)
-      mergedCS.push(`<strong>[${r.unit}]</strong><br/>${r.aktivitasCS}`);
+      mergedCS.push(
+        `<strong>[${r.unit} - Oleh: ${r.author || "SPV"}]</strong><br/>${r.aktivitasCS}`,
+      );
     if (r.kendala)
-      mergedKendala.push(`<strong>[${r.unit}]</strong><br/>${r.kendala}`);
+      mergedKendala.push(
+        `<strong>[${r.unit} - Oleh: ${r.author || "SPV"}]</strong><br/>${r.kendala}`,
+      );
   });
 
   const selectedUnitsList = Array.from(uniqueUnits);
@@ -1800,11 +2220,13 @@ const generateBulkConsolidation = () => {
 
   form.unit = "ALL";
   form.selectedUnits = Array.from(uniqueUnits);
+  form.salesVariables = ["unit", "divisi", "channel", "pesanan", "penjualan"];
   form.startDate = todayStr;
   form.endDate = todayStr;
   form.periode = `KONSOLIDASI ${targetReports.length} LAPORAN PEKANAN`;
   form.title = `LAPORAN KONSOLIDASI DIREKSI (${form.selectedUnits.join(", ")})`;
 
+  form.originalAuthors = Array.from(authorsSet);
   form.programList = mergedPrograms;
   form.aktivitasCS = mergedCS.join("<br/><hr class='my-2'/><br/>");
   form.kendala = mergedKendala.join("<br/><hr class='my-2'/><br/>");
@@ -1860,6 +2282,8 @@ const openAddReportModal = () => {
   form.unit =
     selectedUnitFilter.value !== "ALL" ? selectedUnitFilter.value : "ALL";
   form.selectedUnits = masterUnits.value.map((u) => u.code);
+  form.salesVariables = ["unit", "divisi", "channel", "pesanan", "penjualan"];
+  form.originalAuthors = null;
 
   onPeriodOrUnitChange();
   form.aktivitasCS = "";
@@ -1880,6 +2304,13 @@ const openEditReport = (rep) => {
   form.unit = rep.unit;
   form.selectedUnits =
     rep.selectedUnits || masterUnits.value.map((u) => u.code);
+  form.salesVariables = rep.salesVariables || [
+    "unit",
+    "divisi",
+    "channel",
+    "pesanan",
+    "penjualan",
+  ];
   form.startDate = rep.startDate || new Date().toISOString().split("T")[0];
   form.endDate = rep.endDate || new Date().toISOString().split("T")[0];
   form.title = rep.title;
@@ -1888,6 +2319,7 @@ const openEditReport = (rep) => {
   form.programList = rep.programList || [];
   form.aktivitasCS = rep.aktivitasCS || "";
   form.kendala = rep.kendala || "";
+  form.originalAuthors = rep.originalAuthors || null;
 
   isModalOpen.value = true;
   autoFetchMetrics();
@@ -1993,21 +2425,30 @@ const executeExportWord = () => {
     </html>
   `;
 
-  const blob = new Blob(["\ufeff" + content], {
-    type: "application/msword;charset=utf-8",
-  });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `${rep.title}.doc`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  if (window.AndroidBridge && window.AndroidBridge.downloadWordDocument) {
+    window.AndroidBridge.downloadWordDocument(content, `${rep.title}.doc`);
+  } else {
+    const blob = new Blob(["\ufeff" + content], {
+      type: "application/msword;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${rep.title}.doc`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 };
 
 const executePrintPDF = () => {
-  window.print();
+  if (window.AndroidBridge && window.AndroidBridge.printPdfDocument) {
+    const title = printActiveReport.value?.title || "Laporan_Pekanan";
+    window.AndroidBridge.printPdfDocument(title);
+  } else {
+    window.print();
+  }
 };
 
 watch(
@@ -2020,6 +2461,57 @@ watch(
   },
   { immediate: true },
 );
+
+const editorImageInput = ref(null);
+const activeTargetEditor = ref("csEditor");
+
+const triggerImageUpload = (editorId) => {
+  activeTargetEditor.value = editorId;
+  if (editorImageInput.value) {
+    editorImageInput.value.value = "";
+    editorImageInput.value.click();
+  }
+};
+
+const handleImageUpload = (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      const MAX_WIDTH = 800;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > MAX_WIDTH) {
+        height = Math.round((height * MAX_WIDTH) / width);
+        width = MAX_WIDTH;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+
+      const editorEl = document.getElementById(activeTargetEditor.value);
+      if (editorEl) {
+        editorEl.focus();
+        const imgHtml = `<img src="${compressedBase64}" style="max-width: 100%; height: auto; border-radius: 8px; margin: 8px 0; display: block;" />`;
+        document.execCommand("insertHTML", false, imgHtml);
+        handleEditorInput(activeTargetEditor.value);
+      }
+    };
+    img.src = e.target.result;
+  };
+
+  reader.readAsDataURL(file);
+};
 </script>
 
 <style scoped>

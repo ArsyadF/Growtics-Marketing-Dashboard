@@ -169,12 +169,14 @@
     </div>
 
     <!-- Modal Tambah / Edit User -->
-    <UserModal
-      v-if="isModalOpen"
-      :user-data="selectedUserForEdit"
-      @close="isModalOpen = false"
-      @save="handleSaveUser"
-    />
+    <Teleport to="body">
+      <UserModal
+        v-if="isModalOpen"
+        :user-data="selectedUserForEdit"
+        @close="isModalOpen = false"
+        @save="handleSaveUser"
+      />
+    </Teleport>
   </section>
 </template>
 

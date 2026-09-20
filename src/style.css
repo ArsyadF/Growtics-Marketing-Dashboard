@@ -375,3 +375,14 @@ background: linear-gradient(135deg, #f3f3f3 0%, #e8e8e873 50%, #a1a1a157 100%)
     page-break-before: always;
   }
 }
+
+/* STYLING GAMBAR DALAM EDITOR DAN HASIL EKSPOR */
+:deep(.rich-editor-content img),
+.rich-editor-box :deep(img) {
+  max-width: 100% !important;
+  height: auto !important;
+  border-radius: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  display: block;
+}
