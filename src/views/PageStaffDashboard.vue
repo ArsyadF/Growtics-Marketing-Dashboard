@@ -2,9 +2,13 @@
 <template>
   <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
     <!-- 1. HEADER MENYAPA STAF DENGAN DINAMIS LANGIT, MATAHARI/BULAN & AWAN -->
-    <div
+    <!-- <div
       class="p-5 rounded-3xl text-white shadow-lg relative overflow-hidden -mb-16 pb-16 transition-all duration-700"
       :class="skyTheme.background"
+    > -->
+
+    <div
+      class="p-5 rounded-3xl text-white shadow-lg relative overflow-hidden -mb-16 pb-16 bg-theme-gradient"
     >
       <!-- ORNAMEN AWAN LATAR BELAKANG -->
       <div class="absolute inset-0 pointer-events-none opacity-25">

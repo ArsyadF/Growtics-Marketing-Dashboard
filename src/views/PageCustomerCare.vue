@@ -18,15 +18,45 @@
         </p>
       </div>
 
-      <!-- Tombol Tambah -->
-      <button
-        v-if="canCreateOrEdit"
-        @click="openAddModal"
-        class="bg-button hover:opacity-90 text-white font-bold px-4 py-2.5 rounded-2xl text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
-      >
-        <i class="fa-solid fa-plus text-xs"></i>
-        <span>Buat Tiket Aduan</span>
-      </button>
+      <!-- Toolbar Halaman -->
+      <div class="flex items-center justify-end gap-2">
+        <button
+          v-if="store.canExportImport()"
+          @click="handleExportExcel"
+          class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer"
+        >
+          <i class="fa-solid fa-file-excel"></i>
+          <span>Export Excel</span>
+        </button>
+
+        <button
+          v-if="store.canExportImport()"
+          @click="isImportModalOpen = true"
+          class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer"
+        >
+          <i class="fa-solid fa-file-import"></i>
+          <span>Import Excel</span>
+        </button>
+
+        <!-- Modal Component -->
+        <ModalImportExcel
+          :isOpen="isImportModalOpen"
+          title="Tiket Aduan"
+          :existingData="tickets"
+          primaryKey="id"
+          @close="isImportModalOpen = false"
+          @confirm="handleImportConfirm"
+        />
+        <!-- Tombol Tambah -->
+        <button
+          v-if="canCreateOrEdit"
+          @click="openAddModal"
+          class="bg-button hover:opacity-90 text-white font-bold px-4 py-2.5 rounded-2xl text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+        >
+          <i class="fa-solid fa-plus text-xs"></i>
+          <span>Buat Tiket Aduan</span>
+        </button>
+      </div>
     </div>
 
     <!-- STATISTIK RINGKAS -->
@@ -715,6 +745,61 @@
 import { ref, reactive, computed } from "vue";
 import { store } from "../store/index.js";
 import { api } from "../services/api.js";
+import { exportToExcelBySchema } from "../utils/excelHandler.js";
+import ModalImportExcel from "../components/ModalImportExcel.vue";
+
+const isImportModalOpen = ref(false);
+
+// Handler Export Excel
+const handleExportExcel = () => {
+  try {
+    const dataToExport = tickets.value.map((t) => ({
+      id: t.id,
+      ticketNo: t.ticketNo,
+      customerName: t.customerName,
+      contact: t.contact,
+      unit: t.unit,
+      category: t.category,
+      priority: t.priority,
+      status: t.status,
+      description: t.description,
+      date: t.date,
+      createdBy: t.createdBy,
+      imageUrl: t.imageUrl || "",
+    }));
+
+    exportToExcelBySchema("Aduan_Pelanggan", dataToExport);
+    store.addNotification(
+      "Berhasil",
+      "Data berhasil diexport ke Excel",
+      "success",
+    );
+  } catch (err) {
+    store.addNotification("Gagal", err.message, "warning");
+  }
+};
+
+// Handler Eksekusi Import
+const handleImportConfirm = async ({ itemsToSave, stats }) => {
+  store.isLoading = true;
+  try {
+    const savePromises = itemsToSave.map((item) => api.saveAduanData(item));
+    await Promise.all(savePromises);
+
+    // Refresh data global dari Firestore
+    await store.loadFullDatabase();
+
+    store.addNotification(
+      "Import Selesai",
+      `Berhasil ditambahkan: ${stats.added}, Diperbarui: ${stats.updated}, Diabaikan: ${stats.ignored}`,
+      "success",
+    );
+  } catch (err) {
+    store.addNotification("Gagal Import", err.message, "warning");
+  } finally {
+    store.isLoading = false;
+  }
+};
 
 const searchQuery = ref("");
 const filterUnit = ref("");
