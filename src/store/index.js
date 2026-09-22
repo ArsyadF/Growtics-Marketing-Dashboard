@@ -282,5 +282,16 @@ export const store = reactive({
   navigate(page) {
     this.currentPage = page;
     window.history.pushState({ page: page }, "", `#${page}`);
-  }
+  },
+
+  // Tambahkan di dalam objek store pada src/store/index.js
+
+canExportImport() {
+  if (!this.currentUser) return false;
+  const role = String(this.currentUser.role || this.currentUser.Role || '').toUpperCase();
+  
+  // Mengizinkan Superadmin, Admin Unit, dan SPV
+  return ['SUPERADMIN', 'ADMIN_UNIT', 'ADMIN', 'SPV'].includes(role);
+}
+
 });

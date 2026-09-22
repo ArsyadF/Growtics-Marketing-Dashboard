@@ -13,7 +13,8 @@
     "firebase": "^12.18.0",
     "firebase-admin": "^14.4.0",
     "firestore-export-import": "^1.7.0",
-    "vue": "^3.5.41"
+    "vue": "^3.5.41",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.8",

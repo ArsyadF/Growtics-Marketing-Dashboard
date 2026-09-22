@@ -11,14 +11,46 @@
             Sesuaikan rekap berdasarkan bulan, divisi, atau platform.
           </p>
         </div>
-        <button
-          v-if="store.canEditPage('unit-' + selectedUnitName)"
-          @click="store.openModal('revenue', { Unit: selectedUnitName })"
-          class="bg-button hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
-        >
-          <i class="fa-solid fa-plus mr-1.5"></i>Input Revenue
-          {{ selectedUnitName }}
-        </button>
+
+        <!-- BUTTON GROUP: EXPORT, IMPORT & TAMBAH DATA -->
+        <div class="flex items-center gap-2 flex-wrap shrink-0">
+          <!-- Tombol Export Excel -->
+          <button
+            v-if="store.canExportImport()"
+            @click="handleExportRevenue"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
+          >
+            <i class="fa-solid fa-file-excel"></i>
+            <span>Export Excel</span>
+          </button>
+
+          <!-- Tombol Import Excel -->
+          <button
+            v-if="store.canExportImport()"
+            @click="isImportModalOpen = true"
+            class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
+          >
+            <i class="fa-solid fa-file-import"></i>
+            <span>Import Excel</span>
+          </button>
+
+          <button
+            v-if="store.canEditPage('unit-' + selectedUnitName)"
+            @click="store.openModal('revenue', { Unit: selectedUnitName })"
+            class="bg-button hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
+          >
+            <i class="fa-solid fa-plus mr-1.5"></i>Input Revenue
+            {{ selectedUnitName }}
+          </button>
+          <!-- MODAL IMPORT EXCEL DATA REVENUE -->
+          <ModalImportExcel
+            :isOpen="isImportModalOpen"
+            schemaKey="REVENUE"
+            :existingData="filteredRevenue"
+            @close="isImportModalOpen = false"
+            @confirm="handleImportRevenueConfirm"
+          />
+        </div>
       </div>
 
       <!-- Filters Row -->
@@ -479,6 +511,8 @@ import { ref, computed, watch, reactive, onMounted } from "vue";
 import { store } from "../store";
 import { api } from "../services/api";
 import Chart from "chart.js/auto";
+import { exportToExcelBySchema } from "../utils/excelHandler.js";
+import ModalImportExcel from "../components/ModalImportExcel.vue";
 
 const MONTH_NAMES = [
   "Januari",
@@ -530,6 +564,65 @@ const masterPlatformList = computed(
       "Konsinyasi",
     ],
 );
+
+const isImportModalOpen = ref(false);
+
+// Ambil daftar revenue dari store
+const revenueList = computed(() => store.db?.revenue || []);
+
+// HANDLER EXPORT EXCEL REVENUE
+// HANDLER EXPORT EXCEL REVENUE DENGAN FILTER AKTIF
+const handleExportRevenue = () => {
+  try {
+    const dataToExport = filteredRevenue.value;
+    if (!dataToExport || dataToExport.length === 0) {
+      store.addNotification(
+        "Peringatan",
+        "Tidak ada data revenue pada filter saat ini untuk diexport",
+        "warning",
+      );
+      return;
+    }
+
+    exportToExcelBySchema(
+      `Data_Revenue_${selectedUnitName.value}`,
+      dataToExport,
+      "REVENUE",
+    );
+    store.addNotification(
+      "Berhasil",
+      "Data Revenue berhasil diexport ke Excel",
+      "success",
+    );
+  } catch (err) {
+    store.addNotification("Gagal", err.message, "warning");
+  }
+};
+
+// HANDLER EKSEKUSI IMPORT EXCEL REVENUE
+const handleImportRevenueConfirm = async ({ itemsToSave, stats }) => {
+  store.isLoading = true;
+  try {
+    // Simpan data massal ke koleksi 'revenues' di Firestore
+    const savePromises = itemsToSave.map((item) =>
+      api.saveData("Revenue", item),
+    );
+    await Promise.all(savePromises);
+
+    // Refresh database global
+    await store.loadFullDatabase();
+
+    store.addNotification(
+      "Import Revenue Selesai",
+      `Berhasil ditambahkan: ${stats.added}, Diperbarui: ${stats.updated}, Diabaikan: ${stats.ignored}`,
+      "success",
+    );
+  } catch (err) {
+    store.addNotification("Gagal Import", err.message, "warning");
+  } finally {
+    store.isLoading = false;
+  }
+};
 
 const filterMonth = ref("ALL");
 const filterDivisi = ref("ALL");
