@@ -42,7 +42,8 @@
             <i class="fa-solid fa-plus mr-1.5"></i>Input Revenue
             {{ selectedUnitName }}
           </button>
-          <!-- MODAL IMPORT EXCEL DATA REVENUE -->
+
+          <!-- Modul Revenue Modal Import -->
           <ModalImportExcel
             :isOpen="isImportModalOpen"
             schemaKey="REVENUE"
@@ -237,7 +238,7 @@
       </div>
     </div>
 
-    <!-- Management Data Table (Scrollable, Paginated, Bulk Delete) -->
+    <!-- Management Data Table -->
     <div class="glass-card p-4 md:p-6 rounded-2xl space-y-4">
       <div
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
@@ -380,7 +381,7 @@
                 />
               </td>
               <td class="py-2 px-3">
-                {{ item.Tanggal ? item.Tanggal.substring(0, 10) : "-" }}
+                {{ item.Tanggal ? String(item.Tanggal).substring(0, 10) : "-" }}
               </td>
               <td class="py-2 px-3 font-medium">{{ item.Divisi || "-" }}</td>
               <td class="py-2 px-3">{{ item.Platform || "-" }}</td>
@@ -393,7 +394,7 @@
                 Pcs
               </td>
               <td class="py-2 px-3 font-semibold text-theme">
-                {{ formatRupiah(item.Revenue) }}
+                {{ formatRupiah(item.Revenue || item.Nominal) }}
               </td>
 
               <td
@@ -409,7 +410,8 @@
                 </button>
                 <button
                   @click="promptSingleDelete(getDocId(item))"
-                  class="text-rose-500 hover:text-rose-600 cursor-pointer"
+                  class="text-rose-500 hover:text-rose-600 cursor-pointer p-1"
+                  title="Hapus Revenue"
                 >
                   <i class="fa-solid fa-trash"></i>
                 </button>
@@ -571,45 +573,36 @@ const isImportModalOpen = ref(false);
 const revenueList = computed(() => store.db?.revenue || []);
 
 // HANDLER EXPORT EXCEL REVENUE
-// HANDLER EXPORT EXCEL REVENUE DENGAN FILTER AKTIF
 const handleExportRevenue = () => {
-  try {
-    const dataToExport = filteredRevenue.value;
-    if (!dataToExport || dataToExport.length === 0) {
-      store.addNotification(
-        "Peringatan",
-        "Tidak ada data revenue pada filter saat ini untuk diexport",
-        "warning",
-      );
-      return;
-    }
-
-    exportToExcelBySchema(
-      `Data_Revenue_${selectedUnitName.value}`,
-      dataToExport,
-      "REVENUE",
-    );
-    store.addNotification(
-      "Berhasil",
-      "Data Revenue berhasil diexport ke Excel",
-      "success",
-    );
-  } catch (err) {
-    store.addNotification("Gagal", err.message, "warning");
-  }
+  exportToExcelBySchema(
+    `Data_Revenue_${selectedUnitName.value}`,
+    filteredRevenue.value,
+    "REVENUE",
+  );
 };
 
-// HANDLER EKSEKUSI IMPORT EXCEL REVENUE
+// HANDLER EKSEKUSI IMPORT EXCEL REVENUE (PERBAIKAN DENGAN ID BARU FIRESTORE)
 const handleImportRevenueConfirm = async ({ itemsToSave, stats }) => {
   store.isLoading = true;
   try {
-    // Simpan data massal ke koleksi 'revenues' di Firestore
-    const savePromises = itemsToSave.map((item) =>
-      api.saveData("Revenue", item),
-    );
-    await Promise.all(savePromises);
+    // Loop dan simpan setiap item ke Firestore
+    for (const item of itemsToSave) {
+      // Bersihkan properti ID lama jika ada dari hasil parsing Excel/lokal
+      const payload = { ...item };
+      delete payload.id;
+      delete payload.Timestamp;
 
-    // Refresh database global
+      // Panggil api.saveData untuk membuat dokumen baru di Firestore
+      const res = await api.saveData("Revenue", payload);
+
+      // Jika butuh ID langsung dipasang ke local store
+      if (res && res.success && res.id) {
+        payload.id = res.id;
+        payload.Timestamp = res.id;
+      }
+    }
+
+    // Refresh database global dari Firestore agar data ber-ID baru siap di-edit / di-delete
     await store.loadFullDatabase();
 
     store.addNotification(
@@ -618,9 +611,11 @@ const handleImportRevenueConfirm = async ({ itemsToSave, stats }) => {
       "success",
     );
   } catch (err) {
+    console.error("Gagal Import Revenue:", err);
     store.addNotification("Gagal Import", err.message, "warning");
   } finally {
     store.isLoading = false;
+    isImportModalOpen.value = false;
   }
 };
 
@@ -645,8 +640,11 @@ const confirmModal = reactive({
 const chartUnitMonthlyTrendRef = ref(null);
 let trendChartInstance = null;
 
+// PERBAIKAN PENTING: Mengambil ID Unik Dokumen Firestore secara Presisi
 function getDocId(item) {
-  return item.id || item.Timestamp;
+  if (!item) return "";
+  // Mengambil ID Firestore (id) atau Timestamp fallback
+  return String(item.id || item.Timestamp || item.idDokumen || "");
 }
 
 const formatRupiah = (val) => {
@@ -660,7 +658,7 @@ const formatRupiah = (val) => {
 
 function isDateInFilter(dateStr) {
   if (!dateStr) return false;
-  const targetDate = dateStr.substring(0, 10);
+  const targetDate = String(dateStr).substring(0, 10);
   const startDate = store.filterDates.start;
   const endDate = store.filterDates.end;
 
@@ -704,7 +702,7 @@ const filteredRevenue = computed(() => {
 
 const totalFilteredRevenue = computed(() =>
   filteredRevenue.value.reduce(
-    (acc, curr) => acc + Number(curr.Revenue || 0),
+    (acc, curr) => acc + Number(curr.Revenue || curr.Nominal || 0),
     0,
   ),
 );
@@ -723,7 +721,7 @@ const monthlyRecap = computed(() => {
     const mIdx = new Date(item.Tanggal).getMonth();
     if (isNaN(mIdx)) return;
     if (!recapMap[mIdx]) recapMap[mIdx] = 0;
-    recapMap[mIdx] += Number(item.Revenue || 0);
+    recapMap[mIdx] += Number(item.Revenue || item.Nominal || 0);
   });
 
   return Object.keys(recapMap)
@@ -745,7 +743,7 @@ const quarterlyRecap = computed(() => {
   filteredRevenue.value.forEach((item) => {
     if (!item.Tanggal) return;
     const month = new Date(item.Tanggal).getMonth();
-    const rev = Number(item.Revenue || 0);
+    const rev = Number(item.Revenue || item.Nominal || 0);
 
     if (month >= 0 && month <= 2) qMap["Q1 (Jan - Mar)"] += rev;
     else if (month >= 3 && month <= 5) qMap["Q2 (Apr - Jun)"] += rev;
@@ -762,7 +760,7 @@ const sortedRevenue = computed(() => {
     let aVal = a[sortKey.value];
     let bVal = b[sortKey.value];
 
-    if (["Revenue", "JumlahPesanan"].includes(sortKey.value)) {
+    if (["Revenue", "Nominal", "JumlahPesanan"].includes(sortKey.value)) {
       aVal = Number(aVal || 0);
       bVal = Number(bVal || 0);
     } else {
@@ -836,6 +834,10 @@ const sortTable = (key) => {
 };
 
 const promptSingleDelete = (docId) => {
+  if (!docId) {
+    store.addNotification("Peringatan", "ID dokumen tidak valid", "warning");
+    return;
+  }
   confirmModal.isOpen = true;
   confirmModal.title = "Hapus Data Revenue";
   confirmModal.message = "Apakah Anda yakin ingin menghapus data revenue ini?";
@@ -858,25 +860,45 @@ const closeConfirmModal = () => {
   confirmModal.isBulk = false;
 };
 
+// PERBAIKAN UTAMA: LOGIKA EKSEKUSI PENGHAPUSAN FIRESTORE
 const executeConfirmAction = async () => {
   store.isLoading = true;
   try {
+    let successCount = 0;
+
     if (confirmModal.isBulk) {
-      for (const docId of selectedIds.value) {
-        await api.deleteData("revenues", docId);
+      for (const id of selectedIds.value) {
+        if (!id) continue;
+        // Panggil api.deleteData dengan sheetName 'Revenue' (di-map ke koleksi 'revenues' di Firestore)
+        const res = await api.deleteData("Revenue", id);
+        if (res && res.success) successCount++;
       }
       clearSelection();
     } else if (confirmModal.targetId) {
-      const res = await api.deleteData("revenues", confirmModal.targetId);
-      if (res.success) {
+      const res = await api.deleteData("Revenue", confirmModal.targetId);
+      if (res && res.success) {
+        successCount = 1;
         selectedIds.value = selectedIds.value.filter(
           (id) => id !== confirmModal.targetId,
         );
+      } else {
+        throw new Error(res?.message || "Gagal menghapus data dari Firestore.");
       }
     }
+
+    if (successCount > 0) {
+      store.addNotification(
+        "Berhasil",
+        `${successCount} data revenue berhasil dihapus`,
+        "success",
+      );
+    }
+
+    // WAJIB: Muat ulang database dari Firestore untuk menyegarkan UI
     await store.loadFullDatabase();
   } catch (err) {
     console.error("Gagal menghapus revenue:", err);
+    store.addNotification("Gagal Hapus", err.message, "warning");
   } finally {
     store.isLoading = false;
     closeConfirmModal();
@@ -914,6 +936,7 @@ watch(
   },
   { deep: true },
 );
+
 onMounted(() => {
   initCharts();
 });
