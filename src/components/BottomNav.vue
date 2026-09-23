@@ -340,34 +340,43 @@
           class="relative z-10 w-full flex items-center justify-around h-full px-2"
         >
           <!-- 1. DASHBOARD -->
-          <button
-            @click.stop="navTo('main')"
-            class="flex flex-col items-center justify-center transition-all cursor-pointer h-11 w-16 rounded-2xl shrink-0 focus:outline-none"
-            :class="
-              store.currentPage === 'main'
-                ? 'bg-white text-theme dark:text-slate-100 dark:bg-slate-800 shadow-sm font-bold'
-                : 'text-white/80 hover:text-white'
-            "
-          >
-            <i class="fa-solid fa-house text-xs"></i>
-            <span class="text-[9px] mt-0.5 whitespace-nowrap">Dashboard</span>
-          </button>
+          <div class="flex flex-col items-center justify-center">
+            <button
+              @click.stop="navTo('main')"
+              class="items-center transition-all cursor-pointer h-8 w-12 rounded-2xl shrink-0 focus:outline-none"
+              :class="
+                store.currentPage === 'main'
+                  ? 'bg-white text-theme shadow-sm font-bold'
+                  : 'text-white/80 hover:text-white'
+              "
+            >
+              <i class="fa-solid fa-house text-s"></i>
+            </button>
+            <span
+              class="text-[10px] text-white dark:text-slate-100 mt-0.5 whitespace-nowrap"
+              >Dashboard</span
+            >
+          </div>
 
           <!-- 2. UNIT -->
-          <button
-            @click.stop="togglePopup('unit')"
-            class="flex flex-col items-center justify-center transition-all cursor-pointer h-11 w-16 rounded-2xl shrink-0 focus:outline-none"
-            :class="
-              activePopup === 'unit' ||
-              store.currentPage.startsWith('unit-') ||
-              store.currentPage === 'summary'
-                ? 'bg-white text-theme dark:text-slate-100 dark:bg-slate-800 shadow-sm font-bold'
-                : 'text-white/80 hover:text-white'
-            "
-          >
-            <i class="fa-solid fa-building text-xs"></i>
-            <span class="text-[9px] mt-0.5 whitespace-nowrap">Unit</span>
-          </button>
+          <div class="flex flex-col items-center justify-center">
+            <button
+              @click.stop="togglePopup('unit')"
+              class="items-center transition-all cursor-pointer h-8 w-12 rounded-2xl shrink-0 focus:outline-none"
+              :class="
+                activePopup === 'unit' ||
+                store.currentPage.startsWith('unit-') ||
+                store.currentPage === 'summary'
+                  ? 'bg-white text-theme shadow-sm font-bold'
+                  : 'text-white/80 hover:text-white'
+              "
+            >
+              <i class="fa-solid fa-building text-s"></i>
+            </button>
+            <span class="text-[10px] text-white mt-0.5 whitespace-nowrap"
+              >Unit</span
+            >
+          </div>
 
           <!-- 3. SLOT TENGAH (TOMBOL PLUS) -->
           <div
@@ -375,7 +384,7 @@
           >
             <button
               @click.stop="togglePopup('add')"
-              class="absolute -top-4 w-14 h-14 bg-white text-theme dark:text-slate-100 dark:bg-slate-800 rounded-full shadow-lg flex items-center justify-center text-xl transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-900 z-20 focus:outline-none"
+              class="absolute -top-4 w-14 h-14 bg-theme-gradient text-white rounded-full shadow-lg flex items-center justify-center text-xl transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-900 z-20 focus:outline-none"
               :class="{
                 '!bg-slate-200 dark:!bg-slate-700': activePopup === 'add',
               }"
@@ -388,35 +397,43 @@
           </div>
 
           <!-- 4. WORKSPACE -->
-          <button
-            @click.stop="togglePopup('workspace')"
-            class="flex flex-col items-center justify-center transition-all cursor-pointer h-11 w-16 rounded-2xl shrink-0 focus:outline-none"
-            :class="
-              activePopup === 'workspace' ||
-              ['progress', 'digmar', 'leads', 'spv-report'].includes(
-                store.currentPage,
-              )
-                ? 'bg-white text-theme dark:text-slate-100 dark:bg-slate-800 shadow-sm font-bold'
-                : 'text-white/80 hover:text-white'
-            "
-          >
-            <i class="fa-solid fa-bullhorn text-xs"></i>
-            <span class="text-[9px] mt-0.5 whitespace-nowrap">Workspace</span>
-          </button>
+          <div class="flex flex-col items-center justify-center">
+            <button
+              @click.stop="togglePopup('workspace')"
+              class="items-center transition-all cursor-pointer h-8 w-12 rounded-2xl shrink-0 focus:outline-none"
+              :class="
+                activePopup === 'workspace' ||
+                ['progress', 'digmar', 'leads', 'spv-report'].includes(
+                  store.currentPage,
+                )
+                  ? 'bg-white text-theme shadow-sm font-bold'
+                  : 'text-white/80 hover:text-white'
+              "
+            >
+              <i class="fa-solid fa-bullhorn text-s"></i>
+            </button>
+            <span class="text-[10px] text-white mt-0.5 whitespace-nowrap"
+              >Workspace</span
+            >
+          </div>
 
           <!-- 5. ADUAN -->
-          <button
-            @click.stop="navTo('aduan')"
-            class="flex flex-col items-center justify-center transition-all cursor-pointer h-11 w-16 rounded-2xl shrink-0 focus:outline-none"
-            :class="
-              store.currentPage === 'aduan'
-                ? 'bg-white text-theme dark:text-slate-100 ark:bg-slate-800 shadow-sm font-bold'
-                : 'text-white/80 hover:text-white'
-            "
-          >
-            <i class="fa-solid fa-headset text-xs"></i>
-            <span class="text-[9px] mt-0.5 whitespace-nowrap">Aduan</span>
-          </button>
+          <div class="flex flex-col items-center justify-center">
+            <button
+              @click.stop="navTo('aduan')"
+              class="items-center transition-all cursor-pointer h-8 w-12 rounded-3xl shrink-0 focus:outline-none"
+              :class="
+                store.currentPage === 'aduan'
+                  ? 'bg-white text-theme shadow-sm font-bold'
+                  : 'text-white/80 hover:text-white'
+              "
+            >
+              <i class="fa-solid fa-headset text-s"></i>
+            </button>
+            <span class="text-[10px] text-white mt-0.5 whitespace-nowrap"
+              >Aduan</span
+            >
+          </div>
         </div>
       </nav>
     </div>
