@@ -45,10 +45,10 @@
               </div>
               <div>
                 <p class="text-xs font-bold text-slate-700 dark:text-slate-200">
-                  Format kolom untuk modul ini
+                  Format Template {{ currentSchema?.title }}
                 </p>
                 <p class="text-[10px] text-slate-400">
-                  Unduh template contoh Excel agar urutan kolom sesuai.
+                  Unduh contoh template Excel agar struktur kolom sesuai.
                 </p>
               </div>
             </div>
@@ -163,7 +163,9 @@
             >
               <div class="flex items-center justify-between">
                 <span class="font-mono font-bold text-emerald-600"
-                  >ID Key: #{{ item.incoming[primaryKey] }}</span
+                  >ID Key: #{{
+                    item.incoming[primaryKey] || item.incoming.id
+                  }}</span
                 >
                 <select
                   v-model="item.resolution"
@@ -216,17 +218,24 @@ import {
   downloadExcelTemplate,
 } from "../utils/excelHandler.js";
 
+// DEKLARASI PROPS LENGKAP UNTUK MENCEGAH WARNING "EXTRANEOUS NON-PROPS ATTRIBUTES"
 const props = defineProps({
-  isOpen: Boolean,
-  schemaKey: { type: String, required: true },
+  isOpen: { type: Boolean, default: false },
+  schemaKey: { type: String, default: "ADUAN" }, // Default ke ADUAN jika tidak diisi
+  title: { type: String, default: "" }, // Dideklarasikan agar tidak error jika terkirim
+  primaryKey: { type: String, default: "" }, // Dideklarasikan agar tidak error jika terkirim
   existingData: { type: Array, default: () => [] },
 });
 
 const emit = defineEmits(["close", "confirm"]);
 
 const canAccess = computed(() => store.canExportImport());
+
+// Tentukan skema & primaryKey berdasarkan schemaKey
 const currentSchema = computed(() => EXCEL_SCHEMAS[props.schemaKey] || {});
-const primaryKey = computed(() => currentSchema.value.primaryKey || "id");
+const activePrimaryKey = computed(() => {
+  return props.primaryKey || currentSchema.value.primaryKey || "id";
+});
 
 const step = ref("upload");
 const isProcessing = ref(false);
@@ -256,7 +265,7 @@ const handleFileSelect = async (e) => {
     diffResult.value = analyzeImportDiff(
       rawParsed,
       props.existingData,
-      primaryKey.value,
+      activePrimaryKey.value,
     );
     step.value = "preview";
   } catch (err) {
@@ -291,10 +300,10 @@ const processImport = () => {
       finalToSave.push(c.incoming);
       updatedCount++;
     } else if (c.resolution === "generate_new") {
-      const pKey = primaryKey.value;
+      const pKey = activePrimaryKey.value;
       const newItem = {
         ...c.incoming,
-        [pKey]: `${c.incoming[pKey]}_NEW_${Date.now()}`,
+        [pKey]: `${c.incoming[pKey] || Date.now()}_NEW_${Date.now()}`,
       };
       finalToSave.push(newItem);
       addedCount++;

@@ -22,7 +22,7 @@
       <div class="flex items-center justify-end gap-2">
         <button
           v-if="store.canExportImport()"
-          @click="handleExportExcel"
+          @click="handleExportAduan"
           class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer"
         >
           <i class="fa-solid fa-file-excel"></i>
@@ -41,9 +41,8 @@
         <!-- Modal Component -->
         <ModalImportExcel
           :isOpen="isImportModalOpen"
-          title="Tiket Aduan"
+          schemaKey="ADUAN"
           :existingData="tickets"
-          primaryKey="id"
           @close="isImportModalOpen = false"
           @confirm="handleImportConfirm"
         />
@@ -751,51 +750,23 @@ import ModalImportExcel from "../components/ModalImportExcel.vue";
 const isImportModalOpen = ref(false);
 
 // Handler Export Excel
-const handleExportExcel = () => {
-  try {
-    const dataToExport = tickets.value.map((t) => ({
-      id: t.id,
-      ticketNo: t.ticketNo,
-      customerName: t.customerName,
-      contact: t.contact,
-      unit: t.unit,
-      category: t.category,
-      priority: t.priority,
-      status: t.status,
-      description: t.description,
-      date: t.date,
-      createdBy: t.createdBy,
-      imageUrl: t.imageUrl || "",
-    }));
-
-    exportToExcelBySchema("Aduan_Pelanggan", dataToExport);
-    store.addNotification(
-      "Berhasil",
-      "Data berhasil diexport ke Excel",
-      "success",
-    );
-  } catch (err) {
-    store.addNotification("Gagal", err.message, "warning");
-  }
+const handleExportAduan = () => {
+  exportToExcelBySchema("Aduan_Pelanggan", tickets.value, "ADUAN");
 };
 
-// Handler Eksekusi Import
-const handleImportConfirm = async ({ itemsToSave, stats }) => {
+const handleImportAduanConfirm = async ({ itemsToSave, stats }) => {
   store.isLoading = true;
   try {
     const savePromises = itemsToSave.map((item) => api.saveAduanData(item));
     await Promise.all(savePromises);
-
-    // Refresh data global dari Firestore
     await store.loadFullDatabase();
-
     store.addNotification(
-      "Import Selesai",
-      `Berhasil ditambahkan: ${stats.added}, Diperbarui: ${stats.updated}, Diabaikan: ${stats.ignored}`,
+      "Berhasil",
+      `Import Selesai! Ditambahkan: ${stats.added}, Diperbarui: ${stats.updated}`,
       "success",
     );
   } catch (err) {
-    store.addNotification("Gagal Import", err.message, "warning");
+    store.addNotification("Gagal", err.message, "warning");
   } finally {
     store.isLoading = false;
   }

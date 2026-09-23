@@ -34,11 +34,11 @@ export const exportToExcelBySchema = (filename, rawDataList, schemaKey) => {
 };
 
 /**
- * Unduh Template / Sample File Excel berdasarkan Schema Key
+ * Unduh Template Sample Excel Dinamis untuk Halaman Mana Pun
  */
 export const downloadExcelTemplate = (schemaKey) => {
   const schema = EXCEL_SCHEMAS[schemaKey];
-  if (!schema) throw new Error("Skema tidak ditemukan.");
+  if (!schema) throw new Error(`Skema '${schemaKey}' tidak ditemukan.`);
 
   const sampleData = schema.sampleData && schema.sampleData.length > 0
     ? schema.sampleData
@@ -55,12 +55,12 @@ export const downloadExcelTemplate = (schemaKey) => {
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Template");
 
-  const fileName = `Template_Import_${(schema.title || "Data").replace(/[\s\/]+/g, "_")}.xlsx`;
-  XLSX.writeFile(workbook, fileName);
+  const cleanTitle = (schema.title || "Data").replace(/[\s\/]+/g, "_");
+  XLSX.writeFile(workbook, `Template_Import_${cleanTitle}.xlsx`);
 };
 
 /**
- * Parse File Excel dan Kembalikan Array JSON dengan Key DB
+ * Parse File Excel Menggunakan Schema Modul
  */
 export const parseExcelWithSchema = (file, schemaKey) => {
   return new Promise((resolve, reject) => {
@@ -88,10 +88,10 @@ export const parseExcelWithSchema = (file, schemaKey) => {
 };
 
 /**
- * Deteksi Konflik & Diff Engine
+ * Analisis & Deteksi Konflik Data
  */
 export const analyzeImportDiff = (incomingData, existingData, primaryKey = "id") => {
-  const existingMap = new Map(existingData.map(item => [String(item[primaryKey] || item.Timestamp), item]));
+  const existingMap = new Map(existingData.map(item => [String(item[primaryKey] || item.id || item.Timestamp), item]));
 
   const summary = {
     newItems: [],
@@ -100,7 +100,7 @@ export const analyzeImportDiff = (incomingData, existingData, primaryKey = "id")
   };
 
   incomingData.forEach(incoming => {
-    const key = String(incoming[primaryKey] || incoming.Timestamp);
+    const key = String(incoming[primaryKey] || incoming.id || incoming.Timestamp);
 
     if (!key || !existingMap.has(key)) {
       summary.newItems.push(incoming);
