@@ -345,7 +345,7 @@
             class="flex flex-col items-center justify-center transition-all cursor-pointer h-11 w-16 rounded-2xl shrink-0 focus:outline-none"
             :class="
               store.currentPage === 'main'
-                ? 'bg-white text-theme dark:bg-slate-800 shadow-sm font-bold'
+                ? 'bg-white text-theme dark:text-slate-100 dark:bg-slate-800 shadow-sm font-bold'
                 : 'text-white/80 hover:text-white'
             "
           >
@@ -361,7 +361,7 @@
               activePopup === 'unit' ||
               store.currentPage.startsWith('unit-') ||
               store.currentPage === 'summary'
-                ? 'bg-white text-theme dark:bg-slate-800 shadow-sm font-bold'
+                ? 'bg-white text-theme dark:text-slate-100 dark:bg-slate-800 shadow-sm font-bold'
                 : 'text-white/80 hover:text-white'
             "
           >
@@ -375,7 +375,7 @@
           >
             <button
               @click.stop="togglePopup('add')"
-              class="absolute -top-4 w-14 h-14 bg-white text-theme dark:bg-slate-800 dark:text-theme rounded-full shadow-lg flex items-center justify-center text-xl transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-900 z-20 focus:outline-none"
+              class="absolute -top-4 w-14 h-14 bg-white text-theme dark:text-slate-100 dark:bg-slate-800 rounded-full shadow-lg flex items-center justify-center text-xl transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-900 z-20 focus:outline-none"
               :class="{
                 '!bg-slate-200 dark:!bg-slate-700': activePopup === 'add',
               }"
@@ -396,7 +396,7 @@
               ['progress', 'digmar', 'leads', 'spv-report'].includes(
                 store.currentPage,
               )
-                ? 'bg-white text-theme dark:bg-slate-800 shadow-sm font-bold'
+                ? 'bg-white text-theme dark:text-slate-100 dark:bg-slate-800 shadow-sm font-bold'
                 : 'text-white/80 hover:text-white'
             "
           >
@@ -410,7 +410,7 @@
             class="flex flex-col items-center justify-center transition-all cursor-pointer h-11 w-16 rounded-2xl shrink-0 focus:outline-none"
             :class="
               store.currentPage === 'aduan'
-                ? 'bg-white text-theme dark:bg-slate-800 shadow-sm font-bold'
+                ? 'bg-white text-theme dark:text-slate-100 ark:bg-slate-800 shadow-sm font-bold'
                 : 'text-white/80 hover:text-white'
             "
           >

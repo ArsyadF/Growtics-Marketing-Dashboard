@@ -648,7 +648,8 @@
 
       <!-- Bottom Widget: Profil User -->
       <div
-        class="p-1.5 m-2 bottom-[max(1rem,env(safe-area-inset-bottom))] md:mb-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-700/40 flex items-center justify-center shrink-0"
+        class="p-1.5 m-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-700/40 flex items-center justify-center shrink-0 transition-all"
+        style="padding-bottom: max(0.375rem, env(safe-area-inset-bottom))"
       >
         <button
           v-if="!isLoggedIn"
