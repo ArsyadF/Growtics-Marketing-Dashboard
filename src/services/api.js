@@ -290,6 +290,7 @@ export const api = {
         deadline: programItem.deadline || programItem.Deadline || '',
         progress: Number(programItem.progress || programItem.Progress || 0),
         status: programItem.status || programItem.Status || 'To Do',
+        todos: Array.isArray(programItem.todos) ? programItem.todos : [],
         assignedPicIds: assignedPicIds, 
         assignedUsers: assignedUsers,
         picName: programItem.picName || assignedUsers.join(', '),

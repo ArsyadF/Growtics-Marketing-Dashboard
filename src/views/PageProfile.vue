@@ -110,9 +110,26 @@
           >
             Deskripsi / Bio Profil
           </label>
+
+          <!-- PILIHAN EMOTICON EKSPRESIF CEPAT -->
+          <div
+            class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-1.5 [scrollbar-width:none]"
+          >
+            <button
+              v-for="emoji in EXPRESSIVE_EMOJIS"
+              :key="emoji"
+              type="button"
+              @click="appendEmojiToBio(emoji)"
+              class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500/10 text-sm flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700 transition-transform active:scale-95 cursor-pointer"
+            >
+              {{ emoji }}
+            </button>
+          </div>
+
           <textarea
             v-model="form.bio"
             rows="3"
+            placeholder="Tuliskan bio atau status singkat Anda..."
             class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
           ></textarea>
         </div>
@@ -148,6 +165,30 @@ const emit = defineEmits(["logout-success"]);
 
 const fileInputRef = ref(null);
 
+// Pilihan Emoticon Ekspresif untuk Form Bio
+const EXPRESSIVE_EMOJIS = [
+  "🚀",
+  "🔥",
+  "💡",
+  "🎯",
+  "⚡",
+  "💪",
+  "😎",
+  "☕",
+  "💻",
+  "✨",
+  "📊",
+  "✅",
+  "🎉",
+  "🌟",
+  "🏼",
+  "👍",
+  "🙌",
+  "📝",
+  "🌈",
+  "🏆",
+];
+
 const userProfile = ref({
   Nama: "",
   Email: "",
@@ -165,6 +206,10 @@ const form = ref({
 
 const isSaving = ref(false);
 
+const appendEmojiToBio = (emoji) => {
+  form.value.bio += (form.value.bio ? " " : "") + emoji;
+};
+
 const avatarPreviewUrl = computed(() => {
   if (form.value.avatarUrl && form.value.avatarUrl.length > 5) {
     return form.value.avatarUrl;
@@ -178,19 +223,16 @@ const avatarPreviewUrl = computed(() => {
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(nameToUse)}`;
 });
 
-// Trigger input file dari perangkat
 const triggerFileInput = () => {
   if (fileInputRef.value) {
     fileInputRef.value.click();
   }
 };
 
-// Proses konversi file gambar dari perangkat ke Base64 / URL
 const handleFileUpload = (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
-  // Cek ukuran file (maksimal 2MB agar tidak memberatkan Firestore)
   if (file.size > 2 * 1024 * 1024) {
     store.openAlert(
       "Ukuran Terlalu Besar",
@@ -203,12 +245,11 @@ const handleFileUpload = (e) => {
 
   const reader = new FileReader();
   reader.onload = (event) => {
-    form.value.avatarUrl = event.target.result; // Hasil Base64 disimpan ke state
+    form.value.avatarUrl = event.target.result;
   };
   reader.readAsDataURL(file);
 };
 
-// Sync data user secara reaktif
 watch(
   () => store.currentUser,
   (curr) => {
@@ -258,7 +299,6 @@ const saveUserProfile = async () => {
         ...payload,
       };
 
-      // Update state store & localStorage
       store.setCurrentUser(updatedUser);
       userProfile.value = updatedUser;
 

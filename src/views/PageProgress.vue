@@ -44,7 +44,7 @@
           <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
         </button>
 
-        <!-- FILTER STATUS PROGRES (TAMBAHAN PURE FILTER) -->
+        <!-- FILTER STATUS PROGRES -->
         <div class="relative shrink-0">
           <button
             @click.stop="toggleFilterMenu('status')"
@@ -293,7 +293,7 @@
       </div>
     </div>
 
-    <!-- METRIK STATISTIK PROGRAM (DENGAN REVISI CLASS P-[14PX]) -->
+    <!-- METRIK STATISTIK PROGRAM -->
     <div class="grid grid-cols-4 sm:grid-cols-5 gap-2.5 md:gap-4 relative z-0">
       <div
         class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-slate-100 dark:border-slate-800"
@@ -360,7 +360,7 @@
         </h4>
       </div>
 
-      <!-- FITUR 1: TOGGLE DISPLAY MODE DESKTOP (KANBAN / LIST) -->
+      <!-- TOGGLE DISPLAY MODE DESKTOP -->
       <div
         class="block sm:hidden glass-card rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1"
       >
@@ -381,7 +381,6 @@
             ></i>
             <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
           </button>
-          <!-- Tombol Tambah Program -->
           <button
             v-if="isSpvOrAdmin"
             @click="openAddModal"
@@ -433,7 +432,7 @@
       </div>
     </div>
 
-    <!-- FITUR 1: TOGGLE DISPLAY MODE MOBILE (KANBAN / LIST) -->
+    <!-- TOGGLE DISPLAY MODE MOBILE -->
     <div class="hidden sm:flex flex items-center gap-2 p-1 justify-end">
       <div class="hidden lg:flex col-span-2 sm:col-span-1">
         <div class="flex items-center gap-2 p-2 justify-between">
@@ -453,7 +452,6 @@
             ></i>
             <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
           </button>
-          <!-- Tombol Tambah Program -->
           <button
             v-if="isSpvOrAdmin"
             @click="openAddModal"
@@ -502,7 +500,7 @@
       </div>
     </div>
 
-    <!-- FITUR 2: MOBILE HEADER SWITCHER UNTUK KANBAN -->
+    <!-- MOBILE HEADER SWITCHER UNTUK KANBAN -->
     <div
       v-if="displayMode === 'kanban'"
       class="md:hidden glass-card p-2.5 rounded-2xl bg-white/90 dark:bg-slate-900/90 flex items-center justify-between border border-slate-200 dark:border-slate-800"
@@ -524,7 +522,6 @@
         </span>
       </div>
 
-      <!-- Arrow Navigation untuk Pindah Status di Mobile -->
       <div class="flex items-center gap-1">
         <button
           @click="prevMobileStatus"
@@ -560,7 +557,6 @@
         @drop="onDrop($event, status)"
         class="glass-card p-3 rounded-2xl space-y-3 bg-slate-100/50 dark:bg-slate-900/40 min-h-[480px]"
       >
-        <!-- Title Column Desktop -->
         <div
           class="hidden md:flex items-center justify-between px-1 pb-1 border-b border-slate-200/80 dark:border-slate-800"
         >
@@ -633,6 +629,22 @@
             >
               {{ item.description || item.Deskripsi }}
             </p>
+
+            <!-- INDIKATOR CHECKS SUB-TASKS -->
+            <div
+              v-if="item.todos && item.todos.length > 0"
+              class="flex items-center gap-1.5 text-[9px] text-slate-500 dark:text-slate-400 bg-slate-100/70 dark:bg-slate-800/60 px-2 py-1 rounded-lg w-fit"
+            >
+              <i
+                class="fa-solid fa-list-check text-emerald-600 text-[10px]"
+              ></i>
+              <span class="font-bold text-slate-700 dark:text-slate-300">
+                {{ getCompletedTodosCount(item) }}/{{
+                  item.todos.length
+                }}
+                Sub-tugas
+              </span>
+            </div>
 
             <div class="flex items-center justify-between text-[9px] pt-0.5">
               <span class="text-slate-400"
@@ -817,7 +829,7 @@
       </div>
     </div>
 
-    <!-- MODAL EDIT / DETAIL PROGRAM -->
+    <!-- MODAL EDIT / DETAIL PROGRAM (DENGAN CHECKLIST CHECKBOX + FORM KETERANGAN) -->
     <Teleport to="body">
       <div
         v-if="isModalOpen"
@@ -936,7 +948,6 @@
                 ></i>
               </button>
 
-              <!-- Popover Menu Checkbox Staff -->
               <div
                 v-if="isModalPicDropdownOpen"
                 @click.stop
@@ -1031,11 +1042,91 @@
               </div>
             </div>
 
+            <!-- KOMPONEN BARU: CHECKLIST SUB-TASKS / CHECKBOX TO DO -->
+            <div
+              class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/80 dark:border-slate-800 space-y-2"
+            >
+              <div class="flex items-center justify-between">
+                <label
+                  class="font-bold text-slate-700 dark:text-slate-200 flex items-center gap-1.5"
+                >
+                  <i class="fa-solid fa-square-check text-emerald-600"></i>
+                  <span>Daftar Sub-tugas / Checklist:</span>
+                </label>
+                <span
+                  class="text-[10px] font-bold text-emerald-600 bg-emerald-500/10 px-2 py-0.5 rounded-full"
+                >
+                  {{ activeItem.todos.filter((t) => t.completed).length }} /
+                  {{ activeItem.todos.length }} Selesai
+                </span>
+              </div>
+
+              <!-- List Sub-tasks dengan Checkbox & Input Text -->
+              <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                <div
+                  v-for="(todo, index) in activeItem.todos"
+                  :key="index"
+                  class="flex items-center gap-2 p-1.5 bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 shadow-2xs"
+                >
+                  <input
+                    type="checkbox"
+                    v-model="todo.completed"
+                    @change="recalculateProgressFromTodos"
+                    class="accent-emerald-600 rounded cursor-pointer w-4 h-4 shrink-0"
+                  />
+                  <input
+                    type="text"
+                    v-model="todo.text"
+                    placeholder="Tuliskan tugas / aktivitas..."
+                    class="w-full bg-transparent outline-none text-slate-800 dark:text-slate-100 text-xs"
+                    :class="{
+                      'line-through text-slate-400 dark:text-slate-500':
+                        todo.completed,
+                    }"
+                  />
+                  <button
+                    type="button"
+                    @click="removeTodoItem(index)"
+                    class="text-slate-400 hover:text-rose-500 px-1 cursor-pointer"
+                    title="Hapus Tugas"
+                  >
+                    <i class="fa-solid fa-trash-can text-xs"></i>
+                  </button>
+                </div>
+
+                <div
+                  v-if="activeItem.todos.length === 0"
+                  class="text-slate-400 text-[11px] italic text-center py-2"
+                >
+                  Belum ada sub-tugas. Klik tombol di bawah untuk menambah
+                  checklist.
+                </div>
+              </div>
+
+              <!-- Input Cepat Tambah Sub-tugas Baru -->
+              <div class="flex gap-2 pt-1">
+                <input
+                  type="text"
+                  v-model="newTodoInput"
+                  @keyup.enter.prevent="addTodoItem"
+                  placeholder="+ Tambah item checklist baru... (Tekan Enter)"
+                  class="w-full glass-input rounded-xl px-3 py-1.5 text-xs outline-none dark:bg-slate-900"
+                />
+                <button
+                  type="button"
+                  @click="addTodoItem"
+                  class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shrink-0 cursor-pointer"
+                >
+                  <i class="fa-solid fa-plus mr-1"></i>Tambah
+                </button>
+              </div>
+            </div>
+
             <!-- Progres Slider -->
             <div>
               <div class="flex justify-between items-center mb-1">
                 <label class="block text-slate-500 font-medium"
-                  >Progres Saat Ini (%):</label
+                  >Progres Persentase (%):</label
                 >
                 <span class="font-bold text-emerald-600 text-sm"
                   >{{ activeItem.progress }}%</span
@@ -1050,16 +1141,16 @@
               />
             </div>
 
-            <!-- Deskripsi -->
+            <!-- Deskripsi & Keterangan (Tetap Ada) -->
             <div>
               <label class="block text-slate-500 font-medium mb-1"
                 >Deskripsi & Catatan Output Program:</label
               >
               <textarea
                 v-model="activeItem.description"
-                rows="4"
+                rows="3"
                 placeholder="Rincian deskripsi atau progres terbaru..."
-                class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none resize-y min-h-[90px]"
+                class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none resize-y min-h-[80px]"
               ></textarea>
             </div>
 
@@ -1112,7 +1203,7 @@
       </div>
     </Teleport>
 
-    <!-- TOMBOL FILTER MELAYANG KHUSUS MOBILE (FLOATING ACTION BUTTON) -->
+    <!-- TOMBOL FILTER MELAYANG KHUSUS MOBILE -->
     <div class="md:hidden fixed bottom-20 right-4 z-40">
       <button
         @click="isMobileFilterOpen = true"
@@ -1124,7 +1215,6 @@
           <i
             class="fa-solid fa-filter flex items-center justify-center w-11 h-11 rounded-full bg-button text-white text-base shadow-lg shadow-emerald-600/30"
           ></i>
-          <!-- Indikator Aktif Jika Filter Terpasang -->
           <span
             v-if="
               selectedStatuses.length ||
@@ -1142,7 +1232,7 @@
       </button>
     </div>
 
-    <!-- MODAL FILTER BOTTOM SHEET KHUSUS MOBILE (DROPDOWN ACCORDION STYLE) -->
+    <!-- MODAL FILTER BOTTOM SHEET KHUSUS MOBILE -->
     <Teleport to="body">
       <div
         v-if="isMobileFilterOpen"
@@ -1467,7 +1557,7 @@ import { api } from "../services/api.js";
 
 const columns = ["To Do", "In Progress", "In Review", "Completed"];
 const isMobileFilterOpen = ref(false);
-const mobileAccordion = ref(null); // State kontrol dropdown accordion mobile
+const mobileAccordion = ref(null);
 const displayMode = ref("kanban");
 const mobileStatusIndex = ref(1);
 
@@ -1514,6 +1604,9 @@ const isModalPicDropdownOpen = ref(false);
 const isEdit = ref(false);
 const isSubmitting = ref(false);
 
+// STATE BARU: DUKUNGAN UNTUK CHECKLIST TODOS
+const newTodoInput = ref("");
+
 const activeItem = reactive({
   id: null,
   title: "",
@@ -1524,6 +1617,7 @@ const activeItem = reactive({
   status: "To Do",
   description: "",
   assignedPicIds: [],
+  todos: [], // DAFTAR CHECKLIST SUB-TASKS
 });
 
 const handleOutsideClick = () => {
@@ -1589,6 +1683,42 @@ const isSpvOrAdmin = computed(() =>
     currentUser.value?.role?.toUpperCase(),
   ),
 );
+
+// HELPER: MANAJEMEN LOGIKA CHECKLIST SUB-TASKS
+const addTodoItem = () => {
+  if (!newTodoInput.value.trim()) return;
+  activeItem.todos.push({
+    text: newTodoInput.value.trim(),
+    completed: false,
+  });
+  newTodoInput.value = "";
+  recalculateProgressFromTodos();
+};
+
+const removeTodoItem = (index) => {
+  activeItem.todos.splice(index, 1);
+  recalculateProgressFromTodos();
+};
+
+const recalculateProgressFromTodos = () => {
+  if (!activeItem.todos || activeItem.todos.length === 0) return;
+  const completedCount = activeItem.todos.filter((t) => t.completed).length;
+  activeItem.progress = Math.round(
+    (completedCount / activeItem.todos.length) * 100,
+  );
+
+  // Auto update status kanban jika 100%
+  if (activeItem.progress === 100) {
+    activeItem.status = "Completed";
+  } else if (activeItem.progress > 0 && activeItem.status === "To Do") {
+    activeItem.status = "In Progress";
+  }
+};
+
+const getCompletedTodosCount = (item) => {
+  if (!item.todos || !Array.isArray(item.todos)) return 0;
+  return item.todos.filter((t) => t.completed).length;
+};
 
 const toggleAllStatuses = () => {
   if (selectedStatuses.value.length === columns.length)
@@ -1819,6 +1949,9 @@ const onDrop = async (e, status) => {
     if (status === "Completed") {
       item.progress = 100;
       item.Progress = 100;
+      if (item.todos) {
+        item.todos.forEach((t) => (t.completed = true));
+      }
     }
     store.isLoading = true;
     try {
@@ -1838,6 +1971,7 @@ const onDrop = async (e, status) => {
 
 const openAddModal = () => {
   isEdit.value = false;
+  newTodoInput.value = "";
   Object.assign(activeItem, {
     id: Date.now(),
     title: "",
@@ -1848,6 +1982,7 @@ const openAddModal = () => {
     status: "To Do",
     description: "",
     assignedPicIds: [],
+    todos: [],
   });
   isModalPicDropdownOpen.value = false;
   isModalOpen.value = true;
@@ -1859,11 +1994,17 @@ const openDetailModal = (item) => {
 
 const openEditModal = (item) => {
   isEdit.value = true;
+  newTodoInput.value = "";
   let picIds = [];
   if (Array.isArray(item.assignedPicIds)) {
     picIds = [...item.assignedPicIds];
   } else if (item.picId) {
     picIds = [item.picId];
+  }
+
+  let todosList = [];
+  if (Array.isArray(item.todos)) {
+    todosList = JSON.parse(JSON.stringify(item.todos));
   }
 
   Object.assign(activeItem, {
@@ -1877,6 +2018,7 @@ const openEditModal = (item) => {
     progress: Number(item.progress || item.Progress || 0),
     status: item.status || item.Status || "To Do",
     assignedPicIds: picIds,
+    todos: todosList,
   });
   isModalPicDropdownOpen.value = false;
   isModalOpen.value = true;
@@ -1905,6 +2047,7 @@ const saveProgram = async () => {
       assignedPicIds: activeItem.assignedPicIds,
       assignedUsers: picNames,
       picName: picNames.join(", "),
+      todos: activeItem.todos || [],
       createdBy: activeItem.createdBy || store.currentUser?.email || "",
     };
 

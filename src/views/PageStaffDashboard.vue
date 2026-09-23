@@ -1,26 +1,18 @@
 <!-- src/views/PageStaffDashboard.vue -->
 <template>
   <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
-    <!-- 1. HEADER MENYAPA STAF DENGAN DINAMIS LANGIT, MATAHARI/BULAN & AWAN -->
-    <!-- <div
-      class="p-5 rounded-3xl text-white shadow-lg relative overflow-hidden -mb-16 pb-16 transition-all duration-700"
-      :class="skyTheme.background"
-    > -->
-
+    <!-- 1. HEADER MENYAPA STAF DENGAN DINAMIS LANGIT & RUNNING TEXT BIO -->
     <div
       class="p-5 rounded-3xl text-white shadow-lg relative overflow-hidden -mb-16 pb-16 bg-theme-gradient"
     >
       <!-- ORNAMEN AWAN LATAR BELAKANG -->
       <div class="absolute inset-0 pointer-events-none opacity-25">
-        <!-- Awan 1 -->
         <i
           class="fa-solid fa-cloud text-white text-6xl absolute top-2 right-12 animate-pulse"
         ></i>
-        <!-- Awan 2 -->
         <i
           class="fa-solid fa-cloud text-white text-4xl absolute bottom-14 right-36 opacity-75"
         ></i>
-        <!-- Awan 3 (Kecil di Kiri) -->
         <i
           class="fa-solid fa-cloud text-white text-3xl absolute top-8 left-1/3 opacity-50"
         ></i>
@@ -28,13 +20,10 @@
 
       <!-- MATAHARI / BULAN BERDASARKAN WAKTU -->
       <div class="absolute -right-4 -top-4 pointer-events-none">
-        <!-- Sun Glow / Moon Glow Effect -->
         <div
           class="w-32 h-32 rounded-full blur-2xl opacity-60 transition-all duration-700"
           :class="skyTheme.glow"
         ></div>
-
-        <!-- Element Matahari / Bulan -->
         <div
           class="absolute top-8 right-8 w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-xl transition-all duration-700 backdrop-blur-xs"
           :class="skyTheme.celestialClass"
@@ -44,7 +33,7 @@
       </div>
 
       <!-- KONTEN GREETING CARD -->
-      <div class="relative z-10 flex items-center justify-between">
+      <div class="relative z-10 flex flex-col justify-between space-y-3">
         <div>
           <span
             class="text-[10px] font-bold uppercase tracking-widest bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-md"
@@ -57,13 +46,41 @@
           <h2 class="text-lg md:text-xl font-extrabold leading-tight">
             {{ currentUser.nama || "Rekan Tim" }} 👋
           </h2>
-          <p class="text-xs text-white/80 mt-2">
+          <p class="text-xs text-white/80 mt-1">
             Unit:
             <span class="font-bold underline">{{
               currentUser.unit || "NHP"
             }}</span>
             • Pantau aktivitas & tugas harian Anda di sini.
           </p>
+        </div>
+
+        <!-- RUNNING TEXT BIO + EMOTICON ANIMASI KHAS TELEGRAM/WA -->
+        <div class="mt-2 flex items-center gap-2">
+          <!-- Kotak Running Text Bersih -->
+          <div
+            @click="openBioModal"
+            class="flex-1 bg-black/25 hover:bg-black/35 backdrop-blur-md rounded-2xl px-4 py-2 flex items-center border border-white/20 cursor-pointer transition-all overflow-hidden"
+            title="Klik untuk memperbarui status Anda"
+          >
+            <div class="overflow-hidden whitespace-nowrap w-full">
+              <div
+                class="inline-block animate-marquee pl-full text-xs font-semibold text-white/95"
+              >
+                {{ cleanedBioText }}
+              </div>
+            </div>
+          </div>
+
+          <!-- Emoticon Animasi Dinamis Bergaya Telegram / WhatsApp -->
+          <div
+            @click="openBioModal"
+            class="shrink-0 text-4xl md:text-3xl cursor-pointer hover:scale-125 transition-transform drop-shadow-md select-none px-1 flex items-center justify-center"
+            :class="emojiAnimationClass"
+            title="Klik untuk ganti emoticon status"
+          >
+            {{ activeEmoji }}
+          </div>
         </div>
       </div>
     </div>
@@ -369,16 +386,261 @@
         </button>
       </div>
     </div>
+
+    <!-- POPUP MODAL GANTI BIO / STATUS PROFIL -->
+    <Teleport to="body">
+      <div
+        v-if="isBioModalOpen"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm"
+        @click.self="isBioModalOpen = false"
+      >
+        <div
+          class="w-full max-w-md glass-card bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800"
+        >
+          <div
+            class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800"
+          >
+            <h3
+              class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
+            >
+              <i class="fa-solid fa-comment-dots text-emerald-600"></i>
+              <span>Ganti Status Harian</span>
+            </h3>
+            <button
+              @click="isBioModalOpen = false"
+              type="button"
+              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            >
+              <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+          </div>
+
+          <form @submit.prevent="saveBio" class="space-y-4 text-xs">
+            <!-- Pilihan Emoticon Ekspresif (Hanya Pilih 1, Tidak Masuk ke Teks) -->
+            <div>
+              <label
+                class="block text-slate-500 dark:text-slate-400 font-semibold mb-1"
+              >
+                Pilih Emoticon Ekspresif:
+              </label>
+              <div
+                class="flex items-center gap-1.5 overflow-x-auto pb-2 [scrollbar-width:none]"
+              >
+                <button
+                  v-for="emoji in EXPRESSIVE_EMOJIS"
+                  :key="emoji"
+                  type="button"
+                  @click="selectEmoji(emoji)"
+                  class="w-9 h-9 rounded-xl text-base flex items-center justify-center shrink-0 border transition-all active:scale-95 cursor-pointer"
+                  :class="
+                    selectedEmoji === emoji
+                      ? 'bg-emerald-500/10 border-emerald-500 ring-2 ring-emerald-500/30'
+                      : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-200/60'
+                  "
+                >
+                  {{ emoji }}
+                </button>
+              </div>
+            </div>
+
+            <!-- Form Textarea Status (Bersih tanpa tumpukan emoticon) -->
+            <div>
+              <label
+                class="block text-slate-500 dark:text-slate-400 font-semibold mb-1"
+              >
+                Teks Status:
+              </label>
+              <textarea
+                v-model="bioFormText"
+                rows="3"
+                placeholder="Tuliskan status harian Anda..."
+                class="w-full glass-input rounded-xl p-3 text-xs outline-none text-slate-800 dark:text-slate-100 resize-none"
+              ></textarea>
+            </div>
+
+            <!-- Modal Footer Controls -->
+            <div
+              class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
+            >
+              <button
+                @click="isBioModalOpen = false"
+                type="button"
+                :disabled="isSavingBio"
+                class="px-4 py-2 rounded-xl font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                :disabled="isSavingBio"
+                class="px-5 py-2 rounded-xl font-bold bg-button text-white shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              >
+                <i
+                  v-if="isSavingBio"
+                  class="fa-solid fa-spinner fa-spin text-xs"
+                ></i>
+                <span>{{
+                  isSavingBio ? "Menyimpan..." : "Simpan Status"
+                }}</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { store } from "../store/index.js";
+import { api } from "../services/api.js";
 
 const currentUser = computed(() => store.currentUser || {});
 
-// Waktu Menyapa User
+const EXPRESSIVE_EMOJIS = [
+  "🚀",
+  "🔥",
+  "💡",
+  "🎯",
+  "⚡",
+  "💪",
+  "😎",
+  "☕",
+  "💻",
+  "✨",
+  "📊",
+  "✅",
+  "🎉",
+  "🌟",
+  "😏",
+  "👍",
+  "🙌",
+  "📝",
+  "🌈",
+  "🏆",
+];
+
+const isBioModalOpen = ref(false);
+const bioFormText = ref("");
+const selectedEmoji = ref("🚀");
+const isSavingBio = ref(false);
+
+const rawBioText = computed(() => {
+  return (
+    currentUser.value.Bio ||
+    currentUser.value.bio ||
+    "lagi fokus, jangan diganggu 🚀"
+  );
+});
+
+// MEMISAHKAN TEKS DARI EMOJI UNTUK RUNNING TEXT
+const cleanedBioText = computed(() => {
+  const emojiRegex =
+    /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu;
+  const clean = rawBioText.value.replace(emojiRegex, "").trim();
+  return clean || rawBioText.value;
+});
+
+// MENGAMBIL EMOJI AKTIF
+const activeEmoji = computed(() => {
+  const emojiRegex =
+    /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu;
+  const matches = rawBioText.value.match(emojiRegex);
+  return matches && matches.length > 0 ? matches[matches.length - 1] : "🚀";
+});
+
+// KELAS ANIMASI BERDASARKAN KARAKTER EMOJI (GAYA TELEGRAM / WHATSAPP)
+const emojiAnimationClass = computed(() => {
+  const emoji = activeEmoji.value;
+
+  // 1. Api / Roket / Kilat -> Efek Meluncur / Membal Cepat
+  if (["🚀", "🔥", "⚡"].includes(emoji)) {
+    return "tg-anim-launch";
+  }
+  // 2. Senyum / Sinis / Keren -> Efek Geleng-geleng / Wiggle Unyu
+  if (["😏", "😎", "🙌", "👍"].includes(emoji)) {
+    return "tg-anim-wiggle";
+  }
+  // 3. Kopi / Komputer / Target -> Efek Detak Jantung / Pulse Jelas
+  if (["☕", "💻", "🎯", "💡"].includes(emoji)) {
+    return "tg-anim-heartbeat";
+  }
+  // 4. Bintang / Binar / Pelangi -> Efek Berputar & Bersinar
+  if (["✨", "🌟", "🌈", "🎉"].includes(emoji)) {
+    return "tg-anim-spin-glow";
+  }
+  // Default Animasi Bounce Telegram
+  return "tg-anim-bounce";
+});
+
+const openBioModal = () => {
+  // Ambil teks bersih tanpa emoji untuk ditaruh di textarea
+  bioFormText.value = cleanedBioText.value;
+  // Set emoticon terpilih saat ini
+  selectedEmoji.value = activeEmoji.value;
+  isBioModalOpen.value = true;
+};
+
+// Fungsi memilih emoticon (TIDAK menambahkan ke teks)
+const selectEmoji = (emoji) => {
+  selectedEmoji.value = emoji;
+};
+
+const saveBio = async () => {
+  const myId = currentUser.value?.id;
+  if (!myId) {
+    store.addNotification(
+      "Peringatan",
+      "Sesi login tidak ditemukan",
+      "warning",
+    );
+    return;
+  }
+
+  isSavingBio.value = true;
+  try {
+    // Gabungkan teks bersih dan 1 emoticon pilihan di akhir
+    const finalBio =
+      `${bioFormText.value.trim()} ${selectedEmoji.value}`.trim();
+
+    const payload = {
+      bio: finalBio,
+      Bio: finalBio,
+    };
+
+    const res = await api.updateData("Users", myId, payload);
+    if (res.success || res) {
+      const updatedUser = {
+        ...store.currentUser,
+        ...payload,
+      };
+      store.setCurrentUser(updatedUser);
+      store.addNotification(
+        "Berhasil",
+        "Status bio berhasil diperbarui!",
+        "success",
+      );
+      isBioModalOpen.value = false;
+    } else {
+      store.addNotification(
+        "Gagal",
+        "Gagal memperbarui status bio.",
+        "warning",
+      );
+    }
+  } catch (err) {
+    console.error("Gagal simpan bio:", err);
+    store.addNotification("Error", err.message, "warning");
+  } finally {
+    isSavingBio.value = false;
+  }
+};
+
+const appendEmoji = (emoji) => {
+  bioFormText.value += (bioFormText.value ? " " : "") + emoji;
+};
+
 const greetingTime = computed(() => {
   const hour = new Date().getHours();
   if (hour >= 3 && hour < 11) return "Pagi";
@@ -387,11 +649,9 @@ const greetingTime = computed(() => {
   return "Malam";
 });
 
-// Konfigurasi Dinamis Tema Langit & Benda Langit (Matahari / Bulan)
 const skyTheme = computed(() => {
   const hour = new Date().getHours();
 
-  // PAGI (03:00 - 10:59) -> Langit Cerah Gradasi Hijau-Teal & Matahari Terbit
   if (hour >= 3 && hour < 11) {
     return {
       background: "bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600",
@@ -402,7 +662,6 @@ const skyTheme = computed(() => {
     };
   }
 
-  // SIANG (11:00 - 14:59) -> Langit Biru Terang & Matahari Terik
   if (hour >= 11 && hour < 15) {
     return {
       background: "bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600",
@@ -413,7 +672,6 @@ const skyTheme = computed(() => {
     };
   }
 
-  // SORE (15:00 - 17:59) -> Langit Sunset Oranye & Matahari Senja
   if (hour >= 15 && hour < 18) {
     return {
       background: "bg-gradient-to-br from-amber-500 via-orange-600 to-rose-700",
@@ -424,7 +682,6 @@ const skyTheme = computed(() => {
     };
   }
 
-  // MALAM (18:00 - 02:59) -> Langit Malam Indigo Gelap & Bulan Sabit
   return {
     background: "bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900",
     glow: "bg-indigo-400",
@@ -438,7 +695,6 @@ const navTo = (page) => {
   store.currentPage = page;
 };
 
-// Hitung Tugas Aktif Milik User yang Sedang Login
 const myTasks = computed(() => {
   const allPrograms = store.db?.programs || store.programs || [];
   const myId = currentUser.value?.id || currentUser.value?.email;
@@ -463,22 +719,153 @@ const myCompletedTasksCount = computed(() => {
     .length;
 });
 
-// Hitung Tiket Open
 const openTicketsCount = computed(() => {
   const aduanList = store.db?.aduanList || store.aduanList || [];
   return aduanList.filter((a) => a.status === "Open").length;
 });
 
-// Hitung Notes
 const notesCount = computed(() => {
   const notes = store.db?.notes || store.notes || [];
   return notes.length;
 });
 
-// Ambil 3 Tugas Terdekat
 const myUpcomingTasks = computed(() => {
   return myTasks.value
     .filter((t) => (t.status || t.Status) !== "Completed")
     .slice(0, 3);
 });
 </script>
+
+<!-- <style scoped>
+/* 1. ANIMASI RUNNING TEXT (MARQUEE) */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  display: inline-block;
+  animation: marquee 16s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+</style> -->
+
+<style scoped>
+/* 1. ANIMASI RUNNING TEXT (MARQUEE) */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  display: inline-block;
+  animation: marquee 16s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* 2. SPESIFIKASI ANIMASI EMOTICON BERGAYA TELEGRAM / WHATSAPP */
+
+/* A. Membal Elastis (Bounce TG) */
+@keyframes tgBounce {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  30% {
+    transform: translateY(-6px) scale(1.15, 0.9);
+  }
+  50% {
+    transform: translateY(0) scale(0.9, 1.1);
+  }
+  70% {
+    transform: translateY(-3px) scale(1.05);
+  }
+}
+.tg-anim-bounce {
+  animation: tgBounce 1.8s ease-in-out infinite;
+}
+
+/* B. Meluncur / Mendorong (Launch) untuk Roket/Api */
+@keyframes tgLaunch {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(3px, -5px) scale(1.18);
+  }
+}
+.tg-anim-launch {
+  animation: tgLaunch 1.4s ease-in-out infinite;
+}
+
+/* C. Geleng-geleng Unyu (Wiggle) untuk Senyum/Sinis */
+@keyframes tgWiggle {
+  0%,
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-12deg) scale(1.1);
+  }
+  75% {
+    transform: rotate(12deg) scale(1.1);
+  }
+}
+.tg-anim-wiggle {
+  animation: tgWiggle 1.5s ease-in-out infinite;
+}
+
+/* D. Detak Jantung / Pompa (Heartbeat) untuk Kopi/Komputer */
+@keyframes tgHeartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.25);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.2);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+.tg-anim-heartbeat {
+  animation: tgHeartbeat 1.6s ease-in-out infinite;
+}
+
+/* E. Berputar & Memancar (Spin & Glow) untuk Bintang/Sparkle */
+@keyframes tgSpinGlow {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+.tg-anim-spin-glow {
+  animation: tgSpinGlow 3s ease-in-out infinite;
+}
+</style>
