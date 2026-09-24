@@ -210,6 +210,22 @@
                 >Notes</span
               >
             </button>
+
+            <button
+              v-if="store.canEditPage('daily-report')"
+              @click.stop="openAddModal('daily-report')"
+              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
+            >
+              <span
+                class="w-7 h-7 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs shrink-0"
+              >
+                <i class="fa-solid fa-file-invoice"></i>
+              </span>
+              <span
+                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                >Laporan Harian</span
+              >
+            </button>
           </div>
         </div>
       </transition>
@@ -496,6 +512,9 @@ const openAddModal = (modalName) => {
   } else if (modalName === "spv-report") {
     store.currentPage = "spv-report";
     store.openModal("spv-report");
+  } else if (modalName === "daily-report") {
+    store.currentPage = "daily-report";
+    store.openModal("daily-report");
   } else if (modalName === "notes") {
     if (store.canAccessPage && store.canAccessPage("notes")) {
       store.currentPage = "notes";

@@ -162,7 +162,10 @@
                 <div
                   v-for="field in activeTemplate.fields"
                   :key="field.id"
-                  :class="{ 'md:col-span-2': field.type === 'textarea' }"
+                  :class="{
+                    'md:col-span-2':
+                      field.type === 'textarea' || field.type === 'checkbox',
+                  }"
                 >
                   <label
                     class="block font-bold text-slate-700 dark:text-slate-200 text-[11px] mb-1"
@@ -170,6 +173,7 @@
                     {{ field.label }}
                     <span v-if="field.required" class="text-rose-500">*</span>
                   </label>
+
                   <input
                     v-if="field.type === 'number'"
                     v-model.number="formResponses[field.id]"
@@ -178,6 +182,7 @@
                     :required="field.required"
                     class="w-full glass-input rounded-lg p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-xs"
                   />
+
                   <input
                     v-else-if="field.type === 'text'"
                     v-model="formResponses[field.id]"
@@ -185,6 +190,7 @@
                     :required="field.required"
                     class="w-full glass-input rounded-lg p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-xs"
                   />
+
                   <textarea
                     v-else-if="field.type === 'textarea'"
                     v-model="formResponses[field.id]"
@@ -192,6 +198,7 @@
                     :required="field.required"
                     class="w-full glass-input rounded-lg p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-xs resize-y"
                   ></textarea>
+
                   <select
                     v-else-if="field.type === 'select'"
                     v-model="formResponses[field.id]"
@@ -207,6 +214,25 @@
                       {{ opt }}
                     </option>
                   </select>
+
+                  <div
+                    v-else-if="field.type === 'checkbox'"
+                    class="flex flex-wrap gap-3 mt-1.5 p-2 bg-slate-50 dark:bg-slate-800/40 rounded-lg border border-slate-100 dark:border-slate-700/50"
+                  >
+                    <label
+                      v-for="opt in field.options"
+                      :key="opt"
+                      class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:text-theme transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        :value="opt"
+                        v-model="formResponses[field.id]"
+                        class="accent-emerald-600 w-4 h-4 rounded cursor-pointer"
+                      />
+                      {{ opt }}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -464,9 +490,17 @@
                     >
                       <div
                         class="max-w-[200px] truncate text-slate-600 dark:text-slate-300"
-                        :title="item.responses?.[field.id]"
+                        :title="
+                          Array.isArray(item.responses?.[field.id])
+                            ? item.responses[field.id].join(', ')
+                            : item.responses?.[field.id]
+                        "
                       >
-                        {{ item.responses?.[field.id] || "-" }}
+                        {{
+                          Array.isArray(item.responses?.[field.id])
+                            ? item.responses[field.id].join(", ")
+                            : item.responses?.[field.id] || "-"
+                        }}
                       </div>
                     </td>
                   </template>
@@ -684,6 +718,9 @@
                         <option value="text">Teks Singkat</option>
                         <option value="textarea">Teks Paragraf</option>
                         <option value="select">Pilihan Dropdown</option>
+                        <option value="checkbox">
+                          Pilihan Ganda (Checkbox)
+                        </option>
                       </select>
                     </div>
                     <div
@@ -732,7 +769,7 @@
                   </div>
 
                   <div
-                    v-if="field.type === 'select'"
+                    v-if="field.type === 'select' || field.type === 'checkbox'"
                     class="bg-slate-100 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-700 mt-1"
                   >
                     <label class="block text-[9px] font-bold text-blue-500 mb-1"
@@ -907,12 +944,12 @@
               <div
                 v-for="field in activeRekapTemplate.fields"
                 :key="field.id"
-                class="flex items-center gap-3"
+                class="flex items-start gap-3 mt-2"
               >
                 <input
                   type="checkbox"
                   v-model="bulkEditToggles.responses[field.id]"
-                  class="accent-blue-600 w-4 h-4 rounded cursor-pointer"
+                  class="accent-blue-600 w-4 h-4 rounded cursor-pointer mt-1"
                 />
                 <div class="flex-1">
                   <label
@@ -957,6 +994,29 @@
                       {{ opt }}
                     </option>
                   </select>
+                  <div
+                    v-else-if="field.type === 'checkbox'"
+                    class="flex flex-wrap gap-2 mt-1"
+                    :class="{
+                      'opacity-50 pointer-events-none':
+                        !bulkEditToggles.responses[field.id],
+                    }"
+                  >
+                    <label
+                      v-for="opt in field.options"
+                      :key="opt"
+                      class="flex items-center gap-1 text-[10px] text-slate-600 dark:text-slate-300 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        :value="opt"
+                        v-model="bulkEditForm.responses[field.id]"
+                        :disabled="!bulkEditToggles.responses[field.id]"
+                        class="accent-blue-600 w-3 h-3 rounded cursor-pointer"
+                      />
+                      {{ opt }}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1115,6 +1175,9 @@ onMounted(async () => {
     if (reportTemplates.value.length > 0)
       selectedTemplateId.value = reportTemplates.value[0].id;
 
+    // Inisialisasi properti formResponses (penting untuk checkbox)
+    onTemplateChange();
+
     const snapRep = await getDocs(
       query(
         collection(firestoreDb, "daily_reports"),
@@ -1131,7 +1194,27 @@ onMounted(async () => {
 
 const onTemplateChange = () => {
   Object.keys(formResponses).forEach((key) => delete formResponses[key]);
+  if (activeTemplate.value) {
+    activeTemplate.value.fields.forEach((f) => {
+      // WAJIB: deklarasikan array secara eksplisit agar tidak dianggap Boolean
+      formResponses[f.id] = f.type === "checkbox" ? [] : "";
+    });
+  }
 };
+
+watch(
+  () => activeTemplate.value,
+  (newTemplate) => {
+    if (newTemplate) {
+      newTemplate.fields.forEach((f) => {
+        if (f.type === "checkbox" && !Array.isArray(formResponses[f.id])) {
+          formResponses[f.id] = [];
+        }
+      });
+    }
+  },
+  { deep: true, immediate: true },
+);
 
 // ACTIONS
 const submitDailyReport = async () => {
@@ -1152,7 +1235,12 @@ const submitDailyReport = async () => {
       payload.id = res.id;
       reportsList.value.unshift(payload);
       store.addNotification("Berhasil", "Laporan harian terkirim!", "success");
-      Object.keys(formResponses).forEach((k) => (formResponses[k] = ""));
+
+      // Reset Form Responses
+      Object.keys(formResponses).forEach((k) => {
+        const fieldData = activeTemplate.value.fields.find((f) => f.id === k);
+        formResponses[k] = fieldData && fieldData.type === "checkbox" ? [] : "";
+      });
     } else {
       store.openAlert(
         "Gagal",
@@ -1243,6 +1331,7 @@ const getSummary = (responses) => {
   if (!responses) return "-";
   return (
     Object.values(responses)
+      .map((v) => (Array.isArray(v) ? v.join(", ") : v))
       .filter((v) => v)
       .join(" | ")
       .substring(0, 80) + "..."
@@ -1401,7 +1490,7 @@ const openBulkEditModal = () => {
   if (filter.templateId !== "ALL" && activeRekapTemplate.value) {
     activeRekapTemplate.value.fields.forEach((f) => {
       bulkEditToggles.responses[f.id] = false;
-      bulkEditForm.responses[f.id] = "";
+      bulkEditForm.responses[f.id] = f.type === "checkbox" ? [] : "";
     });
   }
 
@@ -1496,7 +1585,8 @@ const exportToExcel = () => {
         "Jenis Laporan": item.jenisLaporan,
       };
       activeRekapTemplate.value.fields.forEach((f) => {
-        row[f.label] = item.responses?.[f.id] || "";
+        const val = item.responses?.[f.id];
+        row[f.label] = Array.isArray(val) ? val.join(", ") : val || "";
       });
       return row;
     });
@@ -1586,7 +1676,16 @@ const importExcel = async (e) => {
 
         activeRekapTemplate.value.fields.forEach((f) => {
           if (row[f.label] !== undefined) {
-            payload.responses[f.id] = String(row[f.label]);
+            if (f.type === "checkbox") {
+              payload.responses[f.id] = String(row[f.label])
+                .split(",")
+                .map((s) => s.trim())
+                .filter((s) => s);
+            } else {
+              payload.responses[f.id] = String(row[f.label]);
+            }
+          } else if (f.type === "checkbox") {
+            payload.responses[f.id] = [];
           }
         });
 

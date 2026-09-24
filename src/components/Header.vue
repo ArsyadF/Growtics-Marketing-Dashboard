@@ -32,7 +32,7 @@
       </h2>
     </div>
 
-    <!-- SISI KANAN: Filter Tanggal Desktop, Lonceng Notifikasi & Toggle Theme -->
+    <!-- SISI KANAN: Filter Tanggal Desktop, Lonceng Notifikasi & Menu Profil -->
     <div class="flex items-center gap-2 md:gap-3 shrink-0 relative">
       <!-- Filter Tanggal Global (KHUSUS DESKTOP) -->
       <div
@@ -190,14 +190,54 @@
         </div>
       </div>
 
-      <!-- Tombol Pilihan Mode Tampilan (Theme Switcher) -->
-      <button
-        @click="isThemeModalOpen = true"
-        class="w-10 h-10 md:w-11 md:h-11 rounded-full glass-card text-slate-600 dark:text-amber-400 hover:scale-105 transition-all cursor-pointer flex items-center justify-center shrink-0"
-        title="Ganti Mode Tampilan"
-      >
-        <i class="fa-solid" :class="themeIcon"></i>
-      </button>
+      <!-- ================= MENU PROFIL & PENGATURAN TEMA ================= -->
+      <div class="relative">
+        <button
+          @click="toggleProfileMenu"
+          class="w-10 h-10 md:w-11 md:h-11 rounded-full border-2 border-slate-200 dark:border-slate-700 hover:border-theme transition-all cursor-pointer shrink-0 overflow-hidden flex items-center justify-center"
+          title="Profil Pengguna"
+        >
+          <img
+            :src="userAvatar"
+            alt="Profil"
+            class="w-full h-full object-cover"
+          />
+        </button>
+
+        <!-- Dropdown Profil -->
+        <div
+          v-if="isProfileMenuOpen"
+          class="absolute right-0 mt-3 w-48 glass-card bg-white dark:bg-slate-900 rounded-2xl p-2 shadow-2xl border border-slate-100 dark:border-slate-800 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+        >
+          <div
+            class="p-2.5 border-b border-slate-100 dark:border-slate-800 mb-1"
+          >
+            <p
+              class="font-bold text-xs text-slate-800 dark:text-slate-100 truncate"
+            >
+              {{ userName }}
+            </p>
+            <p class="text-[10px] text-slate-400 truncate uppercase mt-0.5">
+              {{ userRole }}
+            </p>
+          </div>
+
+          <div class="space-y-1">
+            <button
+              @click="goToProfile"
+              class="w-full text-left flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            >
+              <i class="fa-regular fa-user text-slate-400"></i> Profil Saya
+            </button>
+            <button
+              @click="openThemeSettings"
+              class="w-full text-left flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            >
+              <i class="fa-solid fa-palette text-slate-400"></i> Tema Tampilan
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -339,9 +379,24 @@ const props = defineProps({
 defineEmits(["toggle-sidebar"]);
 
 // State Modal & Popup
-
 const isThemeModalOpen = ref(false);
 const isNotifOpen = ref(false);
+const isProfileMenuOpen = ref(false);
+
+// Data Pengguna (Untuk Avatar & Info)
+const currentUser = computed(() => store.currentUser || {});
+const userName = computed(
+  () => currentUser.value.nama || currentUser.value.Nama || "Pengguna",
+);
+const userRole = computed(
+  () => currentUser.value.role || currentUser.value.Role || "User",
+);
+const userAvatar = computed(() => {
+  if (currentUser.value.avatarUrl || currentUser.value.Avatar) {
+    return currentUser.value.avatarUrl || currentUser.value.Avatar;
+  }
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(userName.value)}&background=0D8ABC&color=fff`;
+});
 
 // State Preferensi Tema
 const themePreference = ref("system");
@@ -402,21 +457,31 @@ const unreadCount = computed(() => {
 
 const toggleNotifPopup = () => {
   isNotifOpen.value = !isNotifOpen.value;
+  isProfileMenuOpen.value = false; // Tutup menu profil jika notif dibuka
   if (isNotifOpen.value) {
     store.markAllNotifsAsRead();
   }
 };
 
-// --- SISTEM TEMA / DARK MODE ---
-const themeIcon = computed(() => {
-  if (themePreference.value === "system") {
-    return "fa-desktop text-blue-400 text-base md:text-lg";
-  }
-  return store.isDarkMode
-    ? "fa-sun text-amber-400 text-base md:text-lg"
-    : "fa-moon text-slate-600 text-base md:text-lg";
-});
+// --- MENU PROFIL ---
+const toggleProfileMenu = () => {
+  isProfileMenuOpen.value = !isProfileMenuOpen.value;
+  isNotifOpen.value = false; // Tutup notif jika profil dibuka
+};
 
+const goToProfile = () => {
+  isProfileMenuOpen.value = false;
+  if (typeof store.navigate === "function") {
+    store.navigate("profile");
+  }
+};
+
+const openThemeSettings = () => {
+  isProfileMenuOpen.value = false;
+  isThemeModalOpen.value = true;
+};
+
+// --- SISTEM TEMA / DARK MODE ---
 let systemThemeQuery = null;
 
 const handleSystemThemeChange = (e) => {
