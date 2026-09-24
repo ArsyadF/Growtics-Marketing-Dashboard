@@ -76,7 +76,7 @@
               "
             >
               <!-- Jika Superadmin / SPV, tampilkan Dashboard Utama Lengkap (Omset & Grafik) -->
-              <PageMainDashboard v-if="isSuperadminOrSpv" />
+              <PageSummary v-if="isSuperadminOrSpv" />
               <!-- Jika Staff biasa, tampilkan Staff Dashboard (Grid Kotak & Ringkasan Non-Sensitif) -->
               <PageStaffDashboard v-else />
             </template>
@@ -121,16 +121,6 @@
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 import { store } from "./store/index.js";
 
-let touchStartX = 0;
-let touchStartY = 0;
-
-// State Sidebar Mobile Open/Close
-const isSidebarOpen = ref(false);
-
-// Tumpukan Riwayat Halaman untuk Back di Dalam App
-const pageHistory = ref([]);
-const isBackAction = ref(false);
-
 // Import Komponen Layout & Modals
 import Passcode from "./components/Passcode.vue";
 import Sidebar from "./components/Sidebar.vue";
@@ -154,6 +144,9 @@ import PageReport from "./views/PageReport.vue";
 import PageSpvReport from "./views/PageSpvReport.vue";
 import PageMasterData from "./views/PageMasterData.vue";
 import PageCustomerCare from "./views/PageCustomerCare.vue";
+import PagePresensi from "./views/PagePresensi.vue";
+import PageDailyReport from "./views/PageDailyReport.vue";
+
 // --- DYNAMIC COMPONENT ROUTING ---
 const activeView = computed(() => {
   if (store.currentPage.startsWith("unit-")) {
@@ -187,8 +180,12 @@ const activeView = computed(() => {
       return PageUsers;
     case "profile":
       return PageProfile;
+    case "presensi":
+      return PagePresensi;
+    case "daily-report":
+      return PageDailyReport;
     default:
-      return DashboardMain;
+      return PageStaffDashboard;
   }
 });
 
@@ -208,6 +205,16 @@ watch(
     }
   },
 );
+
+let touchStartX = 0;
+let touchStartY = 0;
+
+// State Sidebar Mobile Open/Close
+const isSidebarOpen = ref(false);
+
+// Tumpukan Riwayat Halaman untuk Back di Dalam App
+const pageHistory = ref([]);
+const isBackAction = ref(false);
 
 const handleTouchStart = (e) => {
   touchStartX = e.touches[0].clientX;

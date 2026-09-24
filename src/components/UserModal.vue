@@ -1,7 +1,7 @@
 <!-- src/components/UserModal.vue -->
 <template>
   <div
-    class="fixed inset-0 z-[10010] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4"
+    class="fixed inset-0 z-[10010] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
   >
     <div
       class="glass-card w-full max-w-2xl bg-white/95 dark:bg-slate-900/95 rounded-3xl p-6 shadow-2xl space-y-5 max-h-[90vh] flex flex-col"
@@ -91,6 +91,53 @@
           </div>
         </div>
 
+        <!-- Penempatan Internal (Unit & Divisi) -->
+        <div
+          class="p-3.5 bg-blue-50/50 dark:bg-blue-900/10 rounded-2xl border border-blue-100/60 dark:border-blue-800/30 space-y-3"
+        >
+          <h4
+            class="text-[11px] font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1.5 border-b border-blue-100 dark:border-blue-800/50 pb-2"
+          >
+            <i class="fa-solid fa-sitemap"></i> Penempatan Internal (Master
+            Data)
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] font-medium mb-1 text-slate-500"
+                >Unit Usaha</label
+              >
+              <select
+                v-model="form.unit"
+                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none bg-white dark:bg-slate-900 focus:border-blue-400"
+              >
+                <option value="">-- Pilih Unit --</option>
+                <option v-for="u in masterUnits" :key="u.code" :value="u.code">
+                  {{ u.code }} - {{ u.name }}
+                </option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-medium mb-1 text-slate-500"
+                >Divisi</label
+              >
+              <!-- FIX: Menggunakan select dari masterData alih-alih input text -->
+              <select
+                v-model="form.divisi"
+                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none focus:border-blue-400 bg-white dark:bg-slate-900"
+              >
+                <option value="">-- Pilih Divisi --</option>
+                <option
+                  v-for="div in store.db?.master?.divisiList"
+                  :key="div"
+                  :value="div"
+                >
+                  {{ div }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <!-- Checkbox Matrix Hak Akses Halaman -->
         <div
           v-if="form.role !== 'SUPERADMIN'"
@@ -98,10 +145,10 @@
         >
           <div class="flex items-center justify-between">
             <div>
-              <label class="block text-xs font-bold text-theme dark:text-theme">
-                Atur Akses Halaman & Fitur Edit
-              </label>
-              <p class="text-[11px] text-slate-400 mt-0.5">
+              <label class="block text-xs font-bold text-theme dark:text-theme"
+                >Atur Akses Halaman & Fitur Edit</label
+              >
+              <p class="text-[10px] text-slate-400 mt-0.5">
                 Pilih modul yang boleh dibuka dan atur hak pengeditan/penambahan
                 data.
               </p>
@@ -109,7 +156,7 @@
             <button
               type="button"
               @click="toggleAllPermissions"
-              class="text-[11px] font-bold text-theme dark:text-theme hover:underline cursor-pointer shrink-0"
+              class="text-[10px] font-bold text-theme dark:text-theme hover:underline cursor-pointer shrink-0 bg-theme/10 px-2 py-1 rounded-md"
             >
               {{ isAllSelected ? "Matikan Semua" : "Buka Semua" }}
             </button>
@@ -136,15 +183,17 @@
                 <tr
                   v-for="page in pagesList"
                   :key="page.id"
-                  class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30"
+                  class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
                 >
                   <td
                     class="p-2.5 font-medium text-slate-700 dark:text-slate-200"
                   >
-                    <i :class="page.icon" class="mr-2 text-theme"></i>
+                    <i
+                      :class="page.icon"
+                      class="w-5 text-center mr-1 text-theme"
+                    ></i>
                     {{ page.label }}
                   </td>
-                  <!-- Checkbox Buka Halaman -->
                   <td class="p-2.5 text-center">
                     <input
                       type="checkbox"
@@ -153,7 +202,6 @@
                       class="w-4 h-4 rounded text-[#1caa80] focus:ring-0 cursor-pointer accent-emerald-600"
                     />
                   </td>
-                  <!-- Checkbox Fitur Edit / Tambah -->
                   <td class="p-2.5 text-center">
                     <input
                       type="checkbox"
@@ -170,28 +218,31 @@
 
         <div
           v-else
-          class="p-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 rounded-2xl text-xs text-emerald-700 dark:text-emerald-300"
+          class="p-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 rounded-2xl text-[11px] text-emerald-700 dark:text-emerald-300 flex gap-2 items-center"
         >
-          <i class="fa-solid fa-shield-halved mr-1"></i>
-          <strong>Superadmin</strong> memiliki akses penuh ke seluruh halaman
-          dan hak akses edit tanpa pembatasan.
+          <i class="fa-solid fa-shield-halved text-base"></i>
+          <p>
+            <strong>Superadmin</strong> memiliki akses penuh ke seluruh halaman
+            dan hak akses edit tanpa pembatasan.
+          </p>
         </div>
 
         <!-- Button Submit -->
         <div
-          class="pt-3 border-t border-slate-200/50 dark:border-slate-800 flex justify-end gap-2 shrink-0"
+          class="pt-4 border-t border-slate-200/50 dark:border-slate-800 flex justify-end gap-2 shrink-0"
         >
           <button
             type="button"
             @click="$emit('close')"
-            class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-4 py-2 rounded-xl text-xs font-bold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors"
           >
             Batal
           </button>
           <button
             type="submit"
-            class="px-5 py-2 rounded-xl text-xs font-bold bg-button text-white shadow-md hover:from-[#149b73] hover:to-[#149b73] cursor-pointer"
+            class="px-5 py-2 rounded-xl text-xs font-bold bg-button text-white shadow-md hover:from-[#149b73] hover:to-[#149b73] cursor-pointer transition-all flex items-center gap-1.5"
           >
+            <i class="fa-solid fa-floppy-disk"></i>
             {{ isEdit ? "Simpan Perubahan" : "Tambah User" }}
           </button>
         </div>
@@ -202,6 +253,7 @@
 
 <script setup>
 import { ref, reactive, computed, watch } from "vue";
+import { store } from "../store";
 
 const props = defineProps({
   userData: { type: Object, default: null },
@@ -211,7 +263,10 @@ const emit = defineEmits(["close", "save"]);
 
 const isEdit = ref(!!props.userData);
 
-// Daftar Halaman Lengkap Sesuai Struktur Sistem
+// Integrasi Master Data Unit Usaha
+const masterUnits = computed(() => store.db?.master?.unitList || []);
+
+// Daftar Halaman Lengkap (Ditambah Laporan Harian)
 const pagesList = [
   { id: "summary", label: "Rekap Bisnis", icon: "fa-solid fa-chart-line" },
   { id: "notes", label: "Notes / Catatan", icon: "fa-solid fa-note-sticky" },
@@ -239,6 +294,11 @@ const pagesList = [
     label: "Laporan Divisi",
     icon: "fa-solid fa-file-signature",
   },
+  {
+    id: "daily-report",
+    label: "Laporan Harian",
+    icon: "fa-solid fa-file-invoice",
+  }, // <-- FITUR BARU
   { id: "aduan", label: "Customer Support", icon: "fa-solid fa-headset" },
   {
     id: "report",
@@ -253,7 +313,6 @@ const pagesList = [
   { id: "users", label: "Akses Pengguna", icon: "fa-solid fa-users-gear" },
 ];
 
-// Helper untuk inisialisasi default permissions
 const createDefaultPermissions = () => {
   const perms = {};
   pagesList.forEach((p) => {
@@ -267,10 +326,11 @@ const form = reactive({
   email: "",
   password: "",
   role: "USER",
+  unit: "", // <-- STATE BARU
+  divisi: "", // <-- STATE BARU
   permissions: createDefaultPermissions(),
 });
 
-// Sync data jika dalam mode Edit & Reset jika mode Tambah
 watch(
   () => props.userData,
   (curr) => {
@@ -278,10 +338,14 @@ watch(
       isEdit.value = true;
       form.nama = curr.nama || curr.Nama || "";
       form.email = curr.email || curr.Email || "";
-      form.password = ""; // Kosongkan agar user isi hanya jika ingin ganti
+      form.password = "";
       form.role = curr.role || curr.Role || "USER";
+      form.unit =
+        curr.unit ||
+        curr.Unit ||
+        (Array.isArray(curr.aksesUnit) ? curr.aksesUnit[0] : "");
+      form.divisi = curr.divisi || curr.Divisi || "";
 
-      // Pastikan setiap page.id terdefinisi jika ada menu baru yang belum tersimpan di DB
       const userPerms = curr.permissions || {};
       pagesList.forEach((p) => {
         form.permissions[p.id] = {
@@ -290,24 +354,23 @@ watch(
         };
       });
     } else {
-      // Reset Form Saat Tambah User Baru
       isEdit.value = false;
       form.nama = "";
       form.email = "";
       form.password = "";
       form.role = "USER";
+      form.unit = "";
+      form.divisi = "";
       form.permissions = createDefaultPermissions();
     }
   },
   { immediate: true },
 );
 
-// Check Status Semua Permission Terpilih atau Tidak
 const isAllSelected = computed(() => {
   return pagesList.every((p) => form.permissions[p.id]?.access);
 });
 
-// Toggle Pilih Semua / Matikan Semua Permission
 const toggleAllPermissions = () => {
   const targetState = !isAllSelected.value;
   pagesList.forEach((p) => {
@@ -318,7 +381,6 @@ const toggleAllPermissions = () => {
   });
 };
 
-// Jika "Bisa Akses" dimatikan, otomatis matikan "Bisa Edit"
 const onAccessChange = (pageId) => {
   if (!form.permissions[pageId].access) {
     form.permissions[pageId].canEdit = false;
@@ -330,6 +392,8 @@ const handleSubmit = () => {
     nama: form.nama,
     email: form.email,
     role: form.role,
+    unit: form.unit,
+    divisi: form.divisi,
     permissions: form.permissions,
     avatarUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(form.nama)}&background=0D8ABC&color=fff`,
   };
@@ -341,3 +405,19 @@ const handleSubmit = () => {
   emit("save", payload);
 };
 </script>
+
+<style scoped>
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+</style>

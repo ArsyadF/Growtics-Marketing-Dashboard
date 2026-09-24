@@ -114,6 +114,44 @@
             </a>
           </li>
 
+          <!-- <li v-if="isLoggedIn" class="flex justify-center">
+            <a
+              href="#"
+              @click.prevent="navigate('presensi')"
+              class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all"
+              :class="[
+                activePage === 'presensi'
+                  ? 'bg-button text-white font-bold shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
+                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
+              ]"
+            >
+              <i class="fa-solid fa-clipboard-user text-sm shrink-0"></i>
+              <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
+                >Presensi Harian</span
+              >
+            </a>
+          </li> -->
+
+          <li v-if="isLoggedIn" class="flex justify-center">
+            <a
+              href="#"
+              @click.prevent="navigate('daily-report')"
+              class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all"
+              :class="[
+                activePage === 'daily-report'
+                  ? 'bg-button text-white font-bold shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
+                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
+              ]"
+            >
+              <i class="fa-solid fa-file-invoice text-sm shrink-0"></i>
+              <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
+                >Laporan Harian</span
+              >
+            </a>
+          </li>
+
           <li
             v-if="
               store.canAccessPage('summary') &&

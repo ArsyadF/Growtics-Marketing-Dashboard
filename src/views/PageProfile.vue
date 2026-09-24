@@ -53,6 +53,54 @@
           />
         </div>
 
+        <!-- src/views/PageProfile.vue - Sisipkan di dalam <form> -->
+
+        <div class="grid grid-cols-2 gap-4">
+          <!-- DROPDOWN UNIT (Master Data) -->
+          <div>
+            <label
+              class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300"
+            >
+              Unit Usaha Utama
+            </label>
+            <select
+              v-model="form.unit"
+              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none bg-white dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-200"
+            >
+              <option value="">-- Pilih Unit --</option>
+              <option
+                v-for="u in store.db?.master?.unitList"
+                :key="u.code"
+                :value="u.code"
+              >
+                {{ u.code }} ({{ u.name }})
+              </option>
+            </select>
+          </div>
+
+          <!-- DROPDOWN DIVISI (Master Data) -->
+          <div>
+            <label
+              class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300"
+            >
+              Divisi / Bagian Pekerjaan
+            </label>
+            <select
+              v-model="form.divisi"
+              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none bg-white dark:bg-slate-900 font-bold text-slate-700 dark:text-slate-200"
+            >
+              <option value="">-- Pilih Divisi --</option>
+              <option
+                v-for="div in store.db?.master?.divisiList"
+                :key="div"
+                :value="div"
+              >
+                {{ div }}
+              </option>
+            </select>
+          </div>
+        </div>
+
         <!-- UPLOAD FOTO PROFIL (FILE / URL) -->
         <div>
           <label
@@ -195,6 +243,7 @@ const userProfile = ref({
   Role: "",
   Avatar: "",
   Bio: "",
+  Divisi: "",
 });
 
 const form = ref({
@@ -202,6 +251,8 @@ const form = ref({
   password: "",
   bio: "",
   avatarUrl: "",
+  unit: "",
+  divisi: "",
 });
 
 const isSaving = ref(false);
@@ -258,6 +309,11 @@ watch(
       form.value.nama = curr.Nama || curr.nama || curr.name || "";
       form.value.bio = curr.Bio || curr.bio || "";
       form.value.avatarUrl = curr.Avatar || curr.avatarUrl || curr.avatar || "";
+      form.value.unit =
+        curr.unit ||
+        curr.Unit ||
+        (Array.isArray(curr.aksesUnit) ? curr.aksesUnit[0] : ""); // <--- BARU
+      form.value.divisi = curr.divisi || curr.Divisi || "";
     }
   },
   { immediate: true, deep: true },
@@ -285,6 +341,10 @@ const saveUserProfile = async () => {
       Bio: form.value.bio,
       avatarUrl: form.value.avatarUrl,
       Avatar: form.value.avatarUrl,
+      unit: form.value.unit,
+      Unit: form.value.unit,
+      divisi: form.value.divisi,
+      Divisi: form.value.divisi,
     };
 
     if (form.value.password) {
