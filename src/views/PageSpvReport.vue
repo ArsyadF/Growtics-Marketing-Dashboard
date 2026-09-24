@@ -33,6 +33,7 @@
         </select>
 
         <button
+          v-if="store.canEditPage('spv-report')"
           @click="openAddReportModal"
           class="bg-button text-white font-bold px-3 py-1.5 md:px-4 md:py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
         >
@@ -50,7 +51,10 @@
       <div
         class="p-3 md:p-4 border-b border-slate-100 dark:border-slate-800 flex flex-wrap justify-between items-center bg-slate-50/50 dark:bg-slate-800/40 gap-2"
       >
-        <div class="flex items-center gap-2">
+        <div
+          v-if="store.canEditPage('spv-report')"
+          class="flex items-center gap-2"
+        >
           <input
             type="checkbox"
             :checked="isAllSelected"
@@ -110,7 +114,12 @@
             <tr
               class="bg-slate-100/80 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 font-bold uppercase text-[9px] md:text-[10px] border-b border-slate-200 dark:border-slate-800"
             >
-              <th class="p-2 md:p-3 w-8 text-center">Pilih</th>
+              <th
+                v-if="store.canEditPage('spv-report')"
+                class="p-2 md:p-3 w-8 text-center"
+              >
+                Pilih
+              </th>
               <th
                 @click="sortTable('unit')"
                 class="p-2 md:p-3 w-16 md:w-24 cursor-pointer select-none"
@@ -135,7 +144,12 @@
               >
                 Tgl Rilis
               </th>
-              <th class="p-2 md:p-3 w-24 md:w-32 text-right">Aksi</th>
+              <th
+                v-if="store.canEditPage('spv-report')"
+                class="p-2 md:p-3 w-24 md:w-32 text-right"
+              >
+                Aksi
+              </th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
@@ -147,7 +161,11 @@
                     selectedReportIds.includes(rep.id),
                 }"
               >
-                <td class="p-2 md:p-3 text-center" @click.stop>
+                <td
+                  v-if="store.canEditPage('spv-report')"
+                  class="p-2 md:p-3 text-center"
+                  @click.stop
+                >
                   <input
                     type="checkbox"
                     :value="rep.id"
@@ -212,7 +230,10 @@
                   {{ rep.releaseDate }}
                 </td>
 
-                <td class="p-2 md:p-3 text-right whitespace-nowrap">
+                <td
+                  v-if="store.canEditPage('spv-report')"
+                  class="p-2 md:p-3 text-right whitespace-nowrap"
+                >
                   <div class="flex items-center justify-end gap-1">
                     <button
                       @click="duplicateReport(rep)"

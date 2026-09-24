@@ -419,6 +419,7 @@ const dynamicPageTitle = computed(() => {
   const titleMap = {
     main: "Dashboard Utama",
     "staff-dashboard": "Dashboard Staff",
+    "daily-report": "Laporan harian",
     rekap: "Unit Summary",
     summary: "Ringkasan Laporan",
     "unit-NHP": "Performa Unit NHP",

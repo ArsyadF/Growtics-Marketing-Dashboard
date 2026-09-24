@@ -134,7 +134,13 @@
             </a>
           </li> -->
 
-          <li v-if="isLoggedIn" class="flex justify-center">
+          <li
+            v-if="
+              store.canAccessPage('daily-report') &&
+              isMenuVisible('Laporan Harian')
+            "
+            class="flex justify-center"
+          >
             <a
               href="#"
               @click.prevent="navigate('daily-report')"
@@ -552,7 +558,8 @@
             <!-- 2. 📝 NOTES / CATATAN (Stand-Alone) -->
             <li
               v-if="
-                isLoggedIn && isMenuVisible('Catatan Pribadi Notes', 'notes')
+                store.canAccessPage('notes') &&
+                isMenuVisible('Catatan Pribadi Notes', 'notes')
               "
               class="flex justify-center"
             >

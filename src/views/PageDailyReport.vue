@@ -238,6 +238,7 @@
             </div>
 
             <button
+              v-if="store.canEditPage('daily-report')"
               type="submit"
               :disabled="isSubmitting || !activeTemplate"
               class="w-full py-2.5 rounded-xl font-bold text-xs bg-button text-white shadow-md disabled:opacity-50 transition-all cursor-pointer flex items-center justify-center gap-2 mt-4"
@@ -1568,7 +1569,7 @@ const executeBulkEdit = async () => {
 };
 
 // EXPORT/IMPORT EXCEL
-const exportToExcel = () => {
+const exportToExcel = async () => {
   if (sortedReports.value.length === 0)
     return store.addNotification("Info", "Tidak ada data diekspor", "warning");
 
@@ -1613,19 +1614,53 @@ const exportToExcel = () => {
   const fileName = `Rekap_${filter.startDate}_sd_${filter.endDate}.xlsx`;
 
   try {
-    const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-    const blob = new Blob([wbout], { type: "application/octet-stream" });
-    const url = URL.createObjectURL(blob);
+    // 1. Ubah tipe output dari 'array' menjadi 'base64' (Lebih ramah untuk WebView)
+    const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "base64" });
+    const mimeType =
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    const base64Uri = `data:${mimeType};base64,${wbout}`;
+
+    // 2. Deteksi Mobile & Coba gunakan Native Share API (Solusi ampuh untuk WebView)
+    const isMobile =
+      /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
+        navigator.userAgent.toLowerCase(),
+      );
+
+    if (isMobile && navigator.share) {
+      try {
+        // Konversi Base64 URI kembali ke File object untuk di-share
+        const fetchRes = await fetch(base64Uri);
+        const blob = await fetchRes.blob();
+        const file = new File([blob], fileName, { type: mimeType });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: fileName,
+            text: "Berikut adalah rekap laporan harian.",
+          });
+          return; // Berhasil di-share, hentikan eksekusi
+        }
+      } catch (shareErr) {
+        console.warn(
+          "Share API dibatalkan/gagal, beralih ke direct download...",
+          shareErr,
+        );
+      }
+    }
+
+    // 3. Fallback direct download (Untuk Desktop atau jika Share API gagal)
     const a = document.createElement("a");
-    a.href = url;
+    a.href = base64Uri; // Gunakan base64Uri langsung, BUKAN blob
     a.download = fileName;
     document.body.appendChild(a);
     a.click();
     setTimeout(() => {
       document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
     }, 200);
   } catch (err) {
+    console.error("Ekspor Error:", err);
+    // Fallback darurat bawaan library
     XLSX.writeFile(workbook, fileName);
   }
 };
