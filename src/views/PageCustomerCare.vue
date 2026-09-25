@@ -7,12 +7,12 @@
     >
       <div>
         <h2
-          class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"
+          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
         >
           <i class="fa-solid fa-headset text-theme"></i>
           Customer Care & Aduan Layanan
         </h2>
-        <p class="text-xs text-slate-400 mt-0.5">
+        <p class="text-xs md:text-xs text-slate-400 mt-0.5 font-normal">
           Kelola tiket aduan, masukan pelanggan, dan eskalasi penanganan
           masalah.
         </p>
@@ -23,7 +23,7 @@
         <button
           v-if="store.canExportImport()"
           @click="handleExportAduan"
-          class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer"
+          class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-2 rounded-2xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer"
         >
           <i class="fa-solid fa-file-excel"></i>
           <span>Export Excel</span>
@@ -32,7 +32,7 @@
         <button
           v-if="store.canExportImport()"
           @click="isImportModalOpen = true"
-          class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer"
+          class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-3 py-2 rounded-2xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer"
         >
           <i class="fa-solid fa-file-import"></i>
           <span>Import Excel</span>
@@ -50,7 +50,7 @@
         <button
           v-if="canCreateOrEdit"
           @click="openAddModal"
-          class="bg-button hover:opacity-90 text-white font-bold px-4 py-2.5 rounded-2xl text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+          class="bg-button hover:opacity-90 text-white font-semibold px-4 py-2.5 rounded-2xl text-sm md:text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
         >
           <i class="fa-solid fa-plus text-xs"></i>
           <span>Buat Tiket Aduan</span>
@@ -70,12 +70,12 @@
         </div>
         <div>
           <p
-            class="text-[10px] font-medium text-slate-400 uppercase tracking-wider"
+            class="text-xs md:text-xs font-normal text-slate-400 uppercase tracking-wider"
           >
             Total Aduan
           </p>
           <p
-            class="text-lg font-bold text-slate-800 dark:text-slate-100 leading-tight"
+            class="text-xl md:text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight"
           >
             {{ tickets.length }}
           </p>
@@ -92,12 +92,12 @@
         </div>
         <div>
           <p
-            class="text-[10px] font-medium text-slate-400 uppercase tracking-wider"
+            class="text-xs md:text-xs font-normal text-slate-400 uppercase tracking-wider"
           >
             Menunggu
           </p>
           <p
-            class="text-lg font-bold text-amber-600 dark:text-amber-400 leading-tight"
+            class="text-xl md:text-base font-semibold text-amber-600 dark:text-amber-400 leading-tight"
           >
             {{ countByStatus("Open") }}
           </p>
@@ -114,12 +114,12 @@
         </div>
         <div>
           <p
-            class="text-[10px] font-medium text-slate-400 uppercase tracking-wider"
+            class="text-xs md:text-xs font-normal text-slate-400 uppercase tracking-wider"
           >
             Diproses
           </p>
           <p
-            class="text-lg font-bold text-purple-600 dark:text-purple-400 leading-tight"
+            class="text-xl md:text-base font-semibold text-purple-600 dark:text-purple-400 leading-tight"
           >
             {{ countByStatus("In Progress") }}
           </p>
@@ -136,12 +136,12 @@
         </div>
         <div>
           <p
-            class="text-[10px] font-medium text-slate-400 uppercase tracking-wider"
+            class="text-xs md:text-xs font-normal text-slate-400 uppercase tracking-wider"
           >
             Selesai
           </p>
           <p
-            class="text-lg font-bold text-emerald-600 dark:text-emerald-400 leading-tight"
+            class="text-xl md:text-base font-semibold text-emerald-600 dark:text-emerald-400 leading-tight"
           >
             {{ countByStatus("Resolved") }}
           </p>
@@ -151,7 +151,7 @@
 
     <!-- FILTER & PENCARIAN -->
     <div
-      class="glass-card bg-white/80 dark:bg-slate-900/80 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex flex-col md:flex-row gap-3 justify-between items-center text-xs"
+      class="glass-card bg-white/80 dark:bg-slate-900/80 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex flex-col md:flex-row gap-3 justify-between items-center text-sm md:text-xs"
     >
       <div class="relative w-full md:w-72">
         <i
@@ -161,7 +161,7 @@
           v-model="searchQuery"
           type="text"
           placeholder="Cari nama, tiket, atau masalah..."
-          class="w-full glass-input rounded-xl pl-9 pr-3 py-2 outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400"
+          class="w-full glass-input rounded-xl pl-9 pr-3 py-2 outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 font-normal"
         />
       </div>
 
@@ -170,7 +170,7 @@
       >
         <select
           v-model="filterUnit"
-          class="glass-input rounded-xl px-3 py-2 outline-none dark:bg-slate-800 font-medium"
+          class="glass-input rounded-xl px-3 py-2 outline-none dark:bg-slate-800 font-semibold"
         >
           <option value="">Semua Unit</option>
           <option v-for="u in masterUnits" :key="u.code" :value="u.code">
@@ -180,7 +180,7 @@
 
         <select
           v-model="filterStatus"
-          class="glass-input rounded-xl px-3 py-2 outline-none dark:bg-slate-800 font-medium"
+          class="glass-input rounded-xl px-3 py-2 outline-none dark:bg-slate-800 font-semibold"
         >
           <option value="">Semua Status</option>
           <option value="Open">Open (Menunggu)</option>
@@ -190,7 +190,7 @@
 
         <select
           v-model="filterPriority"
-          class="glass-input rounded-xl px-3 py-2 outline-none dark:bg-slate-800 font-medium"
+          class="glass-input rounded-xl px-3 py-2 outline-none dark:bg-slate-800 font-semibold"
         >
           <option value="">Semua Prioritas</option>
           <option value="Tinggi">Tinggi</option>
@@ -211,7 +211,7 @@
     >
       <div
         v-if="selectedIds.length > 0"
-        class="bg-emerald-600 text-white p-3 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-3 shadow-lg text-xs"
+        class="bg-emerald-600 text-white p-3 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-3 shadow-lg text-sm md:text-xs"
       >
         <div class="flex items-center gap-2 font-semibold">
           <i class="fa-solid fa-list-check"></i>
@@ -220,10 +220,12 @@
 
         <div class="flex items-center gap-2 flex-wrap">
           <div v-if="canCreateOrEdit" class="flex items-center gap-1">
-            <span class="text-[11px] opacity-80">Status:</span>
+            <span class="text-xs md:text-xs opacity-90 font-normal"
+              >Status:</span
+            >
             <select
               v-model="bulkStatus"
-              class="bg-emerald-700 text-white rounded-lg px-2.5 py-1 text-xs outline-none cursor-pointer border border-emerald-500 font-semibold"
+              class="bg-emerald-700 text-white rounded-lg px-2.5 py-1 text-sm md:text-xs outline-none cursor-pointer border border-emerald-500 font-semibold"
             >
               <option value="">-- Tidak Diubah --</option>
               <option value="Open">Open</option>
@@ -233,10 +235,12 @@
           </div>
 
           <div v-if="canCreateOrEdit" class="flex items-center gap-1">
-            <span class="text-[11px] opacity-80">Prioritas:</span>
+            <span class="text-xs md:text-xs opacity-90 font-normal"
+              >Prioritas:</span
+            >
             <select
               v-model="bulkPriority"
-              class="bg-emerald-700 text-white rounded-lg px-2.5 py-1 text-xs outline-none cursor-pointer border border-emerald-500 font-semibold"
+              class="bg-emerald-700 text-white rounded-lg px-2.5 py-1 text-sm md:text-xs outline-none cursor-pointer border border-emerald-500 font-semibold"
             >
               <option value="">-- Tidak Diubah --</option>
               <option value="Tinggi">Tinggi</option>
@@ -248,23 +252,23 @@
           <button
             v-if="canCreateOrEdit && (bulkStatus || bulkPriority)"
             @click="applyBulkEdit"
-            class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded-lg font-bold flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
+            class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded-lg font-semibold flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
           >
-            <i class="fa-solid fa-check text-[11px]"></i>
+            <i class="fa-solid fa-check text-xs"></i>
             <span>Terapkan</span>
           </button>
 
           <button
             @click="bulkDelete"
-            class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1 rounded-lg font-bold flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
+            class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1 rounded-lg font-semibold flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
           >
-            <i class="fa-solid fa-trash-can text-[11px]"></i>
+            <i class="fa-solid fa-trash-can text-xs"></i>
             <span>Hapus Massal</span>
           </button>
 
           <button
             @click="resetBulkSelection"
-            class="text-white/80 hover:text-white underline text-[11px] ml-1 cursor-pointer"
+            class="text-white/80 hover:text-white underline text-xs md:text-xs ml-1 cursor-pointer font-normal"
           >
             Batal
           </button>
@@ -277,23 +281,23 @@
       class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-3xl border border-slate-100 dark:border-slate-800/80 shadow-md overflow-hidden"
     >
       <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse text-xs">
+        <table class="w-full text-left border-collapse text-sm md:text-xs">
           <thead>
             <tr
-              class="bg-slate-100/70 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 border-b border-slate-200/60 dark:border-slate-800 select-none"
+              class="bg-slate-100/70 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 border-b border-slate-200/60 dark:border-slate-800 select-none uppercase font-semibold text-xs md:text-xs"
             >
               <th class="p-3.5 w-10 text-center">
                 <input
                   type="checkbox"
                   :checked="isAllSelected"
                   @change="toggleSelectAll"
-                  class="accent-emerald-600 rounded cursor-pointer"
+                  class="accent-emerald-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
                 />
               </th>
 
               <th
                 @click="sortBy('ticketNo')"
-                class="p-3.5 font-bold cursor-pointer hover:text-emerald-600 transition-colors"
+                class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
               >
                 <div class="flex items-center gap-1">
                   <span>No. Tiket</span>
@@ -303,7 +307,7 @@
 
               <th
                 @click="sortBy('customerName')"
-                class="p-3.5 font-bold cursor-pointer hover:text-emerald-600 transition-colors"
+                class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
               >
                 <div class="flex items-center gap-1">
                   <span>Pelanggan / Kontak</span>
@@ -313,7 +317,7 @@
 
               <th
                 @click="sortBy('unit')"
-                class="p-3.5 font-bold cursor-pointer hover:text-emerald-600 transition-colors"
+                class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
               >
                 <div class="flex items-center gap-1">
                   <span>Unit Usaha</span>
@@ -321,11 +325,11 @@
                 </div>
               </th>
 
-              <th class="p-3.5 font-bold">Kategori / Masalah</th>
+              <th class="p-3.5 font-semibold">Kategori / Masalah</th>
 
               <th
                 @click="sortBy('priority')"
-                class="p-3.5 font-bold text-center cursor-pointer hover:text-emerald-600 transition-colors"
+                class="p-3.5 font-semibold text-center cursor-pointer hover:text-emerald-600 transition-colors"
               >
                 <div class="flex items-center justify-center gap-1">
                   <span>Prioritas</span>
@@ -335,7 +339,7 @@
 
               <th
                 @click="sortBy('status')"
-                class="p-3.5 font-bold text-center cursor-pointer hover:text-emerald-600 transition-colors"
+                class="p-3.5 font-semibold text-center cursor-pointer hover:text-emerald-600 transition-colors"
               >
                 <div class="flex items-center justify-center gap-1">
                   <span>Status</span>
@@ -345,7 +349,7 @@
 
               <th
                 @click="sortBy('date')"
-                class="p-3.5 font-bold cursor-pointer hover:text-emerald-600 transition-colors"
+                class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
               >
                 <div class="flex items-center gap-1">
                   <span>Tanggal</span>
@@ -353,7 +357,7 @@
                 </div>
               </th>
 
-              <th class="p-3.5 font-bold text-center">Aksi</th>
+              <th class="p-3.5 font-semibold text-center">Aksi</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
@@ -369,21 +373,21 @@
                   type="checkbox"
                   :value="item.id"
                   v-model="selectedIds"
-                  class="accent-emerald-600 rounded cursor-pointer"
+                  class="accent-emerald-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
                 />
               </td>
 
-              <td class="p-3.5 font-mono font-bold text-theme">
+              <td class="p-3.5 font-mono font-semibold text-theme">
                 #{{ item.ticketNo || item.id }}
               </td>
 
               <td class="p-3.5">
                 <p
-                  class="font-bold text-slate-800 dark:text-slate-100 group-hover:text-theme transition-colors"
+                  class="font-semibold text-slate-800 dark:text-slate-100 group-hover:text-theme transition-colors text-sm md:text-xs"
                 >
                   {{ item.customerName }}
                 </p>
-                <p class="text-[10px] text-slate-400">
+                <p class="text-xs md:text-xs text-slate-400 font-normal">
                   {{ item.contact || "-" }}
                 </p>
               </td>
@@ -402,7 +406,9 @@
                 >
                   {{ item.category }}
                 </p>
-                <p class="text-[11px] text-slate-400 truncate">
+                <p
+                  class="text-xs md:text-xs text-slate-400 truncate font-normal"
+                >
                   {{ item.description }}
                 </p>
               </td>
@@ -410,7 +416,7 @@
               <td class="p-3.5 text-center">
                 <span
                   :class="getPriorityClass(item.priority)"
-                  class="px-2.5 py-1 rounded-full text-[10px] font-bold"
+                  class="px-2.5 py-1 rounded-full text-xs md:text-xs font-semibold"
                 >
                   {{ item.priority }}
                 </span>
@@ -419,14 +425,14 @@
               <td class="p-3.5 text-center">
                 <span
                   :class="getStatusClass(item.status)"
-                  class="px-2.5 py-1 rounded-full text-[10px] font-bold inline-flex items-center gap-1"
+                  class="px-2.5 py-1 rounded-full text-xs md:text-xs font-semibold inline-flex items-center gap-1"
                 >
                   <i :class="getStatusIcon(item.status)"></i>
                   {{ item.status }}
                 </span>
               </td>
 
-              <td class="p-3.5 text-slate-500 whitespace-nowrap">
+              <td class="p-3.5 text-slate-500 whitespace-nowrap font-normal">
                 {{ formatDate(item.date) }}
               </td>
 
@@ -463,7 +469,7 @@
             <tr v-if="filteredTickets.length === 0">
               <td colspan="9" class="p-8 text-center text-slate-400">
                 <i class="fa-solid fa-folder-open text-3xl mb-2 opacity-40"></i>
-                <p class="font-medium">
+                <p class="font-normal text-sm md:text-xs">
                   Tidak ada data tiket aduan yang ditemukan.
                 </p>
               </td>
@@ -488,12 +494,12 @@
           >
             <div>
               <span
-                class="text-[10px] font-mono font-bold text-theme bg-theme/10 px-2 py-0.5 rounded border border-theme/20"
+                class="text-xs font-mono font-semibold text-theme bg-theme/10 px-2 py-0.5 rounded border border-theme/20"
               >
                 #{{ form.ticketNo }}
               </span>
               <h3
-                class="font-bold text-slate-800 dark:text-slate-100 text-sm md:text-base mt-1 flex items-center gap-2"
+                class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm mt-1 flex items-center gap-2"
               >
                 <i class="fa-solid fa-ticket text-theme"></i>
                 {{
@@ -513,10 +519,13 @@
             </button>
           </div>
 
-          <form @submit.prevent="saveTicket" class="space-y-3 text-xs">
+          <form
+            @submit.prevent="saveTicket"
+            class="space-y-3 text-sm md:text-xs"
+          >
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-slate-500 font-medium mb-1"
+                <label class="block text-slate-500 font-semibold mb-1"
                   >Nama Pelanggan / Pelapor</label
                 >
                 <input
@@ -525,11 +534,11 @@
                   required
                   :disabled="!canCreateOrEdit"
                   placeholder="Nama Lengkap"
-                  class="w-full glass-input rounded-xl p-2.5 outline-none disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
+                  class="w-full glass-input rounded-xl p-2.5 outline-none font-normal disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
                 />
               </div>
               <div>
-                <label class="block text-slate-500 font-medium mb-1"
+                <label class="block text-slate-500 font-semibold mb-1"
                   >Kontak (WA / Email)</label
                 >
                 <div class="flex gap-1.5">
@@ -538,7 +547,7 @@
                     type="text"
                     :disabled="!canCreateOrEdit"
                     placeholder="08xxxxxxx"
-                    class="w-full glass-input rounded-xl p-2.5 outline-none disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
+                    class="w-full glass-input rounded-xl p-2.5 outline-none font-normal disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
                   />
                   <a
                     v-if="form.contact"
@@ -558,14 +567,14 @@
 
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-slate-500 font-medium mb-1"
+                <label class="block text-slate-500 font-semibold mb-1"
                   >Unit Usaha</label
                 >
                 <select
                   v-model="form.unit"
                   required
                   :disabled="!canCreateOrEdit"
-                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none disabled:opacity-70"
+                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold disabled:opacity-70"
                 >
                   <option
                     v-for="u in masterUnits"
@@ -577,14 +586,14 @@
                 </select>
               </div>
               <div>
-                <label class="block text-slate-500 font-medium mb-1"
+                <label class="block text-slate-500 font-semibold mb-1"
                   >Kategori Masalah</label
                 >
                 <select
                   v-model="form.category"
                   required
                   :disabled="!canCreateOrEdit"
-                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none disabled:opacity-70"
+                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold disabled:opacity-70"
                 >
                   <option value="Keterlambatan Pengiriman">
                     Keterlambatan Pengiriman
@@ -605,14 +614,14 @@
 
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-slate-500 font-medium mb-1"
+                <label class="block text-slate-500 font-semibold mb-1"
                   >Tingkat Prioritas</label
                 >
                 <select
                   v-model="form.priority"
                   required
                   :disabled="!canCreateOrEdit"
-                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none disabled:opacity-70"
+                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold disabled:opacity-70"
                 >
                   <option value="Rendah">Rendah</option>
                   <option value="Sedang">Sedang</option>
@@ -620,14 +629,14 @@
                 </select>
               </div>
               <div>
-                <label class="block text-slate-500 font-medium mb-1"
+                <label class="block text-slate-500 font-semibold mb-1"
                   >Status Penanganan</label
                 >
                 <select
                   v-model="form.status"
                   required
                   :disabled="!canCreateOrEdit"
-                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-bold disabled:opacity-70"
+                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold disabled:opacity-70"
                 >
                   <option value="Open">Open (Menunggu)</option>
                   <option value="In Progress">In Progress</option>
@@ -637,7 +646,7 @@
             </div>
 
             <div>
-              <label class="block text-slate-500 font-medium mb-1"
+              <label class="block text-slate-500 font-semibold mb-1"
                 >Rincian Keluhan / Aduan</label
               >
               <textarea
@@ -646,13 +655,13 @@
                 required
                 :disabled="!canCreateOrEdit"
                 placeholder="Jelaskan detail aduan pelanggan..."
-                class="w-full glass-input rounded-xl p-2.5 outline-none resize-y min-h-[80px] disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
+                class="w-full glass-input rounded-xl p-2.5 outline-none resize-y min-h-[80px] font-normal disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
               ></textarea>
             </div>
 
             <!-- PREVIEW GAMBAR & INPUT UPLOAD -->
             <div class="space-y-1.5">
-              <label class="block text-slate-500 font-medium"
+              <label class="block text-slate-500 font-semibold"
                 >Foto Bukti Aduan / Lampiran</label
               >
 
@@ -684,7 +693,9 @@
                 >
                   <div class="flex items-center gap-2 text-slate-500">
                     <i class="fa-solid fa-camera text-base text-theme"></i>
-                    <span class="text-xs font-semibold">Unggah Foto Bukti</span>
+                    <span class="text-sm md:text-xs font-semibold"
+                      >Unggah Foto Bukti</span
+                    >
                   </div>
                   <input
                     type="file"
@@ -698,7 +709,7 @@
 
             <div
               v-if="form.createdBy"
-              class="text-[10px] text-slate-400 italic"
+              class="text-xs md:text-xs text-slate-400 italic font-normal"
             >
               Dibuat oleh: {{ form.createdBy }}
             </div>
@@ -710,7 +721,7 @@
                 v-if="isEdit && canDeleteItem(form)"
                 type="button"
                 @click="deleteTicket(form)"
-                class="text-rose-500 font-bold hover:underline cursor-pointer text-xs"
+                class="text-rose-500 font-semibold hover:underline cursor-pointer text-sm md:text-xs"
               >
                 Hapus Tiket
               </button>
@@ -719,7 +730,7 @@
                 <button
                   type="button"
                   @click="isModalOpen = false"
-                  class="px-4 py-2 rounded-xl text-slate-500 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                  class="px-4 py-2 rounded-xl text-slate-500 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-sm md:text-xs"
                 >
                   {{ canCreateOrEdit ? "Batal" : "Tutup" }}
                 </button>
@@ -727,7 +738,7 @@
                   v-if="canCreateOrEdit"
                   type="submit"
                   :disabled="isSubmitting"
-                  class="bg-button text-white px-5 py-2 rounded-xl font-bold shadow-md cursor-pointer disabled:opacity-50"
+                  class="bg-button text-white px-5 py-2 rounded-xl font-semibold shadow-md cursor-pointer disabled:opacity-50 text-sm md:text-xs"
                 >
                   {{ isSubmitting ? "Menyimpan..." : "Simpan Tiket" }}
                 </button>
@@ -754,7 +765,7 @@ const handleExportAduan = () => {
   exportToExcelBySchema("Aduan_Pelanggan", tickets.value, "ADUAN");
 };
 
-const handleImportAduanConfirm = async ({ itemsToSave, stats }) => {
+const handleImportConfirm = async ({ itemsToSave, stats }) => {
   store.isLoading = true;
   try {
     const savePromises = itemsToSave.map((item) => api.saveAduanData(item));
@@ -934,7 +945,7 @@ const sortBy = (field) => {
 };
 
 const getSortIcon = (field) => {
-  if (sortField.value !== field) return "fa-sort opacity-30 text-[10px]";
+  if (sortField.value !== field) return "fa-sort opacity-30 text-xs";
   return sortOrder.value === "asc"
     ? "fa-sort-up text-emerald-600"
     : "fa-sort-down text-emerald-600";
@@ -1087,7 +1098,7 @@ const saveTicket = async () => {
   try {
     const payload = {
       ...JSON.parse(JSON.stringify(form)),
-      imageUrl: form.imageUrl, // MEMASTIKAN FOTO BASE64 IKUT DENGAN TEGAS SAAT SIMPAN
+      imageUrl: form.imageUrl,
       createdBy:
         form.createdBy ||
         currentUser.value?.email ||

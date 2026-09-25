@@ -12,20 +12,20 @@
         @click="closeModal"
         class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
       >
-        <i class="fa-solid fa-xmark text-lg"></i>
+        <i class="fa-solid fa-xmark text-base"></i>
       </button>
 
       <!-- Header Portal -->
       <div class="text-center space-y-2">
         <div
-          class="inline-flex p-3 bg-button text-white rounded-2xl shadow-lg text-2xl mb-2"
+          class="inline-flex p-3 bg-button text-white rounded-2xl shadow-lg text-xl mb-2"
         >
           <i class="fa-solid fa-chart-pie"></i>
         </div>
-        <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">
+        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100">
           Portal Marketing
         </h2>
-        <p class="text-xs text-slate-500 dark:text-slate-400">
+        <p class="text-xs text-slate-500 dark:text-slate-400 font-normal">
           Silakan masuk untuk akses fitur manajemen data.
         </p>
       </div>
@@ -39,10 +39,10 @@
       </div>
 
       <!-- Form Login -->
-      <form @submit.prevent="handleLogin" class="space-y-4">
+      <form @submit.prevent="handleLogin" class="space-y-4 text-sm md:text-xs">
         <div>
           <label
-            class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
+            class="block text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
           >
             Email / Username
           </label>
@@ -51,13 +51,13 @@
             type="text"
             required
             placeholder="admin@marketing.com"
-            class="w-full glass-input rounded-xl p-3 text-xs outline-none"
+            class="w-full glass-input rounded-xl p-3 text-sm md:text-xs outline-none font-normal"
           />
         </div>
 
         <div>
           <label
-            class="block text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
+            class="block text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
           >
             Password
           </label>
@@ -66,17 +66,20 @@
             type="password"
             required
             placeholder="••••••••"
-            class="w-full glass-input rounded-xl p-3 text-xs outline-none"
+            class="w-full glass-input rounded-xl p-3 text-sm md:text-xs outline-none font-normal"
           />
         </div>
 
         <button
           type="submit"
           :disabled="isSubmitting"
-          class="w-full bg-button hover:from-[#149b73] hover:to-[#149b73] text-white font-bold py-3 rounded-xl text-xs transition-all shadow-md mt-2 disabled:opacity-50 cursor-pointer flex items-center justify-center"
+          class="w-full bg-button hover:from-[#149b73] hover:to-[#149b73] text-white font-semibold py-3 rounded-xl text-sm md:text-xs transition-all shadow-md mt-2 disabled:opacity-50 cursor-pointer flex items-center justify-center"
         >
-          <i v-if="!isSubmitting" class="fa-solid fa-right-to-bracket mr-2"></i>
-          <i v-else class="fa-solid fa-circle-notch fa-spin mr-2 text-sm"></i>
+          <i
+            v-if="!isSubmitting"
+            class="fa-solid fa-right-to-bracket mr-2 text-xs"
+          ></i>
+          <i v-else class="fa-solid fa-circle-notch fa-spin mr-2 text-xs"></i>
           <span>{{
             isSubmitting ? "Memverifikasi..." : "Masuk Aplikasi"
           }}</span>

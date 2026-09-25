@@ -36,19 +36,19 @@
       <div class="relative z-10 flex flex-col justify-between space-y-3">
         <div>
           <span
-            class="text-[10px] font-bold uppercase tracking-widest bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-md"
+            class="text-sm md:text-xs font-semibold uppercase tracking-widest bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-md"
           >
             {{ currentUser.role || "Staff Workspace" }}
           </span>
-          <h2 class="text-l md:text-l mt-2 leading-tight">
+          <h2 class="text-base md:text-sm mt-2 leading-tight">
             Selamat {{ greetingTime }}
           </h2>
-          <h2 class="text-lg md:text-xl font-extrabold leading-tight">
+          <h2 class="text-xl md:text-2xl font-semibold leading-tight">
             {{ currentUser.nama || "Rekan Tim" }} 👋
           </h2>
-          <p class="text-xs text-white/80 mt-1">
+          <p class="text-sm md:text-xs text-white/80 mt-1">
             Unit:
-            <span class="font-bold underline">{{
+            <span class="font-semibold underline">{{
               currentUser.unit || "NHP"
             }}</span>
             • Pantau aktivitas & tugas harian Anda di sini.
@@ -65,7 +65,7 @@
           >
             <div class="overflow-hidden whitespace-nowrap w-full">
               <div
-                class="inline-block animate-marquee pl-full text-xs font-semibold text-white/95"
+                class="inline-block animate-marquee pl-full text-sm md:text-xs font-semibold text-white/95"
               >
                 {{ cleanedBioText }}
               </div>
@@ -91,14 +91,14 @@
     >
       <div class="flex items-center justify-between">
         <h3
-          class="text-xs font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1.5"
+          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-1.5"
         >
           <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i>
           Tugas Deadline Terdekat Anda
         </h3>
         <button
           @click="navTo('progress')"
-          class="text-[10px] font-bold text-theme hover:underline"
+          class="text-sm md:text-xs font-semibold text-theme hover:underline"
         >
           Lihat Semua
         </button>
@@ -109,19 +109,21 @@
           v-for="task in myUpcomingTasks"
           :key="task.id"
           @click="navTo('progress')"
-          class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 text-sm md:text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
         >
           <div class="overflow-hidden">
-            <p class="font-bold text-slate-800 dark:text-slate-200 truncate">
+            <p
+              class="font-semibold text-slate-800 dark:text-slate-200 truncate"
+            >
               {{ task.title || task.Judul }}
             </p>
-            <p class="text-[10px] text-slate-400">
+            <p class="text-xs md:text-xs text-slate-400">
               DL: {{ task.deadline || task.Deadline || "-" }} • Unit
               {{ task.unit || task.Unit }}
             </p>
           </div>
           <span
-            class="px-2.5 py-1 rounded-full text-[10px] font-bold shrink-0 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+            class="px-2.5 py-1 rounded-full text-xs md:text-xs font-semibold shrink-0 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
           >
             {{ task.progress || 0 }}%
           </span>
@@ -129,7 +131,7 @@
 
         <div
           v-if="myUpcomingTasks.length === 0"
-          class="text-center py-6 text-slate-400 text-xs"
+          class="text-center py-6 text-slate-400 text-sm md:text-xs"
         >
           <i class="fa-solid fa-circle-check text-xl mb-1 opacity-40"></i>
           <p>Tidak ada tugas mendekati deadline.</p>
@@ -140,7 +142,7 @@
     <!-- 2. RINGKASAN LAPORAN OPERASIONAL -->
     <div>
       <h3
-        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-1 flex items-center gap-1.5"
+        class="text-sm md:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5 px-1 flex items-center gap-1.5"
       >
         <i class="fa-solid fa-[#25eba1] fa-chart-pie"></i>
         Ringkasan Aktivitas Anda
@@ -158,11 +160,11 @@
             <i class="fa-solid fa-list-check"></i>
           </div>
           <div class="overflow-hidden">
-            <p class="text-[10px] font-medium text-slate-400 truncate">
+            <p class="text-xs font-semibold text-slate-400 truncate">
               Tugas Aktif
             </p>
             <p
-              class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100 leading-tight"
+              class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ myActiveTasksCount }}
             </p>
@@ -180,11 +182,11 @@
             <i class="fa-solid fa-circle-check"></i>
           </div>
           <div class="overflow-hidden">
-            <p class="text-[10px] font-medium text-slate-400 truncate">
+            <p class="text-xs font-semibold text-slate-400 truncate">
               Tugas Selesai
             </p>
             <p
-              class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100 leading-tight"
+              class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ myCompletedTasksCount }}
             </p>
@@ -202,11 +204,11 @@
             <i class="fa-solid fa-headset"></i>
           </div>
           <div class="overflow-hidden">
-            <p class="text-[10px] font-medium text-slate-400 truncate">
+            <p class="text-xs font-semibold text-slate-400 truncate">
               Aduan Open
             </p>
             <p
-              class="text-base md:text-lg font-bold text-amber-600 dark:text-amber-400 leading-tight"
+              class="text-base md:text-sm font-semibold text-amber-600 dark:text-amber-400 leading-tight"
             >
               {{ openTicketsCount }}
             </p>
@@ -224,11 +226,11 @@
             <i class="fa-solid fa-note-sticky"></i>
           </div>
           <div class="overflow-hidden">
-            <p class="text-[10px] font-medium text-slate-400 truncate">
+            <p class="text-xs font-semibold text-slate-400 truncate">
               Notes Tim
             </p>
             <p
-              class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100 leading-tight"
+              class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ notesCount }}
             </p>
@@ -240,7 +242,7 @@
     <!-- 3. MENU AKSES FITUR -->
     <div>
       <h3
-        class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5 px-1 flex items-center gap-1.5"
+        class="text-sm md:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5 px-1 flex items-center gap-1.5"
       >
         <i class="fa-solid fa-shapes"></i>
         Menu & Fitur Utama
@@ -260,11 +262,11 @@
           </div>
           <div>
             <h4
-              class="font-bold text-xs text-slate-800 dark:text-slate-100 group-hover:text-emerald-600 transition-colors"
+              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-emerald-600 transition-colors"
             >
               Team Progress
             </h4>
-            <p class="text-[10px] text-slate-400 line-clamp-1 mt-0.5">
+            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
               Kanban board tugas kerja
             </p>
           </div>
@@ -283,11 +285,11 @@
           </div>
           <div>
             <h4
-              class="font-bold text-xs text-slate-800 dark:text-slate-100 group-hover:text-blue-600 transition-colors"
+              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-blue-600 transition-colors"
             >
               Customer Care
             </h4>
-            <p class="text-[10px] text-slate-400 line-clamp-1 mt-0.5">
+            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
               Kelola tiket keluhan
             </p>
           </div>
@@ -306,11 +308,11 @@
           </div>
           <div>
             <h4
-              class="font-bold text-xs text-slate-800 dark:text-slate-100 group-hover:text-teal-600 transition-colors"
+              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-teal-600 transition-colors"
             >
               Leads & Campaign
             </h4>
-            <p class="text-[10px] text-slate-400 line-clamp-1 mt-0.5">
+            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
               Data prospek & leads
             </p>
           </div>
@@ -329,11 +331,11 @@
           </div>
           <div>
             <h4
-              class="font-bold text-xs text-slate-800 dark:text-slate-100 group-hover:text-purple-600 transition-colors"
+              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-purple-600 transition-colors"
             >
               Division Report
             </h4>
-            <p class="text-[10px] text-slate-400 line-clamp-1 mt-0.5">
+            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
               Laporan pekanan divisi
             </p>
           </div>
@@ -352,11 +354,11 @@
           </div>
           <div>
             <h4
-              class="font-bold text-xs text-slate-800 dark:text-slate-100 group-hover:text-amber-600 transition-colors"
+              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-amber-600 transition-colors"
             >
               Sosmed Analytics
             </h4>
-            <p class="text-[10px] text-slate-400 line-clamp-1 mt-0.5">
+            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
               Performa media sosial
             </p>
           </div>
@@ -375,11 +377,11 @@
           </div>
           <div>
             <h4
-              class="font-bold text-xs text-slate-800 dark:text-slate-100 group-hover:text-rose-600 transition-colors"
+              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-rose-600 transition-colors"
             >
               Notes & Catatan
             </h4>
-            <p class="text-[10px] text-slate-400 line-clamp-1 mt-0.5">
+            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
               Catatan internal tim
             </p>
           </div>
@@ -401,7 +403,7 @@
             class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800"
           >
             <h3
-              class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
+              class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm flex items-center gap-2"
             >
               <i class="fa-solid fa-comment-dots text-emerald-600"></i>
               <span>Ganti Status Harian</span>
@@ -415,7 +417,7 @@
             </button>
           </div>
 
-          <form @submit.prevent="saveBio" class="space-y-4 text-xs">
+          <form @submit.prevent="saveBio" class="space-y-4 text-sm md:text-xs">
             <!-- Pilihan Emoticon Ekspresif (Hanya Pilih 1, Tidak Masuk ke Teks) -->
             <div>
               <label
@@ -454,7 +456,7 @@
                 v-model="bioFormText"
                 rows="3"
                 placeholder="Tuliskan status harian Anda..."
-                class="w-full glass-input rounded-xl p-3 text-xs outline-none text-slate-800 dark:text-slate-100 resize-none"
+                class="w-full glass-input rounded-xl p-3 text-sm md:text-xs outline-none text-slate-800 dark:text-slate-100 resize-none"
               ></textarea>
             </div>
 
@@ -466,14 +468,14 @@
                 @click="isBioModalOpen = false"
                 type="button"
                 :disabled="isSavingBio"
-                class="px-4 py-2 rounded-xl font-bold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer"
+                class="px-4 py-2.5 md:py-2 rounded-xl font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 :disabled="isSavingBio"
-                class="px-5 py-2 rounded-xl font-bold bg-button text-white shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                class="px-5 py-2.5 md:py-2 rounded-xl font-semibold bg-button text-white shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 <i
                   v-if="isSavingBio"
@@ -637,10 +639,6 @@ const saveBio = async () => {
   }
 };
 
-const appendEmoji = (emoji) => {
-  bioFormText.value += (bioFormText.value ? " " : "") + emoji;
-};
-
 const greetingTime = computed(() => {
   const hour = new Date().getHours();
   if (hour >= 3 && hour < 11) return "Pagi";
@@ -735,27 +733,6 @@ const myUpcomingTasks = computed(() => {
     .slice(0, 3);
 });
 </script>
-
-<!-- <style scoped>
-/* 1. ANIMASI RUNNING TEXT (MARQUEE) */
-@keyframes marquee {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-.animate-marquee {
-  display: inline-block;
-  animation: marquee 16s linear infinite;
-}
-
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-</style> -->
 
 <style scoped>
 /* 1. ANIMASI RUNNING TEXT (MARQUEE) */

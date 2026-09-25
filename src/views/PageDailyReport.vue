@@ -7,23 +7,23 @@
     >
       <div>
         <h2
-          class="text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"
+          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
         >
           <i class="fa-solid fa-file-invoice text-emerald-600"></i>
           <span>Laporan Harian (Daily Report)</span>
         </h2>
-        <p class="text-[11px] text-slate-400 mt-0.5">
+        <p class="text-xs md:text-xs text-slate-400 mt-0.5">
           Sistem pelaporan kinerja dinamis terintegrasi Master Data.
         </p>
       </div>
 
       <div
         v-if="canManageFormAndRekap"
-        class="flex items-center bg-slate-100/80 dark:bg-slate-800/80 p-1 rounded-xl shrink-0 text-[11px] overflow-hidden border border-slate-200 dark:border-slate-700"
+        class="flex items-center bg-slate-100/80 dark:bg-slate-800/80 p-1 rounded-xl shrink-0 text-sm md:text-xs overflow-hidden border border-slate-200 dark:border-slate-700"
       >
         <button
           @click="activeTab = 'input'"
-          class="px-3 py-1.5 rounded-lg font-bold transition-all"
+          class="px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer"
           :class="
             activeTab === 'input'
               ? 'bg-white dark:bg-slate-900 text-emerald-600 shadow-sm'
@@ -34,7 +34,7 @@
         </button>
         <button
           @click="activeTab = 'rekap'"
-          class="px-3 py-1.5 rounded-lg font-bold transition-all"
+          class="px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer"
           :class="
             activeTab === 'rekap'
               ? 'bg-white dark:bg-slate-900 text-blue-600 shadow-sm'
@@ -46,7 +46,7 @@
         <button
           v-if="isSuperadmin"
           @click="activeTab = 'builder'"
-          class="px-3 py-1.5 rounded-lg font-bold transition-all"
+          class="px-3 py-1.5 rounded-lg font-semibold transition-all cursor-pointer"
           :class="
             activeTab === 'builder'
               ? 'bg-white dark:bg-slate-900 text-rose-600 shadow-sm'
@@ -64,7 +64,9 @@
       class="flex flex-col items-center justify-center py-10 gap-2"
     >
       <i class="fa-solid fa-circle-notch fa-spin text-3xl text-emerald-500"></i>
-      <p class="text-xs font-semibold text-slate-500">Menyinkronkan data...</p>
+      <p class="text-sm md:text-xs font-semibold text-slate-500">
+        Menyinkronkan data...
+      </p>
     </div>
 
     <template v-else>
@@ -79,14 +81,14 @@
             >
               <div>
                 <label
-                  class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1"
+                  class="block text-xs md:text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
                   >Jenis Laporan Pekerjaan</label
                 >
                 <select
                   v-model="selectedTemplateId"
                   @change="onTemplateChange"
                   required
-                  class="w-full glass-input rounded-lg p-2 outline-none font-bold text-slate-800 dark:text-slate-100 bg-white dark:bg-slate-900 text-xs"
+                  class="w-full glass-input rounded-lg p-2.5 md:p-2 outline-none font-semibold text-slate-800 dark:text-slate-100 bg-white dark:bg-slate-900 text-sm md:text-xs"
                 >
                   <option value="" disabled>-- Pilih Laporan --</option>
                   <option
@@ -100,50 +102,53 @@
               </div>
               <div>
                 <label
-                  class="block text-[11px] font-bold text-slate-600 dark:text-slate-300 mb-1"
+                  class="block text-xs md:text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
                   >Tanggal Laporan</label
                 >
                 <input
                   v-model="formHeader.tanggal"
                   type="date"
                   required
-                  class="w-full glass-input rounded-lg p-2 outline-none text-slate-800 dark:text-slate-100 text-xs font-semibold"
+                  class="w-full glass-input rounded-lg p-2.5 md:p-2 outline-none text-slate-800 dark:text-slate-100 text-sm md:text-xs font-semibold"
                 />
               </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label class="block text-[11px] font-medium text-slate-500 mb-1"
+                <label
+                  class="block text-xs md:text-xs font-semibold text-slate-500 mb-1"
                   >Nama Staf</label
                 >
                 <input
                   v-model="formHeader.nama"
                   type="text"
                   readonly
-                  class="w-full glass-input rounded-lg p-2 bg-slate-100/50 dark:bg-slate-800/30 text-slate-500 outline-none text-xs font-bold"
+                  class="w-full glass-input rounded-lg p-2.5 md:p-2 bg-slate-100/50 dark:bg-slate-800/30 text-slate-500 outline-none text-sm md:text-xs font-semibold"
                 />
               </div>
               <div>
-                <label class="block text-[11px] font-medium text-slate-500 mb-1"
+                <label
+                  class="block text-xs md:text-xs font-semibold text-slate-500 mb-1"
                   >Unit Usaha</label
                 >
                 <input
                   v-model="formHeader.unit"
                   type="text"
                   readonly
-                  class="w-full glass-input rounded-lg p-2 bg-slate-100/50 dark:bg-slate-800/30 text-slate-500 outline-none text-xs font-bold"
+                  class="w-full glass-input rounded-lg p-2.5 md:p-2 bg-slate-100/50 dark:bg-slate-800/30 text-slate-500 outline-none text-sm md:text-xs font-semibold"
                 />
               </div>
               <div>
-                <label class="block text-[11px] font-medium text-slate-500 mb-1"
+                <label
+                  class="block text-xs md:text-xs font-semibold text-slate-500 mb-1"
                   >Divisi</label
                 >
                 <input
                   v-model="formHeader.divisi"
                   type="text"
                   readonly
-                  class="w-full glass-input rounded-lg p-2 bg-slate-100/50 dark:bg-slate-800/30 text-slate-500 outline-none text-xs font-bold"
+                  class="w-full glass-input rounded-lg p-2.5 md:p-2 bg-slate-100/50 dark:bg-slate-800/30 text-slate-500 outline-none text-sm md:text-xs font-semibold"
                 />
               </div>
             </div>
@@ -153,7 +158,7 @@
               class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-3"
             >
               <h4
-                class="font-bold text-slate-700 dark:text-slate-200 text-xs flex items-center gap-2 mb-2"
+                class="font-semibold text-slate-700 dark:text-slate-200 text-base md:text-sm flex items-center gap-2 mb-2"
               >
                 <i class="fa-solid fa-list-check text-blue-500"></i> Rincian
                 Indikator Laporan
@@ -168,7 +173,7 @@
                   }"
                 >
                   <label
-                    class="block font-bold text-slate-700 dark:text-slate-200 text-[11px] mb-1"
+                    class="block font-semibold text-slate-700 dark:text-slate-200 text-xs md:text-xs mb-1"
                   >
                     {{ field.label }}
                     <span v-if="field.required" class="text-rose-500">*</span>
@@ -180,7 +185,7 @@
                     type="number"
                     min="0"
                     :required="field.required"
-                    class="w-full glass-input rounded-lg p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-xs"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-sm md:text-xs"
                   />
 
                   <input
@@ -188,7 +193,7 @@
                     v-model="formResponses[field.id]"
                     type="text"
                     :required="field.required"
-                    class="w-full glass-input rounded-lg p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-xs"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-sm md:text-xs"
                   />
 
                   <textarea
@@ -196,14 +201,14 @@
                     v-model="formResponses[field.id]"
                     rows="3"
                     :required="field.required"
-                    class="w-full glass-input rounded-lg p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-xs resize-y"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-sm md:text-xs resize-y"
                   ></textarea>
 
                   <select
                     v-else-if="field.type === 'select'"
                     v-model="formResponses[field.id]"
                     :required="field.required"
-                    class="w-full glass-input rounded-lg p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-xs"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 outline-none text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/40 focus:bg-white text-sm md:text-xs"
                   >
                     <option value="" disabled>-- Pilih --</option>
                     <option
@@ -217,18 +222,18 @@
 
                   <div
                     v-else-if="field.type === 'checkbox'"
-                    class="flex flex-wrap gap-3 mt-1.5 p-2 bg-slate-50 dark:bg-slate-800/40 rounded-lg border border-slate-100 dark:border-slate-700/50"
+                    class="flex flex-wrap gap-3 mt-1.5 p-2.5 md:p-2 bg-slate-50 dark:bg-slate-800/40 rounded-lg border border-slate-100 dark:border-slate-700/50"
                   >
                     <label
                       v-for="opt in field.options"
                       :key="opt"
-                      class="flex items-center gap-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:text-theme transition-colors"
+                      class="flex items-center gap-1.5 text-sm md:text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:text-theme transition-colors"
                     >
                       <input
                         type="checkbox"
                         :value="opt"
                         v-model="formResponses[field.id]"
-                        class="accent-emerald-600 w-4 h-4 rounded cursor-pointer"
+                        class="accent-emerald-600 w-4 h-4 md:w-3.5 md:h-3.5 rounded cursor-pointer"
                       />
                       {{ opt }}
                     </label>
@@ -241,7 +246,7 @@
               v-if="store.canEditPage('daily-report')"
               type="submit"
               :disabled="isSubmitting || !activeTemplate"
-              class="w-full py-2.5 rounded-xl font-bold text-xs bg-button text-white shadow-md disabled:opacity-50 transition-all cursor-pointer flex items-center justify-center gap-2 mt-4"
+              class="w-full py-3 md:py-2.5 rounded-xl font-semibold text-sm md:text-xs bg-button text-white shadow-md disabled:opacity-50 transition-all cursor-pointer flex items-center justify-center gap-2 mt-4"
             >
               <i v-if="isSubmitting" class="fa-solid fa-spinner fa-spin"></i>
               <span>{{
@@ -263,12 +268,12 @@
           <div class="flex-1 grid grid-cols-2 md:grid-cols-4 gap-2 w-full">
             <div class="col-span-2 md:col-span-1">
               <label
-                class="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider"
+                class="block text-xs md:text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider"
                 >Jenis Laporan</label
               >
               <select
                 v-model="filter.templateId"
-                class="w-full glass-input rounded-lg p-2 outline-none font-bold text-[11px] text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/50"
+                class="w-full glass-input rounded-lg p-2.5 md:p-2 outline-none font-semibold text-sm md:text-xs text-slate-700 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/50"
               >
                 <option value="ALL">Semua Laporan</option>
                 <option
@@ -282,36 +287,36 @@
             </div>
             <div>
               <label
-                class="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider"
+                class="block text-xs md:text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider"
                 >Dari Tanggal</label
               >
               <input
                 v-model="filter.startDate"
                 type="date"
-                class="w-full glass-input rounded-lg p-2 outline-none text-[11px] font-semibold bg-slate-50 dark:bg-slate-800/50"
+                class="w-full glass-input rounded-lg p-2.5 md:p-2 outline-none text-sm md:text-xs font-semibold bg-slate-50 dark:bg-slate-800/50"
               />
             </div>
             <div>
               <label
-                class="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider"
+                class="block text-xs md:text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider"
                 >Sampai Tanggal</label
               >
               <input
                 v-model="filter.endDate"
                 type="date"
-                class="w-full glass-input rounded-lg p-2 outline-none text-[11px] font-semibold bg-slate-50 dark:bg-slate-800/50"
+                class="w-full glass-input rounded-lg p-2.5 md:p-2 outline-none text-sm md:text-xs font-semibold bg-slate-50 dark:bg-slate-800/50"
               />
             </div>
             <div>
               <label
-                class="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider"
+                class="block text-xs md:text-xs font-semibold text-slate-400 mb-1 uppercase tracking-wider"
                 >Filter Detail</label
               >
               <input
                 v-model="filter.search"
                 type="text"
                 placeholder="Cari..."
-                class="w-full glass-input rounded-lg p-2 outline-none text-[11px] bg-slate-50 dark:bg-slate-800/50"
+                class="w-full glass-input rounded-lg p-2.5 md:p-2 outline-none text-sm md:text-xs bg-slate-50 dark:bg-slate-800/50"
               />
             </div>
           </div>
@@ -321,12 +326,12 @@
           >
             <button
               @click="exportToExcel"
-              class="flex-1 lg:flex-none bg-emerald-500/10 text-emerald-600 px-3 py-2 rounded-lg font-bold hover:bg-emerald-500/20 transition-all text-[11px] flex items-center justify-center gap-1.5 cursor-pointer"
+              class="flex-1 lg:flex-none bg-emerald-500/10 text-emerald-600 px-3.5 py-2.5 md:px-3 md:py-2 rounded-lg font-semibold hover:bg-emerald-500/20 transition-all text-sm md:text-xs flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <i class="fa-solid fa-file-excel"></i> Export Excel
             </button>
             <label
-              class="flex-1 lg:flex-none bg-blue-500/10 text-blue-600 px-3 py-2 rounded-lg font-bold hover:bg-blue-500/20 transition-all text-[11px] flex items-center justify-center gap-1.5 cursor-pointer"
+              class="flex-1 lg:flex-none bg-blue-500/10 text-blue-600 px-3.5 py-2.5 md:px-3 md:py-2 rounded-lg font-semibold hover:bg-blue-500/20 transition-all text-sm md:text-xs flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <i class="fa-solid fa-file-import"></i> Import Excel
               <input
@@ -346,24 +351,25 @@
         >
           <div class="flex items-center gap-2">
             <div
-              class="bg-blue-500 text-white w-6 h-6 rounded-md flex items-center justify-center text-xs font-bold"
+              class="bg-blue-500 text-white w-6 h-6 rounded-md flex items-center justify-center text-xs font-semibold"
             >
               {{ selectedItems.length }}
             </div>
-            <span class="text-xs font-bold text-blue-700 dark:text-blue-300"
+            <span
+              class="text-sm md:text-xs font-semibold text-blue-700 dark:text-blue-300"
               >Data Terpilih</span
             >
           </div>
           <div class="flex gap-2">
             <button
               @click="openBulkEditModal"
-              class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-slate-50 cursor-pointer shadow-sm transition-all flex items-center gap-1.5"
+              class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg text-sm md:text-xs font-semibold hover:bg-slate-50 cursor-pointer shadow-sm transition-all flex items-center gap-1.5"
             >
               <i class="fa-solid fa-pen-to-square"></i> Edit Masal
             </button>
             <button
               @click="executeBulkDelete"
-              class="bg-rose-500 text-white px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-rose-600 cursor-pointer shadow-sm transition-all flex items-center gap-1.5"
+              class="bg-rose-500 text-white px-3 py-1.5 rounded-lg text-sm md:text-xs font-semibold hover:bg-rose-600 cursor-pointer shadow-sm transition-all flex items-center gap-1.5"
             >
               <i class="fa-solid fa-trash-can"></i> Hapus Masal
             </button>
@@ -376,13 +382,13 @@
         >
           <div class="overflow-auto flex-1 custom-scrollbar">
             <table
-              class="w-full text-left text-[11px] border-collapse whitespace-nowrap"
+              class="w-full text-left text-sm md:text-xs border-collapse whitespace-nowrap"
             >
               <thead
                 class="sticky top-0 bg-slate-50/95 dark:bg-slate-800/95 backdrop-blur-sm z-10 shadow-sm"
               >
                 <tr
-                  class="text-slate-500 font-bold uppercase text-[10px] tracking-wider"
+                  class="text-slate-500 font-semibold uppercase text-xs md:text-xs tracking-wider"
                 >
                   <th
                     v-if="isSuperadmin"
@@ -391,7 +397,7 @@
                     <input
                       type="checkbox"
                       v-model="isAllSelected"
-                      class="accent-theme w-3.5 h-3.5 cursor-pointer rounded"
+                      class="accent-theme w-4 h-4 md:w-3.5 md:h-3.5 cursor-pointer rounded"
                     />
                   </th>
                   <th
@@ -461,21 +467,21 @@
                       type="checkbox"
                       v-model="selectedItems"
                       :value="item.id"
-                      class="accent-theme w-3.5 h-3.5 cursor-pointer rounded"
+                      class="accent-theme w-4 h-4 md:w-3.5 md:h-3.5 cursor-pointer rounded"
                     />
                   </td>
                   <td class="p-3 font-semibold">
                     {{ formatTanggal(item.tanggal) }}
                   </td>
                   <td class="p-3">
-                    <div class="font-bold text-slate-900 dark:text-white">
+                    <div class="font-semibold text-slate-900 dark:text-white">
                       {{ item.nama }}
                     </div>
                     <div
-                      class="text-[9px] text-slate-500 mt-0.5 flex gap-1 items-center"
+                      class="text-xs md:text-xs text-slate-500 mt-0.5 flex gap-1 items-center"
                     >
                       <span
-                        class="px-1 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold"
+                        class="px-1 py-0.5 rounded bg-blue-500/10 text-blue-600 font-semibold"
                         >{{ item.unit || "UMUM" }}</span
                       >
                       <span>{{ item.divisi || "-" }}</span>
@@ -508,13 +514,13 @@
                   <template v-else>
                     <td class="p-3">
                       <span
-                        class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 font-bold text-[10px]"
+                        class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 font-semibold text-xs md:text-xs"
                         >{{ item.jenisLaporan }}</span
                       >
                     </td>
                     <td class="p-3">
                       <div
-                        class="max-w-md truncate text-slate-500 text-[10px] italic"
+                        class="max-w-md truncate text-slate-500 text-xs md:text-xs italic"
                         :title="getSummary(item.responses)"
                       >
                         {{ getSummary(item.responses) }}
@@ -528,7 +534,7 @@
                       class="text-rose-500 hover:text-rose-700 p-1.5 rounded-md hover:bg-rose-500/10 transition-colors cursor-pointer"
                       title="Hapus Data"
                     >
-                      <i class="fa-solid fa-trash-can text-[11px]"></i>
+                      <i class="fa-solid fa-trash-can text-sm md:text-xs"></i>
                     </button>
                   </td>
                 </tr>
@@ -541,7 +547,7 @@
                           : 6
                         : 5
                     "
-                    class="text-center py-10 text-slate-400 text-xs"
+                    class="text-center py-10 text-slate-400 text-sm md:text-xs"
                   >
                     Tidak ada data laporan yang sesuai filter.
                   </td>
@@ -565,7 +571,7 @@
           >
             <div>
               <h3
-                class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
+                class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm flex items-center gap-2"
               >
                 <i class="fa-solid fa-list-ul text-blue-500"></i> Daftar
                 Template Laporan
@@ -574,7 +580,7 @@
             <button
               @click="openBuilderModal(null)"
               type="button"
-              class="bg-button text-white px-3 py-1.5 rounded-lg font-bold text-[11px] flex items-center gap-1.5 shadow-sm cursor-pointer hover:shadow-md transition-all"
+              class="bg-button text-white px-3.5 py-2 md:px-3 md:py-1.5 rounded-lg font-semibold text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer hover:shadow-md transition-all"
             >
               <i class="fa-solid fa-plus"></i>
               <span class="hidden sm:inline">Buat Baru</span>
@@ -595,11 +601,11 @@
                 </div>
                 <div>
                   <h4
-                    class="font-bold text-xs text-slate-800 dark:text-slate-100"
+                    class="font-semibold text-sm md:text-xs text-slate-800 dark:text-slate-100"
                   >
                     {{ tpl.title }}
                   </h4>
-                  <p class="text-[10px] text-slate-500 font-medium">
+                  <p class="text-xs md:text-xs text-slate-500 font-normal">
                     {{ tpl.fields?.length || 0 }} Indikator Pertanyaan
                   </p>
                 </div>
@@ -607,13 +613,13 @@
               <div class="flex gap-2">
                 <button
                   @click="openBuilderModal(tpl)"
-                  class="flex-1 sm:flex-none bg-blue-500/10 text-blue-600 px-3 py-1.5 rounded-lg text-[11px] font-bold hover:bg-blue-500/20 cursor-pointer transition-all"
+                  class="flex-1 sm:flex-none bg-blue-500/10 text-blue-600 px-3.5 py-2 md:px-3 md:py-1.5 rounded-lg text-sm md:text-xs font-semibold hover:bg-blue-500/20 cursor-pointer transition-all"
                 >
                   Edit Struktur
                 </button>
                 <button
                   @click="deleteTemplate(tpl.id)"
-                  class="bg-rose-500/10 text-rose-500 px-2.5 py-1.5 rounded-lg text-[11px] hover:bg-rose-500/20 cursor-pointer transition-all"
+                  class="bg-rose-500/10 text-rose-500 px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg text-sm md:text-xs hover:bg-rose-500/20 cursor-pointer transition-all"
                 >
                   <i class="fa-solid fa-trash-can"></i>
                 </button>
@@ -637,7 +643,9 @@
             class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-800/40"
           >
             <div>
-              <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100">
+              <h3
+                class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100"
+              >
                 {{
                   builderTemplate.id
                     ? "Edit Template Form"
@@ -656,13 +664,13 @@
           <div class="p-4 overflow-y-auto flex-1 space-y-4 custom-scrollbar">
             <div class="bg-blue-500/5 p-3 rounded-xl border border-blue-500/10">
               <label
-                class="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1"
+                class="block text-xs md:text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1"
                 >Nama / Judul Template:</label
               >
               <input
                 v-model="builderTemplate.title"
                 type="text"
-                class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 text-xs outline-none font-bold focus:border-blue-500 transition-colors"
+                class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 text-sm md:text-xs outline-none font-semibold focus:border-blue-500 transition-colors"
                 placeholder="Contoh: Laporan Harian Tim CS"
               />
             </div>
@@ -672,7 +680,7 @@
                 class="flex justify-between items-end mb-2 border-b border-slate-100 dark:border-slate-800 pb-2"
               >
                 <h4
-                  class="text-xs font-bold text-slate-700 dark:text-slate-200"
+                  class="text-sm md:text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >
                   <i
                     class="fa-solid fa-layer-group text-emerald-500 mr-1.5"
@@ -682,7 +690,7 @@
                 <button
                   @click="addBuilderField"
                   type="button"
-                  class="text-[10px] font-bold bg-emerald-500/10 text-emerald-600 px-2.5 py-1.5 rounded-md cursor-pointer hover:bg-emerald-500/20"
+                  class="text-xs md:text-xs font-semibold bg-emerald-500/10 text-emerald-600 px-2.5 py-1.5 rounded-md cursor-pointer hover:bg-emerald-500/20"
                 >
                   <i class="fa-solid fa-plus mr-1"></i> Tambah Field
                 </button>
@@ -697,23 +705,23 @@
                   <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-end">
                     <div class="sm:col-span-5">
                       <label
-                        class="block text-[10px] font-bold text-slate-500 mb-1"
+                        class="block text-xs md:text-xs font-semibold text-slate-500 mb-1"
                         >Label Pertanyaan</label
                       >
                       <input
                         v-model="field.label"
                         placeholder="Misal: Jumlah Penawaran"
-                        class="w-full glass-input rounded-lg p-2 text-[11px] font-semibold outline-none focus:border-blue-400"
+                        class="w-full glass-input rounded-lg p-2 text-sm md:text-xs font-semibold outline-none focus:border-blue-400"
                       />
                     </div>
                     <div class="sm:col-span-3">
                       <label
-                        class="block text-[10px] font-bold text-slate-500 mb-1"
+                        class="block text-xs md:text-xs font-semibold text-slate-500 mb-1"
                         >Tipe Jawaban</label
                       >
                       <select
                         v-model="field.type"
-                        class="w-full glass-input rounded-lg p-2 text-[11px] font-semibold outline-none bg-white dark:bg-slate-900"
+                        class="w-full glass-input rounded-lg p-2 text-sm md:text-xs font-semibold outline-none bg-white dark:bg-slate-900"
                       >
                         <option value="number">Angka (Number)</option>
                         <option value="text">Teks Singkat</option>
@@ -728,12 +736,12 @@
                       class="sm:col-span-4 flex items-center justify-between pb-0.5"
                     >
                       <label
-                        class="flex items-center gap-1.5 text-[10px] font-bold cursor-pointer text-slate-600 dark:text-slate-300"
+                        class="flex items-center gap-1.5 text-xs md:text-xs font-semibold cursor-pointer text-slate-600 dark:text-slate-300"
                       >
                         <input
                           type="checkbox"
                           v-model="field.required"
-                          class="accent-theme w-3.5 h-3.5 rounded"
+                          class="accent-theme w-4 h-4 md:w-3.5 md:h-3.5 rounded"
                         />
                         Wajib
                       </label>
@@ -746,7 +754,9 @@
                           class="text-slate-400 hover:text-blue-500 disabled:opacity-30 p-1.5 rounded bg-slate-200/50 dark:bg-slate-800 cursor-pointer transition-colors"
                           title="Naik"
                         >
-                          <i class="fa-solid fa-arrow-up text-[10px]"></i>
+                          <i
+                            class="fa-solid fa-arrow-up text-xs md:text-xs"
+                          ></i>
                         </button>
                         <button
                           @click="moveField(idx, 1)"
@@ -755,7 +765,9 @@
                           class="text-slate-400 hover:text-blue-500 disabled:opacity-30 p-1.5 rounded bg-slate-200/50 dark:bg-slate-800 cursor-pointer transition-colors"
                           title="Turun"
                         >
-                          <i class="fa-solid fa-arrow-down text-[10px]"></i>
+                          <i
+                            class="fa-solid fa-arrow-down text-xs md:text-xs"
+                          ></i>
                         </button>
                         <button
                           @click="builderTemplate.fields.splice(idx, 1)"
@@ -763,7 +775,9 @@
                           class="text-rose-500 hover:text-rose-700 p-1.5 rounded bg-rose-500/10 cursor-pointer ml-1"
                           title="Hapus"
                         >
-                          <i class="fa-solid fa-trash-can text-[10px]"></i>
+                          <i
+                            class="fa-solid fa-trash-can text-xs md:text-xs"
+                          ></i>
                         </button>
                       </div>
                     </div>
@@ -773,7 +787,8 @@
                     v-if="field.type === 'select' || field.type === 'checkbox'"
                     class="bg-slate-100 dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-700 mt-1"
                   >
-                    <label class="block text-[9px] font-bold text-blue-500 mb-1"
+                    <label
+                      class="block text-xs md:text-xs font-semibold text-blue-500 mb-1"
                       ><i class="fa-solid fa-list-ul mr-1"></i> Opsi Pilihan
                       (Pisahkan dengan Koma)</label
                     >
@@ -786,14 +801,14 @@
                             .map((s) => s.trim()))
                       "
                       placeholder="A, B, C"
-                      class="w-full bg-transparent border-b border-slate-300 dark:border-slate-600 py-1 text-[10px] outline-none focus:border-blue-500 transition-colors"
+                      class="w-full bg-transparent border-b border-slate-300 dark:border-slate-600 py-1 text-xs md:text-xs outline-none focus:border-blue-500 transition-colors"
                     />
                   </div>
                 </div>
 
                 <div
                   v-if="builderTemplate.fields.length === 0"
-                  class="text-center py-4 text-slate-400 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 text-xs"
+                  class="text-center py-4 text-slate-400 bg-slate-50 dark:bg-slate-800/30 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 text-sm md:text-xs"
                 >
                   Belum ada pertanyaan/field ditambahkan.
                 </div>
@@ -806,13 +821,13 @@
           >
             <button
               @click="isBuilderModalOpen = false"
-              class="px-4 py-2 rounded-lg text-xs font-bold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 cursor-pointer transition-colors"
+              class="px-4 py-2.5 md:py-2 rounded-lg text-sm md:text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 cursor-pointer transition-colors"
             >
               Batal
             </button>
             <button
               @click="saveBuilderTemplate"
-              class="px-5 py-2 rounded-lg text-xs font-bold bg-button text-white shadow-sm cursor-pointer flex items-center gap-1.5 hover:shadow-md transition-all"
+              class="px-5 py-2.5 md:py-2 rounded-lg text-sm md:text-xs font-semibold bg-button text-white shadow-sm cursor-pointer flex items-center gap-1.5 hover:shadow-md transition-all"
             >
               <i class="fa-solid fa-floppy-disk"></i> Simpan
             </button>
@@ -834,10 +849,12 @@
             class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-800/40"
           >
             <div>
-              <h3 class="font-bold text-sm text-slate-800 dark:text-slate-100">
+              <h3
+                class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100"
+              >
                 Edit Masal {{ selectedItems.length }} Data
               </h3>
-              <p class="text-[10px] text-slate-500">
+              <p class="text-xs md:text-xs text-slate-500">
                 Centang field yang ingin diubah/ditimpa secara massal.
               </p>
             </div>
@@ -855,7 +872,7 @@
             <!-- Common Metadata -->
             <div class="space-y-3">
               <h4
-                class="text-xs font-bold text-slate-700 dark:text-slate-200 mb-2 border-b border-slate-100 dark:border-slate-800 pb-1"
+                class="text-sm md:text-xs font-semibold text-slate-700 dark:text-slate-200 mb-2 border-b border-slate-100 dark:border-slate-800 pb-1"
               >
                 Identitas Laporan Umum
               </h4>
@@ -868,7 +885,7 @@
                 />
                 <div class="flex-1">
                   <label
-                    class="block text-[10px] font-bold text-slate-500 mb-1"
+                    class="block text-xs md:text-xs font-semibold text-slate-500 mb-1"
                     :class="{ 'opacity-50': !bulkEditToggles.tanggal }"
                     >Timpa Tanggal Baru</label
                   >
@@ -876,7 +893,7 @@
                     v-model="bulkEditForm.tanggal"
                     type="date"
                     :disabled="!bulkEditToggles.tanggal"
-                    class="w-full glass-input rounded-lg p-2 text-xs font-semibold outline-none disabled:opacity-50"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 text-sm md:text-xs font-semibold outline-none disabled:opacity-50"
                   />
                 </div>
               </div>
@@ -888,14 +905,14 @@
                 />
                 <div class="flex-1">
                   <label
-                    class="block text-[10px] font-bold text-slate-500 mb-1"
+                    class="block text-xs md:text-xs font-semibold text-slate-500 mb-1"
                     :class="{ 'opacity-50': !bulkEditToggles.unit }"
                     >Timpa Unit Usaha Baru</label
                   >
                   <select
                     v-model="bulkEditForm.unit"
                     :disabled="!bulkEditToggles.unit"
-                    class="w-full glass-input rounded-lg p-2 text-xs font-semibold outline-none bg-white dark:bg-slate-900 disabled:opacity-50"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 text-sm md:text-xs font-semibold outline-none bg-white dark:bg-slate-900 disabled:opacity-50"
                   >
                     <option value="">-- Kosongkan --</option>
                     <option
@@ -916,7 +933,7 @@
                 />
                 <div class="flex-1">
                   <label
-                    class="block text-[10px] font-bold text-slate-500 mb-1"
+                    class="block text-xs md:text-xs font-semibold text-slate-500 mb-1"
                     :class="{ 'opacity-50': !bulkEditToggles.divisi }"
                     >Timpa Divisi Baru</label
                   >
@@ -924,7 +941,7 @@
                     v-model="bulkEditForm.divisi"
                     type="text"
                     :disabled="!bulkEditToggles.divisi"
-                    class="w-full glass-input rounded-lg p-2 text-xs font-semibold outline-none disabled:opacity-50"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 text-sm md:text-xs font-semibold outline-none disabled:opacity-50"
                     placeholder="Ketik nama divisi baru..."
                   />
                 </div>
@@ -937,7 +954,7 @@
               class="space-y-3 pt-3 border-t border-slate-100 dark:border-slate-800"
             >
               <h4
-                class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2 border-b border-slate-100 dark:border-slate-800 pb-1"
+                class="text-sm md:text-xs font-semibold text-blue-600 dark:text-blue-400 mb-2 border-b border-slate-100 dark:border-slate-800 pb-1"
               >
                 Timpa Nilai Indikator ({{ activeRekapTemplate.title }})
               </h4>
@@ -954,7 +971,7 @@
                 />
                 <div class="flex-1">
                   <label
-                    class="block text-[10px] font-bold text-slate-500 mb-1"
+                    class="block text-xs md:text-xs font-semibold text-slate-500 mb-1"
                     :class="{
                       'opacity-50': !bulkEditToggles.responses[field.id],
                     }"
@@ -965,27 +982,27 @@
                     v-model.number="bulkEditForm.responses[field.id]"
                     type="number"
                     :disabled="!bulkEditToggles.responses[field.id]"
-                    class="w-full glass-input rounded-lg p-2 text-xs font-semibold outline-none disabled:opacity-50"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 text-sm md:text-xs font-semibold outline-none disabled:opacity-50"
                   />
                   <input
                     v-else-if="field.type === 'text'"
                     v-model="bulkEditForm.responses[field.id]"
                     type="text"
                     :disabled="!bulkEditToggles.responses[field.id]"
-                    class="w-full glass-input rounded-lg p-2 text-xs font-semibold outline-none disabled:opacity-50"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 text-sm md:text-xs font-semibold outline-none disabled:opacity-50"
                   />
                   <textarea
                     v-else-if="field.type === 'textarea'"
                     v-model="bulkEditForm.responses[field.id]"
                     rows="2"
                     :disabled="!bulkEditToggles.responses[field.id]"
-                    class="w-full glass-input rounded-lg p-2 text-xs font-semibold outline-none disabled:opacity-50"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 text-sm md:text-xs font-semibold outline-none disabled:opacity-50"
                   ></textarea>
                   <select
                     v-else-if="field.type === 'select'"
                     v-model="bulkEditForm.responses[field.id]"
                     :disabled="!bulkEditToggles.responses[field.id]"
-                    class="w-full glass-input rounded-lg p-2 text-xs font-semibold outline-none bg-white dark:bg-slate-900 disabled:opacity-50"
+                    class="w-full glass-input rounded-lg p-2.5 md:p-2 text-sm md:text-xs font-semibold outline-none bg-white dark:bg-slate-900 disabled:opacity-50"
                   >
                     <option
                       v-for="opt in field.options"
@@ -1006,14 +1023,14 @@
                     <label
                       v-for="opt in field.options"
                       :key="opt"
-                      class="flex items-center gap-1 text-[10px] text-slate-600 dark:text-slate-300 cursor-pointer"
+                      class="flex items-center gap-1 text-sm md:text-xs text-slate-600 dark:text-slate-300 cursor-pointer"
                     >
                       <input
                         type="checkbox"
                         :value="opt"
                         v-model="bulkEditForm.responses[field.id]"
                         :disabled="!bulkEditToggles.responses[field.id]"
-                        class="accent-blue-600 w-3 h-3 rounded cursor-pointer"
+                        class="accent-blue-600 w-3.5 h-3.5 rounded cursor-pointer"
                       />
                       {{ opt }}
                     </label>
@@ -1023,7 +1040,7 @@
             </div>
             <div
               v-else
-              class="text-[10px] text-slate-400 bg-slate-50 dark:bg-slate-800 p-2 rounded-lg italic text-center"
+              class="text-xs md:text-xs text-slate-400 bg-slate-50 dark:bg-slate-800 p-2 rounded-lg italic text-center"
             >
               *Pilih spesifik 1 "Jenis Laporan" di filter jika ingin mengedit
               indikator form secara masal.
@@ -1035,13 +1052,13 @@
           >
             <button
               @click="isBulkEditModalOpen = false"
-              class="px-4 py-2 rounded-lg text-xs font-bold bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 cursor-pointer"
+              class="px-4 py-2.5 md:py-2 rounded-lg text-sm md:text-xs font-semibold bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 cursor-pointer"
             >
               Batal
             </button>
             <button
               @click="executeBulkEdit"
-              class="px-5 py-2 rounded-lg text-xs font-bold bg-button text-white shadow-sm cursor-pointer flex items-center gap-1.5 hover:shadow-md transition-all"
+              class="px-5 py-2.5 md:py-2 rounded-lg text-sm md:text-xs font-semibold bg-button text-white shadow-sm cursor-pointer flex items-center gap-1.5 hover:shadow-md transition-all"
             >
               <i class="fa-solid fa-floppy-disk"></i> Terapkan Edit Masal
             </button>

@@ -488,11 +488,20 @@ const startEditUnit = (idx) => {
 };
 
 const saveEditUnit = (idx) => {
-  if (!editingUnitCode.value.trim() || !editingUnitName.value.trim()) return;
-  unitList.value[idx] = {
-    code: editingUnitCode.value.trim().toUpperCase(),
-    name: editingUnitName.value.trim(),
-  };
+  const newCode = editingUnitCode.value.trim().toUpperCase();
+  const newName = editingUnitName.value.trim();
+
+  if (!newCode || !newName) return;
+
+  const oldCode = unitList.value[idx].code;
+
+  // Jika kode unit berubah, migrasikan properti target-nya
+  if (oldCode !== newCode) {
+    targets["Target" + newCode] = targets["Target" + oldCode] || 0;
+    delete targets["Target" + oldCode];
+  }
+
+  unitList.value[idx] = { code: newCode, name: newName };
   cancelEditUnit();
 };
 
@@ -512,6 +521,10 @@ const addUnit = () => {
 };
 
 const removeUnit = (idx) => {
+  const code = unitList.value[idx]?.code;
+  if (code) {
+    delete targets["Target" + code];
+  }
   unitList.value.splice(idx, 1);
 };
 
@@ -569,14 +582,14 @@ const removePlatform = (idx) => {
   platformList.value.splice(idx, 1);
 };
 
-// --- SIMPAN TERPISAH KE FIRESTORE ---
+// --- SIMPAN TERPISAH KE FIRESTORE / BACKEND ---
 const saveTargetsOnly = async () => {
   savingState.targets = true;
   if (!store.db.master) store.db.master = {};
   Object.assign(store.db.master, targets);
 
   try {
-    if (api && api.saveMasterTargetsOnly) {
+    if (api?.saveMasterTargetsOnly) {
       await api.saveMasterTargetsOnly(targets);
     }
     store.addNotification(
@@ -597,7 +610,7 @@ const saveUnitsOnly = async () => {
   store.db.master.unitList = [...unitList.value];
 
   try {
-    if (api && api.saveMasterUnitsOnly) {
+    if (api?.saveMasterUnitsOnly) {
       await api.saveMasterUnitsOnly(unitList.value);
     }
     store.addNotification(
@@ -618,7 +631,7 @@ const saveDivisionsOnly = async () => {
   store.db.master.divisiList = [...divisiList.value];
 
   try {
-    if (api && api.saveMasterDivisionsOnly) {
+    if (api?.saveMasterDivisionsOnly) {
       await api.saveMasterDivisionsOnly(divisiList.value);
     }
     store.addNotification(
@@ -639,7 +652,7 @@ const savePlatformsOnly = async () => {
   store.db.master.platformList = [...platformList.value];
 
   try {
-    if (api && api.saveMasterPlatformsOnly) {
+    if (api?.saveMasterPlatformsOnly) {
       await api.saveMasterPlatformsOnly(platformList.value);
     }
     store.addNotification(

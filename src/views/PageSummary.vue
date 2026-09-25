@@ -10,13 +10,14 @@
         <!-- Baris Atas: Nominal Utama -->
         <div class="flex items-end justify-between gap-3">
           <div class="min-w-0">
+            <!-- Mobile: text-sm (lebih besar) -> Desktop: text-xs (lebih ringkas) -->
             <span
-              class="text-[9px] md:text-[10px] font-bold uppercase text-theme tracking-wider block mb-0.5"
+              class="text-sm md:text-xs font-semibold uppercase text-theme tracking-wider block mb-0.5"
             >
               Revenue Terfilter
             </span>
             <h2
-              class="text-xl md:text-2xl font-black text-slate-800 dark:text-slate-100 leading-none truncate"
+              class="text-xl md:text-2xl font-semibold text-slate-800 dark:text-slate-100 leading-none truncate"
             >
               <!-- Tampilan Mobile (Ringkas: Rp 14,4 M) -->
               <span class="sm:hidden">{{
@@ -31,14 +32,13 @@
 
           <!-- Badge Target -->
           <div class="flex flex-col items-end shrink-0">
+            <!-- Mobile: text-sm (sentuhan lebih luas) -> Desktop: text-xs -->
             <span
-              class="inline-block text-[10px] md:text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20 leading-tight"
+              class="inline-block text-sm md:text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-3 py-1.5 md:px-2.5 md:py-1 rounded-full border border-emerald-500/20 leading-tight"
             >
               {{ persenCapaian }}% Target
             </span>
-            <p
-              class="text-[9px] md:text-[10px] text-slate-400 mt-1 leading-none"
-            >
+            <p class="text-sm md:text-xs text-slate-400 mt-1 leading-none">
               Target:
               <span class="sm:hidden">{{
                 formatRpDynamic(targetTahun, true)
@@ -52,13 +52,13 @@
 
         <!-- Baris Bawah: Sub-Metrik Ringkas -->
         <div
-          class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-slate-200/50 dark:border-slate-800/80 text-[10px] md:text-xs"
+          class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-slate-200/50 dark:border-slate-800/80"
         >
           <div>
-            <p class="text-slate-400 text-[9px] md:text-[10px] mb-0.5">
-              Sisa Target
-            </p>
-            <p class="font-bold text-rose-500 dark:text-rose-400 truncate">
+            <p class="text-slate-400 text-sm md:text-xs mb-0.5">Sisa Target</p>
+            <p
+              class="font-semibold text-rose-500 dark:text-rose-400 truncate text-base md:text-sm"
+            >
               <span class="sm:hidden">{{
                 formatRpDynamic(gap > 0 ? gap : 0, true)
               }}</span>
@@ -68,10 +68,8 @@
             </p>
           </div>
           <div>
-            <p class="text-slate-400 text-[9px] md:text-[10px] mb-0.5">
-              vs Thn Lalu
-            </p>
-            <p class="font-bold text-theme truncate">
+            <p class="text-slate-400 text-sm md:text-xs mb-0.5">vs Thn Lalu</p>
+            <p class="font-semibold text-theme truncate text-base md:text-sm">
               <span class="sm:hidden">{{
                 formatRpDynamic(selisihThnLalu, true)
               }}</span>
@@ -81,10 +79,10 @@
             </p>
           </div>
           <div>
-            <p class="text-slate-400 text-[9px] md:text-[10px] mb-0.5">
-              Biaya Promo
-            </p>
-            <p class="font-bold text-slate-700 dark:text-slate-300 truncate">
+            <p class="text-slate-400 text-sm md:text-xs mb-0.5">Biaya Promo</p>
+            <p
+              class="font-semibold text-slate-700 dark:text-slate-300 truncate text-base md:text-sm"
+            >
               <span class="sm:hidden">{{
                 formatRpDynamic(totPromo, true)
               }}</span>
@@ -102,12 +100,12 @@
       >
         <div class="flex justify-between items-center mb-3 md:mb-4">
           <span
-            class="text-[10px] md:text-[11px] font-bold uppercase text-sky-600 dark:text-sky-400 bg-sky-500/10 px-2.5 py-1 rounded-full border border-sky-500/20"
+            class="text-sm md:text-xs font-semibold uppercase text-sky-600 dark:text-sky-400 bg-sky-500/10 px-2.5 py-1 rounded-full border border-sky-500/20"
           >
             Funnel Marketing
           </span>
           <span
-            class="text-[11px] md:text-xs font-bold text-teal-600 dark:text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-full border border-teal-500/20"
+            class="text-sm md:text-xs font-semibold text-teal-600 dark:text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-full border border-teal-500/20"
           >
             {{ pctOrderFromLeads }}% Konversi
           </span>
@@ -120,12 +118,12 @@
             class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60"
           >
             <p
-              class="text-[9px] text-slate-400 uppercase font-semibold tracking-wider"
+              class="text-sm md:text-xs text-slate-400 uppercase font-semibold tracking-wider"
             >
               Campaign
             </p>
             <h4
-              class="text-sm md:text-base font-bold text-theme dark:text-theme mt-1"
+              class="text-base md:text-sm font-semibold text-theme dark:text-theme mt-1"
             >
               {{ totCamp.toLocaleString("id-ID") }}
             </h4>
@@ -134,11 +132,11 @@
             class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60"
           >
             <p
-              class="text-[9px] text-slate-400 uppercase font-semibold tracking-wider"
+              class="text-sm md:text-xs text-slate-400 uppercase font-semibold tracking-wider"
             >
               Leads
             </p>
-            <h4 class="text-sm md:text-base font-bold text-sky-500 mt-1">
+            <h4 class="text-base md:text-sm font-semibold text-sky-500 mt-1">
               {{ totLeads.toLocaleString("id-ID") }}
             </h4>
           </div>
@@ -146,11 +144,11 @@
             class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60"
           >
             <p
-              class="text-[9px] text-slate-400 uppercase font-semibold tracking-wider"
+              class="text-sm md:text-xs text-slate-400 uppercase font-semibold tracking-wider"
             >
               Follow Up
             </p>
-            <h4 class="text-sm md:text-base font-bold text-amber-500 mt-1">
+            <h4 class="text-base md:text-sm font-semibold text-amber-500 mt-1">
               {{ totFu.toLocaleString("id-ID") }}
             </h4>
           </div>
@@ -158,12 +156,12 @@
             class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60"
           >
             <p
-              class="text-[9px] text-slate-400 uppercase font-semibold tracking-wider"
+              class="text-sm md:text-xs text-slate-400 uppercase font-semibold tracking-wider"
             >
               Pesanan
             </p>
             <h4
-              class="text-sm md:text-base font-bold text-theme dark:text-theme mt-1"
+              class="text-base md:text-sm font-semibold text-theme dark:text-theme mt-1"
             >
               {{ totOrder.toLocaleString("id-ID") }}
             </h4>
@@ -176,7 +174,7 @@
     <div>
       <!-- Header Section -->
       <h3
-        class="font-bold text-slate-800 dark:text-slate-100 mb-2.5 text-xs uppercase tracking-wider flex items-center gap-1.5"
+        class="font-semibold text-slate-800 dark:text-slate-100 mb-2.5 text-base md:text-sm uppercase tracking-wider flex items-center gap-1.5"
       >
         <i class="fa-solid fa-building-user text-theme"></i>
         Rekap Performa Unit Usaha
@@ -188,19 +186,19 @@
           v-for="(u, index) in ['NHP', 'NHC', 'KG']"
           :key="u"
           @click="store.navigate(`unit-${u}`)"
-          class="glass-card p-3 sm:p-3.5 rounded-2xl dark:border-slate-800 hover:border-theme/40 transition-all cursor-pointer group flex flex-col justify-between"
+          class="glass-card p-3.5 sm:p-3.5 rounded-2xl dark:border-slate-800 hover:border-theme/40 transition-all cursor-pointer group flex flex-col justify-between"
           :class="{ 'col-span-2 sm:col-span-1': index === 0 }"
         >
           <div>
             <!-- BARIS 1: Nama Unit & Badge Persentase -->
             <div class="flex items-center justify-between mb-2">
               <h4
-                class="font-bold text-slate-800 dark:text-slate-100 text-xs sm:text-xs group-hover:text-theme transition-colors"
+                class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm group-hover:text-theme transition-colors"
               >
                 Unit {{ u }}
               </h4>
               <span
-                class="text-[9px] sm:text-[10px] font-extrabold text-theme bg-button/10 px-2 py-0.5 rounded-full border border-white/20 leading-none"
+                class="text-sm md:text-xs font-semibold text-theme bg-button/10 px-2 py-0.5 rounded-full border border-white/20 leading-none"
               >
                 {{ getUnitCapaian(u) }}%
               </span>
@@ -209,12 +207,12 @@
             <!-- BARIS 2 & 3: Label Rev & Nilai Rev Menonjol (Hero Value) -->
             <div class="mb-2">
               <span
-                class="text-[9px] sm:text-[10px] text-slate-400 font-medium block leading-none mb-0.5"
+                class="text-sm md:text-xs text-slate-400 font-semibold block leading-none mb-0.5"
               >
                 Rev:
               </span>
               <h5
-                class="text-sm sm:text-base font-black text-theme truncate leading-tight"
+                class="text-base font-semibold text-theme truncate leading-tight"
               >
                 <span class="sm:hidden">{{
                   formatRpDynamic(getUnitRev(u), true)
@@ -227,11 +225,11 @@
 
             <!-- BARIS 4: Label Tgt & Nilai Target Ringkas -->
             <div
-              class="flex items-center gap-1 text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400"
+              class="flex items-center gap-1 text-sm md:text-xs text-slate-500 dark:text-slate-400"
             >
               <span class="text-slate-400 shrink-0">Tgt:</span>
               <span
-                class="font-bold text-slate-700 dark:text-slate-300 truncate"
+                class="font-semibold text-slate-700 dark:text-slate-300 truncate"
               >
                 <span class="sm:hidden">{{
                   formatRpDynamic(getUnitTarget(u), true)
@@ -245,7 +243,7 @@
 
           <!-- Progress Bar -->
           <div
-            class="w-full bg-slate-100 dark:bg-slate-800 h-1 sm:h-1.5 rounded-full mt-2.5 overflow-hidden"
+            class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 sm:h-1.5 rounded-full mt-2.5 overflow-hidden"
           >
             <div
               class="bg-button h-full rounded-full transition-all duration-500"
@@ -262,7 +260,9 @@
       <div
         class="lg:col-span-5 glass-card p-4 rounded-2xl flex flex-col justify-between"
       >
-        <h3 class="font-bold text-xs mb-3 text-slate-800 dark:text-slate-100">
+        <h3
+          class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
+        >
           Rekap Penjualan Tiap Unit
         </h3>
         <div class="chart-container relative h-64">
@@ -274,7 +274,9 @@
       <div
         class="lg:col-span-3 glass-card p-4 rounded-2xl flex flex-col justify-between"
       >
-        <h3 class="font-bold text-xs mb-3 text-slate-800 dark:text-slate-100">
+        <h3
+          class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
+        >
           Revenue vs Biaya Promosi
         </h3>
         <div class="chart-container relative h-64">
@@ -286,7 +288,9 @@
       <div
         class="lg:col-span-4 glass-card p-4 rounded-2xl flex flex-col justify-between"
       >
-        <h3 class="font-bold text-xs mb-1 text-slate-800 dark:text-slate-100">
+        <h3
+          class="font-semibold text-base md:text-sm mb-1 text-slate-800 dark:text-slate-100"
+        >
           Penjualan per Platform
         </h3>
 
@@ -305,7 +309,9 @@
       <div
         class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-between"
       >
-        <h3 class="font-bold text-xs mb-3 text-slate-800 dark:text-slate-100">
+        <h3
+          class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
+        >
           Rekap Penjualan Tiap Divisi
         </h3>
         <div class="chart-container relative h-64">
@@ -317,7 +323,9 @@
       <div
         class="lg:col-span-7 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-between"
       >
-        <h3 class="font-bold text-xs mb-3 text-slate-800 dark:text-slate-100">
+        <h3
+          class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
+        >
           Trend Revenue Bulanan ({{ currentYear }} vs {{ lastYear }})
         </h3>
         <div class="chart-container relative h-64">
@@ -335,9 +343,9 @@
       title="Buka Filter Tanggal"
     >
       <i
-        class="fa-solid fa-filter flex items-center justify-center w-10 h-10 rounded-full bg-button text-white text-sm shadow-md"
+        class="fa-solid fa-filter flex items-center justify-center w-12 h-12 rounded-full bg-button text-white text-base shadow-md"
       ></i>
-      <span class="text-[12px] mt-1">Filter</span>
+      <span class="text-xs font-semibold mt-1">Filter</span>
     </button>
   </div>
 
@@ -355,7 +363,7 @@
           class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
         >
           <h3
-            class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2"
           >
             <i class="fa-solid fa-filter text-theme"></i>
             Filter Rentang Tanggal
@@ -368,27 +376,27 @@
           </button>
         </div>
 
-        <div class="space-y-3 text-xs">
+        <div class="space-y-3 text-sm">
           <div>
             <label
-              class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
+              class="block text-slate-500 dark:text-slate-400 font-semibold mb-1"
               >Tanggal Mulai:</label
             >
             <input
               v-model="tempStartDate"
               type="date"
-              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme transition-colors"
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 outline-none focus:border-theme transition-colors text-sm"
             />
           </div>
           <div>
             <label
-              class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
+              class="block text-slate-500 dark:text-slate-400 font-semibold mb-1"
               >Tanggal Akhir:</label
             >
             <input
               v-model="tempEndDate"
               type="date"
-              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme transition-colors"
+              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 outline-none focus:border-theme transition-colors text-sm"
             />
           </div>
         </div>
@@ -396,13 +404,13 @@
         <div class="flex items-center gap-2 pt-2">
           <button
             @click="resetFilterMobile"
-            class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 rounded-xl font-bold text-xs transition-all text-center cursor-pointer"
+            class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 py-3 rounded-xl font-semibold text-sm transition-all text-center cursor-pointer"
           >
             Reset
           </button>
           <button
             @click="applyFilterMobile"
-            class="flex-1 bg-button text-white py-2.5 rounded-xl font-bold text-xs transition-all shadow-md text-center cursor-pointer hover:opacity-95"
+            class="flex-1 bg-button text-white py-3 rounded-xl font-semibold text-sm transition-all shadow-md text-center cursor-pointer hover:opacity-95"
           >
             Terapkan
           </button>

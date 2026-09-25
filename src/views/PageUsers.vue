@@ -6,12 +6,12 @@
     >
       <div>
         <h3
-          class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"
+          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
         >
-          <i class="fa-solid fa-users-gear from-[#149B73]"></i> Manajemen Akses
+          <i class="fa-solid fa-users-gear text-theme"></i> Manajemen Akses
           Pengguna
         </h3>
-        <p class="text-xs text-slate-400 mt-0.5">
+        <p class="text-xs text-slate-400 mt-0.5 font-normal">
           Kelola data staf, role, divisi, unit, dan hak akses halaman.
         </p>
       </div>
@@ -19,27 +19,27 @@
       <div class="flex items-center gap-2 w-full sm:w-auto">
         <button
           @click="store.openModal('kodeakses')"
-          class="flex-1 sm:flex-none bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-4 py-2.5 rounded-xl font-semibold text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+          class="flex-1 sm:flex-none bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-4 py-2.5 rounded-xl font-semibold text-sm md:text-xs shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
         >
-          <i class="fa-solid fa-key"></i> Passcode Publik
+          <i class="fa-solid fa-key text-xs"></i> Passcode Publik
         </button>
 
         <button
           v-if="canManageUsers"
           @click="openAddUserModal"
-          class="bg-button text-white px-4 py-2.5 rounded-xl font-bold text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer shrink-0"
+          class="bg-button text-white px-4 py-2.5 rounded-xl font-semibold text-sm md:text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer shrink-0"
         >
-          <i class="fa-solid fa-user-plus"></i> Tambah Pengguna
+          <i class="fa-solid fa-user-plus text-xs"></i> Tambah Pengguna
         </button>
       </div>
     </div>
 
     <div class="glass-card p-4 md:p-6 rounded-3xl overflow-hidden">
       <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs border-collapse">
+        <table class="w-full text-left text-sm md:text-xs border-collapse">
           <thead>
             <tr
-              class="border-b border-slate-200/60 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider"
+              class="border-b border-slate-200/60 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider text-xs"
             >
               <th class="pb-3 px-2">Pengguna & Penempatan</th>
               <th class="pb-3 px-2">Role</th>
@@ -49,14 +49,20 @@
           </thead>
           <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
             <tr v-if="store.isLoading && usersList.length === 0">
-              <td colspan="4" class="py-8 text-center text-slate-400">
-                <i class="fa-solid fa-circle-notch fa-spin text-lg mr-2"></i>
+              <td
+                colspan="4"
+                class="py-8 text-center text-slate-400 font-normal"
+              >
+                <i class="fa-solid fa-circle-notch fa-spin text-base mr-2"></i>
                 Memuat data pengguna...
               </td>
             </tr>
 
             <tr v-else-if="usersList.length === 0">
-              <td colspan="4" class="py-8 text-center text-slate-400">
+              <td
+                colspan="4"
+                class="py-8 text-center text-slate-400 font-normal"
+              >
                 Belum ada data pengguna.
               </td>
             </tr>
@@ -80,24 +86,24 @@
                   />
                   <div class="min-w-0">
                     <p
-                      class="font-bold text-slate-800 dark:text-slate-100 truncate"
+                      class="font-semibold text-slate-800 dark:text-slate-100 truncate"
                     >
                       {{ user.nama || user.Nama || "Tanpa Nama" }}
                     </p>
-                    <p class="text-[9px] text-slate-400 truncate mb-1">
+                    <p class="text-xs text-slate-400 truncate mb-1 font-normal">
                       {{ user.email || user.Email || "-" }}
                     </p>
                     <div class="flex flex-wrap gap-1 mt-0.5">
                       <span
                         v-if="user.unit || user.Unit"
-                        class="px-1.5 py-[2px] rounded text-[9px] font-bold bg-blue-500/10 text-blue-600 border border-blue-500/20 uppercase"
+                        class="px-1.5 py-[2px] rounded text-xs font-semibold bg-blue-500/10 text-blue-600 border border-blue-500/20 uppercase"
                       >
                         <i class="fa-solid fa-building mr-0.5"></i>
                         {{ user.unit || user.Unit }}
                       </span>
                       <span
                         v-if="user.divisi || user.Divisi"
-                        class="px-1.5 py-[2px] rounded text-[9px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+                        class="px-1.5 py-[2px] rounded text-xs font-semibold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
                       >
                         <i class="fa-solid fa-sitemap mr-0.5"></i>
                         {{ user.divisi || user.Divisi }}
@@ -110,7 +116,7 @@
               <!-- Role -->
               <td class="py-3 px-2">
                 <span
-                  class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase"
+                  class="px-2.5 py-1 rounded-lg text-xs font-semibold uppercase"
                   :class="getRoleBadgeClass(user.role || user.Role)"
                 >
                   {{ user.role || user.Role || "USER" }}
@@ -121,7 +127,7 @@
               <td class="py-3 px-2">
                 <div
                   v-if="(user.role || user.Role) === 'SUPERADMIN'"
-                  class="text-[11px] text-theme dark:text-theme font-semibold"
+                  class="text-xs text-theme dark:text-theme font-semibold"
                 >
                   <i class="fa-solid fa-shield-halved mr-1"></i> Akses Penuh
                   (Superadmin)
@@ -132,12 +138,12 @@
                       v-for="(perm, pageKey) in user.permissions"
                       :key="pageKey"
                       v-show="perm.access"
-                      class="px-2 py-0.5 rounded-md text-[9px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                      class="px-2 py-0.5 rounded-md text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
                     >
                       {{ getPageLabel(pageKey) }}
                     </span>
                   </div>
-                  <span v-else class="text-[10px] text-slate-400 italic"
+                  <span v-else class="text-xs text-slate-400 italic font-normal"
                     >Belum disetel</span
                   >
                 </div>
@@ -151,14 +157,14 @@
                     class="p-1.5 text-theme hover:bg-blue-50 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                     title="Edit Akses"
                   >
-                    <i class="fa-solid fa-user-pen"></i>
+                    <i class="fa-solid fa-user-pen text-xs"></i>
                   </button>
                   <button
                     @click="deleteUser(user)"
                     class="p-1.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                     title="Hapus User"
                   >
-                    <i class="fa-solid fa-trash-can"></i>
+                    <i class="fa-solid fa-trash-can text-xs"></i>
                   </button>
                 </div>
               </td>

@@ -7,7 +7,7 @@
         class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
       >
         <div>
-          <p class="text-slate-400 text-xs">
+          <p class="text-slate-400 text-sm md:text-xs">
             Sesuaikan rekap berdasarkan bulan, divisi, atau platform.
           </p>
         </div>
@@ -18,7 +18,7 @@
           <button
             v-if="store.canExportImport()"
             @click="handleExportRevenue"
-            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-2xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
           >
             <i class="fa-solid fa-file-excel"></i>
             <span>Export Excel</span>
@@ -28,7 +28,7 @@
           <button
             v-if="store.canExportImport()"
             @click="isImportModalOpen = true"
-            class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
+            class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-2xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
           >
             <i class="fa-solid fa-file-import"></i>
             <span>Import Excel</span>
@@ -37,7 +37,7 @@
           <button
             v-if="store.canEditPage('unit-' + selectedUnitName)"
             @click="store.openModal('revenue', { Unit: selectedUnitName })"
-            class="bg-button hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
+            class="bg-button hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2.5 md:py-2 rounded-xl font-semibold text-sm md:text-xs shadow-md transition-all text-center cursor-pointer"
           >
             <i class="fa-solid fa-plus mr-1.5"></i>Input Revenue
             {{ selectedUnitName }}
@@ -60,12 +60,12 @@
       >
         <div>
           <label
-            class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+            class="block text-sm md:text-xs font-semibold text-slate-400 uppercase mb-1"
             >Filter Bulan</label
           >
           <select
             v-model="filterMonth"
-            class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs dark:bg-slate-800 outline-none"
           >
             <option value="ALL">Semua Bulan (Jan - Des)</option>
             <option
@@ -80,12 +80,12 @@
 
         <div>
           <label
-            class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+            class="block text-sm md:text-xs font-semibold text-slate-400 uppercase mb-1"
             >Filter Divisi</label
           >
           <select
             v-model="filterDivisi"
-            class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs dark:bg-slate-800 outline-none"
           >
             <option value="ALL">Semua Divisi</option>
             <option v-for="div in masterDivisiList" :key="div" :value="div">
@@ -96,12 +96,12 @@
 
         <div>
           <label
-            class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+            class="block text-sm md:text-xs font-semibold text-slate-400 uppercase mb-1"
             >Filter Platform</label
           >
           <select
             v-model="filterPlatform"
-            class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs dark:bg-slate-800 outline-none"
           >
             <option value="ALL">Semua Platform</option>
             <option
@@ -121,11 +121,9 @@
       <div
         class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-emerald-400"
       >
-        <p class="text-slate-400 text-[11px] md:text-xs">
-          Revenue Unit (Filtered)
-        </p>
+        <p class="text-slate-400 text-sm md:text-xs">Revenue Unit (Filtered)</p>
         <h3
-          class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100"
+          class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
         >
           {{ formatRupiah(totalFilteredRevenue) }}
         </h3>
@@ -134,9 +132,9 @@
       <div
         class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-blue-400"
       >
-        <p class="text-slate-400 text-[11px] md:text-xs">Target Unit</p>
+        <p class="text-slate-400 text-sm md:text-xs">Target Unit</p>
         <h3
-          class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100"
+          class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
         >
           {{ formatRupiah(unitTarget) }}
         </h3>
@@ -145,9 +143,9 @@
       <div
         class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-amber-400"
       >
-        <p class="text-slate-400 text-[11px] md:text-xs">% Kontribusi Global</p>
+        <p class="text-slate-400 text-sm md:text-xs">% Kontribusi Global</p>
         <h3
-          class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100"
+          class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
         >
           {{ globalContribution }}%
         </h3>
@@ -161,18 +159,18 @@
         class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
       >
         <h3
-          class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
         >
           Rekap Revenue Per Bulan
         </h3>
         <div class="overflow-y-auto max-h-[260px] pr-1">
-          <table class="min-w-full text-xs text-left">
+          <table class="min-w-full text-sm md:text-xs text-left">
             <thead
               class="bg-white/40 dark:bg-slate-800/60 text-slate-400 sticky top-0 backdrop-blur-md"
             >
               <tr>
-                <th class="py-2 px-3">Bulan</th>
-                <th class="py-2 px-3 text-right">Revenue</th>
+                <th class="py-2 px-3 font-semibold">Bulan</th>
+                <th class="py-2 px-3 text-right font-semibold">Revenue</th>
               </tr>
             </thead>
             <tbody class="divide-y dark:divide-slate-800/80">
@@ -187,7 +185,7 @@
                 :key="idx"
                 class="hover:bg-white/20 dark:hover:bg-slate-800/40"
               >
-                <td class="py-2 px-3 font-medium">{{ row.bulan }}</td>
+                <td class="py-2 px-3">{{ row.bulan }}</td>
                 <td class="py-2 px-3 text-right font-semibold text-theme">
                   {{ formatRupiah(row.revenue) }}
                 </td>
@@ -202,7 +200,7 @@
         class="lg:col-span-3 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
       >
         <h3
-          class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
         >
           Rekap Triwulan
         </h3>
@@ -213,10 +211,10 @@
             class="p-2.5 bg-white/30 dark:bg-slate-800/40 rounded-xl border border-white/20 dark:border-slate-700/50 flex justify-between items-center"
           >
             <span
-              class="text-xs font-bold text-slate-500 dark:text-slate-400"
+              class="text-sm md:text-xs font-semibold text-slate-500 dark:text-slate-400"
               >{{ q.quarter }}</span
             >
-            <span class="text-xs font-bold text-theme">{{
+            <span class="text-sm md:text-xs font-semibold text-theme">{{
               formatRupiah(q.revenue)
             }}</span>
           </div>
@@ -228,7 +226,7 @@
         class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
       >
         <h3
-          class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
         >
           Grafik Trend Revenue Bulanan
         </h3>
@@ -245,13 +243,13 @@
       >
         <div class="flex items-center gap-2">
           <h3
-            class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm"
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
           >
             Manajemen Data Revenue Unit {{ selectedUnitName }}
           </h3>
           <span
             v-if="selectedIds.length > 0"
-            class="text-[10px] text-purple-600 font-bold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
+            class="text-xs md:text-xs text-purple-600 font-semibold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
           >
             {{ selectedIds.length }} Dipilih
           </span>
@@ -263,14 +261,14 @@
           <div v-if="selectedIds.length > 0" class="flex items-center gap-1.5">
             <button
               @click="clearSelection"
-              class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold px-2.5 py-1.5 rounded-xl text-xs cursor-pointer"
+              class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold px-2.5 py-1.5 rounded-xl text-sm md:text-xs cursor-pointer"
             >
               Batal
             </button>
             <button
               v-if="store.canEditPage('unit-' + selectedUnitName)"
               @click="promptBulkDelete"
-              class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-md cursor-pointer"
+              class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-3 py-1.5 rounded-xl text-sm md:text-xs shadow-md cursor-pointer"
             >
               <i class="fa-solid fa-trash mr-1"></i>Hapus ({{
                 selectedIds.length
@@ -279,11 +277,11 @@
           </div>
 
           <div class="flex items-center gap-1.5">
-            <span class="text-xs text-slate-400">Tampilkan:</span>
+            <span class="text-sm md:text-xs text-slate-400">Tampilkan:</span>
             <select
               v-model="itemsPerPage"
               @change="currentPage = 1"
-              class="glass-input rounded-xl p-1.5 text-xs dark:bg-slate-800 outline-none"
+              class="glass-input rounded-xl p-1.5 text-sm md:text-xs dark:bg-slate-800 outline-none"
             >
               <option value="25">25</option>
               <option value="50">50</option>
@@ -296,7 +294,7 @@
 
       <!-- Area Scrollable Tabel dengan Sticky Header -->
       <div class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1">
-        <table class="min-w-full text-xs text-left">
+        <table class="min-w-full text-sm md:text-xs text-left">
           <thead
             class="bg-white/80 dark:bg-slate-800/90 text-slate-400 sticky top-0 backdrop-blur-md z-10"
           >
@@ -306,42 +304,44 @@
                   type="checkbox"
                   :checked="isAllSelected"
                   @change="toggleSelectAll"
-                  class="accent-purple-600 rounded cursor-pointer w-3.5 h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
                 />
               </th>
               <th
                 @click="sortTable('Tanggal')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
               >
-                Tanggal <i class="fa-solid fa-sort text-[10px] ml-1"></i>
+                Tanggal <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Divisi')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
               >
-                Divisi <i class="fa-solid fa-sort text-[10px] ml-1"></i>
+                Divisi <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Platform')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
               >
-                Platform <i class="fa-solid fa-sort text-[10px] ml-1"></i>
+                Platform
+                <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('JumlahPesanan')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
               >
-                Jumlah Pesanan <i class="fa-solid fa-sort text-[10px] ml-1"></i>
+                Jumlah Pesanan
+                <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Revenue')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
               >
-                Revenue <i class="fa-solid fa-sort text-[10px] ml-1"></i>
+                Revenue <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
                 v-if="store.canEditPage('unit-' + selectedUnitName)"
-                class="py-2.5 px-4 text-center"
+                class="py-2.5 px-4 text-center font-semibold"
               >
                 Aksi
               </th>
@@ -377,13 +377,13 @@
                   type="checkbox"
                   :value="getDocId(item)"
                   v-model="selectedIds"
-                  class="accent-purple-600 rounded cursor-pointer w-3.5 h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
                 />
               </td>
               <td class="py-2 px-3">
                 {{ item.Tanggal ? String(item.Tanggal).substring(0, 10) : "-" }}
               </td>
-              <td class="py-2 px-3 font-medium">{{ item.Divisi || "-" }}</td>
+              <td class="py-2 px-3 font-semibold">{{ item.Divisi || "-" }}</td>
               <td class="py-2 px-3">{{ item.Platform || "-" }}</td>
               <td class="py-2 px-3 font-semibold text-amber-500">
                 {{
@@ -403,14 +403,14 @@
               >
                 <button
                   @click="store.openModal('revenue', item)"
-                  class="text-theme hover:text-theme p-1 cursor-pointer"
+                  class="text-theme hover:text-theme p-1.5 cursor-pointer"
                   title="Edit Revenue"
                 >
                   <i class="fa-solid fa-pen"></i>
                 </button>
                 <button
                   @click="promptSingleDelete(getDocId(item))"
-                  class="text-rose-500 hover:text-rose-600 cursor-pointer p-1"
+                  class="text-rose-500 hover:text-rose-600 cursor-pointer p-1.5"
                   title="Hapus Revenue"
                 >
                   <i class="fa-solid fa-trash"></i>
@@ -424,7 +424,7 @@
       <!-- Footer Pagination Kontrol -->
       <div
         v-if="itemsPerPage !== 'ALL' && totalPages > 1"
-        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-xs text-slate-400"
+        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-sm md:text-xs text-slate-400"
       >
         <div>
           Menampilkan {{ startItem }} - {{ endItem }} dari
@@ -434,13 +434,13 @@
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
-            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
           >
-            <i class="fa-solid fa-chevron-left text-[10px]"></i>
+            <i class="fa-solid fa-chevron-left text-xs md:text-xs"></i>
           </button>
 
           <span
-            class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-bold"
+            class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-semibold"
           >
             {{ currentPage }} / {{ totalPages }}
           </span>
@@ -448,9 +448,9 @@
           <button
             @click="currentPage++"
             :disabled="currentPage === totalPages"
-            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
           >
-            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            <i class="fa-solid fa-chevron-right text-xs md:text-xs"></i>
           </button>
         </div>
       </div>
@@ -473,10 +473,14 @@
               <i class="fa-solid fa-triangle-exclamation text-lg"></i>
             </div>
             <div>
-              <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">
+              <h4
+                class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100"
+              >
                 {{ confirmModal.title }}
               </h4>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p
+                class="text-sm md:text-xs text-slate-500 dark:text-slate-400 mt-0.5"
+              >
                 {{ confirmModal.message }}
               </p>
             </div>
@@ -488,7 +492,7 @@
             <button
               @click="closeConfirmModal"
               type="button"
-              class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
+              class="px-4 py-2.5 md:py-2 rounded-xl text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
             >
               Batal
             </button>
@@ -496,7 +500,7 @@
               @click="executeConfirmAction"
               type="button"
               :disabled="store.isLoading"
-              class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              class="px-4 py-2.5 md:py-2 rounded-xl text-sm md:text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
               <i v-if="store.isLoading" class="fa-solid fa-spinner fa-spin"></i>
               <span>Ya, Hapus</span>

@@ -1,72 +1,69 @@
 /* ==========================================================================
    1. IMPORTS & DIRECTIVES (Wajib Paling Atas)
    ========================================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Albert Sans:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ==========================================================================
-   2. GLOBAL BASE STYLES
+   2. GLOBAL BASE & TYPOGRAPHY STYLES (4 Scale & 2 Weights)
    ========================================================================== */
 
-  /* Default Warna Utama (Hijau) */
-/* :root {
-    --primary-color: #149B73;
-  --primary-light: #2EE59D;
-  --primary-text: #1caa80;
-} */
+/* Standarisasi 2 Weight: Regular (400) dan Semibold (600) */
+@layer base {
+  body {
+    font-family: 'Albert Sans', sans-serif;
+    font-weight: 400; /* Regular */
+    transition: background-color 0.4s, color 0.4s;
+  }
 
- /* Default Warna Utama (Hijau) */
-/* :root {
-  --primary-color: rgb(5 150 105);
-  --primary-light: rgb(5 150 105);
-  --primary-text: rgb(5 150 105);
-} */
+  /* Memaksa elemen penjelas dan judul menggunakan Semibold (600) */
+  h1, h2, h3, h4, h5, h6, th, label, button, .font-bold, .font-semibold, .font-extrabold, .font-black {
+    font-weight: 600 !important;
+  }
+  
+  .font-normal, .font-regular {
+    font-weight: 400 !important;
+  }
 
- /* Default Warna Utama (Hijau) */
-/* :root {
-  --primary-color: #255446;
-  --primary-light: #229065;
-  --primary-text: #255446;
-} */
+  /* Penskalaan Tipografi Responsif berbasis Jarak Pandang (Viewing Distance) */
+  /* Mobile / Phone (Dilihat dari jarak dekat 20-30 cm) -> Ukuran Font Lebih Luas & Nyaman Dipencet Jari */
+  html {
+    font-size: 16px;
+  }
 
-/* Utilitas Tailwind Kustom menggunakan CSS Variable */
-/* .bg-theme-gradient {
-  background-image: linear-gradient(to top right, var(--primary-color), var(--primary-light));
-} */
-
-/* .bg-theme-gradient {
-  background-color: var(--primary-color);
-  background-image: none;   
+  /* Desktop / Laptop (Dilihat dari jarak 50-70 cm) -> Ukuran Font Ringkas & Padat Data */
+  @media (min-width: 768px) {
+    html {
+      font-size: 14px;
+    }
+  }
 }
-Memastikan tidak ada sisa gradien dari utilitas lain */
 
-
-/* 1. DAFTARKAN 3 VARIABEL WARNA SEBAGAI <color> (AGAR BISA ANIMAi/TRANSISI) */
+/* 1. DAFTARKAN VARIABEL WARNA SEBAGAI <color> (AGAR BISA ANIMAi/TRANSISI) */
 @property --primary-color {
   syntax: "<color>";
   inherits: true;
-  initial-value: #255446; /* Awal (from) */
+  initial-value: #255446;
 }
 
 @property --primary-via {
   syntax: "<color>";
   inherits: true;
-  initial-value: #207355; /* Tengah (via) */
+  initial-value: #207355;
 }
 
 @property --primary-light {
   syntax: "<color>";
   inherits: true;
-  initial-value: #229065; /* Akhir (to) */
+  initial-value: #229065;
 }
 
 /* 2. ROOT VARIABLE DEFAULT */
 :root {
   --primary-color: #255446;
-  /* --primary-via: #207355; */
   --primary-light: #229065;
   --primary-text: #255446;
 }
@@ -76,22 +73,17 @@ Memastikan tidak ada sisa gradien dari utilitas lain */
   background-image: linear-gradient(
     to top right,
     var(--primary-color),
-    /* var(--primary-via), */
     var(--primary-light)
   );
-  /* Menerapkan transisi 700ms pada ketiga variabel warna */
   transition: 
     --primary-color 700ms cubic-bezier(0.4, 0, 0.2, 1),
-    /* --primary-via 700ms cubic-bezier(0.4, 0, 0.2, 1), */
     --primary-light 700ms cubic-bezier(0.4, 0, 0.2, 1),
     all 700ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bg-button {
   background-color: var(--primary-color);
-  /* background-image: none;    */
 }
-
 
 .text-theme {
   color: var(--primary-text);
@@ -101,43 +93,19 @@ Memastikan tidak ada sisa gradien dari utilitas lain */
   border-color: var(--primary-text);
 }
 
-body { 
-  font-family: 'Albert Sans', sans-serif; 
-  transition: background-color 0.4s, color 0.4s; 
-}
-
 .page-section { 
   display: block; 
 }
 
 /* Background Gradient Layout */
-/* .bg-gradient-light {
-  background: linear-gradient(135deg, #effffc 0%, #ebf8ed73 50%, #e0fef057 100%);
-} */
+.bg-gradient-light {
+  background: #f1f5f9;
+}
 
-/* .bg-gradient-light {
-background: linear-gradient(135deg, #f3f3f3 0%, #e8e8e873 50%, #a1a1a157 100%)
-} */
+.dark .bg-gradient-dark {
+  background: #080717;
+}
 
-/* .dark .bg-gradient-dark {
-  background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e293b 100%) !important;
-} */
-
-/* .bg-gradient-light {
-  background: #f0f0f0} */
-
-  .bg-gradient-light {
-  background: #f1f5f9}
-  
-
-/* .dark .bg-gradient-dark {
-  background: #0d1117} */
-
-  .dark .bg-gradient-dark {
-  background: #080717}
-
-  /* .dark .bg-gradient-dark {
-  background: rgba(25, 25, 25, 1)} */
 /* ==========================================================================
    3. GLASSMORPHISM STYLES
    ========================================================================== */
@@ -145,33 +113,13 @@ background: linear-gradient(135deg, #f3f3f3 0%, #e8e8e873 50%, #a1a1a157 100%)
   background: rgba(255, 255, 255, 0.80);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  /* border: 1px solid rgba(255, 255, 255, 0.8); */
-  /* box-shadow: 0 8px 32px 0 rgba(30, 58, 138, 0.08); */
 }
 
 .dark .glass-card {
   background: #171725;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  /* border: 1px solid rgba(255, 255, 255, 0.085); */
-  /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); */
 }
-/* 
-.dark .glass-card {
-  background: rgba(20, 20, 20, 0.204);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.085); */
-  /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-} */
-
-/* .dark .glass-card {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 60%, rgba(10, 15, 26, 0.95) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
-} */
 
 .glass-input {
   background: rgba(255, 255, 255, 0.6);
@@ -183,7 +131,6 @@ background: linear-gradient(135deg, #f3f3f3 0%, #e8e8e873 50%, #a1a1a157 100%)
   background: rgba(20, 20, 20, 0.204);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(244, 255, 251, 0.15);
-  /* border: 1px solid rgba(30, 58, 138, 0.6); */
   color: #f1f5f9;
 }
 
@@ -242,17 +189,12 @@ background: linear-gradient(135deg, #f3f3f3 0%, #e8e8e873 50%, #a1a1a157 100%)
   }
 }
 
-
 @media (max-width: 767px) {
   .floating-sidebar {
     margin: 0 !important;
     height: 100vh !important;
     border-radius: 0 1rem 1rem 0 !important;
   }
-
-  /* .dynamic-page-title {
-    display: none !important;
-  } */
 }
 
 /* Sidebar Collapsed Mode Mini */
