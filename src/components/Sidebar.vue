@@ -420,7 +420,12 @@
                       >
                     </a>
                   </li>
-                  <li v-if="isMenuVisible('Leads & Campaign', 'leads')">
+                  <li
+                    v-if="
+                      store.canAccessPage('leads') &&
+                      isMenuVisible('Leads & Campaign', 'leads')
+                    "
+                  >
                     <a
                       href="#"
                       @click.prevent="navigate('leads')"

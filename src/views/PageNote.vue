@@ -19,7 +19,6 @@
       </div>
 
       <button
-        v-if="store.canEditPage('note')"
         @click="openAddModal"
         type="button"
         class="bg-button hover:bg-button text-white font-semibold px-4 py-2.5 rounded-xl text-sm md:text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"

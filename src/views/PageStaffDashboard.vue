@@ -270,7 +270,7 @@
           v-for="menu in filteredFeatures"
           :key="menu.id"
           @click="navigateTo(menu.id)"
-          class="glass-card group flex flex-col items-center justify-start p-3 pt-2 pb-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-700/60 shadow-xs hover:shadow-md transition-all cursor-pointer relative"
+          class="glass-card bg-white/90 group flex flex-col items-center justify-start p-3 pt-2 pb-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-700/60 shadow-xs hover:shadow-md transition-all cursor-pointer relative"
         >
           <!-- Badge indikator jika ada fitur baru -->
           <span
