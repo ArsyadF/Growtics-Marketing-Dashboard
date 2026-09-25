@@ -148,23 +148,26 @@
         Ringkasan Aktivitas Anda
       </h3>
 
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <!-- grid-cols-4 langsung aktif dari mobile hingga desktop -->
+      <div class="grid grid-cols-4 gap-2 sm:gap-3">
         <!-- Kartu 1: Tugas Berjalan -->
         <div
           @click="navTo('progress')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center gap-3 cursor-pointer hover:border-blue-500/40 transition-all"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-blue-500/40 transition-all"
         >
           <div
-            class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-base shrink-0"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm sm:text-base shrink-0"
           >
             <i class="fa-solid fa-list-check"></i>
           </div>
-          <div class="overflow-hidden">
-            <p class="text-xs font-semibold text-slate-400 truncate">
+          <div class="overflow-hidden w-full">
+            <p
+              class="text-[10px] sm:text-xs font-semibold text-slate-400 truncate"
+            >
               Tugas Aktif
             </p>
             <p
-              class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
+              class="text-sm sm:text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ myActiveTasksCount }}
             </p>
@@ -174,19 +177,21 @@
         <!-- Kartu 2: Tugas Selesai -->
         <div
           @click="navTo('progress')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center gap-3 cursor-pointer hover:border-emerald-500/40 transition-all"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-emerald-500/40 transition-all"
         >
           <div
-            class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base shrink-0"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm sm:text-base shrink-0"
           >
             <i class="fa-solid fa-circle-check"></i>
           </div>
-          <div class="overflow-hidden">
-            <p class="text-xs font-semibold text-slate-400 truncate">
+          <div class="overflow-hidden w-full">
+            <p
+              class="text-[10px] sm:text-xs font-semibold text-slate-400 truncate"
+            >
               Tugas Selesai
             </p>
             <p
-              class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
+              class="text-sm sm:text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ myCompletedTasksCount }}
             </p>
@@ -196,19 +201,21 @@
         <!-- Kartu 3: Aduan Menunggu -->
         <div
           @click="navTo('aduan')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center gap-3 cursor-pointer hover:border-amber-500/40 transition-all"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-amber-500/40 transition-all"
         >
           <div
-            class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-base shrink-0"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm sm:text-base shrink-0"
           >
             <i class="fa-solid fa-headset"></i>
           </div>
-          <div class="overflow-hidden">
-            <p class="text-xs font-semibold text-slate-400 truncate">
+          <div class="overflow-hidden w-full">
+            <p
+              class="text-[10px] sm:text-xs font-semibold text-slate-400 truncate"
+            >
               Aduan Open
             </p>
             <p
-              class="text-base md:text-sm font-semibold text-amber-600 dark:text-amber-400 leading-tight"
+              class="text-sm sm:text-base md:text-sm font-semibold text-amber-600 dark:text-amber-400 leading-tight"
             >
               {{ openTicketsCount }}
             </p>
@@ -218,19 +225,21 @@
         <!-- Kartu 4: Catatan/Notes -->
         <div
           @click="navTo('notes')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center gap-3 cursor-pointer hover:border-purple-500/40 transition-all"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-purple-500/40 transition-all"
         >
           <div
-            class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-base shrink-0"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-sm sm:text-base shrink-0"
           >
             <i class="fa-solid fa-note-sticky"></i>
           </div>
-          <div class="overflow-hidden">
-            <p class="text-xs font-semibold text-slate-400 truncate">
+          <div class="overflow-hidden w-full">
+            <p
+              class="text-[10px] sm:text-xs font-semibold text-slate-400 truncate"
+            >
               Notes Tim
             </p>
             <p
-              class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
+              class="text-sm sm:text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ notesCount }}
             </p>
@@ -239,152 +248,52 @@
       </div>
     </div>
 
-    <!-- 3. MENU AKSES FITUR -->
-    <div>
-      <h3
-        class="text-sm md:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5 px-1 flex items-center gap-1.5"
+    <div class="p-4 md:p-6 rounded-3xl space-y-4">
+      <div
+        class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
       >
-        <i class="fa-solid fa-shapes"></i>
-        Menu & Fitur Utama
-      </h3>
-
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <!-- Fitur 1: Progress Board -->
-        <button
-          v-if="store.canAccessPage('progress')"
-          @click="navTo('progress')"
-          class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-3xl border border-slate-100 dark:border-slate-800/80 hover:bg-emerald-500/5 transition-all text-left flex flex-col justify-between h-32 group cursor-pointer shadow-sm relative overflow-hidden"
-        >
-          <div
-            class="w-10 h-10 rounded-2xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform"
+        <div>
+          <h4
+            class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
           >
-            <i class="fa-solid fa-bars-progress"></i>
-          </div>
-          <div>
-            <h4
-              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-emerald-600 transition-colors"
-            >
-              Team Progress
-            </h4>
-            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
-              Kanban board tugas kerja
-            </p>
-          </div>
-        </button>
+            <i class="fa-solid fa-shapes text-theme"></i>
+            Akses Modul & Fitur
+          </h4>
+        </div>
+      </div>
 
-        <!-- Fitur 2: Customer Care / Aduan -->
+      <!-- GRID 3 KOLOM / RESPONSIVE ALAH FLIP (FLOATING ICON EFFECT) -->
+      <div
+        class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-3 gap-y-7 pt-6"
+      >
         <button
-          v-if="store.canAccessPage('aduan')"
-          @click="navTo('aduan')"
-          class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-3xl border border-slate-100 dark:border-slate-800/80 hover:bg-blue-500/5 transition-all text-left flex flex-col justify-between h-32 group cursor-pointer shadow-sm"
+          v-for="menu in filteredFeatures"
+          :key="menu.id"
+          @click="navigateTo(menu.id)"
+          class="glass-card group flex flex-col items-center justify-start p-3 pt-2 pb-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-700/60 shadow-xs hover:shadow-md transition-all cursor-pointer relative"
         >
-          <div
-            class="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform"
+          <!-- Badge indikator jika ada fitur baru -->
+          <span
+            v-if="menu.badge"
+            class="absolute -top-4 -right-1 bg-rose-500 text-white font-semibold text-[9px] px-1.5 py-0.2 rounded-full uppercase shadow-xs z-20"
           >
-            <i class="fa-solid fa-headset"></i>
-          </div>
-          <div>
-            <h4
-              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-blue-600 transition-colors"
-            >
-              Customer Care
-            </h4>
-            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
-              Kelola tiket keluhan
-            </p>
-          </div>
-        </button>
+            {{ menu.badge }}
+          </span>
 
-        <!-- Fitur 3: Leads & Campaign -->
-        <button
-          v-if="store.canAccessPage('leads')"
-          @click="navTo('leads')"
-          class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-3xl border border-slate-100 dark:border-slate-800/80 hover:bg-teal-500/5 transition-all text-left flex flex-col justify-between h-32 group cursor-pointer shadow-sm"
-        >
+          <!-- Floating Icon Container (Mengambang Keluar ke Atas) -->
           <div
-            class="w-10 h-10 rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform"
+            class="-mt-7 w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-xl md:text-2xl mb-1.5 transition-transform duration-200 group-hover:-translate-y-1 group-hover:scale-105 shadow-md z-10"
+            :class="menu.bgClass || 'bg-theme/10 text-theme'"
           >
-            <i class="fa-solid fa-users-rays"></i>
+            <i :class="menu.icon"></i>
           </div>
-          <div>
-            <h4
-              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-teal-600 transition-colors"
-            >
-              Leads & Campaign
-            </h4>
-            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
-              Data prospek & leads
-            </p>
-          </div>
-        </button>
 
-        <!-- Fitur 4: Division Report -->
-        <button
-          v-if="store.canAccessPage('spv-report')"
-          @click="navTo('spv-report')"
-          class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-3xl border border-slate-100 dark:border-slate-800/80 hover:bg-purple-500/5 transition-all text-left flex flex-col justify-between h-32 group cursor-pointer shadow-sm"
-        >
-          <div
-            class="w-10 h-10 rounded-2xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform"
+          <!-- Label Menu -->
+          <span
+            class="text-xs md:text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight group-hover:text-theme line-clamp-2"
           >
-            <i class="fa-solid fa-file-signature"></i>
-          </div>
-          <div>
-            <h4
-              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-purple-600 transition-colors"
-            >
-              Division Report
-            </h4>
-            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
-              Laporan pekanan divisi
-            </p>
-          </div>
-        </button>
-
-        <!-- Fitur 5: Sosmed Analytics -->
-        <button
-          v-if="store.canAccessPage('digmar')"
-          @click="navTo('digmar')"
-          class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-3xl border border-slate-100 dark:border-slate-800/80 hover:bg-amber-500/5 transition-all text-left flex flex-col justify-between h-32 group cursor-pointer shadow-sm"
-        >
-          <div
-            class="w-10 h-10 rounded-2xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform"
-          >
-            <i class="fa-solid fa-share-nodes"></i>
-          </div>
-          <div>
-            <h4
-              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-amber-600 transition-colors"
-            >
-              Sosmed Analytics
-            </h4>
-            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
-              Performa media sosial
-            </p>
-          </div>
-        </button>
-
-        <!-- Fitur 6: Notes & Catatan Tim -->
-        <button
-          v-if="store.canAccessPage('notes')"
-          @click="navTo('notes')"
-          class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-3xl border border-slate-100 dark:border-slate-800/80 hover:bg-rose-500/5 transition-all text-left flex flex-col justify-between h-32 group cursor-pointer shadow-sm"
-        >
-          <div
-            class="w-10 h-10 rounded-2xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-lg group-hover:scale-110 transition-transform"
-          >
-            <i class="fa-solid fa-note-sticky"></i>
-          </div>
-          <div>
-            <h4
-              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 group-hover:text-rose-600 transition-colors"
-            >
-              Notes & Catatan
-            </h4>
-            <p class="text-xs md:text-xs text-slate-400 line-clamp-1 mt-0.5">
-              Catatan internal tim
-            </p>
-          </div>
+            {{ menu.label }}
+          </span>
         </button>
       </div>
     </div>
@@ -732,6 +641,117 @@ const myUpcomingTasks = computed(() => {
     .filter((t) => (t.status || t.Status) !== "Completed")
     .slice(0, 3);
 });
+
+const allSidebarFeatures = [
+  {
+    id: "summary",
+    label: "Rekap Bisnis",
+    icon: "fa-solid fa-chart-line",
+    bgClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+  },
+  {
+    id: "notes",
+    label: "Notes & Catatan",
+    icon: "fa-solid fa-note-sticky",
+    bgClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+  },
+  {
+    id: "unit-NHP",
+    label: "Nur Hidayah Press",
+    icon: "fa-solid fa-building",
+    bgClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+  },
+  {
+    id: "unit-NHC",
+    label: "Nusaragam x Pengaosan",
+    icon: "fa-solid fa-building-user",
+    bgClass: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+  },
+  {
+    id: "unit-KG",
+    label: "Karta Grafika",
+    icon: "fa-solid fa-city",
+    bgClass: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",
+  },
+  {
+    id: "progress",
+    label: "Kanban Progress",
+    icon: "fa-solid fa-bars-progress",
+    bgClass: "bg-sky-500/10 text-sky-600 dark:text-sky-400",
+  },
+  {
+    id: "digmar",
+    label: "Socmed Analytics",
+    icon: "fa-solid fa-share-nodes",
+    bgClass: "bg-pink-500/10 text-pink-600 dark:text-pink-400",
+  },
+  {
+    id: "leads",
+    label: "Leads & Campaign",
+    icon: "fa-solid fa-users-rays",
+    bgClass: "bg-orange-500/10 text-orange-600 dark:text-orange-400",
+  },
+  {
+    id: "promo",
+    label: "Marketing Budget",
+    icon: "fa-solid fa-wallet",
+    bgClass: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+  },
+  {
+    id: "spv-report",
+    label: "Laporan Divisi",
+    icon: "fa-solid fa-file-signature",
+    bgClass: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+  },
+  {
+    id: "daily-report",
+    label: "Laporan Harian",
+    icon: "fa-solid fa-file-invoice",
+    bgClass: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
+    badge: "Baru",
+  },
+  {
+    id: "aduan",
+    label: "Customer Support",
+    icon: "fa-solid fa-headset",
+    bgClass: "bg-red-500/10 text-red-600 dark:text-red-400",
+  },
+  {
+    id: "report",
+    label: "Laporan Executive",
+    icon: "fa-solid fa-file-invoice-dollar",
+    bgClass: "bg-emerald-600/10 text-emerald-700 dark:text-emerald-300",
+  },
+  {
+    id: "master-data",
+    label: "Master Data",
+    icon: "fa-solid fa-sliders",
+    bgClass: "bg-slate-500/10 text-slate-600 dark:text-slate-300",
+  },
+  {
+    id: "users",
+    label: "Akses Pengguna",
+    icon: "fa-solid fa-users-gear",
+    bgClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+  },
+];
+
+// Menyaring menu berdasarkan hak akses pengguna
+const filteredFeatures = computed(() => {
+  const role = String(
+    store.currentUser?.role || store.currentUser?.Role || "",
+  ).toUpperCase();
+  if (role === "SUPERADMIN") return allSidebarFeatures;
+
+  const userPerms = store.currentUser?.permissions || {};
+  return allSidebarFeatures.filter((menu) => {
+    return userPerms[menu.id]?.access;
+  });
+});
+
+const navigateTo = (pageId) => {
+  store.currentPage = pageId;
+};
 </script>
 
 <style scoped>
