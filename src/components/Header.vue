@@ -13,24 +13,29 @@
   >
     <!-- SISI KIRI: Hamburger Mobile (Khusus Mobile) -->
     <div class="flex items-center gap-2 md:gap-3 shrink-0 md:min-w-0">
-      <button
+      <h2
+        class="dynamic-page-title text-base md:text-xl font-semibold text-slate-800 dark:text-slate-100 truncate"
+      >
+        {{ dynamicPageTitle }}
+      </h2>
+      <!-- <button
         @click.stop="$emit('toggle-sidebar')"
         type="button"
         class="md:hidden text-slate-600 dark:text-amber-400 w-10 h-10 rounded-full glass-card hover:scale-105 transition-all cursor-pointer flex items-center justify-center shrink-0 z-20 relative"
         title="Buka Menu"
       >
         <i class="fa-solid fa-bars text-base"></i>
-      </button>
+      </button> -->
     </div>
 
     <!-- TENGAH (Mobile) / KIRI (Desktop): Judul Halaman Dinamis -->
-    <div class="flex-1 text-center md:text-left min-w-0 px-2">
+    <!-- <div class="flex-1 text-center md:text-left min-w-0 px-2">
       <h2
         class="dynamic-page-title text-base md:text-xl font-semibold text-slate-800 dark:text-slate-100 truncate"
       >
         {{ dynamicPageTitle }}
       </h2>
-    </div>
+    </div> -->
 
     <!-- SISI KANAN: Filter Tanggal Desktop, Lonceng Notifikasi & Menu Profil -->
     <div class="flex items-center gap-2 md:gap-3 shrink-0 relative">
@@ -429,18 +434,18 @@ const dynamicPageTitle = computed(() => {
     "staff-dashboard": "Dashboard Staff",
     "daily-report": "Laporan harian",
     rekap: "Unit Summary",
-    summary: "Ringkasan Laporan",
+    summary: "Rekap Unit",
     "unit-NHP": "Performa Unit NHP",
     "unit-NHC": "Performa Unit NHC",
     "unit-KG": "Performa Unit KG",
     progress: "Team Progress Board",
-    notes: "Catatan & Notes Tim",
-    digmar: "Sosmed Analytics",
+    notes: "Catatan",
+    digmar: "Socmed Analytics",
     leads: "Leads & Campaign",
     promo: "Biaya Promosi",
     aduan: "Customer Care & Aduan",
     "spv-report": "Laporan Divisi",
-    report: "Laporan Kinerja",
+    report: "Laporan Executive",
     targets: "Pengaturan Target Revenue",
     "master-data": "Master Data Sistem",
     users: "Manajemen Akses Pengguna",

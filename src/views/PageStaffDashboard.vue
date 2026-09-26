@@ -204,7 +204,7 @@
           class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-amber-500/40 transition-all"
         >
           <div
-            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm sm:text-base shrink-0"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-sm sm:text-base shrink-0"
           >
             <i class="fa-solid fa-headset"></i>
           </div>
@@ -215,7 +215,7 @@
               Aduan Open
             </p>
             <p
-              class="text-sm sm:text-base md:text-sm font-semibold text-amber-600 dark:text-amber-400 leading-tight"
+              class="text-sm sm:text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ openTicketsCount }}
             </p>
@@ -228,7 +228,7 @@
           class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-purple-500/40 transition-all"
         >
           <div
-            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-sm sm:text-base shrink-0"
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm sm:text-base shrink-0"
           >
             <i class="fa-solid fa-note-sticky"></i>
           </div>
@@ -236,7 +236,7 @@
             <p
               class="text-[10px] sm:text-xs font-semibold text-slate-400 truncate"
             >
-              Notes Tim
+              Notes
             </p>
             <p
               class="text-sm sm:text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
@@ -249,9 +249,7 @@
     </div>
 
     <div class="p-2 rounded-3xl space-y-4">
-      <div
-        class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
-      >
+      <div class="flex items-center justify-between pb-3">
         <div>
           <h4
             class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
@@ -264,7 +262,7 @@
 
       <!-- GRID 3 KOLOM / RESPONSIVE ALAH FLIP (FLOATING ICON EFFECT) -->
       <div
-        class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-6 gap-y-12 pt-2"
+        class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-6 gap-y-14 pt-6"
       >
         <button
           v-for="menu in filteredFeatures"
@@ -275,14 +273,14 @@
           <!-- Badge indikator jika ada fitur baru -->
           <span
             v-if="menu.badge"
-            class="absolute -top-4 -right-1 bg-rose-500 text-white font-semibold text-[9px] px-1.5 py-0.2 rounded-full uppercase shadow-xs z-20"
+            class="absolute -top-8 -right-1 bg-rose-500 text-white font-semibold text-[9px] px-1.5 py-0.2 rounded-full uppercase shadow-xs z-20"
           >
             {{ menu.badge }}
           </span>
 
           <!-- Floating Icon Container (Mengambang Keluar ke Atas) -->
           <div
-            class="-mt-7 w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-xl md:text-2xl mb-1.5 transition-transform duration-200 group-hover:-translate-y-1 group-hover:scale-105 shadow-md z-10"
+            class="-mt-12 w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-xl md:text-2xl mb-1.5 transition-transform duration-200 group-hover:-translate-y-1 group-hover:scale-105 shadow-md z-10"
             :class="menu.bgClass || 'bg-theme/10 text-theme'"
           >
             <i :class="menu.icon"></i>
@@ -695,7 +693,7 @@ const allSidebarFeatures = [
   },
   {
     id: "unit-NHC",
-    label: "Nusaragam x Pengaosan",
+    label: "Nusaragam",
     icon: "fa-solid fa-shirt",
     bgClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   },
@@ -707,7 +705,7 @@ const allSidebarFeatures = [
   },
   {
     id: "progress",
-    label: "Progress",
+    label: "Team Progress",
     icon: "fa-solid fa-bars-progress",
     bgClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   },
