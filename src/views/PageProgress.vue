@@ -1641,6 +1641,46 @@ const handleOutsideClick = () => {
   isModalPicDropdownOpen.value = false;
 };
 
+// PERBAIKAN SINKRONISASI FILTER NAVIGASI DARI DASHBOARD
+// PERBAIKAN SINKRONISASI FILTER NAVIGASI DARI DASHBOARD
+const handleIncomingFilter = () => {
+  if (store.activeProgressFilter) {
+    const rawFilter = String(store.activeProgressFilter).trim().toLowerCase();
+
+    // Map berbagai input string ke status standar columns
+    let mappedStatus = "";
+    if (["completed", "done", "selesai"].includes(rawFilter)) {
+      mappedStatus = "Completed";
+    } else if (["in-progress", "in progress", "progress"].includes(rawFilter)) {
+      mappedStatus = "In Progress";
+    } else if (["todo", "to do", "to-do"].includes(rawFilter)) {
+      mappedStatus = "To Do";
+    } else if (["in review", "in-review", "review"].includes(rawFilter)) {
+      mappedStatus = "In Review";
+    }
+
+    if (mappedStatus) {
+      // 1. SET INDEKS TAB MOBILE: Agar tampilan mobile langsung melompat ke kolom status yang diklik
+      const colIndex = columns.indexOf(mappedStatus);
+      if (colIndex !== -1) {
+        mobileStatusIndex.value = colIndex;
+      }
+
+      // 2. CEK UKURAN LAYAR UNTUK FILTER GLOBAL
+      if (!isMobileScreen.value) {
+        // Jika di Desktop: Terapkan filter checkbox agar layar fokus ke status tersebut
+        selectedStatuses.value = [mappedStatus];
+      } else {
+        // Jika di Mobile: Kosongkan filter global agar pengguna tetap bisa menggeser (swipe) ke tab status lainnya
+        selectedStatuses.value = [];
+      }
+    }
+
+    // Reset filter store setelah digunakan
+    store.activeProgressFilter = null;
+  }
+};
+
 onMounted(() => {
   checkScreenSize();
   window.addEventListener("resize", checkScreenSize);
@@ -1650,7 +1690,19 @@ onMounted(() => {
       filterMyTasks.value = true;
     }
   }
+
+  handleIncomingFilter();
 });
+
+// Pantau perubahan jika berpindah dari tab/halaman tanpa re-mount
+watch(
+  () => store.currentPage,
+  (newPage) => {
+    if (newPage === "progress") {
+      handleIncomingFilter();
+    }
+  },
+);
 
 onUnmounted(() => {
   window.removeEventListener("resize", checkScreenSize);
@@ -1694,6 +1746,7 @@ const currentUser = computed(() => store.currentUser || {});
 const isSuperadmin = computed(
   () => currentUser.value?.role?.toUpperCase() === "SUPERADMIN",
 );
+
 const isSpvOrAdmin = computed(() =>
   ["SUPERADMIN", "SPV", "ADMIN"].includes(
     currentUser.value?.role?.toUpperCase(),

@@ -152,7 +152,7 @@
       <div class="grid grid-cols-4 gap-2 sm:gap-3">
         <!-- Kartu 1: Tugas Berjalan -->
         <div
-          @click="navTo('progress')"
+          @click="navTo('progress', 'in progress')"
           class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-blue-500/40 transition-all"
         >
           <div
@@ -176,7 +176,7 @@
 
         <!-- Kartu 2: Tugas Selesai -->
         <div
-          @click="navTo('progress')"
+          @click="navTo('progress', 'completed')"
           class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-emerald-500/40 transition-all"
         >
           <div
@@ -248,7 +248,7 @@
       </div>
     </div>
 
-    <div class="p-4 md:p-6 rounded-3xl space-y-4">
+    <div class="p-2 rounded-3xl space-y-4">
       <div
         class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
       >
@@ -264,7 +264,7 @@
 
       <!-- GRID 3 KOLOM / RESPONSIVE ALAH FLIP (FLOATING ICON EFFECT) -->
       <div
-        class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-3 gap-y-7 pt-6"
+        class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-6 gap-y-12 pt-2"
       >
         <button
           v-for="menu in filteredFeatures"
@@ -598,26 +598,51 @@ const skyTheme = computed(() => {
   };
 });
 
-const navTo = (page) => {
-  store.currentPage = page;
+const navTo = (pageId, filterStatus = null) => {
+  // Simpan filter status ke store jika ada
+  if (filterStatus) {
+    store.activeProgressFilter = filterStatus; // e.g. 'completed' atau 'todo'
+  } else {
+    store.activeProgressFilter = "all";
+  }
+
+  // Berpindah halaman
+  store.currentPage = pageId;
 };
+
+const isSpvOrAdmin = computed(() => {
+  const role = String(
+    store.currentUser?.role || store.currentUser?.Role || "",
+  ).toUpperCase();
+  return ["SUPERADMIN", "SPV", "ADMIN"].includes(role);
+});
 
 const myTasks = computed(() => {
   const allPrograms = store.db?.programs || store.programs || [];
+
+  // Jika SPV/Superadmin, bisa melihat semua tugas
+  if (isSpvOrAdmin.value) return allPrograms;
+
+  // Jika user biasa, hanya tugas yang ditugaskan (assigned) ke dirinya atau yang dia buat
   const myId = currentUser.value?.id || currentUser.value?.email;
   const myName = currentUser.value?.nama;
 
   return allPrograms.filter((p) => {
     const assignedIds = p.assignedPicIds || [];
     const assignedUsers = p.assignedUsers || [];
+    const picName = p.picName || p.PIC || "";
+
     const isAssigned =
-      assignedIds.includes(myId) || (myName && assignedUsers.includes(myName));
+      assignedIds.includes(myId) ||
+      (myName && assignedUsers.includes(myName)) ||
+      (myName && picName.toLowerCase().includes(myName.toLowerCase()));
+
     return isAssigned || p.createdBy === myId;
   });
 });
 
 const myActiveTasksCount = computed(() => {
-  return myTasks.value.filter((t) => (t.status || t.Status) !== "Completed")
+  return myTasks.value.filter((t) => (t.status || t.Status) === "In Progress")
     .length;
 });
 
@@ -644,6 +669,13 @@ const myUpcomingTasks = computed(() => {
 
 const allSidebarFeatures = [
   {
+    id: "daily-report",
+    label: "Laporan Harian",
+    icon: "fa-solid fa-file-invoice",
+    bgClass: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+    badge: "Wajib!",
+  },
+  {
     id: "summary",
     label: "Rekap Bisnis",
     icon: "fa-solid fa-chart-line",
@@ -651,33 +683,33 @@ const allSidebarFeatures = [
   },
   {
     id: "notes",
-    label: "Notes & Catatan",
+    label: "Notes",
     icon: "fa-solid fa-note-sticky",
     bgClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   },
   {
     id: "unit-NHP",
     label: "Nur Hidayah Press",
-    icon: "fa-solid fa-building",
-    bgClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    icon: "fa-solid fa-book-open",
+    bgClass: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
   },
   {
     id: "unit-NHC",
     label: "Nusaragam x Pengaosan",
-    icon: "fa-solid fa-building-user",
-    bgClass: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+    icon: "fa-solid fa-shirt",
+    bgClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
   },
   {
     id: "unit-KG",
     label: "Karta Grafika",
-    icon: "fa-solid fa-city",
-    bgClass: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400",
+    icon: "fa-solid fa-print",
+    bgClass: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
   },
   {
     id: "progress",
-    label: "Kanban Progress",
+    label: "Progress",
     icon: "fa-solid fa-bars-progress",
-    bgClass: "bg-sky-500/10 text-sky-600 dark:text-sky-400",
+    bgClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   },
   {
     id: "digmar",
@@ -689,7 +721,7 @@ const allSidebarFeatures = [
     id: "leads",
     label: "Leads & Campaign",
     icon: "fa-solid fa-users-rays",
-    bgClass: "bg-orange-500/10 text-orange-600 dark:text-orange-400",
+    bgClass: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
   },
   {
     id: "promo",
@@ -701,15 +733,9 @@ const allSidebarFeatures = [
     id: "spv-report",
     label: "Laporan Divisi",
     icon: "fa-solid fa-file-signature",
-    bgClass: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+    bgClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
   },
-  {
-    id: "daily-report",
-    label: "Laporan Harian",
-    icon: "fa-solid fa-file-invoice",
-    bgClass: "bg-violet-500/10 text-violet-600 dark:text-violet-400",
-    badge: "Baru",
-  },
+
   {
     id: "aduan",
     label: "Customer Support",
