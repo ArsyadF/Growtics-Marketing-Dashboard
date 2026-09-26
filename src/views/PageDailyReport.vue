@@ -18,7 +18,6 @@
       </div>
 
       <div
-        v-if="canManageFormAndRekap"
         class="flex items-center bg-slate-100/80 dark:bg-slate-800/80 p-1 rounded-xl shrink-0 text-sm md:text-xs overflow-hidden border border-slate-200 dark:border-slate-700"
       >
         <button
@@ -258,10 +257,7 @@
       </div>
 
       <!-- TAB 2: REKAP DATA -->
-      <div
-        v-if="activeTab === 'rekap' && canManageFormAndRekap"
-        class="space-y-3"
-      >
+      <div v-if="activeTab === 'rekap'" class="space-y-3">
         <div
           class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col lg:flex-row gap-3 justify-between items-center"
         >
@@ -324,23 +320,25 @@
           <div
             class="flex gap-2 w-full lg:w-auto border-t lg:border-t-0 lg:border-l border-slate-100 dark:border-slate-800 pt-3 lg:pt-0 lg:pl-3"
           >
-            <button
-              @click="exportToExcel"
-              class="flex-1 lg:flex-none bg-emerald-500/10 text-emerald-600 px-3.5 py-2.5 md:px-3 md:py-2 rounded-lg font-semibold hover:bg-emerald-500/20 transition-all text-sm md:text-xs flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <i class="fa-solid fa-file-excel"></i> Export Excel
-            </button>
-            <label
-              class="flex-1 lg:flex-none bg-blue-500/10 text-blue-600 px-3.5 py-2.5 md:px-3 md:py-2 rounded-lg font-semibold hover:bg-blue-500/20 transition-all text-sm md:text-xs flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <i class="fa-solid fa-file-import"></i> Import Excel
-              <input
-                type="file"
-                accept=".xlsx, .xls"
-                class="hidden"
-                @change="importExcel"
-              />
-            </label>
+            <template v-if="isManagerial">
+              <button
+                @click="exportToExcel"
+                class="flex-1 lg:flex-none bg-emerald-500/10 text-emerald-600 px-3.5 py-2.5 md:px-3 md:py-2 rounded-lg font-semibold hover:bg-emerald-500/20 transition-all text-sm md:text-xs flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <i class="fa-solid fa-file-excel"></i> Export Excel
+              </button>
+              <label
+                class="flex-1 lg:flex-none bg-blue-500/10 text-blue-600 px-3.5 py-2.5 md:px-3 md:py-2 rounded-lg font-semibold hover:bg-blue-500/20 transition-all text-sm md:text-xs flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <i class="fa-solid fa-file-import"></i> Import Excel
+                <input
+                  type="file"
+                  accept=".xlsx, .xls"
+                  class="hidden"
+                  @change="importExcel"
+                />
+              </label>
+            </template>
           </div>
         </div>
 
@@ -1088,14 +1086,12 @@ const currentUser = computed(() => store.currentUser || {});
 const role = computed(() =>
   String(currentUser.value.role || currentUser.value.Role || "").toUpperCase(),
 );
-const canManageFormAndRekap = computed(() =>
+
+const isManagerial = computed(() =>
   ["SUPERADMIN", "ADMIN_UNIT", "ADMIN", "SPV"].includes(role.value),
 );
-const isSuperadmin = computed(() => role.value === "SUPERADMIN");
 
-watch(canManageFormAndRekap, (canManage) => {
-  if (!canManage) activeTab.value = "input";
-});
+const isSuperadmin = computed(() => role.value === "SUPERADMIN");
 
 // GLOBAL MASTER DATA
 const masterUnits = computed(() => store.db?.master?.unitList || []);
@@ -1319,6 +1315,12 @@ const getSortIcon = (key) => {
 
 const sortedReports = computed(() => {
   let result = reportsList.value.filter((item) => {
+    const currentUserName =
+      currentUser.value.nama || currentUser.value.Nama || "User";
+    if (!isManagerial.value && item.nama !== currentUserName) {
+      return false; // Skip laporan milik orang lain
+    }
+
     const matchTpl =
       filter.templateId === "ALL" || item.templateId === filter.templateId;
     const matchStart = filter.startDate

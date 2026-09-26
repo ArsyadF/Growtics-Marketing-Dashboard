@@ -139,6 +139,20 @@
             </div>
           </div>
 
+          <div>
+            <label
+              class="block text-sm md:text-xs font-semibold text-slate-500 mb-1"
+            >
+              Keterangan / Catatan Tambahan
+            </label>
+            <textarea
+              v-model="formRev.Keterangan"
+              rows="2"
+              placeholder="Opsional: Tuliskan catatan khusus transaksi ini..."
+              class="w-full glass-input rounded-xl p-3 text-sm md:text-xs outline-none focus:border-theme text-slate-800 dark:text-slate-100 resize-none"
+            ></textarea>
+          </div>
+
           <div
             class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
           >
@@ -924,6 +938,7 @@ const formRev = reactive({
   JumlahPesanan: 0,
   Divisi: "CS Deal",
   Platform: "Shopee",
+  Keterangan: "",
 });
 
 const formLeads = reactive({
@@ -1044,6 +1059,7 @@ watch(
         formRev.Divisi = raw.Divisi || availableDivisions.value[0] || "CS Deal";
         formRev.Platform =
           raw.Platform || availablePlatforms.value[0] || "Shopee";
+        formRev.Keterangan = raw.Keterangan || "";
       } else {
         formRev.Tanggal = new Date().toISOString().split("T")[0];
         formRev.Unit = raw?.Unit || defaultUnitCode;

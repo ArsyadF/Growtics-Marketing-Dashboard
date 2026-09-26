@@ -340,6 +340,13 @@
                 Revenue <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
+                @click="sortTable('Keterangan')"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
+              >
+                Keterangan
+                <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
+              </th>
+              <th
                 v-if="store.canEditPage('unit-' + selectedUnitName)"
                 class="py-2.5 px-4 text-center font-semibold"
               >
@@ -350,13 +357,13 @@
 
           <tbody class="divide-y dark:divide-slate-800/80">
             <tr v-if="store.isLoading">
-              <td colspan="7" class="text-center py-4 text-slate-400">
+              <td colspan="8" class="text-center py-4 text-slate-400">
                 Memuat data revenue...
               </td>
             </tr>
 
             <tr v-else-if="paginatedRevenue.length === 0">
-              <td colspan="7" class="text-center py-4 text-slate-400">
+              <td colspan="8" class="text-center py-4 text-slate-400">
                 Tidak ada data revenue.
               </td>
             </tr>
@@ -396,7 +403,12 @@
               <td class="py-2 px-3 font-semibold text-theme">
                 {{ formatRupiah(item.Revenue || item.Nominal) }}
               </td>
-
+              <td
+                class="py-2 px-3 text-slate-500 max-w-[150px] truncate"
+                :title="item.Keterangan"
+              >
+                {{ item.Keterangan || "-" }}
+              </td>
               <td
                 v-if="store.canEditPage('unit-' + selectedUnitName)"
                 class="py-2 px-3 text-center space-x-2 whitespace-nowrap"
