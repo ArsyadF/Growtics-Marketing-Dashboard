@@ -7,7 +7,7 @@
         class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
       >
         <div>
-          <p class="text-slate-400 text-xs">
+          <p class="text-slate-400 text-sm md:text-xs">
             Sesuaikan rekap berdasarkan bulan, divisi, atau platform.
           </p>
         </div>
@@ -18,7 +18,7 @@
           <button
             v-if="store.canExportImport()"
             @click="handleExportRevenue"
-            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-2xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
           >
             <i class="fa-solid fa-file-excel"></i>
             <span>Export Excel</span>
@@ -28,7 +28,7 @@
           <button
             v-if="store.canExportImport()"
             @click="isImportModalOpen = true"
-            class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-3 py-2 rounded-2xl text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
+            class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-2xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
           >
             <i class="fa-solid fa-file-import"></i>
             <span>Import Excel</span>
@@ -37,12 +37,13 @@
           <button
             v-if="store.canEditPage('unit-' + selectedUnitName)"
             @click="store.openModal('revenue', { Unit: selectedUnitName })"
-            class="bg-button hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2 rounded-xl font-medium text-xs shadow-md transition-all text-center cursor-pointer"
+            class="bg-button hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2.5 md:py-2 rounded-xl font-semibold text-sm md:text-xs shadow-md transition-all text-center cursor-pointer"
           >
             <i class="fa-solid fa-plus mr-1.5"></i>Input Revenue
             {{ selectedUnitName }}
           </button>
-          <!-- MODAL IMPORT EXCEL DATA REVENUE -->
+
+          <!-- Modul Revenue Modal Import -->
           <ModalImportExcel
             :isOpen="isImportModalOpen"
             schemaKey="REVENUE"
@@ -59,12 +60,12 @@
       >
         <div>
           <label
-            class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+            class="block text-sm md:text-xs font-semibold text-slate-400 uppercase mb-1"
             >Filter Bulan</label
           >
           <select
             v-model="filterMonth"
-            class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs dark:bg-slate-800 outline-none"
           >
             <option value="ALL">Semua Bulan (Jan - Des)</option>
             <option
@@ -79,12 +80,12 @@
 
         <div>
           <label
-            class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+            class="block text-sm md:text-xs font-semibold text-slate-400 uppercase mb-1"
             >Filter Divisi</label
           >
           <select
             v-model="filterDivisi"
-            class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs dark:bg-slate-800 outline-none"
           >
             <option value="ALL">Semua Divisi</option>
             <option v-for="div in masterDivisiList" :key="div" :value="div">
@@ -95,12 +96,12 @@
 
         <div>
           <label
-            class="block text-[10px] font-semibold text-slate-400 uppercase mb-1"
+            class="block text-sm md:text-xs font-semibold text-slate-400 uppercase mb-1"
             >Filter Platform</label
           >
           <select
             v-model="filterPlatform"
-            class="w-full glass-input rounded-xl p-2 text-xs dark:bg-slate-800 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs dark:bg-slate-800 outline-none"
           >
             <option value="ALL">Semua Platform</option>
             <option
@@ -120,11 +121,9 @@
       <div
         class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-emerald-400"
       >
-        <p class="text-slate-400 text-[11px] md:text-xs">
-          Revenue Unit (Filtered)
-        </p>
+        <p class="text-slate-400 text-sm md:text-xs">Revenue Unit (Filtered)</p>
         <h3
-          class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100"
+          class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
         >
           {{ formatRupiah(totalFilteredRevenue) }}
         </h3>
@@ -133,9 +132,9 @@
       <div
         class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-blue-400"
       >
-        <p class="text-slate-400 text-[11px] md:text-xs">Target Unit</p>
+        <p class="text-slate-400 text-sm md:text-xs">Target Unit</p>
         <h3
-          class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100"
+          class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
         >
           {{ formatRupiah(unitTarget) }}
         </h3>
@@ -144,9 +143,9 @@
       <div
         class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-amber-400"
       >
-        <p class="text-slate-400 text-[11px] md:text-xs">% Kontribusi Global</p>
+        <p class="text-slate-400 text-sm md:text-xs">% Kontribusi Global</p>
         <h3
-          class="text-base md:text-xl font-bold mt-0.5 text-slate-800 dark:text-slate-100"
+          class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
         >
           {{ globalContribution }}%
         </h3>
@@ -160,18 +159,18 @@
         class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
       >
         <h3
-          class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
         >
           Rekap Revenue Per Bulan
         </h3>
         <div class="overflow-y-auto max-h-[260px] pr-1">
-          <table class="min-w-full text-xs text-left">
+          <table class="min-w-full text-sm md:text-xs text-left">
             <thead
               class="bg-white/40 dark:bg-slate-800/60 text-slate-400 sticky top-0 backdrop-blur-md"
             >
               <tr>
-                <th class="py-2 px-3">Bulan</th>
-                <th class="py-2 px-3 text-right">Revenue</th>
+                <th class="py-2 px-3 font-semibold">Bulan</th>
+                <th class="py-2 px-3 text-right font-semibold">Revenue</th>
               </tr>
             </thead>
             <tbody class="divide-y dark:divide-slate-800/80">
@@ -186,7 +185,7 @@
                 :key="idx"
                 class="hover:bg-white/20 dark:hover:bg-slate-800/40"
               >
-                <td class="py-2 px-3 font-medium">{{ row.bulan }}</td>
+                <td class="py-2 px-3">{{ row.bulan }}</td>
                 <td class="py-2 px-3 text-right font-semibold text-theme">
                   {{ formatRupiah(row.revenue) }}
                 </td>
@@ -201,7 +200,7 @@
         class="lg:col-span-3 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
       >
         <h3
-          class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
         >
           Rekap Triwulan
         </h3>
@@ -212,10 +211,10 @@
             class="p-2.5 bg-white/30 dark:bg-slate-800/40 rounded-xl border border-white/20 dark:border-slate-700/50 flex justify-between items-center"
           >
             <span
-              class="text-xs font-bold text-slate-500 dark:text-slate-400"
+              class="text-sm md:text-xs font-semibold text-slate-500 dark:text-slate-400"
               >{{ q.quarter }}</span
             >
-            <span class="text-xs font-bold text-theme">{{
+            <span class="text-sm md:text-xs font-semibold text-theme">{{
               formatRupiah(q.revenue)
             }}</span>
           </div>
@@ -227,7 +226,7 @@
         class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
       >
         <h3
-          class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
         >
           Grafik Trend Revenue Bulanan
         </h3>
@@ -237,20 +236,20 @@
       </div>
     </div>
 
-    <!-- Management Data Table (Scrollable, Paginated, Bulk Delete) -->
+    <!-- Management Data Table -->
     <div class="glass-card p-4 md:p-6 rounded-2xl space-y-4">
       <div
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
       >
         <div class="flex items-center gap-2">
           <h3
-            class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm"
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
           >
             Manajemen Data Revenue Unit {{ selectedUnitName }}
           </h3>
           <span
             v-if="selectedIds.length > 0"
-            class="text-[10px] text-purple-600 font-bold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
+            class="text-xs md:text-xs text-purple-600 font-semibold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
           >
             {{ selectedIds.length }} Dipilih
           </span>
@@ -262,14 +261,14 @@
           <div v-if="selectedIds.length > 0" class="flex items-center gap-1.5">
             <button
               @click="clearSelection"
-              class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold px-2.5 py-1.5 rounded-xl text-xs cursor-pointer"
+              class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold px-2.5 py-1.5 rounded-xl text-sm md:text-xs cursor-pointer"
             >
               Batal
             </button>
             <button
               v-if="store.canEditPage('unit-' + selectedUnitName)"
               @click="promptBulkDelete"
-              class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-md cursor-pointer"
+              class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-3 py-1.5 rounded-xl text-sm md:text-xs shadow-md cursor-pointer"
             >
               <i class="fa-solid fa-trash mr-1"></i>Hapus ({{
                 selectedIds.length
@@ -278,11 +277,11 @@
           </div>
 
           <div class="flex items-center gap-1.5">
-            <span class="text-xs text-slate-400">Tampilkan:</span>
+            <span class="text-sm md:text-xs text-slate-400">Tampilkan:</span>
             <select
               v-model="itemsPerPage"
               @change="currentPage = 1"
-              class="glass-input rounded-xl p-1.5 text-xs dark:bg-slate-800 outline-none"
+              class="glass-input rounded-xl p-1.5 text-sm md:text-xs dark:bg-slate-800 outline-none"
             >
               <option value="25">25</option>
               <option value="50">50</option>
@@ -295,7 +294,7 @@
 
       <!-- Area Scrollable Tabel dengan Sticky Header -->
       <div class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1">
-        <table class="min-w-full text-xs text-left">
+        <table class="min-w-full text-sm md:text-xs text-left">
           <thead
             class="bg-white/80 dark:bg-slate-800/90 text-slate-400 sticky top-0 backdrop-blur-md z-10"
           >
@@ -305,42 +304,51 @@
                   type="checkbox"
                   :checked="isAllSelected"
                   @change="toggleSelectAll"
-                  class="accent-purple-600 rounded cursor-pointer w-3.5 h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
                 />
               </th>
               <th
                 @click="sortTable('Tanggal')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
               >
-                Tanggal <i class="fa-solid fa-sort text-[10px] ml-1"></i>
+                Tanggal <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Divisi')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
               >
-                Divisi <i class="fa-solid fa-sort text-[10px] ml-1"></i>
+                Divisi <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Platform')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
               >
-                Platform <i class="fa-solid fa-sort text-[10px] ml-1"></i>
+                Platform
+                <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('JumlahPesanan')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
               >
-                Jumlah Pesanan <i class="fa-solid fa-sort text-[10px] ml-1"></i>
+                Jumlah Pesanan
+                <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Revenue')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
               >
-                Revenue <i class="fa-solid fa-sort text-[10px] ml-1"></i>
+                Revenue <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
+              </th>
+              <th
+                @click="sortTable('Keterangan')"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
+              >
+                Keterangan
+                <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
               </th>
               <th
                 v-if="store.canEditPage('unit-' + selectedUnitName)"
-                class="py-2.5 px-4 text-center"
+                class="py-2.5 px-4 text-center font-semibold"
               >
                 Aksi
               </th>
@@ -349,13 +357,13 @@
 
           <tbody class="divide-y dark:divide-slate-800/80">
             <tr v-if="store.isLoading">
-              <td colspan="7" class="text-center py-4 text-slate-400">
+              <td colspan="8" class="text-center py-4 text-slate-400">
                 Memuat data revenue...
               </td>
             </tr>
 
             <tr v-else-if="paginatedRevenue.length === 0">
-              <td colspan="7" class="text-center py-4 text-slate-400">
+              <td colspan="8" class="text-center py-4 text-slate-400">
                 Tidak ada data revenue.
               </td>
             </tr>
@@ -376,13 +384,13 @@
                   type="checkbox"
                   :value="getDocId(item)"
                   v-model="selectedIds"
-                  class="accent-purple-600 rounded cursor-pointer w-3.5 h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
                 />
               </td>
               <td class="py-2 px-3">
-                {{ item.Tanggal ? item.Tanggal.substring(0, 10) : "-" }}
+                {{ item.Tanggal ? String(item.Tanggal).substring(0, 10) : "-" }}
               </td>
-              <td class="py-2 px-3 font-medium">{{ item.Divisi || "-" }}</td>
+              <td class="py-2 px-3 font-semibold">{{ item.Divisi || "-" }}</td>
               <td class="py-2 px-3">{{ item.Platform || "-" }}</td>
               <td class="py-2 px-3 font-semibold text-amber-500">
                 {{
@@ -393,23 +401,29 @@
                 Pcs
               </td>
               <td class="py-2 px-3 font-semibold text-theme">
-                {{ formatRupiah(item.Revenue) }}
+                {{ formatRupiah(item.Revenue || item.Nominal) }}
               </td>
-
+              <td
+                class="py-2 px-3 text-slate-500 max-w-[150px] truncate"
+                :title="item.Keterangan"
+              >
+                {{ item.Keterangan || "-" }}
+              </td>
               <td
                 v-if="store.canEditPage('unit-' + selectedUnitName)"
                 class="py-2 px-3 text-center space-x-2 whitespace-nowrap"
               >
                 <button
                   @click="store.openModal('revenue', item)"
-                  class="text-theme hover:text-theme p-1 cursor-pointer"
+                  class="text-theme hover:text-theme p-1.5 cursor-pointer"
                   title="Edit Revenue"
                 >
                   <i class="fa-solid fa-pen"></i>
                 </button>
                 <button
                   @click="promptSingleDelete(getDocId(item))"
-                  class="text-rose-500 hover:text-rose-600 cursor-pointer"
+                  class="text-rose-500 hover:text-rose-600 cursor-pointer p-1.5"
+                  title="Hapus Revenue"
                 >
                   <i class="fa-solid fa-trash"></i>
                 </button>
@@ -422,7 +436,7 @@
       <!-- Footer Pagination Kontrol -->
       <div
         v-if="itemsPerPage !== 'ALL' && totalPages > 1"
-        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-xs text-slate-400"
+        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-sm md:text-xs text-slate-400"
       >
         <div>
           Menampilkan {{ startItem }} - {{ endItem }} dari
@@ -432,13 +446,13 @@
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
-            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
           >
-            <i class="fa-solid fa-chevron-left text-[10px]"></i>
+            <i class="fa-solid fa-chevron-left text-xs md:text-xs"></i>
           </button>
 
           <span
-            class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-bold"
+            class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-semibold"
           >
             {{ currentPage }} / {{ totalPages }}
           </span>
@@ -446,9 +460,9 @@
           <button
             @click="currentPage++"
             :disabled="currentPage === totalPages"
-            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
           >
-            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            <i class="fa-solid fa-chevron-right text-xs md:text-xs"></i>
           </button>
         </div>
       </div>
@@ -471,10 +485,14 @@
               <i class="fa-solid fa-triangle-exclamation text-lg"></i>
             </div>
             <div>
-              <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">
+              <h4
+                class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100"
+              >
                 {{ confirmModal.title }}
               </h4>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p
+                class="text-sm md:text-xs text-slate-500 dark:text-slate-400 mt-0.5"
+              >
                 {{ confirmModal.message }}
               </p>
             </div>
@@ -486,7 +504,7 @@
             <button
               @click="closeConfirmModal"
               type="button"
-              class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
+              class="px-4 py-2.5 md:py-2 rounded-xl text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
             >
               Batal
             </button>
@@ -494,7 +512,7 @@
               @click="executeConfirmAction"
               type="button"
               :disabled="store.isLoading"
-              class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              class="px-4 py-2.5 md:py-2 rounded-xl text-sm md:text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
               <i v-if="store.isLoading" class="fa-solid fa-spinner fa-spin"></i>
               <span>Ya, Hapus</span>
@@ -571,45 +589,36 @@ const isImportModalOpen = ref(false);
 const revenueList = computed(() => store.db?.revenue || []);
 
 // HANDLER EXPORT EXCEL REVENUE
-// HANDLER EXPORT EXCEL REVENUE DENGAN FILTER AKTIF
 const handleExportRevenue = () => {
-  try {
-    const dataToExport = filteredRevenue.value;
-    if (!dataToExport || dataToExport.length === 0) {
-      store.addNotification(
-        "Peringatan",
-        "Tidak ada data revenue pada filter saat ini untuk diexport",
-        "warning",
-      );
-      return;
-    }
-
-    exportToExcelBySchema(
-      `Data_Revenue_${selectedUnitName.value}`,
-      dataToExport,
-      "REVENUE",
-    );
-    store.addNotification(
-      "Berhasil",
-      "Data Revenue berhasil diexport ke Excel",
-      "success",
-    );
-  } catch (err) {
-    store.addNotification("Gagal", err.message, "warning");
-  }
+  exportToExcelBySchema(
+    `Data_Revenue_${selectedUnitName.value}`,
+    filteredRevenue.value,
+    "REVENUE",
+  );
 };
 
-// HANDLER EKSEKUSI IMPORT EXCEL REVENUE
+// HANDLER EKSEKUSI IMPORT EXCEL REVENUE (PERBAIKAN DENGAN ID BARU FIRESTORE)
 const handleImportRevenueConfirm = async ({ itemsToSave, stats }) => {
   store.isLoading = true;
   try {
-    // Simpan data massal ke koleksi 'revenues' di Firestore
-    const savePromises = itemsToSave.map((item) =>
-      api.saveData("Revenue", item),
-    );
-    await Promise.all(savePromises);
+    // Loop dan simpan setiap item ke Firestore
+    for (const item of itemsToSave) {
+      // Bersihkan properti ID lama jika ada dari hasil parsing Excel/lokal
+      const payload = { ...item };
+      delete payload.id;
+      delete payload.Timestamp;
 
-    // Refresh database global
+      // Panggil api.saveData untuk membuat dokumen baru di Firestore
+      const res = await api.saveData("Revenue", payload);
+
+      // Jika butuh ID langsung dipasang ke local store
+      if (res && res.success && res.id) {
+        payload.id = res.id;
+        payload.Timestamp = res.id;
+      }
+    }
+
+    // Refresh database global dari Firestore agar data ber-ID baru siap di-edit / di-delete
     await store.loadFullDatabase();
 
     store.addNotification(
@@ -618,9 +627,11 @@ const handleImportRevenueConfirm = async ({ itemsToSave, stats }) => {
       "success",
     );
   } catch (err) {
+    console.error("Gagal Import Revenue:", err);
     store.addNotification("Gagal Import", err.message, "warning");
   } finally {
     store.isLoading = false;
+    isImportModalOpen.value = false;
   }
 };
 
@@ -645,8 +656,11 @@ const confirmModal = reactive({
 const chartUnitMonthlyTrendRef = ref(null);
 let trendChartInstance = null;
 
+// PERBAIKAN PENTING: Mengambil ID Unik Dokumen Firestore secara Presisi
 function getDocId(item) {
-  return item.id || item.Timestamp;
+  if (!item) return "";
+  // Mengambil ID Firestore (id) atau Timestamp fallback
+  return String(item.id || item.Timestamp || item.idDokumen || "");
 }
 
 const formatRupiah = (val) => {
@@ -660,7 +674,7 @@ const formatRupiah = (val) => {
 
 function isDateInFilter(dateStr) {
   if (!dateStr) return false;
-  const targetDate = dateStr.substring(0, 10);
+  const targetDate = String(dateStr).substring(0, 10);
   const startDate = store.filterDates.start;
   const endDate = store.filterDates.end;
 
@@ -704,7 +718,7 @@ const filteredRevenue = computed(() => {
 
 const totalFilteredRevenue = computed(() =>
   filteredRevenue.value.reduce(
-    (acc, curr) => acc + Number(curr.Revenue || 0),
+    (acc, curr) => acc + Number(curr.Revenue || curr.Nominal || 0),
     0,
   ),
 );
@@ -723,7 +737,7 @@ const monthlyRecap = computed(() => {
     const mIdx = new Date(item.Tanggal).getMonth();
     if (isNaN(mIdx)) return;
     if (!recapMap[mIdx]) recapMap[mIdx] = 0;
-    recapMap[mIdx] += Number(item.Revenue || 0);
+    recapMap[mIdx] += Number(item.Revenue || item.Nominal || 0);
   });
 
   return Object.keys(recapMap)
@@ -745,7 +759,7 @@ const quarterlyRecap = computed(() => {
   filteredRevenue.value.forEach((item) => {
     if (!item.Tanggal) return;
     const month = new Date(item.Tanggal).getMonth();
-    const rev = Number(item.Revenue || 0);
+    const rev = Number(item.Revenue || item.Nominal || 0);
 
     if (month >= 0 && month <= 2) qMap["Q1 (Jan - Mar)"] += rev;
     else if (month >= 3 && month <= 5) qMap["Q2 (Apr - Jun)"] += rev;
@@ -762,7 +776,7 @@ const sortedRevenue = computed(() => {
     let aVal = a[sortKey.value];
     let bVal = b[sortKey.value];
 
-    if (["Revenue", "JumlahPesanan"].includes(sortKey.value)) {
+    if (["Revenue", "Nominal", "JumlahPesanan"].includes(sortKey.value)) {
       aVal = Number(aVal || 0);
       bVal = Number(bVal || 0);
     } else {
@@ -836,6 +850,10 @@ const sortTable = (key) => {
 };
 
 const promptSingleDelete = (docId) => {
+  if (!docId) {
+    store.addNotification("Peringatan", "ID dokumen tidak valid", "warning");
+    return;
+  }
   confirmModal.isOpen = true;
   confirmModal.title = "Hapus Data Revenue";
   confirmModal.message = "Apakah Anda yakin ingin menghapus data revenue ini?";
@@ -858,25 +876,45 @@ const closeConfirmModal = () => {
   confirmModal.isBulk = false;
 };
 
+// PERBAIKAN UTAMA: LOGIKA EKSEKUSI PENGHAPUSAN FIRESTORE
 const executeConfirmAction = async () => {
   store.isLoading = true;
   try {
+    let successCount = 0;
+
     if (confirmModal.isBulk) {
-      for (const docId of selectedIds.value) {
-        await api.deleteData("revenues", docId);
+      for (const id of selectedIds.value) {
+        if (!id) continue;
+        // Panggil api.deleteData dengan sheetName 'Revenue' (di-map ke koleksi 'revenues' di Firestore)
+        const res = await api.deleteData("Revenue", id);
+        if (res && res.success) successCount++;
       }
       clearSelection();
     } else if (confirmModal.targetId) {
-      const res = await api.deleteData("revenues", confirmModal.targetId);
-      if (res.success) {
+      const res = await api.deleteData("Revenue", confirmModal.targetId);
+      if (res && res.success) {
+        successCount = 1;
         selectedIds.value = selectedIds.value.filter(
           (id) => id !== confirmModal.targetId,
         );
+      } else {
+        throw new Error(res?.message || "Gagal menghapus data dari Firestore.");
       }
     }
+
+    if (successCount > 0) {
+      store.addNotification(
+        "Berhasil",
+        `${successCount} data revenue berhasil dihapus`,
+        "success",
+      );
+    }
+
+    // WAJIB: Muat ulang database dari Firestore untuk menyegarkan UI
     await store.loadFullDatabase();
   } catch (err) {
     console.error("Gagal menghapus revenue:", err);
+    store.addNotification("Gagal Hapus", err.message, "warning");
   } finally {
     store.isLoading = false;
     closeConfirmModal();
@@ -914,6 +952,7 @@ watch(
   },
   { deep: true },
 );
+
 onMounted(() => {
   initCharts();
 });

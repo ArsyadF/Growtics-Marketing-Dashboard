@@ -25,7 +25,7 @@
           class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[94%] max-w-xs z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
         >
           <p
-            class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center"
+            class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center"
           >
             Pilih Unit Usaha
           </p>
@@ -43,7 +43,7 @@
                 <i class="fa-solid fa-book-open"></i>
               </div>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >NHP</span
               >
             </button>
@@ -60,7 +60,7 @@
                 <i class="fa-solid fa-shirt"></i>
               </div>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >NHC</span
               >
             </button>
@@ -77,7 +77,7 @@
                 <i class="fa-solid fa-print"></i>
               </div>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >KG</span
               >
             </button>
@@ -91,10 +91,10 @@
               <div
                 class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform"
               >
-                <i class="fa-solid fa-building"></i>
+                <i class="fa-solid fa-chart-line"></i>
               </div>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >Rekap Unit</span
               >
             </button>
@@ -109,7 +109,7 @@
           class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[94%] max-w-xs z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
         >
           <p
-            class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center"
+            class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center"
           >
             Input Data Baru
           </p>
@@ -126,7 +126,7 @@
                 <i class="fa-solid fa-sack-dollar"></i>
               </span>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >Revenue</span
               >
             </button>
@@ -142,7 +142,7 @@
                 <i class="fa-solid fa-users-rays"></i>
               </span>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >Leads</span
               >
             </button>
@@ -153,12 +153,12 @@
               class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
             >
               <span
-                class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs shrink-0"
+                class="w-7 h-7 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs shrink-0"
               >
                 <i class="fa-solid fa-bullhorn"></i>
               </span>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >Promosi</span
               >
             </button>
@@ -174,7 +174,7 @@
                 <i class="fa-solid fa-bars-progress"></i>
               </span>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >Progress</span
               >
             </button>
@@ -190,7 +190,7 @@
                 <i class="fa-solid fa-file-signature"></i>
               </span>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >Divisi</span
               >
             </button>
@@ -201,13 +201,29 @@
               class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
             >
               <span
-                class="w-7 h-7 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs shrink-0"
+                class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs shrink-0"
               >
                 <i class="fa-solid fa-note-sticky"></i>
               </span>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
                 >Notes</span
+              >
+            </button>
+
+            <button
+              v-if="store.canEditPage('daily-report')"
+              @click.stop="openAddModal('daily-report')"
+              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
+            >
+              <span
+                class="w-7 h-7 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs shrink-0"
+              >
+                <i class="fa-solid fa-file-invoice"></i>
+              </span>
+              <span
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
+                >Laporan Harian</span
               >
             </button>
           </div>
@@ -221,7 +237,7 @@
           class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[94%] max-w-xs z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
         >
           <p
-            class="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center"
+            class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center"
           >
             Modul Workspace
           </p>
@@ -233,12 +249,12 @@
               class="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-emerald-500/10 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
             >
               <div
-                class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition-transform"
+                class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition-transform"
               >
                 <i class="fa-solid fa-bars-progress"></i>
               </div>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200 text-center leading-tight"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight"
                 >Team Progress</span
               >
             </button>
@@ -249,13 +265,13 @@
               class="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-blue-500/10 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
             >
               <div
-                class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition-transform"
+                class="w-9 h-9 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition-transform"
               >
                 <i class="fa-solid fa-share-nodes"></i>
               </div>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200 text-center leading-tight"
-                >Sosmed Analytics</span
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight"
+                >Socmed Analytics</span
               >
             </button>
 
@@ -270,7 +286,7 @@
                 <i class="fa-solid fa-users-rays"></i>
               </div>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200 text-center leading-tight"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight"
                 >Leads & Campaign</span
               >
             </button>
@@ -286,7 +302,7 @@
                 <i class="fa-solid fa-file-signature"></i>
               </div>
               <span
-                class="text-[10px] font-bold text-slate-700 dark:text-slate-200 text-center leading-tight"
+                class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight"
                 >Division Report</span
               >
             </button>
@@ -340,34 +356,44 @@
           class="relative z-10 w-full flex items-center justify-around h-full px-2"
         >
           <!-- 1. DASHBOARD -->
-          <button
-            @click.stop="navTo('main')"
-            class="flex flex-col items-center justify-center transition-all cursor-pointer h-11 w-16 rounded-2xl shrink-0 focus:outline-none"
-            :class="
-              store.currentPage === 'main'
-                ? 'bg-white text-theme dark:bg-slate-800 shadow-sm font-bold'
-                : 'text-white/80 hover:text-white'
-            "
-          >
-            <i class="fa-solid fa-house text-xs"></i>
-            <span class="text-[9px] mt-0.5 whitespace-nowrap">Dashboard</span>
-          </button>
+          <div class="flex flex-col items-center justify-center">
+            <button
+              @click.stop="navTo('main')"
+              class="items-center transition-all cursor-pointer h-8 w-12 rounded-2xl shrink-0 focus:outline-none"
+              :class="
+                store.currentPage === 'main'
+                  ? 'bg-white text-theme shadow-sm font-semibold'
+                  : 'text-white/80 hover:text-white font-normal'
+              "
+            >
+              <i class="fa-solid fa-house text-sm"></i>
+            </button>
+            <span
+              class="text-xs text-white dark:text-slate-100 mt-0.5 whitespace-nowrap font-normal"
+              >Dashboard</span
+            >
+          </div>
 
           <!-- 2. UNIT -->
-          <button
-            @click.stop="togglePopup('unit')"
-            class="flex flex-col items-center justify-center transition-all cursor-pointer h-11 w-16 rounded-2xl shrink-0 focus:outline-none"
-            :class="
-              activePopup === 'unit' ||
-              store.currentPage.startsWith('unit-') ||
-              store.currentPage === 'summary'
-                ? 'bg-white text-theme dark:bg-slate-800 shadow-sm font-bold'
-                : 'text-white/80 hover:text-white'
-            "
-          >
-            <i class="fa-solid fa-building text-xs"></i>
-            <span class="text-[9px] mt-0.5 whitespace-nowrap">Unit</span>
-          </button>
+          <div class="flex flex-col items-center justify-center">
+            <button
+              @click.stop="togglePopup('unit')"
+              class="items-center transition-all cursor-pointer h-8 w-12 rounded-2xl shrink-0 focus:outline-none"
+              :class="
+                activePopup === 'unit' ||
+                store.currentPage.startsWith('unit-') ||
+                store.currentPage === 'summary'
+                  ? 'bg-white text-theme shadow-sm font-semibold'
+                  : 'text-white/80 hover:text-white font-normal'
+              "
+            >
+              <i class="fa-solid fa-building text-sm"></i>
+            </button>
+            <span
+              class="text-xs text-white mt-0.5 whitespace-nowrap font-normal"
+              >Unit</span
+            >
+          </div>
 
           <!-- 3. SLOT TENGAH (TOMBOL PLUS) -->
           <div
@@ -375,7 +401,7 @@
           >
             <button
               @click.stop="togglePopup('add')"
-              class="absolute -top-4 w-14 h-14 bg-white text-theme dark:bg-slate-800 dark:text-theme rounded-full shadow-lg flex items-center justify-center text-xl transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-900 z-20 focus:outline-none"
+              class="absolute -top-4 w-14 h-14 bg-theme-gradient text-white rounded-full shadow-lg flex items-center justify-center text-xl transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-900 z-20 focus:outline-none"
               :class="{
                 '!bg-slate-200 dark:!bg-slate-700': activePopup === 'add',
               }"
@@ -388,35 +414,45 @@
           </div>
 
           <!-- 4. WORKSPACE -->
-          <button
-            @click.stop="togglePopup('workspace')"
-            class="flex flex-col items-center justify-center transition-all cursor-pointer h-11 w-16 rounded-2xl shrink-0 focus:outline-none"
-            :class="
-              activePopup === 'workspace' ||
-              ['progress', 'digmar', 'leads', 'spv-report'].includes(
-                store.currentPage,
-              )
-                ? 'bg-white text-theme dark:bg-slate-800 shadow-sm font-bold'
-                : 'text-white/80 hover:text-white'
-            "
-          >
-            <i class="fa-solid fa-bullhorn text-xs"></i>
-            <span class="text-[9px] mt-0.5 whitespace-nowrap">Workspace</span>
-          </button>
+          <div class="flex flex-col items-center justify-center">
+            <button
+              @click.stop="togglePopup('workspace')"
+              class="items-center transition-all cursor-pointer h-8 w-12 rounded-2xl shrink-0 focus:outline-none"
+              :class="
+                activePopup === 'workspace' ||
+                ['progress', 'digmar', 'leads', 'spv-report'].includes(
+                  store.currentPage,
+                )
+                  ? 'bg-white text-theme shadow-sm font-semibold'
+                  : 'text-white/80 hover:text-white font-normal'
+              "
+            >
+              <i class="fa-solid fa-bars-progress text-sm"></i>
+            </button>
+            <span
+              class="text-xs text-white mt-0.5 whitespace-nowrap font-normal"
+              >Workspace</span
+            >
+          </div>
 
           <!-- 5. ADUAN -->
-          <button
-            @click.stop="navTo('aduan')"
-            class="flex flex-col items-center justify-center transition-all cursor-pointer h-11 w-16 rounded-2xl shrink-0 focus:outline-none"
-            :class="
-              store.currentPage === 'aduan'
-                ? 'bg-white text-theme dark:bg-slate-800 shadow-sm font-bold'
-                : 'text-white/80 hover:text-white'
-            "
-          >
-            <i class="fa-solid fa-headset text-xs"></i>
-            <span class="text-[9px] mt-0.5 whitespace-nowrap">Aduan</span>
-          </button>
+          <div class="flex flex-col items-center justify-center">
+            <button
+              @click.stop="navTo('aduan')"
+              class="items-center transition-all cursor-pointer h-8 w-12 rounded-3xl shrink-0 focus:outline-none"
+              :class="
+                store.currentPage === 'aduan'
+                  ? 'bg-white text-theme shadow-sm font-semibold'
+                  : 'text-white/80 hover:text-white font-normal'
+              "
+            >
+              <i class="fa-solid fa-headset text-sm"></i>
+            </button>
+            <span
+              class="text-xs text-white mt-0.5 whitespace-nowrap font-normal"
+              >Aduan</span
+            >
+          </div>
         </div>
       </nav>
     </div>
@@ -479,6 +515,9 @@ const openAddModal = (modalName) => {
   } else if (modalName === "spv-report") {
     store.currentPage = "spv-report";
     store.openModal("spv-report");
+  } else if (modalName === "daily-report") {
+    store.currentPage = "daily-report";
+    store.openModal("daily-report");
   } else if (modalName === "notes") {
     if (store.canAccessPage && store.canAccessPage("notes")) {
       store.currentPage = "notes";

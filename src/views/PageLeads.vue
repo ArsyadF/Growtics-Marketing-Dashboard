@@ -4,14 +4,14 @@
     <!-- Header Section -->
     <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
       <div>
-        <p class="text-slate-500 dark:text-slate-400 text-xs md:text-sm">
+        <p class="text-slate-500 dark:text-slate-400 text-sm md:text-xs">
           Progres Campaign, Database Leads, Follow Up, & Pesanan.
         </p>
       </div>
       <button
         v-if="store.canEditPage('leads')"
         @click="store.openModal('leads')"
-        class="bg-button text-white px-4 py-2.5 rounded-xl font-medium text-xs shadow-md hover:from-[#149b73] hover:to-[#149b73] w-full sm:w-auto cursor-pointer"
+        class="bg-button text-white px-4 py-2.5 rounded-xl font-semibold text-sm md:text-xs shadow-md hover:from-[#149b73] hover:to-[#149b73] w-full sm:w-auto cursor-pointer"
       >
         <i class="fa-solid fa-plus mr-1.5"></i>Input Leads & Campaign
       </button>
@@ -20,34 +20,34 @@
     <!-- 1. Metric Summary Boxes -->
     <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 md:gap-4">
       <div class="glass-card p-3 rounded-xl text-center">
-        <p class="text-xs text-slate-400">Total Campaign</p>
-        <h3 class="text-lg font-bold mt-0.5">
+        <p class="text-xs md:text-xs text-slate-400">Total Campaign</p>
+        <h3 class="text-base md:text-xl font-semibold mt-0.5">
           {{ sumCamp.toLocaleString("id-ID") }}
         </h3>
       </div>
       <div class="glass-card p-3 rounded-xl text-center">
-        <p class="text-xs text-slate-400">Database Leads</p>
-        <h3 class="text-lg font-bold text-theme mt-0.5">
+        <p class="text-xs md:text-xs text-slate-400">Database Leads</p>
+        <h3 class="text-base md:text-xl font-semibold text-theme mt-0.5">
           {{ sumLeads.toLocaleString("id-ID") }}
         </h3>
       </div>
       <div class="glass-card p-3 rounded-xl text-center">
-        <p class="text-xs text-slate-400">Follow Up</p>
-        <h3 class="text-lg font-bold text-amber-500 mt-0.5">
+        <p class="text-xs md:text-xs text-slate-400">Follow Up</p>
+        <h3 class="text-base md:text-xl font-semibold text-amber-500 mt-0.5">
           {{ sumFu.toLocaleString("id-ID") }}
         </h3>
       </div>
       <div class="glass-card p-3 rounded-xl text-center">
-        <p class="text-xs text-slate-400">Jumlah Pesanan</p>
-        <h3 class="text-lg font-bold text-emerald-500 mt-0.5">
+        <p class="text-xs md:text-xs text-slate-400">Jumlah Pesanan</p>
+        <h3 class="text-base md:text-xl font-semibold text-emerald-500 mt-0.5">
           {{ sumOrder.toLocaleString("id-ID") }}
         </h3>
       </div>
       <div
         class="glass-card p-3 rounded-xl text-center col-span-2 sm:col-span-1"
       >
-        <p class="text-xs text-slate-400">% Konversi</p>
-        <h3 class="text-lg font-bold text-teal-500 mt-0.5">
+        <p class="text-xs md:text-xs text-slate-400">% Konversi</p>
+        <h3 class="text-base md:text-xl font-semibold text-teal-500 mt-0.5">
           {{ pctOrderPerCamp }}%
         </h3>
       </div>
@@ -61,12 +61,12 @@
       >
         <div>
           <h3
-            class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+            class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
           >
             Rekap Leads Per Bulan
           </h3>
-          <div class="overflow-y-auto max-h-[260px] pr-1">
-            <table class="min-w-full text-xs text-left">
+          <div class="overflow-y-auto max-h-[260px] pr-1 custom-scrollbar">
+            <table class="min-w-full text-sm md:text-xs text-left">
               <thead
                 class="bg-white/40 dark:bg-slate-800/60 text-slate-400 sticky top-0 backdrop-blur-md"
               >
@@ -87,7 +87,7 @@
                   :key="idx"
                   class="hover:bg-white/20 dark:hover:bg-slate-800/40"
                 >
-                  <td class="py-2.5 px-3 font-medium">{{ row.bulan }}</td>
+                  <td class="py-2.5 px-3 font-normal">{{ row.bulan }}</td>
                   <td class="py-2.5 px-3 text-right font-semibold text-theme">
                     {{ row.total.toLocaleString("id-ID") }}
                   </td>
@@ -104,7 +104,7 @@
       >
         <div>
           <h3
-            class="font-bold text-slate-800 dark:text-slate-100 mb-3 text-xs md:text-sm"
+            class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
           >
             Rekap Triwulan
           </h3>
@@ -114,10 +114,12 @@
               :key="idx"
               class="p-3 bg-white/30 dark:bg-slate-800/40 rounded-xl border border-white/20 dark:border-slate-700/50 flex justify-between items-center"
             >
-              <p class="text-xs font-bold text-slate-500 dark:text-slate-400">
+              <p
+                class="text-sm md:text-xs font-semibold text-slate-500 dark:text-slate-400"
+              >
                 {{ q.quarter }}
               </p>
-              <p class="text-xs md:text-sm font-bold text-emerald-600">
+              <p class="text-sm md:text-xs font-semibold text-emerald-600">
                 {{ q.total.toLocaleString("id-ID") }}
               </p>
             </div>
@@ -132,19 +134,19 @@
         <div>
           <div class="flex justify-between items-center mb-3">
             <h3
-              class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm flex items-center gap-1.5"
+              class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm flex items-center gap-1.5"
             >
               <i class="fa-solid fa-chart-line text-emerald-600"></i>Grafik
               Trend Leads Bulanan
             </h3>
-            <span class="text-[10px] text-slate-400 font-medium"
+            <span class="text-xs md:text-xs text-slate-400 font-normal"
               >Tahun {{ new Date().getFullYear() }}</span
             >
           </div>
 
           <div
             v-if="monthlyRecap.length === 0"
-            class="h-52 flex items-center justify-center text-xs text-slate-400"
+            class="h-52 flex items-center justify-center text-sm md:text-xs text-slate-400"
           >
             Belum ada data grafik.
           </div>
@@ -198,7 +200,7 @@
                   class="w-4 h-4 rounded-full bg-white border-2 border-[#1caa80] shadow-md transition-transform duration-200 group-hover:scale-125 group-hover:bg-emerald-500"
                 ></div>
                 <div
-                  class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-[9px] font-bold py-1 px-2 rounded-md shadow-lg whitespace-nowrap pointer-events-none"
+                  class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-semibold py-1 px-2 rounded-md shadow-lg whitespace-nowrap pointer-events-none"
                 >
                   {{ pt.val.toLocaleString("id-ID") }}
                 </div>
@@ -206,7 +208,7 @@
             </div>
 
             <div
-              class="flex justify-between items-center text-[10px] text-slate-400 font-medium mt-2 px-1"
+              class="flex justify-between items-center text-xs md:text-xs text-slate-400 font-normal mt-2 px-1"
             >
               <span
                 v-for="(m, idx) in monthlyRecap"
@@ -228,13 +230,13 @@
       >
         <div class="flex items-center gap-2">
           <h3
-            class="font-bold text-slate-800 dark:text-slate-100 text-xs md:text-sm"
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
           >
             Manajemen Data Leads
           </h3>
           <span
             v-if="selectedIds.length > 0"
-            class="text-[10px] text-purple-600 font-bold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
+            class="text-xs md:text-xs text-purple-600 font-semibold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
           >
             {{ selectedIds.length }} Dipilih
           </span>
@@ -247,7 +249,7 @@
           <div v-if="selectedIds.length > 0" class="flex items-center gap-1.5">
             <button
               @click="clearSelection"
-              class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-bold px-2.5 py-1.5 rounded-xl text-xs transition-all flex items-center gap-1 cursor-pointer"
+              class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold px-3 py-1.5 rounded-xl text-sm md:text-xs transition-all flex items-center gap-1 cursor-pointer"
             >
               <i class="fa-solid fa-xmark"></i>
               <span>Batal</span>
@@ -255,7 +257,7 @@
             <button
               v-if="store.canEditPage('leads')"
               @click="promptBulkDelete"
-              class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer"
+              class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-3.5 py-1.5 rounded-xl text-sm md:text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer"
             >
               <i class="fa-solid fa-trash"></i>
               <span>Hapus ({{ selectedIds.length }})</span>
@@ -263,11 +265,11 @@
           </div>
 
           <div class="flex items-center gap-1.5">
-            <span class="text-xs text-slate-400">Tampilkan:</span>
+            <span class="text-sm md:text-xs text-slate-400">Tampilkan:</span>
             <select
               v-model="limit"
               @change="currentPage = 1"
-              class="glass-input rounded-xl p-1.5 text-xs outline-none dark:bg-slate-800"
+              class="glass-input rounded-xl p-2 md:p-1.5 text-sm md:text-xs outline-none dark:bg-slate-800"
             >
               <option value="25">25</option>
               <option value="50">50</option>
@@ -279,18 +281,20 @@
       </div>
 
       <!-- Area Scrollable Tabel dengan Sticky Header & Sorting -->
-      <div class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1">
-        <table class="min-w-full text-xs text-left">
+      <div
+        class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1 custom-scrollbar"
+      >
+        <table class="min-w-full text-sm md:text-xs text-left">
           <thead
             class="bg-white/80 dark:bg-slate-800/90 text-slate-400 sticky top-0 backdrop-blur-md z-10"
           >
-            <tr>
+            <tr class="font-semibold uppercase text-xs md:text-xs">
               <th class="py-2.5 px-3 w-8 text-center">
                 <input
                   type="checkbox"
                   :checked="isAllSelected"
                   @change="toggleSelectAll"
-                  class="accent-purple-600 rounded cursor-pointer w-3.5 h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
                   title="Pilih Semua di Halaman Ini"
                 />
               </th>
@@ -300,7 +304,7 @@
               >
                 Tanggal
                 <i
-                  class="fa-solid text-[10px] ml-1"
+                  class="fa-solid text-xs md:text-xs ml-1"
                   :class="
                     sortKey === 'Tanggal'
                       ? sortAsc
@@ -316,7 +320,7 @@
               >
                 Unit
                 <i
-                  class="fa-solid text-[10px] ml-1"
+                  class="fa-solid text-xs md:text-xs ml-1"
                   :class="
                     sortKey === 'Unit'
                       ? sortAsc
@@ -332,7 +336,7 @@
               >
                 Campaign
                 <i
-                  class="fa-solid text-[10px] ml-1"
+                  class="fa-solid text-xs md:text-xs ml-1"
                   :class="
                     sortKey === 'Campaign'
                       ? sortAsc
@@ -348,7 +352,7 @@
               >
                 Leads
                 <i
-                  class="fa-solid text-[10px] ml-1"
+                  class="fa-solid text-xs md:text-xs ml-1"
                   :class="
                     sortKey === 'DatabaseLeads'
                       ? sortAsc
@@ -364,7 +368,7 @@
               >
                 FU
                 <i
-                  class="fa-solid text-[10px] ml-1"
+                  class="fa-solid text-xs md:text-xs ml-1"
                   :class="
                     sortKey === 'FollowUp'
                       ? sortAsc
@@ -380,7 +384,7 @@
               >
                 Pesanan
                 <i
-                  class="fa-solid text-[10px] ml-1"
+                  class="fa-solid text-xs md:text-xs ml-1"
                   :class="
                     sortKey === 'Pesanan'
                       ? sortAsc
@@ -425,13 +429,13 @@
                   type="checkbox"
                   :value="getLeadId(l)"
                   v-model="selectedIds"
-                  class="accent-purple-600 rounded cursor-pointer w-3.5 h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
                 />
               </td>
               <td class="py-2 px-3">
                 {{ l.Tanggal ? String(l.Tanggal).substring(0, 10) : "-" }}
               </td>
-              <td class="py-2 px-3 font-bold">{{ l.Unit || "-" }}</td>
+              <td class="py-2 px-3 font-semibold">{{ l.Unit || "-" }}</td>
               <td class="py-2 px-3">
                 {{ (Number(l.Campaign) || 0).toLocaleString("id-ID") }}
               </td>
@@ -471,7 +475,7 @@
       <!-- Footer Navigasi Pagination -->
       <div
         v-if="limit !== 'ALL' && totalPages > 1"
-        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-xs text-slate-400"
+        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-sm md:text-xs text-slate-400"
       >
         <div>
           Menampilkan {{ startItem }} - {{ endItem }} dari
@@ -483,11 +487,11 @@
             :disabled="currentPage === 1"
             class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
           >
-            <i class="fa-solid fa-chevron-left text-[10px]"></i>
+            <i class="fa-solid fa-chevron-left text-xs md:text-xs"></i>
           </button>
 
           <span
-            class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-bold"
+            class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-semibold"
           >
             {{ currentPage }} / {{ totalPages }}
           </span>
@@ -497,7 +501,7 @@
             :disabled="currentPage === totalPages"
             class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
           >
-            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+            <i class="fa-solid fa-chevron-right text-xs md:text-xs"></i>
           </button>
         </div>
       </div>
@@ -520,10 +524,14 @@
               <i class="fa-solid fa-triangle-exclamation text-lg"></i>
             </div>
             <div>
-              <h4 class="font-bold text-sm text-slate-800 dark:text-slate-100">
+              <h4
+                class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100"
+              >
                 {{ confirmModal.title }}
               </h4>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+              <p
+                class="text-xs md:text-xs text-slate-500 dark:text-slate-400 mt-0.5"
+              >
                 {{ confirmModal.message }}
               </p>
             </div>
@@ -535,7 +543,7 @@
             <button
               @click="closeConfirmModal"
               type="button"
-              class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
+              class="px-4 py-2.5 md:py-2 rounded-xl text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
             >
               Batal
             </button>
@@ -543,7 +551,7 @@
               @click="executeConfirmAction"
               type="button"
               :disabled="store.isLoading"
-              class="px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              class="px-4 py-2.5 md:py-2 rounded-xl text-sm md:text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
               <i v-if="store.isLoading" class="fa-solid fa-spinner fa-spin"></i>
               <span>Ya, Hapus</span>

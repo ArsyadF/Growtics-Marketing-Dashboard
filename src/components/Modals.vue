@@ -10,35 +10,46 @@
         class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-lg p-6 space-y-4"
       >
         <div class="flex justify-between items-center">
-          <h3 class="font-bold text-slate-800 dark:text-slate-100">
+          <h3
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
+          >
             {{ isEditRevenue ? "Edit" : "Input" }} Revenue
           </h3>
           <button
             @click="store.closeModal()"
             class="text-slate-400 hover:text-slate-600 cursor-pointer"
           >
-            <i class="fa-solid fa-xmark"></i>
+            <i class="fa-solid fa-xmark text-base"></i>
           </button>
         </div>
 
-        <form @submit.prevent="saveRevenue" class="space-y-3">
+        <form
+          @submit.prevent="saveRevenue"
+          class="space-y-3 text-sm md:text-xs"
+        >
           <div>
-            <label class="block text-xs mb-1 font-medium">Tanggal</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Tanggal</label
+            >
             <input
               type="date"
               v-model="formRev.Tanggal"
               required
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
           </div>
 
           <!-- UNIT USAHA DINAMIS FROM STORE -->
           <div>
-            <label class="block text-xs mb-1 font-medium">Unit Usaha</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Unit Usaha</label
+            >
             <select
               v-model="formRev.Unit"
               required
-              class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
             >
               <option value="" disabled>-- Pilih Unit --</option>
               <option v-for="u in masterUnits" :key="u.code" :value="u.code">
@@ -47,9 +58,12 @@
             </select>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs mb-1 font-medium">Revenue (Rp)</label>
+              <label
+                class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+                >Revenue (Rp)</label
+              >
               <input
                 type="text"
                 v-model="displayRevRevenue"
@@ -63,11 +77,12 @@
                 "
                 required
                 placeholder="0"
-                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
               />
             </div>
             <div>
-              <label class="block text-xs mb-1 font-medium"
+              <label
+                class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
                 >Jumlah Pesanan (Pcs/Order)</label
               >
               <input
@@ -75,18 +90,21 @@
                 v-model.number="formRev.JumlahPesanan"
                 required
                 placeholder="0"
-                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
               />
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs mb-1 font-medium">Divisi</label>
+              <label
+                class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+                >Divisi</label
+              >
               <select
                 v-model="formRev.Divisi"
                 required
-                class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
               >
                 <option value="" disabled>-- Pilih Divisi --</option>
                 <option
@@ -100,11 +118,14 @@
             </div>
 
             <div>
-              <label class="block text-xs mb-1 font-medium">Platform</label>
+              <label
+                class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+                >Platform</label
+              >
               <select
                 v-model="formRev.Platform"
                 required
-                class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
               >
                 <option value="" disabled>-- Pilih Platform --</option>
                 <option
@@ -118,19 +139,33 @@
             </div>
           </div>
 
+          <div>
+            <label
+              class="block text-sm md:text-xs font-semibold text-slate-500 mb-1"
+            >
+              Keterangan / Catatan Tambahan
+            </label>
+            <textarea
+              v-model="formRev.Keterangan"
+              rows="2"
+              placeholder="Opsional: Tuliskan catatan khusus transaksi ini..."
+              class="w-full glass-input rounded-xl p-3 text-sm md:text-xs outline-none focus:border-theme text-slate-800 dark:text-slate-100 resize-none"
+            ></textarea>
+          </div>
+
           <div
             class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
           >
             <button
               type="button"
               @click="store.closeModal()"
-              class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-bold"
+              class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-sm md:text-xs font-semibold cursor-pointer"
             >
               Batal
             </button>
             <button
               type="submit"
-              class="bg-button text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md"
+              class="bg-button text-white px-4 py-2 rounded-xl font-semibold text-sm md:text-xs shadow-md cursor-pointer"
             >
               Simpan Revenue
             </button>
@@ -148,34 +183,42 @@
         class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-lg p-6 space-y-4"
       >
         <div class="flex justify-between items-center">
-          <h3 class="font-bold text-slate-800 dark:text-slate-100">
+          <h3
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
+          >
             {{ isEditLeads ? "Edit" : "Input" }} Leads & Campaign
           </h3>
           <button
             @click="store.closeModal()"
             class="text-slate-400 hover:text-slate-600 cursor-pointer"
           >
-            <i class="fa-solid fa-xmark"></i>
+            <i class="fa-solid fa-xmark text-base"></i>
           </button>
         </div>
 
-        <form @submit.prevent="saveLeads" class="space-y-3">
-          <div class="grid grid-cols-2 gap-3">
+        <form @submit.prevent="saveLeads" class="space-y-3 text-sm md:text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs mb-1 font-medium">Tanggal</label>
+              <label
+                class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+                >Tanggal</label
+              >
               <input
                 type="date"
                 v-model="formLeads.Tanggal"
                 required
-                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
               />
             </div>
             <div>
-              <label class="block text-xs mb-1 font-medium">Unit Usaha</label>
+              <label
+                class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+                >Unit Usaha</label
+              >
               <select
                 v-model="formLeads.Unit"
                 required
-                class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
               >
                 <option value="" disabled>-- Pilih Unit --</option>
                 <option v-for="u in masterUnits" :key="u.code" :value="u.code">
@@ -185,19 +228,23 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs mb-1 font-medium">Campaign</label>
+              <label
+                class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+                >Campaign</label
+              >
               <input
                 type="number"
                 v-model.number="formLeads.Campaign"
                 required
                 placeholder="0"
-                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
               />
             </div>
             <div>
-              <label class="block text-xs mb-1 font-medium"
+              <label
+                class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
                 >Database Leads</label
               >
               <input
@@ -205,24 +252,28 @@
                 v-model.number="formLeads.DatabaseLeads"
                 required
                 placeholder="0"
-                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
               />
             </div>
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs mb-1 font-medium">Follow Up</label>
+              <label
+                class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+                >Follow Up</label
+              >
               <input
                 type="number"
                 v-model.number="formLeads.FollowUp"
                 required
                 placeholder="0"
-                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
               />
             </div>
             <div>
-              <label class="block text-xs mb-1 font-medium"
+              <label
+                class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
                 >Pesanan (Closing)</label
               >
               <input
@@ -230,7 +281,7 @@
                 v-model.number="formLeads.Pesanan"
                 required
                 placeholder="0"
-                class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
               />
             </div>
           </div>
@@ -241,13 +292,13 @@
             <button
               type="button"
               @click="store.closeModal()"
-              class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-bold"
+              class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-sm md:text-xs font-semibold cursor-pointer"
             >
               Batal
             </button>
             <button
               type="submit"
-              class="bg-button text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md"
+              class="bg-button text-white px-4 py-2 rounded-xl font-semibold text-sm md:text-xs shadow-md cursor-pointer"
             >
               Simpan Data Leads
             </button>
@@ -265,34 +316,42 @@
         class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-md p-6 space-y-4"
       >
         <div class="flex justify-between items-center">
-          <h3 class="font-bold text-slate-800 dark:text-slate-100">
+          <h3
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
+          >
             {{ isEditPromo ? "Edit" : "Input" }} Biaya Promosi
           </h3>
           <button
             @click="store.closeModal()"
             class="text-slate-400 hover:text-slate-600 cursor-pointer"
           >
-            <i class="fa-solid fa-xmark"></i>
+            <i class="fa-solid fa-xmark text-base"></i>
           </button>
         </div>
 
-        <form @submit.prevent="savePromo" class="space-y-3">
+        <form @submit.prevent="savePromo" class="space-y-3 text-sm md:text-xs">
           <div>
-            <label class="block text-xs mb-1 font-medium">Tanggal</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Tanggal</label
+            >
             <input
               type="date"
               v-model="formPromo.Tanggal"
               required
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
           </div>
 
           <div>
-            <label class="block text-xs mb-1 font-medium">Unit Usaha</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Unit Usaha</label
+            >
             <select
               v-model="formPromo.Unit"
               required
-              class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
             >
               <option value="" disabled>-- Pilih Unit --</option>
               <option v-for="u in masterUnits" :key="u.code" :value="u.code">
@@ -302,7 +361,8 @@
           </div>
 
           <div>
-            <label class="block text-xs mb-1 font-medium text-rose-500"
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-rose-500"
               >Biaya Promosi (Rp)</label
             >
             <input
@@ -318,7 +378,7 @@
               "
               required
               placeholder="0"
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
           </div>
 
@@ -328,13 +388,13 @@
             <button
               type="button"
               @click="store.closeModal()"
-              class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-bold"
+              class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-sm md:text-xs font-semibold cursor-pointer"
             >
               Batal
             </button>
             <button
               type="submit"
-              class="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-4 py-2 rounded-xl font-bold text-xs shadow-md"
+              class="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-4 py-2 rounded-xl font-semibold text-sm md:text-xs shadow-md cursor-pointer"
             >
               Simpan Biaya Promosi
             </button>
@@ -352,19 +412,27 @@
         class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-md p-6 space-y-4"
       >
         <div class="flex justify-between items-center">
-          <h3 class="font-bold text-slate-800 dark:text-slate-100">
+          <h3
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
+          >
             Update Target Revenue
           </h3>
           <button
             @click="store.closeModal()"
             class="text-slate-400 hover:text-slate-600 cursor-pointer"
           >
-            <i class="fa-solid fa-xmark"></i>
+            <i class="fa-solid fa-xmark text-base"></i>
           </button>
         </div>
-        <form @submit.prevent="saveTargets" class="space-y-3">
+        <form
+          @submit.prevent="saveTargets"
+          class="space-y-3 text-sm md:text-xs"
+        >
           <div>
-            <label class="block text-xs mb-1">Target Global (Rp)</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Target Global (Rp)</label
+            >
             <input
               type="text"
               v-model="displayTargetTahunIni"
@@ -377,21 +445,24 @@
                 )
               "
               required
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
           </div>
           <div v-for="u in masterUnits" :key="u.code">
-            <label class="block text-xs mb-1">Target {{ u.code }} (Rp)</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Target {{ u.code }} (Rp)</label
+            >
             <input
               type="number"
               v-model.number="formTarget['Target' + u.code]"
               required
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
           </div>
           <button
             type="submit"
-            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-xl text-sm md:text-xs shadow-md mt-2 cursor-pointer"
           >
             Simpan Master Targets
           </button>
@@ -408,65 +479,76 @@
         class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-md p-6 space-y-4"
       >
         <div class="flex justify-between items-center">
-          <h3 class="font-bold text-slate-800 dark:text-slate-100">
+          <h3
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
+          >
             {{ isEditUser ? "Edit" : "Tambah" }} Pengguna
           </h3>
           <button
             @click="store.closeModal()"
             class="text-slate-400 hover:text-slate-600 cursor-pointer"
           >
-            <i class="fa-solid fa-xmark"></i>
+            <i class="fa-solid fa-xmark text-base"></i>
           </button>
         </div>
-        <form @submit.prevent="saveUser" class="space-y-3">
+        <form @submit.prevent="saveUser" class="space-y-3 text-sm md:text-xs">
           <div>
-            <label class="block text-xs mb-1 font-medium">Nama Lengkap</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Nama Lengkap</label
+            >
             <input
               type="text"
               v-model="formUser.name"
               required
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
           </div>
           <div>
-            <label class="block text-xs mb-1 font-medium"
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
               >Email / Username</label
             >
             <input
               type="text"
               v-model="formUser.email"
               required
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
           </div>
           <div>
-            <label class="block text-xs mb-1 font-medium">Password</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Password</label
+            >
             <input
               type="password"
               v-model="formUser.password"
               placeholder="••••••••"
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
           </div>
           <div>
-            <label class="block text-xs mb-1 font-medium"
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
               >Role / Hak Akses</label
             >
             <select
               v-model="formUser.role"
-              class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
             >
               <option value="SUPERADMIN">Super Admin (Akses Semua)</option>
               <option value="ADMIN_UNIT">Admin Unit</option>
             </select>
           </div>
           <div v-if="formUser.role === 'ADMIN_UNIT'">
-            <label class="block text-xs mb-1 font-medium"
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
               >Akses Spesifik Unit</label
             >
             <select
               v-model="formUser.unit"
-              class="w-full glass-input rounded-xl p-2.5 text-xs dark:bg-slate-800 outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
             >
               <option v-for="u in masterUnits" :key="u.code" :value="u.code">
                 Unit {{ u.code }}
@@ -475,7 +557,7 @@
           </div>
           <button
             type="submit"
-            class="w-full bg-button hover:opacity-90 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer"
+            class="w-full bg-button hover:opacity-90 text-white font-semibold py-2.5 rounded-xl text-sm md:text-xs shadow-md mt-2 cursor-pointer"
           >
             Simpan Pengguna
           </button>
@@ -492,20 +574,25 @@
         class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-md p-6 space-y-4"
       >
         <div class="flex justify-between items-center">
-          <h3 class="font-bold text-slate-800 dark:text-slate-100">
+          <h3
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
+          >
             Update Passcode Publik
           </h3>
           <button
             @click="store.closeModal()"
             class="text-slate-400 hover:text-slate-600 cursor-pointer"
           >
-            <i class="fa-solid fa-xmark"></i>
+            <i class="fa-solid fa-xmark text-base"></i>
           </button>
         </div>
-        <form @submit.prevent="savePasscode" class="space-y-3">
+        <form
+          @submit.prevent="savePasscode"
+          class="space-y-3 text-sm md:text-xs"
+        >
           <div>
             <label
-              class="block text-xs font-bold text-amber-600 dark:text-amber-400 mb-1"
+              class="block text-sm md:text-xs font-semibold text-amber-600 dark:text-amber-400 mb-1"
               >Kode Akses Publik (PIN / Passcode)</label
             >
             <input
@@ -513,12 +600,12 @@
               v-model="formPasscode.code"
               required
               placeholder="Contoh: 0"
-              class="w-full glass-input rounded-xl p-2.5 text-xs font-mono outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs font-mono outline-none font-normal"
             />
           </div>
           <button
             type="submit"
-            class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-2.5 rounded-xl text-xs shadow-md mt-2 cursor-pointer"
+            class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-2.5 rounded-xl text-sm md:text-xs shadow-md mt-2 cursor-pointer"
           >
             Simpan Passcode
           </button>
@@ -557,10 +644,14 @@
         </div>
 
         <div>
-          <h3 class="font-bold text-slate-800 dark:text-slate-100 text-base">
+          <h3
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
+          >
             {{ store.alertPayload.title || "Pemberitahuan" }}
           </h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <p
+            class="text-sm md:text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal"
+          >
             {{ store.alertPayload.message }}
           </p>
         </div>
@@ -569,14 +660,14 @@
           <button
             v-if="store.alertPayload.onConfirm"
             @click="store.closeAlert()"
-            class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold py-2.5 rounded-xl text-xs cursor-pointer hover:bg-slate-300"
+            class="flex-1 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold py-2.5 rounded-xl text-sm md:text-xs cursor-pointer hover:bg-slate-300"
           >
             Batal
           </button>
 
           <button
             @click="handleAlertConfirm"
-            class="flex-1 bg-button text-white font-bold py-2.5 rounded-xl text-xs shadow-md cursor-pointer"
+            class="flex-1 bg-button text-white font-semibold py-2.5 rounded-xl text-sm md:text-xs shadow-md cursor-pointer"
           >
             {{ store.alertPayload.onConfirm ? "Ya, Lanjutkan" : "OK" }}
           </button>
@@ -594,20 +685,23 @@
       class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-lg p-6 space-y-4"
     >
       <div class="flex justify-between items-center">
-        <h3 class="font-bold text-slate-800 dark:text-slate-100">
+        <h3
+          class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
+        >
           Tambah Program / Progress
         </h3>
         <button
           @click="store.closeModal()"
           class="text-slate-400 hover:text-slate-600 cursor-pointer"
         >
-          <i class="fa-solid fa-xmark"></i>
+          <i class="fa-solid fa-xmark text-base"></i>
         </button>
       </div>
 
-      <form @submit.prevent="saveProgress" class="space-y-3 text-xs">
+      <form @submit.prevent="saveProgress" class="space-y-3 text-sm md:text-xs">
         <div>
-          <label class="block text-xs mb-1 font-medium"
+          <label
+            class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
             >Judul Program / Campaign</label
           >
           <input
@@ -615,17 +709,20 @@
             v-model="formProgress.title"
             required
             placeholder="Nama Program Kerja"
-            class="w-full glass-input rounded-xl p-2.5 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
           />
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs mb-1 font-medium">Unit Usaha</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Unit Usaha</label
+            >
             <select
               v-model="formProgress.unit"
               required
-              class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
             >
               <option v-for="u in masterUnits" :key="u.code" :value="u.code">
                 {{ u.code }} - {{ u.name }}
@@ -633,11 +730,14 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs mb-1 font-medium">Divisi</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Divisi</label
+            >
             <select
               v-model="formProgress.division"
               required
-              class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
             >
               <option v-for="div in availableDivisions" :key="div" :value="div">
                 {{ div }}
@@ -646,24 +746,28 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs mb-1 font-medium"
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
               >Deadline Target</label
             >
             <input
               type="date"
               v-model="formProgress.deadline"
               required
-              class="w-full glass-input rounded-xl p-2.5 outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
           </div>
           <div>
-            <label class="block text-xs mb-1 font-medium">Status Awal</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Status Awal</label
+            >
             <select
               v-model="formProgress.status"
               required
-              class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
             >
               <option value="To Do">To Do</option>
               <option value="In Progress">In Progress</option>
@@ -674,20 +778,21 @@
         </div>
 
         <div>
-          <label class="block text-xs mb-1 font-medium"
+          <label
+            class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
             >Deskripsi Singkat</label
           >
           <textarea
             v-model="formProgress.description"
             rows="3"
             placeholder="Catatan tugas..."
-            class="w-full glass-input rounded-xl p-2.5 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
           ></textarea>
         </div>
 
         <button
           type="submit"
-          class="w-full bg-button hover:opacity-90 text-white font-bold py-2.5 rounded-xl shadow-md mt-2 cursor-pointer"
+          class="w-full bg-button hover:opacity-90 text-white font-semibold py-2.5 rounded-xl text-sm md:text-xs shadow-md mt-2 cursor-pointer"
         >
           Simpan Program Progress
         </button>
@@ -704,36 +809,45 @@
       class="glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-w-lg p-6 space-y-4"
     >
       <div class="flex justify-between items-center">
-        <h3 class="font-bold text-slate-800 dark:text-slate-100">
+        <h3
+          class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
+        >
           Input Laporan Pekanan SPV
         </h3>
         <button
           @click="store.closeModal()"
           class="text-slate-400 hover:text-slate-600 cursor-pointer"
         >
-          <i class="fa-solid fa-xmark"></i>
+          <i class="fa-solid fa-xmark text-base"></i>
         </button>
       </div>
 
-      <form @submit.prevent="saveSpvReport" class="space-y-3 text-xs">
-        <div class="grid grid-cols-2 gap-3">
+      <form
+        @submit.prevent="saveSpvReport"
+        class="space-y-3 text-sm md:text-xs"
+      >
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs mb-1 font-medium"
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
               >Tanggal Laporan</label
             >
             <input
               type="date"
               v-model="formSpv.tanggal"
               required
-              class="w-full glass-input rounded-xl p-2.5 outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
           </div>
           <div>
-            <label class="block text-xs mb-1 font-medium">Divisi</label>
+            <label
+              class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
+              >Divisi</label
+            >
             <select
               v-model="formSpv.divisi"
               required
-              class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
             >
               <option v-for="div in availableDivisions" :key="div" :value="div">
                 {{ div }}
@@ -743,7 +857,8 @@
         </div>
 
         <div>
-          <label class="block text-xs mb-1 font-medium"
+          <label
+            class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
             >Capaian & Rangkuman Pekan Ini</label
           >
           <textarea
@@ -751,25 +866,26 @@
             rows="3"
             required
             placeholder="Tuliskan poin hasil kerja divisi..."
-            class="w-full glass-input rounded-xl p-2.5 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
           ></textarea>
         </div>
 
         <div>
-          <label class="block text-xs mb-1 font-medium"
+          <label
+            class="block text-sm md:text-xs mb-1 font-semibold text-slate-600 dark:text-slate-300"
             >Kendala & Problem Field</label
           >
           <textarea
             v-model="formSpv.kendala"
             rows="2"
             placeholder="Kendala yang dihadapi..."
-            class="w-full glass-input rounded-xl p-2.5 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
           ></textarea>
         </div>
 
         <button
           type="submit"
-          class="w-full bg-button hover:opacity-90 text-white font-bold py-2.5 rounded-xl shadow-md mt-2 cursor-pointer"
+          class="w-full bg-button hover:opacity-90 text-white font-semibold py-2.5 rounded-xl text-sm md:text-xs shadow-md mt-2 cursor-pointer"
         >
           Simpan Laporan Divisi
         </button>
@@ -822,6 +938,7 @@ const formRev = reactive({
   JumlahPesanan: 0,
   Divisi: "CS Deal",
   Platform: "Shopee",
+  Keterangan: "",
 });
 
 const formLeads = reactive({
@@ -942,6 +1059,7 @@ watch(
         formRev.Divisi = raw.Divisi || availableDivisions.value[0] || "CS Deal";
         formRev.Platform =
           raw.Platform || availablePlatforms.value[0] || "Shopee";
+        formRev.Keterangan = raw.Keterangan || "";
       } else {
         formRev.Tanggal = new Date().toISOString().split("T")[0];
         formRev.Unit = raw?.Unit || defaultUnitCode;

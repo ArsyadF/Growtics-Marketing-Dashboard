@@ -20,7 +20,9 @@
         </div>
 
         <div>
-          <h3 class="text-lg font-bold text-slate-800 dark:text-slate-100">
+          <h3
+            class="text-xl md:text-base font-semibold text-slate-800 dark:text-slate-100"
+          >
             {{
               userProfile.Nama ||
               userProfile.nama ||
@@ -28,20 +30,23 @@
               "Admin User"
             }}
           </h3>
-          <p class="text-xs text-theme font-semibold uppercase">
+          <p class="text-sm md:text-xs text-theme font-semibold uppercase">
             {{ userProfile.Role || userProfile.role || "Super Admin" }}
           </p>
-          <p class="text-[11px] text-slate-400 mt-0.5">
+          <p class="text-xs md:text-xs text-slate-400 mt-0.5 font-normal">
             {{ userProfile.Email || userProfile.email || "-" }}
           </p>
         </div>
       </div>
 
       <!-- Form Update Profile -->
-      <form @submit.prevent="saveUserProfile" class="space-y-4">
+      <form
+        @submit.prevent="saveUserProfile"
+        class="space-y-4 text-sm md:text-xs"
+      >
         <div>
           <label
-            class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300"
+            class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
           >
             Nama Lengkap
           </label>
@@ -49,14 +54,60 @@
             v-model="form.nama"
             type="text"
             required
-            class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+            class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
           />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- DROPDOWN UNIT (Master Data) -->
+          <div>
+            <label
+              class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            >
+              Unit Usaha Utama
+            </label>
+            <select
+              v-model="form.unit"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none bg-white dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-200"
+            >
+              <option value="">-- Pilih Unit --</option>
+              <option
+                v-for="u in store.db?.master?.unitList"
+                :key="u.code"
+                :value="u.code"
+              >
+                {{ u.code }} ({{ u.name }})
+              </option>
+            </select>
+          </div>
+
+          <!-- DROPDOWN DIVISI (Master Data) -->
+          <div>
+            <label
+              class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            >
+              Divisi / Bagian Pekerjaan
+            </label>
+            <select
+              v-model="form.divisi"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none bg-white dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-200"
+            >
+              <option value="">-- Pilih Divisi --</option>
+              <option
+                v-for="div in store.db?.master?.divisiList"
+                :key="div"
+                :value="div"
+              >
+                {{ div }}
+              </option>
+            </select>
+          </div>
         </div>
 
         <!-- UPLOAD FOTO PROFIL (FILE / URL) -->
         <div>
           <label
-            class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300"
+            class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
           >
             Foto Profil (Avatar)
           </label>
@@ -66,7 +117,7 @@
               v-model="form.avatarUrl"
               type="text"
               placeholder="Pilih file atau tempel URL foto..."
-              class="flex-1 glass-input rounded-xl p-2.5 text-xs outline-none"
+              class="flex-1 glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
             />
 
             <!-- Hidden Input File -->
@@ -82,7 +133,7 @@
             <button
               type="button"
               @click="triggerFileInput"
-              class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-2.5 rounded-xl font-bold text-xs transition-all flex items-center gap-1.5 shrink-0 border border-slate-200 dark:border-slate-700 cursor-pointer"
+              class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-2.5 rounded-xl font-semibold text-sm md:text-xs transition-all flex items-center gap-1.5 shrink-0 border border-slate-200 dark:border-slate-700 cursor-pointer"
             >
               <i class="fa-solid fa-upload text-theme"></i>
               <span>Upload</span>
@@ -92,7 +143,7 @@
 
         <div class="pt-2 border-t border-slate-200/50 dark:border-slate-800/80">
           <label
-            class="block text-xs font-bold mb-1 text-theme dark:text-theme"
+            class="block text-sm md:text-xs font-semibold mb-1 text-theme dark:text-theme"
           >
             Ganti Password
           </label>
@@ -100,27 +151,44 @@
             v-model="form.password"
             type="password"
             placeholder="Masukkan password baru (Kosongkan jika tidak diubah)"
-            class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+            class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
           />
         </div>
 
         <div>
           <label
-            class="block text-xs font-medium mb-1 text-slate-600 dark:text-slate-300"
+            class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
           >
             Deskripsi / Bio Profil
           </label>
+
+          <!-- PILIHAN EMOTICON EKSPRESIF CEPAT -->
+          <div
+            class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-1.5 [scrollbar-width:none]"
+          >
+            <button
+              v-for="emoji in EXPRESSIVE_EMOJIS"
+              :key="emoji"
+              type="button"
+              @click="appendEmojiToBio(emoji)"
+              class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500/10 text-sm flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700 transition-transform active:scale-95 cursor-pointer"
+            >
+              {{ emoji }}
+            </button>
+          </div>
+
           <textarea
             v-model="form.bio"
             rows="3"
-            class="w-full glass-input rounded-xl p-2.5 text-xs outline-none"
+            placeholder="Tuliskan bio atau status singkat Anda..."
+            class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
           ></textarea>
         </div>
 
         <button
           type="submit"
           :disabled="isSaving"
-          class="w-full bg-button text-white font-bold py-2.5 rounded-xl text-xs transition-all shadow-md disabled:opacity-50 cursor-pointer"
+          class="w-full bg-button text-white font-semibold py-2.5 rounded-xl text-sm md:text-xs transition-all shadow-md disabled:opacity-50 cursor-pointer"
         >
           {{ isSaving ? "Menyimpan..." : "Simpan Perubahan Profil" }}
         </button>
@@ -130,7 +198,7 @@
       <div class="pt-4 border-t border-slate-200/50 dark:border-slate-800/80">
         <button
           @click="handleLogout"
-          class="w-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/30 py-3 rounded-xl font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+          class="w-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/30 py-3 rounded-xl font-semibold text-sm md:text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
         >
           <i class="fa-solid fa-right-from-bracket"></i> Keluar (Logout)
         </button>
@@ -148,12 +216,37 @@ const emit = defineEmits(["logout-success"]);
 
 const fileInputRef = ref(null);
 
+// Pilihan Emoticon Ekspresif untuk Form Bio
+const EXPRESSIVE_EMOJIS = [
+  "🚀",
+  "🔥",
+  "💡",
+  "🎯",
+  "⚡",
+  "💪",
+  "😎",
+  "☕",
+  "💻",
+  "✨",
+  "📊",
+  "✅",
+  "🎉",
+  "🌟",
+  "🏼",
+  "👍",
+  "🙌",
+  "📝",
+  "🌈",
+  "🏆",
+];
+
 const userProfile = ref({
   Nama: "",
   Email: "",
   Role: "",
   Avatar: "",
   Bio: "",
+  Divisi: "",
 });
 
 const form = ref({
@@ -161,9 +254,15 @@ const form = ref({
   password: "",
   bio: "",
   avatarUrl: "",
+  unit: "",
+  divisi: "",
 });
 
 const isSaving = ref(false);
+
+const appendEmojiToBio = (emoji) => {
+  form.value.bio += (form.value.bio ? " " : "") + emoji;
+};
 
 const avatarPreviewUrl = computed(() => {
   if (form.value.avatarUrl && form.value.avatarUrl.length > 5) {
@@ -178,19 +277,16 @@ const avatarPreviewUrl = computed(() => {
   return `https://ui-avatars.com/api/?name=${encodeURIComponent(nameToUse)}`;
 });
 
-// Trigger input file dari perangkat
 const triggerFileInput = () => {
   if (fileInputRef.value) {
     fileInputRef.value.click();
   }
 };
 
-// Proses konversi file gambar dari perangkat ke Base64 / URL
 const handleFileUpload = (e) => {
   const file = e.target.files[0];
   if (!file) return;
 
-  // Cek ukuran file (maksimal 2MB agar tidak memberatkan Firestore)
   if (file.size > 2 * 1024 * 1024) {
     store.openAlert(
       "Ukuran Terlalu Besar",
@@ -203,12 +299,11 @@ const handleFileUpload = (e) => {
 
   const reader = new FileReader();
   reader.onload = (event) => {
-    form.value.avatarUrl = event.target.result; // Hasil Base64 disimpan ke state
+    form.value.avatarUrl = event.target.result;
   };
   reader.readAsDataURL(file);
 };
 
-// Sync data user secara reaktif
 watch(
   () => store.currentUser,
   (curr) => {
@@ -217,6 +312,11 @@ watch(
       form.value.nama = curr.Nama || curr.nama || curr.name || "";
       form.value.bio = curr.Bio || curr.bio || "";
       form.value.avatarUrl = curr.Avatar || curr.avatarUrl || curr.avatar || "";
+      form.value.unit =
+        curr.unit ||
+        curr.Unit ||
+        (Array.isArray(curr.aksesUnit) ? curr.aksesUnit[0] : "");
+      form.value.divisi = curr.divisi || curr.Divisi || "";
     }
   },
   { immediate: true, deep: true },
@@ -244,6 +344,10 @@ const saveUserProfile = async () => {
       Bio: form.value.bio,
       avatarUrl: form.value.avatarUrl,
       Avatar: form.value.avatarUrl,
+      unit: form.value.unit,
+      Unit: form.value.unit,
+      divisi: form.value.divisi,
+      Divisi: form.value.divisi,
     };
 
     if (form.value.password) {
@@ -258,7 +362,6 @@ const saveUserProfile = async () => {
         ...payload,
       };
 
-      // Update state store & localStorage
       store.setCurrentUser(updatedUser);
       userProfile.value = updatedUser;
 

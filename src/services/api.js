@@ -63,6 +63,8 @@ export const api = {
           nama: dData.nama || dData.Nama || '',
           email: dData.email || dData.Email || '',
           role: dData.role || dData.Role || 'ADMIN_UNIT',
+          unit: dData.unit || dData.Unit || (Array.isArray(units) ? units[0] : ''), // <-- FIX: Tarik parameter unit
+          divisi: dData.divisi || dData.Divisi || '', // <-- FIX: Tarik parameter divisi
           aksesUnit: Array.isArray(units) ? units : [units],
           permissions: dData.permissions || null,
           avatarUrl: dData.avatarUrl || dData.Avatar || dData.avatar || '',
@@ -103,7 +105,6 @@ export const api = {
       const programs = programsSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
       const spvReports = spvReportsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-      // Normalisasi data aduan agar imageUrl selalu terbaca
       const aduanList = aduanSnap.docs.map(d => {
         const data = d.data();
         return {
@@ -125,6 +126,8 @@ export const api = {
           nama: u.nama || u.Nama || '',
           email: u.email || u.Email || '',
           role: u.role || u.Role || 'ADMIN_UNIT',
+          unit: u.unit || u.Unit || (Array.isArray(units) ? units[0] : ''), // <-- FIX: Tarik unit dari DB
+          divisi: u.divisi || u.Divisi || '', // <-- FIX: Tarik divisi dari DB
           aksesUnit: Array.isArray(units) ? units : [units],
           permissions: u.permissions || null,
           avatarUrl: u.avatarUrl || u.Avatar || u.avatar || '',
@@ -133,6 +136,7 @@ export const api = {
         };
       });
       
+      // ... (Sisa kode master di bawahnya tidak ada yang perlu dirubah)
       let master = {
         unitList: [
           { code: 'NHP', name: 'Unit Nur Hidayah Press' },
@@ -187,7 +191,9 @@ export const api = {
         'Users': 'users',
         'Programs': 'programs',
         'Aduan': 'aduan',
-        'SpvReports': 'spv_reports'
+        'SpvReports': 'spv_reports',
+        'DailyReports': 'daily_reports',
+  'ReportTemplates': 'report_templates'  
       };
       const colName = collectionMap[sheetName] || sheetName.toLowerCase();
       const docRef = await addDoc(collection(firestoreDb, colName), payload);
@@ -207,7 +213,9 @@ export const api = {
         'Users': 'users',
         'Programs': 'programs',
         'Aduan': 'aduan',
-        'SpvReports': 'spv_reports'
+        'SpvReports': 'spv_reports',
+        'DailyReports': 'daily_reports',   
+  'ReportTemplates': 'report_templates'  
       };
       const colName = collectionMap[sheetName] || sheetName.toLowerCase();
       const docRef = doc(firestoreDb, colName, String(docId));
@@ -228,7 +236,9 @@ export const api = {
         'Users': 'users',
         'Programs': 'programs',
         'Aduan': 'aduan',
-        'SpvReports': 'spv_reports'
+        'SpvReports': 'spv_reports',
+        'DailyReports': 'daily_reports',     
+  'ReportTemplates': 'report_templates'  
       };
       const colName = collectionMap[sheetName] || sheetName.toLowerCase();
       await deleteDoc(doc(firestoreDb, colName, String(docId)));
@@ -290,6 +300,7 @@ export const api = {
         deadline: programItem.deadline || programItem.Deadline || '',
         progress: Number(programItem.progress || programItem.Progress || 0),
         status: programItem.status || programItem.Status || 'To Do',
+        todos: Array.isArray(programItem.todos) ? programItem.todos : [],
         assignedPicIds: assignedPicIds, 
         assignedUsers: assignedUsers,
         picName: programItem.picName || assignedUsers.join(', '),
@@ -529,5 +540,28 @@ export const api = {
       console.error("Gagal menghitung metrik sales:", err);
       return { penawaran: 0, pesanan: 0, penjualan: 0 };
     }
-  }
+  },
+
+// 1. Menyimpan data presensi user ke koleksi "attendances"
+  async saveAttendanceData(payload) {
+    try {
+      const docRef = doc(firestoreDb, "attendances", payload.id);
+      await setDoc(docRef, payload, { merge: true });
+      return { success: true, message: "Presensi berhasil disimpan!" };
+    } catch (err) {
+      console.error("Firestore Error:", err);
+      return { success: false, message: err.message };
+    }
+  },
+
+  // 2. Simpan / Update Struktur Form Builder buatan Admin ke koleksi "attendance_forms"
+  async saveFormSchema(schemaPayload) {
+    try {
+      const docRef = doc(firestoreDb, "attendance_forms", schemaPayload.id);
+      await setDoc(docRef, schemaPayload, { merge: true });
+      return { success: true, message: "Skema form berhasil diperbarui!" };
+    } catch (err) {
+      return { success: false, message: err.message };
+    }
+  }  
 };

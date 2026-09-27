@@ -8,20 +8,20 @@
       class="glass-card bg-white/95 dark:bg-slate-900/95 w-full max-w-sm p-6 md:p-8 rounded-3xl shadow-2xl border border-white/60 dark:border-blue-900/40 space-y-5 text-center relative z-[10000]"
     >
       <div
-        class="inline-flex p-3.5 bg-gradient-to-tr from-amber-500 to-orange-400 text-white rounded-2xl shadow-lg text-2xl"
+        class="inline-flex p-3.5 bg-gradient-to-tr from-amber-500 to-orange-400 text-white rounded-2xl shadow-lg text-xl"
       >
         <i class="fa-solid fa-lock"></i>
       </div>
       <div>
-        <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100">
+        <h3 class="text-xl font-semibold text-slate-800 dark:text-slate-100">
           Area Terproteksi
         </h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal">
           Masukkan Kode Akses Publik untuk membuka visualisasi Dashboard.
         </p>
       </div>
 
-      <form @submit.prevent="verify" class="space-y-4">
+      <form @submit.prevent="verify" class="space-y-4 text-sm md:text-xs">
         <div>
           <input
             type="password"
@@ -29,17 +29,20 @@
             maxlength="20"
             required
             placeholder="Masukkan Kode Akses..."
-            class="w-full glass-input rounded-xl p-3 text-center font-bold tracking-widest text-sm outline-none"
+            class="w-full glass-input rounded-xl p-3 text-center font-semibold tracking-widest text-sm outline-none"
           />
         </div>
         <button
           type="submit"
           :disabled="loading"
-          class="w-full bg-button text-white font-bold py-3 rounded-xl text-xs transition-all shadow-md flex items-center justify-center"
+          class="w-full bg-button text-white font-semibold py-3 rounded-xl text-sm md:text-xs transition-all shadow-md flex items-center justify-center cursor-pointer disabled:opacity-50"
         >
-          <i v-if="loading" class="fa-solid fa-spinner fa-spin mr-1.5"></i>
+          <i
+            v-if="loading"
+            class="fa-solid fa-spinner fa-spin mr-1.5 text-xs"
+          ></i>
           <span v-else
-            ><i class="fa-solid fa-key mr-1.5"></i>Buka Dashboard</span
+            ><i class="fa-solid fa-key mr-1.5 text-xs"></i>Buka Dashboard</span
           >
         </button>
       </form>
@@ -48,7 +51,7 @@
         <button
           type="button"
           @click="store.openModal('login')"
-          class="text-xs text-theme hover:underline font-semibold cursor-pointer"
+          class="text-sm md:text-xs text-theme hover:underline font-semibold cursor-pointer"
         >
           <i class="fa-solid fa-user-shield mr-1"></i>Login
         </button>

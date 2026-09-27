@@ -16,6 +16,7 @@
         isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
         isCollapsed ? 'w-20' : 'w-60',
       ]"
+      style="padding-bottom: max(0.375rem, env(safe-area-inset-bottom))"
     >
       <!-- Header Sidebar -->
       <div
@@ -35,7 +36,7 @@
           </span>
           <h1
             v-if="!isCollapsed"
-            class="text-sm font-bold text-slate-800 dark:text-slate-100 whitespace-nowrap tracking-wide"
+            class="text-sm font-semibold text-slate-800 dark:text-slate-100 whitespace-nowrap tracking-wide"
           >
             NHP-Group3
           </h1>
@@ -69,7 +70,7 @@
             v-model="searchMenuQuery"
             type="text"
             placeholder="Cari menu navigasi..."
-            class="w-full glass-input rounded-xl pl-8 pr-7 py-1.5 text-xs outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 dark:bg-slate-800/80"
+            class="w-full glass-input rounded-xl pl-8 pr-7 py-1.5 text-xs outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 font-normal dark:bg-slate-800/80"
           />
           <button
             v-if="searchMenuQuery"
@@ -87,7 +88,7 @@
         class="flex-1 overflow-y-auto py-1 px-2.5 space-y-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
         <ul class="space-y-1">
-          <!-- 1. 🏠 DASHBOARD (Stand-Alone Paling Atas) -->
+          <!-- 1. DASHBOARD -->
           <li
             v-if="
               store.canAccessPage('main') &&
@@ -101,8 +102,8 @@
               class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all"
               :class="[
                 activePage === 'main'
-                  ? 'bg-button text-white font-bold shadow-sm'
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
+                  ? 'bg-button text-white font-semibold shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
                 isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
               ]"
               :title="isCollapsed ? 'Dashboard' : ''"
@@ -110,6 +111,31 @@
               <i class="fa-solid fa-house text-sm shrink-0"></i>
               <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
                 >Dashboard</span
+              >
+            </a>
+          </li>
+
+          <li
+            v-if="
+              store.canAccessPage('daily-report') &&
+              isMenuVisible('Laporan Harian')
+            "
+            class="flex justify-center"
+          >
+            <a
+              href="#"
+              @click.prevent="navigate('daily-report')"
+              class="w-full flex items-center py-2 text-xs rounded-xl transition-all"
+              :class="[
+                activePage === 'daily-report'
+                  ? 'bg-button text-white font-semibold shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
+                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
+              ]"
+            >
+              <i class="fa-solid fa-file-invoice text-sm shrink-0"></i>
+              <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
+                >Laporan Harian</span
               >
             </a>
           </li>
@@ -124,11 +150,11 @@
             <a
               href="#"
               @click.prevent="navigate('summary')"
-              class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all"
+              class="w-full flex items-center py-2 text-xs rounded-xl transition-all"
               :class="[
                 activePage === 'summary'
-                  ? 'bg-button text-white font-bold shadow-sm'
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
+                  ? 'bg-button text-white font-semibold shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
                 isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
               ]"
               :title="isCollapsed ? 'Unit Summary' : ''"
@@ -141,7 +167,7 @@
           </li>
 
           <template v-if="isLoggedIn">
-            <!-- 3. 🏢 UNIT BISNIS (ACCORDION GROUP) -->
+            <!-- 3. UNIT BISNIS (ACCORDION GROUP) -->
             <li
               v-if="
                 shouldShowGroup([
@@ -165,11 +191,11 @@
             >
               <button
                 @click="toggleDropdown('units')"
-                class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all outline-none cursor-pointer mt-1"
+                class="w-full flex items-center py-2 text-xs rounded-xl transition-all outline-none cursor-pointer mt-1"
                 :class="[
                   isGroupActive(['unit-NHP', 'unit-NHC', 'unit-KG'])
-                    ? 'bg-button/20 dark:bg-button/20 text-theme dark:text-theme font-bold'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
+                    ? 'bg-button/20 dark:bg-button/20 text-theme dark:text-theme font-semibold'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
                   isCollapsed ? 'justify-center px-0' : 'justify-between px-3',
                 ]"
                 :title="isCollapsed ? 'Unit Bisnis' : ''"
@@ -185,7 +211,7 @@
                 </div>
                 <i
                   v-if="!isCollapsed"
-                  class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"
+                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
                   :class="{ 'rotate-180': dropdowns.units || searchMenuQuery }"
                 ></i>
               </button>
@@ -212,11 +238,11 @@
                     <a
                       href="#"
                       @click.prevent="navigate('unit-NHP')"
-                      class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
                       :class="[
                         activePage === 'unit-NHP'
-                          ? 'bg-button text-white font-bold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                          ? 'bg-button text-white font-semibold'
+                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                         isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                       ]"
                     >
@@ -235,11 +261,11 @@
                     <a
                       href="#"
                       @click.prevent="navigate('unit-NHC')"
-                      class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
                       :class="[
                         activePage === 'unit-NHC'
-                          ? 'bg-button text-white font-bold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                          ? 'bg-button text-white font-semibold'
+                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                         isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                       ]"
                     >
@@ -258,11 +284,11 @@
                     <a
                       href="#"
                       @click.prevent="navigate('unit-KG')"
-                      class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
                       :class="[
                         activePage === 'unit-KG'
-                          ? 'bg-button text-white font-bold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                          ? 'bg-button text-white font-semibold'
+                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                         isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                       ]"
                     >
@@ -276,7 +302,7 @@
               </transition>
             </li>
 
-            <!-- 4. 📢 WORKSPACE (ACCORDION GROUP) -->
+            <!-- 4. WORKSPACE (ACCORDION GROUP) -->
             <li
               v-if="
                 shouldShowGroup([
@@ -305,11 +331,11 @@
             >
               <button
                 @click="toggleDropdown('campaign')"
-                class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all outline-none cursor-pointer mt-1"
+                class="w-full flex items-center py-2 text-xs rounded-xl transition-all outline-none cursor-pointer mt-1"
                 :class="[
                   isGroupActive(['progress', 'digmar', 'leads', 'spv-report'])
-                    ? 'text-theme dark:text-theme font-bold bg-button/20 dark:bg-button/20'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
+                    ? 'text-theme dark:text-theme font-semibold bg-button/20 dark:bg-button/20'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
                   isCollapsed ? 'justify-center px-0' : 'justify-between px-3',
                 ]"
                 :title="isCollapsed ? 'Campaign Hub' : ''"
@@ -325,7 +351,7 @@
                 </div>
                 <i
                   v-if="!isCollapsed"
-                  class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"
+                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
                   :class="{
                     'rotate-180': dropdowns.campaign || searchMenuQuery,
                   }"
@@ -357,11 +383,11 @@
                     <a
                       href="#"
                       @click.prevent="navigate('progress')"
-                      class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
                       :class="[
                         activePage === 'progress'
-                          ? 'bg-button text-white font-bold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                          ? 'bg-button text-white font-semibold'
+                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                         isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                       ]"
                     >
@@ -380,11 +406,11 @@
                     <a
                       href="#"
                       @click.prevent="navigate('digmar')"
-                      class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
                       :class="[
                         activePage === 'digmar'
-                          ? 'bg-button text-white font-bold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                          ? 'bg-button text-white font-semibold'
+                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                         isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                       ]"
                     >
@@ -394,15 +420,20 @@
                       >
                     </a>
                   </li>
-                  <li v-if="isMenuVisible('Leads & Campaign', 'leads')">
+                  <li
+                    v-if="
+                      store.canAccessPage('leads') &&
+                      isMenuVisible('Leads & Campaign', 'leads')
+                    "
+                  >
                     <a
                       href="#"
                       @click.prevent="navigate('leads')"
-                      class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
                       :class="[
                         activePage === 'leads'
-                          ? 'bg-button text-white font-bold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                          ? 'bg-button text-white font-semibold'
+                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                         isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                       ]"
                     >
@@ -422,11 +453,11 @@
                     <a
                       href="#"
                       @click.prevent="navigate('spv-report')"
-                      class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
                       :class="[
                         activePage === 'spv-report'
-                          ? 'bg-button text-white font-bold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                          ? 'bg-button text-white font-semibold'
+                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                         isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                       ]"
                     >
@@ -449,11 +480,11 @@
               <a
                 href="#"
                 @click.prevent="navigate('aduan')"
-                class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                class="w-full flex items-center py-1.5 text-xs rounded-lg"
                 :class="[
                   activePage === 'aduan'
-                    ? 'bg-button text-white font-bold'
-                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                    ? 'bg-button text-white font-semibold'
+                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                   isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                 ]"
               >
@@ -472,11 +503,11 @@
               <a
                 href="#"
                 @click.prevent="navigate('promo')"
-                class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                class="w-full flex items-center py-1.5 text-xs rounded-lg"
                 :class="[
                   activePage === 'promo'
-                    ? 'bg-button text-white font-bold'
-                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                    ? 'bg-button text-white font-semibold'
+                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                   isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                 ]"
               >
@@ -495,11 +526,11 @@
               <a
                 href="#"
                 @click.prevent="navigate('report')"
-                class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                class="w-full flex items-center py-1.5 text-xs rounded-lg"
                 :class="[
                   activePage === 'report'
-                    ? 'bg-button text-white font-bold'
-                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                    ? 'bg-button text-white font-semibold'
+                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                   isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                 ]"
               >
@@ -510,21 +541,22 @@
               </a>
             </li>
 
-            <!-- 2. 📝 NOTES / CATATAN (Stand-Alone) -->
+            <!-- 2. NOTES / CATATAN -->
             <li
               v-if="
-                isLoggedIn && isMenuVisible('Catatan Pribadi Notes', 'notes')
+                store.canAccessPage('notes') &&
+                isMenuVisible('Catatan Pribadi Notes', 'notes')
               "
               class="flex justify-center"
             >
               <a
                 href="#"
                 @click.prevent="navigate('notes')"
-                class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all"
+                class="w-full flex items-center py-2 text-xs rounded-xl transition-all"
                 :class="[
                   activePage === 'notes'
-                    ? 'bg-button text-white font-bold shadow-sm'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
+                    ? 'bg-button text-white font-semibold shadow-sm'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
                   isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
                 ]"
                 :title="isCollapsed ? 'Notes / Catatan' : ''"
@@ -536,7 +568,7 @@
               </a>
             </li>
 
-            <!-- 7. ⚙️ SYSTEM SETTINGS (ACCORDION GROUP - SUPERADMIN KHUSUS) -->
+            <!-- 7. SYSTEM SETTINGS (ACCORDION GROUP) -->
             <li
               v-if="
                 shouldShowGroup([
@@ -555,11 +587,11 @@
             >
               <button
                 @click="toggleDropdown('system')"
-                class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all outline-none cursor-pointer mt-1"
+                class="w-full flex items-center py-2 text-xs rounded-xl transition-all outline-none cursor-pointer mt-1"
                 :class="[
                   isGroupActive(['master-data', 'users'])
-                    ? 'bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-bold'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60',
+                    ? 'bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
                   isCollapsed ? 'justify-center px-0' : 'justify-between px-3',
                 ]"
                 :title="isCollapsed ? 'System Settings' : ''"
@@ -575,7 +607,7 @@
                 </div>
                 <i
                   v-if="!isCollapsed"
-                  class="fa-solid fa-chevron-down text-[10px] transition-transform duration-200"
+                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
                   :class="{ 'rotate-180': dropdowns.system || searchMenuQuery }"
                 ></i>
               </button>
@@ -602,11 +634,11 @@
                     <a
                       href="#"
                       @click.prevent="navigate('master-data')"
-                      class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
                       :class="[
                         activePage === 'master-data'
-                          ? 'bg-button text-white font-bold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                          ? 'bg-button text-white font-semibold'
+                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                         isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                       ]"
                     >
@@ -625,11 +657,11 @@
                     <a
                       href="#"
                       @click.prevent="navigate('users')"
-                      class="w-full flex items-center py-1.5 text-[11px] font-semibold rounded-lg"
+                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
                       :class="[
                         activePage === 'users'
-                          ? 'bg-button text-white font-bold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50',
+                          ? 'bg-button text-white font-semibold'
+                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                         isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                       ]"
                     >
@@ -648,12 +680,12 @@
 
       <!-- Bottom Widget: Profil User -->
       <div
-        class="p-1.5 m-2 bottom-[max(1rem,env(safe-area-inset-bottom))] md:mb-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-700/40 flex items-center justify-center shrink-0"
+        class="p-1.5 m-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-700/40 flex items-center justify-center shrink-0 transition-all"
       >
         <button
           v-if="!isLoggedIn"
           @click="$emit('open-login')"
-          class="w-full bg-button hover:bg-button text-white font-bold py-2 rounded-xl text-xs transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+          class="w-full bg-button hover:bg-button text-white font-semibold py-2 rounded-xl text-xs transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
           :class="isCollapsed ? 'px-0' : 'px-3'"
           :title="isCollapsed ? 'Masuk / Login' : ''"
         >
@@ -679,12 +711,12 @@
           />
           <div v-if="!isCollapsed" class="min-w-0 flex-1 overflow-hidden">
             <p
-              class="font-bold text-xs truncate leading-tight group-hover:text-theme"
+              class="font-semibold text-xs truncate leading-tight group-hover:text-theme"
             >
               {{ userData?.nama || "Admin User" }}
             </p>
             <p
-              class="text-[9px] text-slate-400 font-medium uppercase truncate mt-0.5"
+              class="text-xs text-slate-400 font-normal uppercase truncate mt-0.5"
             >
               {{ userData?.role || "User" }}
             </p>

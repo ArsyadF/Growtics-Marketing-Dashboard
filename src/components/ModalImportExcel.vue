@@ -14,12 +14,12 @@
         >
           <div>
             <h3
-              class="font-bold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2"
+              class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm flex items-center gap-2"
             >
               <i class="fa-solid fa-file-excel text-emerald-600"></i>
               Import {{ currentSchema?.title || "Data" }} (Excel)
             </h3>
-            <p class="text-[11px] text-slate-400 mt-0.5">
+            <p class="text-xs text-slate-400 mt-0.5 font-normal">
               Unggah berkas Excel (.xlsx / .xls) untuk kelola data massal.
             </p>
           </div>
@@ -27,7 +27,7 @@
             @click="close"
             class="text-slate-400 hover:text-slate-600 cursor-pointer"
           >
-            <i class="fa-solid fa-xmark text-lg"></i>
+            <i class="fa-solid fa-xmark text-base"></i>
           </button>
         </div>
 
@@ -44,20 +44,22 @@
                 <i class="fa-solid fa-file-excel text-base"></i>
               </div>
               <div>
-                <p class="text-xs font-bold text-slate-700 dark:text-slate-200">
-                  Format kolom untuk modul ini
+                <p
+                  class="text-sm md:text-xs font-semibold text-slate-700 dark:text-slate-200"
+                >
+                  Format Template {{ currentSchema?.title }}
                 </p>
-                <p class="text-[10px] text-slate-400">
-                  Unduh template contoh Excel agar urutan kolom sesuai.
+                <p class="text-xs text-slate-400 font-normal">
+                  Unduh contoh template Excel agar struktur kolom sesuai.
                 </p>
               </div>
             </div>
             <button
               @click="handleDownloadTemplate"
               type="button"
-              class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm"
+              class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-1.5 rounded-xl text-sm md:text-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm"
             >
-              <i class="fa-solid fa-download text-[11px]"></i>
+              <i class="fa-solid fa-download text-xs"></i>
               <span>Unduh Template (.xlsx)</span>
             </button>
           </div>
@@ -67,13 +69,13 @@
             class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-200 dark:border-slate-700/80 rounded-2xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
           >
             <i
-              class="fa-solid fa-cloud-arrow-up text-4xl text-emerald-600 mb-2"
+              class="fa-solid fa-cloud-arrow-up text-xl text-emerald-600 mb-2"
             ></i>
             <span
-              class="text-xs font-semibold text-slate-700 dark:text-slate-200"
+              class="text-sm md:text-xs font-semibold text-slate-700 dark:text-slate-200"
               >Pilih berkas Excel (.xlsx / .xls)</span
             >
-            <span class="text-[10px] text-slate-400 mt-1"
+            <span class="text-xs text-slate-400 mt-1 font-normal"
               >Data akan otomatis dicocokkan dengan kolom database</span
             >
             <input
@@ -88,18 +90,18 @@
         <!-- TAHAP 2: PRATINJAU & PENANGANAN KONFLIK -->
         <div
           v-else-if="step === 'preview'"
-          class="space-y-4 overflow-y-auto flex-1 pr-1 text-xs"
+          class="space-y-4 overflow-y-auto flex-1 pr-1 text-sm md:text-xs"
         >
           <!-- RINGKASAN REKAP DATA -->
           <div class="grid grid-cols-3 gap-3">
             <div
               class="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl"
             >
-              <p class="text-[10px] text-emerald-600 font-bold uppercase">
+              <p class="text-xs text-emerald-600 font-semibold uppercase">
                 Data Baru
               </p>
               <p
-                class="text-lg font-bold text-emerald-700 dark:text-emerald-400"
+                class="text-xl font-semibold text-emerald-700 dark:text-emerald-400"
               >
                 {{ diffResult.newItems.length }}
               </p>
@@ -107,20 +109,24 @@
             <div
               class="p-3 bg-slate-500/10 border border-slate-500/20 rounded-xl"
             >
-              <p class="text-[10px] text-slate-500 font-bold uppercase">
+              <p class="text-xs text-slate-500 font-semibold uppercase">
                 Sama (Diabaikan)
               </p>
-              <p class="text-lg font-bold text-slate-600 dark:text-slate-400">
+              <p
+                class="text-xl font-semibold text-slate-600 dark:text-slate-400"
+              >
                 {{ diffResult.unchanged.length }}
               </p>
             </div>
             <div
               class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl"
             >
-              <p class="text-[10px] text-amber-600 font-bold uppercase">
+              <p class="text-xs text-amber-600 font-semibold uppercase">
                 Konflik Data
               </p>
-              <p class="text-lg font-bold text-amber-700 dark:text-amber-400">
+              <p
+                class="text-xl font-semibold text-amber-700 dark:text-amber-400"
+              >
                 {{ diffResult.conflicts.length }}
               </p>
             </div>
@@ -132,13 +138,13 @@
             class="p-3 bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/40 rounded-xl space-y-2"
           >
             <div class="flex items-center justify-between">
-              <span class="font-bold text-amber-800 dark:text-amber-300"
+              <span class="font-semibold text-amber-800 dark:text-amber-300"
                 >Aksi untuk Seluruh Data Konflik:</span
               >
               <select
                 v-model="globalConflictResolution"
                 @change="applyGlobalResolution"
-                class="glass-input text-xs rounded-lg p-1.5 dark:bg-slate-800"
+                class="glass-input text-sm md:text-xs font-semibold rounded-lg p-1.5 dark:bg-slate-800"
               >
                 <option value="overwrite">Timpa Data Lama</option>
                 <option value="generate_new">
@@ -153,7 +159,7 @@
 
           <!-- DAFTAR RINCIAN KONFLIK -->
           <div v-if="diffResult.conflicts.length > 0" class="space-y-2">
-            <h4 class="font-bold text-slate-700 dark:text-slate-300">
+            <h4 class="font-semibold text-slate-700 dark:text-slate-300">
               Rincian Konflik:
             </h4>
             <div
@@ -162,20 +168,22 @@
               class="p-3 border border-slate-200 dark:border-slate-800 rounded-xl space-y-2 bg-slate-50/50 dark:bg-slate-800/30"
             >
               <div class="flex items-center justify-between">
-                <span class="font-mono font-bold text-emerald-600"
-                  >ID Key: #{{ item.incoming[primaryKey] }}</span
+                <span class="font-mono font-semibold text-emerald-600 text-xs"
+                  >ID Key: #{{
+                    item.incoming[primaryKey] || item.incoming.id
+                  }}</span
                 >
                 <select
                   v-model="item.resolution"
-                  class="glass-input text-[11px] rounded-lg p-1 dark:bg-slate-800"
+                  class="glass-input text-xs font-semibold rounded-lg p-1 dark:bg-slate-800"
                 >
                   <option value="overwrite">Timpa Data</option>
                   <option value="generate_new">Ganti ID Baru</option>
                   <option value="keep_existing">Abaikan</option>
                 </select>
               </div>
-              <p class="text-[11px] text-slate-500">
-                <strong>Perubahan:</strong>
+              <p class="text-xs text-slate-500 font-normal">
+                <strong class="font-semibold">Perubahan:</strong>
                 {{ getDiffDescription(item.existing, item.incoming) }}
               </p>
             </div>
@@ -188,7 +196,7 @@
         >
           <button
             @click="close"
-            class="px-4 py-2 rounded-xl text-slate-500 font-bold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-4 py-2 rounded-xl text-slate-500 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 text-sm md:text-xs cursor-pointer"
           >
             Batal
           </button>
@@ -196,7 +204,7 @@
             v-if="step === 'preview'"
             @click="processImport"
             :disabled="isProcessing"
-            class="bg-button text-white px-5 py-2 rounded-xl font-bold shadow-md cursor-pointer disabled:opacity-50"
+            class="bg-button text-white px-5 py-2 rounded-xl font-semibold text-sm md:text-xs shadow-md cursor-pointer disabled:opacity-50"
           >
             {{ isProcessing ? "Memproses..." : "Jalankan Import" }}
           </button>
@@ -216,17 +224,24 @@ import {
   downloadExcelTemplate,
 } from "../utils/excelHandler.js";
 
+// DEKLARASI PROPS LENGKAP UNTUK MENCEGAH WARNING "EXTRANEOUS NON-PROPS ATTRIBUTES"
 const props = defineProps({
-  isOpen: Boolean,
-  schemaKey: { type: String, required: true },
+  isOpen: { type: Boolean, default: false },
+  schemaKey: { type: String, default: "ADUAN" }, // Default ke ADUAN jika tidak diisi
+  title: { type: String, default: "" }, // Dideklarasikan agar tidak error jika terkirim
+  primaryKey: { type: String, default: "" }, // Dideklarasikan agar tidak error jika terkirim
   existingData: { type: Array, default: () => [] },
 });
 
 const emit = defineEmits(["close", "confirm"]);
 
 const canAccess = computed(() => store.canExportImport());
+
+// Tentukan skema & primaryKey berdasarkan schemaKey
 const currentSchema = computed(() => EXCEL_SCHEMAS[props.schemaKey] || {});
-const primaryKey = computed(() => currentSchema.value.primaryKey || "id");
+const activePrimaryKey = computed(() => {
+  return props.primaryKey || currentSchema.value.primaryKey || "id";
+});
 
 const step = ref("upload");
 const isProcessing = ref(false);
@@ -256,7 +271,7 @@ const handleFileSelect = async (e) => {
     diffResult.value = analyzeImportDiff(
       rawParsed,
       props.existingData,
-      primaryKey.value,
+      activePrimaryKey.value,
     );
     step.value = "preview";
   } catch (err) {
@@ -291,10 +306,10 @@ const processImport = () => {
       finalToSave.push(c.incoming);
       updatedCount++;
     } else if (c.resolution === "generate_new") {
-      const pKey = primaryKey.value;
+      const pKey = activePrimaryKey.value;
       const newItem = {
         ...c.incoming,
-        [pKey]: `${c.incoming[pKey]}_NEW_${Date.now()}`,
+        [pKey]: `${c.incoming[pKey] || Date.now()}_NEW_${Date.now()}`,
       };
       finalToSave.push(newItem);
       addedCount++;

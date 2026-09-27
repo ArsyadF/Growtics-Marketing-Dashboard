@@ -13,51 +13,56 @@
   >
     <!-- SISI KIRI: Hamburger Mobile (Khusus Mobile) -->
     <div class="flex items-center gap-2 md:gap-3 shrink-0 md:min-w-0">
-      <button
+      <h2
+        class="dynamic-page-title text-base md:text-xl font-semibold text-slate-800 dark:text-slate-100 truncate"
+      >
+        {{ dynamicPageTitle }}
+      </h2>
+      <!-- <button
         @click.stop="$emit('toggle-sidebar')"
         type="button"
         class="md:hidden text-slate-600 dark:text-amber-400 w-10 h-10 rounded-full glass-card hover:scale-105 transition-all cursor-pointer flex items-center justify-center shrink-0 z-20 relative"
         title="Buka Menu"
       >
-        <i class="fa-solid fa-bars text-lg"></i>
-      </button>
+        <i class="fa-solid fa-bars text-base"></i>
+      </button> -->
     </div>
 
     <!-- TENGAH (Mobile) / KIRI (Desktop): Judul Halaman Dinamis -->
-    <div class="flex-1 text-center md:text-left min-w-0 px-2">
+    <!-- <div class="flex-1 text-center md:text-left min-w-0 px-2">
       <h2
-        class="dynamic-page-title text-base md:text-xl font-bold text-slate-800 dark:text-slate-100 truncate"
+        class="dynamic-page-title text-base md:text-xl font-semibold text-slate-800 dark:text-slate-100 truncate"
       >
         {{ dynamicPageTitle }}
       </h2>
-    </div>
+    </div> -->
 
-    <!-- SISI KANAN: Filter Tanggal Desktop, Lonceng Notifikasi & Toggle Theme -->
+    <!-- SISI KANAN: Filter Tanggal Desktop, Lonceng Notifikasi & Menu Profil -->
     <div class="flex items-center gap-2 md:gap-3 shrink-0 relative">
       <!-- Filter Tanggal Global (KHUSUS DESKTOP) -->
       <div
         class="hidden md:flex items-center space-x-2 glass-input p-1.5 rounded-xl text-xs overflow-x-auto"
       >
-        <span class="text-slate-500 dark:text-slate-400 font-medium px-1"
+        <span class="text-slate-500 dark:text-slate-400 font-normal px-1"
           >Filter:</span
         >
 
         <input
           v-model="tempStartDate"
           type="date"
-          class="bg-transparent rounded-lg px-1.5 py-1 dark:text-slate-100 outline-none w-auto text-xs"
+          class="bg-transparent rounded-lg px-1.5 py-1 dark:text-slate-100 outline-none w-auto text-xs font-normal"
         />
-        <span class="dark:text-slate-400">-</span>
+        <span class="dark:text-slate-400 font-normal">-</span>
         <input
           v-model="tempEndDate"
           type="date"
-          class="bg-transparent rounded-lg px-1.5 py-1 dark:text-slate-100 outline-none w-auto text-xs"
+          class="bg-transparent rounded-lg px-1.5 py-1 dark:text-slate-100 outline-none w-auto text-xs font-normal"
         />
 
         <!-- Tombol Terapkan -->
         <button
           @click="applyFilter"
-          class="bg-button text-white px-3 py-1 rounded-lg font-medium transition-all shadow-md text-xs cursor-pointer flex items-center gap-1 shrink-0 hover:opacity-95"
+          class="bg-button text-white px-3 py-1 rounded-lg font-semibold transition-all shadow-md text-xs cursor-pointer flex items-center gap-1 shrink-0 hover:opacity-95"
           title="Terapkan Filter Tanggal"
         >
           <i class="fa-solid fa-filter"></i>
@@ -67,7 +72,7 @@
         <!-- Tombol Reset -->
         <button
           @click="resetFilter"
-          class="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1 rounded-lg font-medium transition-all text-xs cursor-pointer flex items-center gap-1 shrink-0"
+          class="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1 rounded-lg font-semibold transition-all text-xs cursor-pointer flex items-center gap-1 shrink-0"
           title="Reset ke Awal Tahun s/d Hari Ini"
         >
           <i class="fa-solid fa-rotate-left"></i>
@@ -82,11 +87,11 @@
           class="w-10 h-10 md:w-11 md:h-11 rounded-full glass-card text-slate-600 dark:text-slate-300 hover:scale-105 transition-all cursor-pointer flex items-center justify-center shrink-0 relative"
           title="Notifikasi Aktivitas"
         >
-          <i class="fa-solid fa-bell text-base md:text-lg"></i>
+          <i class="fa-solid fa-bell text-base"></i>
           <!-- Badge Jumlah Belum Dibaca -->
           <span
             v-if="unreadCount > 0"
-            class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-rose-500 text-white font-bold text-[9px] rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900 animate-pulse"
+            class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-rose-500 text-white font-semibold text-xs rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900 animate-pulse"
           >
             {{ unreadCount > 9 ? "9+" : unreadCount }}
           </span>
@@ -101,19 +106,21 @@
             class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-slate-800"
           >
             <div class="flex items-center gap-2">
-              <h4 class="font-bold text-xs text-slate-800 dark:text-slate-100">
+              <h4
+                class="font-semibold text-xs text-slate-800 dark:text-slate-100"
+              >
                 Notifikasi
               </h4>
               <span
                 v-if="unreadCount > 0"
-                class="text-[9px] font-bold text-theme bg-button/10 px-2 py-0.5 rounded-full"
+                class="text-xs font-semibold text-theme bg-button/10 px-2 py-0.5 rounded-full"
               >
                 {{ unreadCount }} Baru
               </span>
             </div>
             <button
               @click="store.clearNotifications()"
-              class="text-[10px] font-semibold text-slate-400 hover:text-rose-500 transition-colors cursor-pointer"
+              class="text-xs font-semibold text-slate-400 hover:text-rose-500 transition-colors cursor-pointer"
             >
               Hapus Semua
             </button>
@@ -162,16 +169,17 @@
                 <div class="flex-1 min-w-0">
                   <div class="flex justify-between items-start">
                     <p
-                      class="font-bold text-slate-800 dark:text-slate-100 text-[11px] truncate"
+                      class="font-semibold text-slate-800 dark:text-slate-100 text-xs truncate"
                     >
                       {{ notif.title }}
                     </p>
-                    <span class="text-[9px] text-slate-400 shrink-0 ml-1">{{
-                      notif.time
-                    }}</span>
+                    <span
+                      class="text-xs text-slate-400 shrink-0 ml-1 font-normal"
+                      >{{ notif.time }}</span
+                    >
                   </div>
                   <p
-                    class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 leading-snug"
+                    class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug font-normal"
                   >
                     {{ notif.message }}
                   </p>
@@ -180,9 +188,12 @@
             </template>
 
             <!-- Kosong -->
-            <div v-else class="text-center py-6 text-slate-400 text-xs">
+            <div
+              v-else
+              class="text-center py-6 text-slate-400 text-xs font-normal"
+            >
               <i
-                class="fa-solid fa-bell-slash text-xl mb-1 opacity-40 block"
+                class="fa-solid fa-bell-slash text-base mb-1 opacity-40 block"
               ></i>
               Belum ada notifikasi
             </div>
@@ -190,14 +201,56 @@
         </div>
       </div>
 
-      <!-- Tombol Pilihan Mode Tampilan (Theme Switcher) -->
-      <button
-        @click="isThemeModalOpen = true"
-        class="w-10 h-10 md:w-11 md:h-11 rounded-full glass-card text-slate-600 dark:text-amber-400 hover:scale-105 transition-all cursor-pointer flex items-center justify-center shrink-0"
-        title="Ganti Mode Tampilan"
-      >
-        <i class="fa-solid" :class="themeIcon"></i>
-      </button>
+      <!-- ================= MENU PROFIL & PENGATURAN TEMA ================= -->
+      <div class="relative">
+        <button
+          @click="toggleProfileMenu"
+          class="w-10 h-10 md:w-11 md:h-11 rounded-full border-2 border-slate-200 dark:border-slate-700 hover:border-theme transition-all cursor-pointer shrink-0 overflow-hidden flex items-center justify-center"
+          title="Profil Pengguna"
+        >
+          <img
+            :src="userAvatar"
+            alt="Profil"
+            class="w-full h-full object-cover"
+          />
+        </button>
+
+        <!-- Dropdown Profil -->
+        <div
+          v-if="isProfileMenuOpen"
+          class="absolute right-0 mt-3 w-48 glass-card bg-white dark:bg-slate-900 rounded-2xl p-2 shadow-2xl border border-slate-100 dark:border-slate-800 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+        >
+          <div
+            class="p-2.5 border-b border-slate-100 dark:border-slate-800 mb-1"
+          >
+            <p
+              class="font-semibold text-xs text-slate-800 dark:text-slate-100 truncate"
+            >
+              {{ userName }}
+            </p>
+            <p
+              class="text-xs text-slate-400 truncate uppercase mt-0.5 font-normal"
+            >
+              {{ userRole }}
+            </p>
+          </div>
+
+          <div class="space-y-1">
+            <button
+              @click="goToProfile"
+              class="w-full text-left flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            >
+              <i class="fa-regular fa-user text-slate-400"></i> Profil Saya
+            </button>
+            <button
+              @click="openThemeSettings"
+              class="w-full text-left flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+            >
+              <i class="fa-solid fa-palette text-slate-400"></i> Tema Tampilan
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -215,7 +268,7 @@
           class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
         >
           <h3
-            class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
+            class="font-semibold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
           >
             <i class="fa-solid fa-palette text-theme"></i>
             Pengaturan Tampilan
@@ -224,7 +277,7 @@
             @click="isThemeModalOpen = false"
             class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer transition-colors"
           >
-            <i class="fa-solid fa-xmark text-lg"></i>
+            <i class="fa-solid fa-xmark text-base"></i>
           </button>
         </div>
 
@@ -232,18 +285,18 @@
           <!-- Mode Tampilan (Light / Dark / System) -->
           <div class="space-y-2">
             <h4
-              class="font-bold text-[11px] text-slate-400 dark:text-slate-400 uppercase tracking-wider"
+              class="font-semibold text-xs text-slate-400 dark:text-slate-400 uppercase tracking-wider"
             >
               Mode Tampilan
             </h4>
             <div class="grid grid-cols-3 gap-2">
               <button
                 @click="setTheme('light')"
-                class="p-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-2 transition-all cursor-pointer"
+                class="p-2.5 rounded-xl text-xs font-semibold border flex items-center justify-center gap-2 transition-all cursor-pointer"
                 :class="
                   themePreference === 'light'
                     ? 'border-theme text-theme bg-button/10 shadow-sm'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-normal'
                 "
               >
                 <i class="fa-solid fa-sun text-amber-500"></i> Terang
@@ -251,11 +304,11 @@
 
               <button
                 @click="setTheme('dark')"
-                class="p-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-2 transition-all cursor-pointer"
+                class="p-2.5 rounded-xl text-xs font-semibold border flex items-center justify-center gap-2 transition-all cursor-pointer"
                 :class="
                   themePreference === 'dark'
                     ? 'border-theme text-theme bg-button/10 shadow-sm'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-normal'
                 "
               >
                 <i class="fa-solid fa-moon text-indigo-400"></i> Gelap
@@ -263,11 +316,11 @@
 
               <button
                 @click="setTheme('system')"
-                class="p-2.5 rounded-xl text-xs font-bold border flex items-center justify-center gap-2 transition-all cursor-pointer"
+                class="p-2.5 rounded-xl text-xs font-semibold border flex items-center justify-center gap-2 transition-all cursor-pointer"
                 :class="
                   themePreference === 'system'
                     ? 'border-theme text-theme bg-button/10 shadow-sm'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-normal'
                 "
               >
                 <i class="fa-solid fa-desktop text-blue-400"></i> OS
@@ -280,7 +333,7 @@
             class="space-y-2 pt-3 border-t border-slate-200 dark:border-slate-800"
           >
             <h4
-              class="font-bold text-[11px] text-slate-400 dark:text-slate-400 uppercase tracking-wider"
+              class="font-semibold text-xs text-slate-400 dark:text-slate-400 uppercase tracking-wider"
             >
               Warna Aksen
             </h4>
@@ -294,20 +347,20 @@
                 :class="
                   store.activeThemeColor === color.hex
                     ? 'border-theme text-theme bg-button/10 shadow-sm'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 opacity-80 hover:opacity-100'
+                    : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 opacity-80 hover:opacity-100 font-normal'
                 "
               >
                 <span
                   class="w-3.5 h-3.5 rounded-full shrink-0 shadow-sm"
                   :style="{ backgroundColor: color.hex }"
                 ></span>
-                <span class="truncate text-[11px]">{{ color.name }}</span>
+                <span class="truncate text-xs">{{ color.name }}</span>
               </button>
             </div>
 
             <div class="flex items-center justify-between pt-2">
               <span
-                class="text-xs font-medium text-slate-500 dark:text-slate-400"
+                class="text-xs font-normal text-slate-500 dark:text-slate-400"
                 >Warna Bebas (Wheel):</span
               >
               <input
@@ -339,9 +392,24 @@ const props = defineProps({
 defineEmits(["toggle-sidebar"]);
 
 // State Modal & Popup
-
 const isThemeModalOpen = ref(false);
 const isNotifOpen = ref(false);
+const isProfileMenuOpen = ref(false);
+
+// Data Pengguna (Untuk Avatar & Info)
+const currentUser = computed(() => store.currentUser || {});
+const userName = computed(
+  () => currentUser.value.nama || currentUser.value.Nama || "Pengguna",
+);
+const userRole = computed(
+  () => currentUser.value.role || currentUser.value.Role || "User",
+);
+const userAvatar = computed(() => {
+  if (currentUser.value.avatarUrl || currentUser.value.Avatar) {
+    return currentUser.value.avatarUrl || currentUser.value.Avatar;
+  }
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(userName.value)}&background=0D8ABC&color=fff`;
+});
 
 // State Preferensi Tema
 const themePreference = ref("system");
@@ -364,19 +432,20 @@ const dynamicPageTitle = computed(() => {
   const titleMap = {
     main: "Dashboard Utama",
     "staff-dashboard": "Dashboard Staff",
+    "daily-report": "Laporan harian",
     rekap: "Unit Summary",
-    summary: "Ringkasan Laporan",
+    summary: "Rekap Unit",
     "unit-NHP": "Performa Unit NHP",
     "unit-NHC": "Performa Unit NHC",
     "unit-KG": "Performa Unit KG",
     progress: "Team Progress Board",
-    notes: "Catatan & Notes Tim",
-    digmar: "Sosmed Analytics",
+    notes: "Catatan",
+    digmar: "Socmed Analytics",
     leads: "Leads & Campaign",
     promo: "Biaya Promosi",
     aduan: "Customer Care & Aduan",
     "spv-report": "Laporan Divisi",
-    report: "Laporan Kinerja",
+    report: "Laporan Executive",
     targets: "Pengaturan Target Revenue",
     "master-data": "Master Data Sistem",
     users: "Manajemen Akses Pengguna",
@@ -402,21 +471,31 @@ const unreadCount = computed(() => {
 
 const toggleNotifPopup = () => {
   isNotifOpen.value = !isNotifOpen.value;
+  isProfileMenuOpen.value = false; // Tutup menu profil jika notif dibuka
   if (isNotifOpen.value) {
     store.markAllNotifsAsRead();
   }
 };
 
-// --- SISTEM TEMA / DARK MODE ---
-const themeIcon = computed(() => {
-  if (themePreference.value === "system") {
-    return "fa-desktop text-blue-400 text-base md:text-lg";
-  }
-  return store.isDarkMode
-    ? "fa-sun text-amber-400 text-base md:text-lg"
-    : "fa-moon text-slate-600 text-base md:text-lg";
-});
+// --- MENU PROFIL ---
+const toggleProfileMenu = () => {
+  isProfileMenuOpen.value = !isProfileMenuOpen.value;
+  isNotifOpen.value = false; // Tutup notif jika profil dibuka
+};
 
+const goToProfile = () => {
+  isProfileMenuOpen.value = false;
+  if (typeof store.navigate === "function") {
+    store.navigate("profile");
+  }
+};
+
+const openThemeSettings = () => {
+  isProfileMenuOpen.value = false;
+  isThemeModalOpen.value = true;
+};
+
+// --- SISTEM TEMA / DARK MODE ---
 let systemThemeQuery = null;
 
 const handleSystemThemeChange = (e) => {
