@@ -13,8 +13,24 @@ import {
   where 
 } from "firebase/firestore";
 
+// Peta koleksi global untuk fungsi CRUD Generic
+const COLLECTION_MAP = {
+  'Revenue': 'revenues',
+  'Promo': 'promosi',
+  'Leads': 'leads',
+  'Users': 'users',
+  'Programs': 'programs',
+  'Aduan': 'aduan',
+  'SpvReports': 'spv_reports',
+  'DailyReports': 'daily_reports',
+  'ReportTemplates': 'report_templates'  
+};
+
 export const api = {
-  // 1. Verifikasi Passcode Publik dari settings/passcode
+  // ==========================================
+  // 1. AUTENTIKASI & AKSES PUBLIK
+  // ==========================================
+  
   async getPublicDataWithPasscode(passcode) {
     try {
       const passcodeDocRef = doc(firestoreDb, "settings", "passcode");
@@ -36,7 +52,6 @@ export const api = {
     }
   },
 
-  // 2. Autentikasi Login Pengguna
   async validateUserLogin(userEmail, passwordInput) {
     try {
       let q = query(collection(firestoreDb, "users"), where("email", "==", userEmail));
@@ -63,8 +78,8 @@ export const api = {
           nama: dData.nama || dData.Nama || '',
           email: dData.email || dData.Email || '',
           role: dData.role || dData.Role || 'ADMIN_UNIT',
-          unit: dData.unit || dData.Unit || (Array.isArray(units) ? units[0] : ''), // <-- FIX: Tarik parameter unit
-          divisi: dData.divisi || dData.Divisi || '', // <-- FIX: Tarik parameter divisi
+          unit: dData.unit || dData.Unit || (Array.isArray(units) ? units[0] : ''),
+          divisi: dData.divisi || dData.Divisi || '',
           aksesUnit: Array.isArray(units) ? units : [units],
           permissions: dData.permissions || null,
           avatarUrl: dData.avatarUrl || dData.Avatar || dData.avatar || '',
@@ -83,10 +98,16 @@ export const api = {
     }
   },
 
-  // 3. Ambil Seluruh Data Database
+  // ==========================================
+  // 2. PENGAMBILAN DATA GLOBAL
+  // ==========================================
+  
   async getAllData() {
     try {
-      const [revSnap, promoSnap, leadsSnap, usersSnap, targetSnap, passcodeSnap, masterSnap, programsSnap, aduanSnap, spvReportsSnap] = await Promise.all([
+      const [
+        revSnap, promoSnap, leadsSnap, usersSnap, targetSnap, 
+        passcodeSnap, masterSnap, programsSnap, aduanSnap, spvReportsSnap
+      ] = await Promise.all([
         getDocs(collection(firestoreDb, "revenues")),
         getDocs(collection(firestoreDb, "promosi")),
         getDocs(collection(firestoreDb, "leads")),
@@ -126,8 +147,8 @@ export const api = {
           nama: u.nama || u.Nama || '',
           email: u.email || u.Email || '',
           role: u.role || u.Role || 'ADMIN_UNIT',
-          unit: u.unit || u.Unit || (Array.isArray(units) ? units[0] : ''), // <-- FIX: Tarik unit dari DB
-          divisi: u.divisi || u.Divisi || '', // <-- FIX: Tarik divisi dari DB
+          unit: u.unit || u.Unit || (Array.isArray(units) ? units[0] : ''),
+          divisi: u.divisi || u.Divisi || '',
           aksesUnit: Array.isArray(units) ? units : [units],
           permissions: u.permissions || null,
           avatarUrl: u.avatarUrl || u.Avatar || u.avatar || '',
@@ -136,7 +157,6 @@ export const api = {
         };
       });
       
-      // ... (Sisa kode master di bawahnya tidak ada yang perlu dirubah)
       let master = {
         unitList: [
           { code: 'NHP', name: 'Unit Nur Hidayah Press' },
@@ -181,21 +201,13 @@ export const api = {
     }
   },
 
-  // 4. Simpan Data Baru Generic
+  // ==========================================
+  // 3. GENERIC CRUD OPERATIONS
+  // ==========================================
+  
   async saveData(sheetName, payload) {
     try {
-      const collectionMap = {
-        'Revenue': 'revenues',
-        'Promo': 'promosi',
-        'Leads': 'leads',
-        'Users': 'users',
-        'Programs': 'programs',
-        'Aduan': 'aduan',
-        'SpvReports': 'spv_reports',
-        'DailyReports': 'daily_reports',
-  'ReportTemplates': 'report_templates'  
-      };
-      const colName = collectionMap[sheetName] || sheetName.toLowerCase();
+      const colName = COLLECTION_MAP[sheetName] || sheetName.toLowerCase();
       const docRef = await addDoc(collection(firestoreDb, colName), payload);
       return { success: true, message: `Data ${sheetName} berhasil ditambahkan!`, id: docRef.id };
     } catch (err) {
@@ -203,21 +215,9 @@ export const api = {
     }
   },
 
-  // 5. Update Data Dokumen Generic
   async updateData(sheetName, docId, payload) {
     try {
-      const collectionMap = {
-        'Revenue': 'revenues',
-        'Promo': 'promosi',
-        'Leads': 'leads',
-        'Users': 'users',
-        'Programs': 'programs',
-        'Aduan': 'aduan',
-        'SpvReports': 'spv_reports',
-        'DailyReports': 'daily_reports',   
-  'ReportTemplates': 'report_templates'  
-      };
-      const colName = collectionMap[sheetName] || sheetName.toLowerCase();
+      const colName = COLLECTION_MAP[sheetName] || sheetName.toLowerCase();
       const docRef = doc(firestoreDb, colName, String(docId));
       await updateDoc(docRef, payload);
       return { success: true, message: `Data ${sheetName} berhasil diperbarui!` };
@@ -226,21 +226,9 @@ export const api = {
     }
   },
 
-  // 6. Hapus Data Dokumen Generic
   async deleteData(sheetName, docId) {
     try {
-      const collectionMap = {
-        'Revenue': 'revenues',
-        'Promo': 'promosi',
-        'Leads': 'leads',
-        'Users': 'users',
-        'Programs': 'programs',
-        'Aduan': 'aduan',
-        'SpvReports': 'spv_reports',
-        'DailyReports': 'daily_reports',     
-  'ReportTemplates': 'report_templates'  
-      };
-      const colName = collectionMap[sheetName] || sheetName.toLowerCase();
+      const colName = COLLECTION_MAP[sheetName] || sheetName.toLowerCase();
       await deleteDoc(doc(firestoreDb, colName, String(docId)));
       return { success: true, message: `Data ${sheetName} berhasil dihapus!` };
     } catch (err) {
@@ -248,7 +236,10 @@ export const api = {
     }
   },
 
-  // 7. Simpan/Update Target & Master Data
+  // ==========================================
+  // 4. PENGELOLAAN MASTER SETTINGS & TARGET
+  // ==========================================
+  
   async saveMasterData(masterPayload) {
     try {
       if (masterPayload.KodeAkses !== undefined) {
@@ -278,7 +269,59 @@ export const api = {
     }
   },
 
-  // 8. Program Kanban
+  async saveMasterTargetsOnly(targetPayload) {
+    try {
+      const targetRef = doc(firestoreDb, "settings", "targets");
+      await setDoc(targetRef, {
+        TargetNHP: Number(targetPayload.TargetNHP || 0),
+        TargetNHC: Number(targetPayload.TargetNHC || 0),
+        TargetKG: Number(targetPayload.TargetKG || 0),
+        TargetTahunIni: Number(targetPayload.TargetTahunIni || 0)
+      }, { merge: true });
+      return { success: true, message: "Target revenue berhasil disimpan!" };
+    } catch (err) {
+      console.error("Gagal simpan target:", err);
+      throw err;
+    }
+  },
+
+  async saveMasterUnitsOnly(unitList) {
+    try {
+      const masterRef = doc(firestoreDb, "settings", "master");
+      await setDoc(masterRef, { unitList }, { merge: true });
+      return { success: true, message: "Master unit usaha berhasil disimpan!" };
+    } catch (err) {
+      console.error("Gagal simpan unit:", err);
+      throw err;
+    }
+  },
+
+  async saveMasterDivisionsOnly(divisiList) {
+    try {
+      const masterRef = doc(firestoreDb, "settings", "master");
+      await setDoc(masterRef, { divisiList }, { merge: true });
+      return { success: true, message: "Master divisi berhasil disimpan!" };
+    } catch (err) {
+      console.error("Gagal simpan divisi:", err);
+      throw err;
+    }
+  },
+
+  async saveMasterPlatformsOnly(platformList) {
+    try {
+      const masterRef = doc(firestoreDb, "settings", "master");
+      await setDoc(masterRef, { platformList }, { merge: true });
+      return { success: true, message: "Master platform berhasil disimpan!" };
+    } catch (err) {
+      console.error("Gagal simpan platform:", err);
+      throw err;
+    }
+  },
+
+  // ==========================================
+  // 5. MODUL SPESIFIK (PROGRAM, CATATAN, ADUAN, SPV)
+  // ==========================================
+  
   async saveProgramData(programItem) {
     try {
       const docId = String(programItem.id || programItem.Timestamp || Date.now());
@@ -319,7 +362,6 @@ export const api = {
     return await this.deleteData('programs', String(programId));
   },
 
-  // 9. Catatan Pribadi User
   async getUserNotes(userId) {
     try {
       const q = query(
@@ -374,7 +416,6 @@ export const api = {
     }
   },
 
-  // 10. Pengelolaan Aduan Layanan (PERBAIKAN: imageUrl ditambahkan ke payload)
   async saveAduanData(aduanItem) {
     try {
       const docId = String(aduanItem.id || Date.now());
@@ -389,7 +430,7 @@ export const api = {
         priority: aduanItem.priority || 'Sedang',
         status: aduanItem.status || 'Open',
         description: aduanItem.description || '',
-        imageUrl: aduanItem.imageUrl || aduanItem.ImageUrl || aduanItem.image || '', // FIELD TERSIMPAN KE FIRESTORE
+        imageUrl: aduanItem.imageUrl || aduanItem.ImageUrl || aduanItem.image || '',
         date: aduanItem.date || new Date().toISOString().split('T')[0],
         createdBy: aduanItem.createdBy || ''
       };
@@ -406,7 +447,6 @@ export const api = {
     return await this.deleteData('aduan', String(aduanId));
   },
 
-  // 11. Pengelolaan Laporan Divisi SPV Pekanan
   async saveSpvReportData(reportItem) {
     try {
       const docId = String(reportItem.id || Date.now());
@@ -446,57 +486,10 @@ export const api = {
     return await this.deleteData('spv_reports', String(reportId));
   },
 
-  // 12. Simpan Master Settings parsial
-  async saveMasterTargetsOnly(targetPayload) {
-    try {
-      const targetRef = doc(firestoreDb, "settings", "targets");
-      await setDoc(targetRef, {
-        TargetNHP: Number(targetPayload.TargetNHP || 0),
-        TargetNHC: Number(targetPayload.TargetNHC || 0),
-        TargetKG: Number(targetPayload.TargetKG || 0),
-        TargetTahunIni: Number(targetPayload.TargetTahunIni || 0)
-      }, { merge: true });
-      return { success: true, message: "Target revenue berhasil disimpan!" };
-    } catch (err) {
-      console.error("Gagal simpan target:", err);
-      throw err;
-    }
-  },
-
-  async saveMasterUnitsOnly(unitList) {
-    try {
-      const masterRef = doc(firestoreDb, "settings", "master");
-      await setDoc(masterRef, { unitList }, { merge: true });
-      return { success: true, message: "Master unit usaha berhasil disimpan!" };
-    } catch (err) {
-      console.error("Gagal simpan unit:", err);
-      throw err;
-    }
-  },
-
-  async saveMasterDivisionsOnly(divisiList) {
-    try {
-      const masterRef = doc(firestoreDb, "settings", "master");
-      await setDoc(masterRef, { divisiList }, { merge: true });
-      return { success: true, message: "Master divisi berhasil disimpan!" };
-    } catch (err) {
-      console.error("Gagal simpan divisi:", err);
-      throw err;
-    }
-  },
-
-  async saveMasterPlatformsOnly(platformList) {
-    try {
-      const masterRef = doc(firestoreDb, "settings", "master");
-      await setDoc(masterRef, { platformList }, { merge: true });
-      return { success: true, message: "Master platform berhasil disimpan!" };
-    } catch (err) {
-      console.error("Gagal simpan platform:", err);
-      throw err;
-    }
-  },
-
-  // 13. Metrik Sales Otomatis
+  // ==========================================
+  // 6. METRIK ANALISIS & KALKULASI
+  // ==========================================
+  
   async getSalesMetricsByDateRange(startDate, endDate, unitFilter = "ALL") {
     try {
       const [revSnap, leadsSnap] = await Promise.all([
@@ -542,7 +535,10 @@ export const api = {
     }
   },
 
-// 1. Menyimpan data presensi user ke koleksi "attendances"
+  // ==========================================
+  // 7. MODUL PRESENSI & FORM BUILDER
+  // ==========================================
+  
   async saveAttendanceData(payload) {
     try {
       const docRef = doc(firestoreDb, "attendances", payload.id);
@@ -554,7 +550,6 @@ export const api = {
     }
   },
 
-  // 2. Simpan / Update Struktur Form Builder buatan Admin ke koleksi "attendance_forms"
   async saveFormSchema(schemaPayload) {
     try {
       const docRef = doc(firestoreDb, "attendance_forms", schemaPayload.id);

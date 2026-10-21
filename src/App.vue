@@ -20,19 +20,16 @@
         <i class="fa-solid fa-circle-notch fa-spin text-3xl text-theme"></i>
         <span
           class="text-xs font-bold text-slate-800 dark:text-slate-100 drop-shadow-sm"
+          >Memuat...</span
         >
-          Memuat...
-        </span>
       </div>
     </div>
 
-    <!-- Modal Login Pengelola -->
+    <!-- Modal Login & Passcode -->
     <LoginModal
       v-if="store.activeModal === 'login'"
       @close="store.closeModal()"
     />
-
-    <!-- Overlay Passcode Publik -->
     <Passcode />
 
     <!-- KONTEN UTAMA DASHBOARD -->
@@ -60,7 +57,6 @@
       <main
         class="flex-1 w-full min-w-0 relative flex flex-col pb-16 md:pb-6 z-0"
       >
-        <!-- Header -->
         <Header @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
 
         <!-- Pembungkus View Utama -->
@@ -70,25 +66,22 @@
           <template v-if="store.isAccessGranted">
             <!-- 1. JIKA DI HALAMAN UTAMA / DASHBOARD STAFF -->
             <template
-              v-if="
-                store.currentPage === 'main' ||
-                store.currentPage === 'staff-dashboard'
-              "
+              v-if="['main', 'staff-dashboard'].includes(store.currentPage)"
             >
-              <!-- Jika Superadmin / SPV, tampilkan Dashboard Utama Lengkap (Omset & Grafik) -->
-              <PageSummary v-if="isSuperadminOrSpv" />
-              <!-- Jika Staff biasa, tampilkan Staff Dashboard (Grid Kotak & Ringkasan Non-Sensitif) -->
-              <PageStaffDashboard v-else />
+              <!-- <PageSummary v-if="isSuperadminOrSpv" />
+              <PageStaffDashboard v-else /> -->
+
+              <PageStaffDashboard />
             </template>
 
-            <!-- 2. JIKA DI HALAMAN MODUL KINERJA LAIN (Progress, Aduan, Reports, dll) -->
+            <!-- 2. JIKA DI HALAMAN MODUL KINERJA LAIN -->
             <template v-else>
               <component
                 :is="activeView"
                 v-if="store.canAccessPage(store.currentPage)"
               />
 
-              <!-- Peringatan jika akun tidak punya izin -->
+              <!-- Peringatan Akses Ditolak -->
               <div
                 v-else
                 class="glass-card p-12 text-center rounded-3xl space-y-3 mt-10"
@@ -107,7 +100,6 @@
           </template>
         </div>
 
-        <!-- Bottom Navigation Mobile -->
         <BottomNav />
       </main>
     </div>
@@ -121,7 +113,7 @@
 import { ref, computed, watch, onMounted, onUnmounted } from "vue";
 import { store } from "./store/index.js";
 
-// Import Komponen Layout & Modals
+// Layout & Modals
 import Passcode from "./components/Passcode.vue";
 import Sidebar from "./components/Sidebar.vue";
 import Header from "./components/Header.vue";
@@ -129,7 +121,7 @@ import LoginModal from "./components/LoginModal.vue";
 import Modals from "./components/Modals.vue";
 import BottomNav from "./components/BottomNav.vue";
 
-// Import Views Utama (Existing)
+// Views Utama
 import PageStaffDashboard from "./views/PageStaffDashboard.vue";
 import PageSummary from "./views/PageSummary.vue";
 import PageUnit from "./views/PageUnit.vue";
@@ -147,49 +139,47 @@ import PageCustomerCare from "./views/PageCustomerCare.vue";
 import PagePresensi from "./views/PagePresensi.vue";
 import PageDailyReport from "./views/PageDailyReport.vue";
 
-// --- DYNAMIC COMPONENT ROUTING ---
-const activeView = computed(() => {
-  if (store.currentPage.startsWith("unit-")) {
-    return PageUnit;
-  }
-
-  switch (store.currentPage) {
-    case "main":
-      return PageStaffDashboard;
-    case "summary":
-      return PageSummary;
-    case "notes":
-      return PageNote;
-    case "progress":
-      return PageProgress;
-    case "digmar":
-      return PageDigmar;
-    case "leads":
-      return PageLeads;
-    case "spv-report":
-      return PageSpvReport;
-    case "aduan":
-      return PageCustomerCare;
-    case "promo":
-      return PagePromo;
-    case "report":
-      return PageReport;
-    case "master-data":
-      return PageMasterData;
-    case "users":
-      return PageUsers;
-    case "profile":
-      return PageProfile;
-    case "presensi":
-      return PagePresensi;
-    case "daily-report":
-      return PageDailyReport;
-    default:
-      return PageStaffDashboard;
-  }
+// --- PERBAIKAN BUG: Definisi isSuperadminOrSpv ---
+const isSuperadminOrSpv = computed(() => {
+  if (!store.currentUser) return false;
+  const role = (
+    store.currentUser.role ||
+    store.currentUser.Role ||
+    ""
+  ).toUpperCase();
+  return ["SUPERADMIN", "SPV", "SUPERVISOR", "MANAGER"].includes(role); // Sesuaikan dengan role hierarki Anda
 });
 
-// --- RECORD NAVIGASI DALAM APP ---
+// --- PERBAIKAN: Object Mapping untuk Routing (Mengganti Switch-Case) ---
+const viewMap = {
+  summary: PageSummary,
+  notes: PageNote,
+  progress: PageProgress,
+  digmar: PageDigmar,
+  leads: PageLeads,
+  "spv-report": PageSpvReport,
+  aduan: PageCustomerCare,
+  promo: PagePromo,
+  report: PageReport,
+  "master-data": PageMasterData,
+  users: PageUsers,
+  profile: PageProfile,
+  presensi: PagePresensi,
+  "daily-report": PageDailyReport,
+};
+
+const activeView = computed(() => {
+  if (store.currentPage.startsWith("unit-")) return PageUnit;
+  return viewMap[store.currentPage] || PageStaffDashboard;
+});
+
+// --- STATE NAVIGASI & SWIPE ---
+const isSidebarOpen = ref(false);
+const pageHistory = ref([]);
+const isBackAction = ref(false);
+let touchStartX = 0;
+let touchStartY = 0;
+
 watch(
   () => store.currentPage,
   (newPage, oldPage) => {
@@ -197,24 +187,15 @@ watch(
       isBackAction.value = false;
       return;
     }
-
-    if (oldPage && newPage !== oldPage) {
-      if (pageHistory.value[pageHistory.value.length - 1] !== oldPage) {
-        pageHistory.value.push(oldPage);
-      }
+    if (
+      oldPage &&
+      newPage !== oldPage &&
+      pageHistory.value[pageHistory.value.length - 1] !== oldPage
+    ) {
+      pageHistory.value.push(oldPage);
     }
   },
 );
-
-let touchStartX = 0;
-let touchStartY = 0;
-
-// State Sidebar Mobile Open/Close
-const isSidebarOpen = ref(false);
-
-// Tumpukan Riwayat Halaman untuk Back di Dalam App
-const pageHistory = ref([]);
-const isBackAction = ref(false);
 
 const handleTouchStart = (e) => {
   touchStartX = e.touches[0].clientX;
@@ -222,35 +203,20 @@ const handleTouchStart = (e) => {
 };
 
 const handleTouchEnd = (e) => {
-  const touchEndX = e.changedTouches[0].clientX;
-  const touchEndY = e.changedTouches[0].clientY;
+  const deltaX = e.changedTouches[0].clientX - touchStartX;
+  const deltaY = e.changedTouches[0].clientY - touchStartY;
 
-  const deltaX = touchEndX - touchStartX;
-  const deltaY = touchEndY - touchStartY;
-
-  // Pastikan swipe mendatar (bukan scroll vertikal) dan jarak swipe > 70px
-  if (deltaX > 70 && Math.abs(deltaY) < 50) {
-    // Jika swipe dari pinggir kiri (kurang dari 50px dari tepi layar)
-    if (touchStartX < 50) {
-      // Buka sidebar
-      isSidebarOpen.value = true;
-    }
+  // Deteksi swipe dari ujung kiri untuk membuka sidebar
+  if (deltaX > 70 && Math.abs(deltaY) < 50 && touchStartX < 50) {
+    isSidebarOpen.value = true;
   }
 };
 
-// --- HOOK INISIALISASI UTAMA & RESTORE LOGIN ---
-
-onUnmounted(() => {
-  window.removeEventListener("touchstart", handleTouchStart);
-  window.removeEventListener("touchend", handleTouchEnd);
-});
-
-onMounted(() => {
+// --- LIFECYCLE HOOKS ---
+onMounted(async () => {
   window.addEventListener("touchstart", handleTouchStart, { passive: true });
   window.addEventListener("touchend", handleTouchEnd, { passive: true });
-});
 
-onMounted(async () => {
   store.initTheme();
   store.initThemeColor();
 
@@ -265,11 +231,11 @@ onMounted(async () => {
     }
   }
 
+  // Dukungan tombol Back Native (Android/WebView)
   window.handleAndroidBack = () => {
     if (pageHistory.value.length > 0) {
-      const previousPage = pageHistory.value.pop();
       isBackAction.value = true;
-      store.currentPage = previousPage;
+      store.currentPage = pageHistory.value.pop();
       return "true";
     } else if (store.currentPage !== "main") {
       isBackAction.value = true;
@@ -278,6 +244,11 @@ onMounted(async () => {
     }
     return "false";
   };
+});
+
+onUnmounted(() => {
+  window.removeEventListener("touchstart", handleTouchStart);
+  window.removeEventListener("touchend", handleTouchEnd);
 });
 </script>
 

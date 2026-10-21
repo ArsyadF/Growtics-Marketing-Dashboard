@@ -31,9 +31,8 @@
         >
           <span
             class="w-9 h-9 bg-button text-white rounded-xl text-sm shrink-0 flex items-center justify-center shadow-sm"
-          >
-            <i class="fa-solid fa-chart-pie"></i>
-          </span>
+            ><i class="fa-solid fa-chart-pie"></i
+          ></span>
           <h1
             v-if="!isCollapsed"
             class="text-sm font-semibold text-slate-800 dark:text-slate-100 whitespace-nowrap tracking-wide"
@@ -41,7 +40,6 @@
             NHP-Group3
           </h1>
         </button>
-
         <button
           v-if="!isCollapsed"
           @click="toggleCollapse"
@@ -50,11 +48,10 @@
         >
           <i class="fa-solid fa-angles-left text-xs"></i>
         </button>
-
         <button
+          v-if="!isCollapsed"
           @click="$emit('close-sidebar')"
           class="md:hidden text-slate-400 p-1 shrink-0 cursor-pointer ml-1"
-          v-if="!isCollapsed"
         >
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
@@ -83,287 +80,74 @@
         </div>
       </div>
 
-      <!-- Menu Navigasi Utama -->
+      <!-- Menu Navigasi Utama (Data-Driven) -->
       <nav
         class="flex-1 overflow-y-auto py-1 px-2.5 space-y-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
       >
         <ul class="space-y-1">
-          <!-- 1. DASHBOARD -->
-          <li
-            v-if="
-              store.canAccessPage('main') &&
-              isMenuVisible('Dashboard Utama', 'main')
-            "
-            class="flex justify-center"
-          >
-            <a
-              href="#"
-              @click.prevent="navigate('main')"
-              class="w-full flex items-center py-2 text-xs font-semibold rounded-xl transition-all"
-              :class="[
-                activePage === 'main'
-                  ? 'bg-button text-white font-semibold shadow-sm'
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
-                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
-              ]"
-              :title="isCollapsed ? 'Dashboard' : ''"
-            >
-              <i class="fa-solid fa-house text-sm shrink-0"></i>
-              <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
-                >Dashboard</span
-              >
-            </a>
-          </li>
-
-          <li
-            v-if="
-              store.canAccessPage('daily-report') &&
-              isMenuVisible('Laporan Harian')
-            "
-            class="flex justify-center"
-          >
-            <a
-              href="#"
-              @click.prevent="navigate('daily-report')"
-              class="w-full flex items-center py-2 text-xs rounded-xl transition-all"
-              :class="[
-                activePage === 'daily-report'
-                  ? 'bg-button text-white font-semibold shadow-sm'
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
-                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
-              ]"
-            >
-              <i class="fa-solid fa-file-invoice text-sm shrink-0"></i>
-              <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
-                >Laporan Harian</span
-              >
-            </a>
-          </li>
-
-          <li
-            v-if="
-              store.canAccessPage('summary') &&
-              isMenuVisible('Unit Summary', 'rekap')
-            "
-            class="flex justify-center"
-          >
-            <a
-              href="#"
-              @click.prevent="navigate('summary')"
-              class="w-full flex items-center py-2 text-xs rounded-xl transition-all"
-              :class="[
-                activePage === 'summary'
-                  ? 'bg-button text-white font-semibold shadow-sm'
-                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
-                isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
-              ]"
-              :title="isCollapsed ? 'Unit Summary' : ''"
-            >
-              <i class="fa-solid fa-chart-line text-sm shrink-0"></i>
-              <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
-                >Business Summary</span
-              >
-            </a>
-          </li>
-
-          <template v-if="isLoggedIn">
-            <!-- 3. UNIT BISNIS (ACCORDION GROUP) -->
-            <li
-              v-if="
-                shouldShowGroup([
-                  {
-                    name: 'Nur Hidayah Press',
-                    page: 'unit-NHP',
-                    access: hasUnitAccess('NHP'),
-                  },
-                  {
-                    name: 'Nusaragam x Pengaosan',
-                    page: 'unit-NHC',
-                    access: hasUnitAccess('NHC'),
-                  },
-                  {
-                    name: 'Karta Grafika',
-                    page: 'unit-KG',
-                    access: hasUnitAccess('KG'),
-                  },
-                ])
-              "
-            >
-              <button
-                @click="toggleDropdown('units')"
-                class="w-full flex items-center py-2 text-xs rounded-xl transition-all outline-none cursor-pointer mt-1"
+          <template v-for="menu in filteredMenus" :key="menu.id">
+            <!-- Tipe 1: Link Tunggal -->
+            <li v-if="menu.type === 'link'" class="flex justify-center">
+              <a
+                href="#"
+                @click.prevent="navigate(menu.id)"
+                class="w-full flex items-center py-2 text-xs rounded-xl transition-all"
                 :class="[
-                  isGroupActive(['unit-NHP', 'unit-NHC', 'unit-KG'])
-                    ? 'bg-button/20 dark:bg-button/20 text-theme dark:text-theme font-semibold'
+                  activePage === menu.id
+                    ? 'bg-button text-white font-semibold shadow-sm'
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
-                  isCollapsed ? 'justify-center px-0' : 'justify-between px-3',
+                  isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
                 ]"
-                :title="isCollapsed ? 'Unit Bisnis' : ''"
+                :title="isCollapsed ? menu.label : ''"
               >
-                <div
-                  class="flex items-center gap-3 min-w-0"
-                  :class="isCollapsed ? 'justify-center w-full' : ''"
-                >
-                  <i class="fa-solid fa-building text-sm shrink-0"></i>
-                  <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
-                    >Business Unit</span
-                  >
-                </div>
-                <i
-                  v-if="!isCollapsed"
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
-                  :class="{ 'rotate-180': dropdowns.units || searchMenuQuery }"
-                ></i>
-              </button>
-
-              <transition
-                enter-active-class="transition-all duration-200"
-                leave-active-class="transition-all duration-150"
-              >
-                <ul
-                  v-show="dropdowns.units || isCollapsed || searchMenuQuery"
-                  class="mt-1 space-y-1"
-                  :class="
-                    isCollapsed
-                      ? 'px-0'
-                      : 'pl-3 border-l-2 border-slate-200 dark:border-slate-800 ml-4'
-                  "
-                >
-                  <li
-                    v-if="
-                      hasUnitAccess('NHP') &&
-                      isMenuVisible('Nur Hidayah Press NHP', 'unit-NHP')
-                    "
-                  >
-                    <a
-                      href="#"
-                      @click.prevent="navigate('unit-NHP')"
-                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                      :class="[
-                        activePage === 'unit-NHP'
-                          ? 'bg-button text-white font-semibold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                        isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                      ]"
-                    >
-                      <i class="fa-solid fa-book-open text-xs"></i
-                      ><span v-if="!isCollapsed" class="truncate"
-                        >Nur Hidayah Press</span
-                      >
-                    </a>
-                  </li>
-                  <li
-                    v-if="
-                      hasUnitAccess('NHC') &&
-                      isMenuVisible('Nusaragam Pengaosan NHC', 'unit-NHC')
-                    "
-                  >
-                    <a
-                      href="#"
-                      @click.prevent="navigate('unit-NHC')"
-                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                      :class="[
-                        activePage === 'unit-NHC'
-                          ? 'bg-button text-white font-semibold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                        isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                      ]"
-                    >
-                      <i class="fa-solid fa-shirt text-xs"></i
-                      ><span v-if="!isCollapsed" class="truncate"
-                        >Nusaragam x Pengaosan</span
-                      >
-                    </a>
-                  </li>
-                  <li
-                    v-if="
-                      hasUnitAccess('KG') &&
-                      isMenuVisible('Karta Grafika KG', 'unit-KG')
-                    "
-                  >
-                    <a
-                      href="#"
-                      @click.prevent="navigate('unit-KG')"
-                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                      :class="[
-                        activePage === 'unit-KG'
-                          ? 'bg-button text-white font-semibold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                        isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                      ]"
-                    >
-                      <i class="fa-solid fa-print text-xs"></i
-                      ><span v-if="!isCollapsed" class="truncate"
-                        >Karta Grafika</span
-                      >
-                    </a>
-                  </li>
-                </ul>
-              </transition>
+                <i :class="['fa-solid text-sm shrink-0', menu.icon]"></i>
+                <span v-if="!isCollapsed" class="whitespace-nowrap truncate">{{
+                  menu.label
+                }}</span>
+              </a>
             </li>
 
-            <!-- 4. WORKSPACE (ACCORDION GROUP) -->
-            <li
-              v-if="
-                shouldShowGroup([
-                  {
-                    name: 'Campaign Progress',
-                    page: 'progress',
-                    access: store.canAccessPage('progress'),
-                  },
-                  {
-                    name: 'Socmed Analytics',
-                    page: 'digmar',
-                    access: store.canAccessPage('digmar'),
-                  },
-                  {
-                    name: 'Leads & Campaign',
-                    page: 'leads',
-                    access: store.canAccessPage('leads'),
-                  },
-                  {
-                    name: 'Laporan Divisi SPV Pekanan',
-                    page: 'spv-report',
-                    access: store.canAccessPage('spv-report'),
-                  },
-                ])
-              "
-            >
+            <!-- Tipe 2: Grup Akordeon (Dropdown) -->
+            <li v-else-if="menu.type === 'group'">
               <button
-                @click="toggleDropdown('campaign')"
+                @click="toggleDropdown(menu.id)"
                 class="w-full flex items-center py-2 text-xs rounded-xl transition-all outline-none cursor-pointer mt-1"
                 :class="[
-                  isGroupActive(['progress', 'digmar', 'leads', 'spv-report'])
-                    ? 'text-theme dark:text-theme font-semibold bg-button/20 dark:bg-button/20'
+                  isGroupActive(menu.children.map((c) => c.id))
+                    ? menu.activeColor ||
+                      'text-theme dark:text-theme font-semibold bg-button/20 dark:bg-button/20'
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
                   isCollapsed ? 'justify-center px-0' : 'justify-between px-3',
                 ]"
-                :title="isCollapsed ? 'Campaign Hub' : ''"
+                :title="isCollapsed ? menu.label : ''"
               >
                 <div
                   class="flex items-center gap-3 min-w-0"
                   :class="isCollapsed ? 'justify-center w-full' : ''"
                 >
-                  <i class="fa-solid fa-bullhorn text-sm shrink-0"></i>
-                  <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
-                    >Workspace</span
+                  <i :class="['fa-solid text-sm shrink-0', menu.icon]"></i>
+                  <span
+                    v-if="!isCollapsed"
+                    class="whitespace-nowrap truncate"
+                    >{{ menu.label }}</span
                   >
                 </div>
                 <i
                   v-if="!isCollapsed"
                   class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
                   :class="{
-                    'rotate-180': dropdowns.campaign || searchMenuQuery,
+                    'rotate-180': dropdowns[menu.id] || searchMenuQuery,
                   }"
                 ></i>
               </button>
 
+              <!-- Sub-menu -->
               <transition
                 enter-active-class="transition-all duration-200"
                 leave-active-class="transition-all duration-150"
               >
                 <ul
-                  v-show="dropdowns.campaign || isCollapsed || searchMenuQuery"
+                  v-show="dropdowns[menu.id] || isCollapsed || searchMenuQuery"
                   class="mt-1 space-y-1"
                   :class="
                     isCollapsed
@@ -371,304 +155,22 @@
                       : 'pl-3 border-l-2 border-slate-200 dark:border-slate-800 ml-4'
                   "
                 >
-                  <li
-                    v-if="
-                      store.canAccessPage('progress') &&
-                      isMenuVisible(
-                        'Campaign Progress Progres Program',
-                        'progress',
-                      )
-                    "
-                  >
+                  <li v-for="child in menu.children" :key="child.id">
                     <a
                       href="#"
-                      @click.prevent="navigate('progress')"
+                      @click.prevent="navigate(child.id)"
                       class="w-full flex items-center py-1.5 text-xs rounded-lg"
                       :class="[
-                        activePage === 'progress'
+                        activePage === child.id
                           ? 'bg-button text-white font-semibold'
                           : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
                         isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
                       ]"
                     >
-                      <i class="fa-solid fa-bars-progress text-xs"></i
-                      ><span v-if="!isCollapsed" class="truncate"
-                        >Team Progress</span
-                      >
-                    </a>
-                  </li>
-                  <li
-                    v-if="
-                      store.canAccessPage('digmar') &&
-                      isMenuVisible('Socmed Analytics', 'digmar')
-                    "
-                  >
-                    <a
-                      href="#"
-                      @click.prevent="navigate('digmar')"
-                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                      :class="[
-                        activePage === 'digmar'
-                          ? 'bg-button text-white font-semibold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                        isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                      ]"
-                    >
-                      <i class="fa-solid fa-share-nodes text-xs"></i
-                      ><span v-if="!isCollapsed" class="truncate"
-                        >Socmed Analytics</span
-                      >
-                    </a>
-                  </li>
-                  <li
-                    v-if="
-                      store.canAccessPage('leads') &&
-                      isMenuVisible('Leads & Campaign', 'leads')
-                    "
-                  >
-                    <a
-                      href="#"
-                      @click.prevent="navigate('leads')"
-                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                      :class="[
-                        activePage === 'leads'
-                          ? 'bg-button text-white font-semibold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                        isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                      ]"
-                    >
-                      <i class="fa-solid fa-users-rays text-xs"></i
-                      ><span v-if="!isCollapsed" class="truncate"
-                        >Leads & Campaign</span
-                      >
-                    </a>
-                  </li>
-
-                  <li
-                    v-if="
-                      store.canAccessPage('spv-report') &&
-                      isMenuVisible('Laporan Divisi SPV Pekanan', 'spv-report')
-                    "
-                  >
-                    <a
-                      href="#"
-                      @click.prevent="navigate('spv-report')"
-                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                      :class="[
-                        activePage === 'spv-report'
-                          ? 'bg-button text-white font-semibold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                        isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                      ]"
-                    >
-                      <i class="fa-solid fa-file-signature text-xs"></i
-                      ><span v-if="!isCollapsed" class="truncate"
-                        >Division Report</span
-                      >
-                    </a>
-                  </li>
-                </ul>
-              </transition>
-            </li>
-
-            <li
-              v-if="
-                store.canAccessPage('aduan') &&
-                isMenuVisible('Customer Support Aduan Layanan', 'aduan')
-              "
-            >
-              <a
-                href="#"
-                @click.prevent="navigate('aduan')"
-                class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                :class="[
-                  activePage === 'aduan'
-                    ? 'bg-button text-white font-semibold'
-                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                  isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                ]"
-              >
-                <i class="fa-solid fa-headset text-xs"></i
-                ><span v-if="!isCollapsed" class="truncate"
-                  >Customer Support</span
-                >
-              </a>
-            </li>
-            <li
-              v-if="
-                store.canAccessPage('promo') &&
-                isMenuVisible('Marketing Budget Biaya Promosi Ads', 'promo')
-              "
-            >
-              <a
-                href="#"
-                @click.prevent="navigate('promo')"
-                class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                :class="[
-                  activePage === 'promo'
-                    ? 'bg-button text-white font-semibold'
-                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                  isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                ]"
-              >
-                <i class="fa-solid fa-wallet text-xs"></i
-                ><span v-if="!isCollapsed" class="truncate"
-                  >Marketing Budget</span
-                >
-              </a>
-            </li>
-            <li
-              v-if="
-                store.canAccessPage('report') &&
-                isMenuVisible('Laporan Executive Export', 'report')
-              "
-            >
-              <a
-                href="#"
-                @click.prevent="navigate('report')"
-                class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                :class="[
-                  activePage === 'report'
-                    ? 'bg-button text-white font-semibold'
-                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                  isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                ]"
-              >
-                <i class="fa-solid fa-file-invoice-dollar text-xs"></i
-                ><span v-if="!isCollapsed" class="truncate"
-                  >Executive Report</span
-                >
-              </a>
-            </li>
-
-            <!-- 2. NOTES / CATATAN -->
-            <li
-              v-if="
-                store.canAccessPage('notes') &&
-                isMenuVisible('Catatan Pribadi Notes', 'notes')
-              "
-              class="flex justify-center"
-            >
-              <a
-                href="#"
-                @click.prevent="navigate('notes')"
-                class="w-full flex items-center py-2 text-xs rounded-xl transition-all"
-                :class="[
-                  activePage === 'notes'
-                    ? 'bg-button text-white font-semibold shadow-sm'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
-                  isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
-                ]"
-                :title="isCollapsed ? 'Notes / Catatan' : ''"
-              >
-                <i class="fa-solid fa-note-sticky text-sm shrink-0"></i>
-                <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
-                  >Notes</span
-                >
-              </a>
-            </li>
-
-            <!-- 7. SYSTEM SETTINGS (ACCORDION GROUP) -->
-            <li
-              v-if="
-                shouldShowGroup([
-                  {
-                    name: 'Master Data System Target',
-                    page: 'master-data',
-                    access: isSuperadmin,
-                  },
-                  {
-                    name: 'Akses Pengguna User Role',
-                    page: 'users',
-                    access: isSuperadmin,
-                  },
-                ])
-              "
-            >
-              <button
-                @click="toggleDropdown('system')"
-                class="w-full flex items-center py-2 text-xs rounded-xl transition-all outline-none cursor-pointer mt-1"
-                :class="[
-                  isGroupActive(['master-data', 'users'])
-                    ? 'bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
-                  isCollapsed ? 'justify-center px-0' : 'justify-between px-3',
-                ]"
-                :title="isCollapsed ? 'System Settings' : ''"
-              >
-                <div
-                  class="flex items-center gap-3 min-w-0"
-                  :class="isCollapsed ? 'justify-center w-full' : ''"
-                >
-                  <i class="fa-solid fa-gear text-sm shrink-0"></i>
-                  <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
-                    >System Settings</span
-                  >
-                </div>
-                <i
-                  v-if="!isCollapsed"
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
-                  :class="{ 'rotate-180': dropdowns.system || searchMenuQuery }"
-                ></i>
-              </button>
-
-              <transition
-                enter-active-class="transition-all duration-200"
-                leave-active-class="transition-all duration-150"
-              >
-                <ul
-                  v-show="dropdowns.system || isCollapsed || searchMenuQuery"
-                  class="mt-1 space-y-1"
-                  :class="
-                    isCollapsed
-                      ? 'px-0'
-                      : 'pl-3 border-l-2 border-slate-200 dark:border-slate-800 ml-4'
-                  "
-                >
-                  <li
-                    v-if="
-                      isSuperadmin &&
-                      isMenuVisible('Master Data System Target', 'master-data')
-                    "
-                  >
-                    <a
-                      href="#"
-                      @click.prevent="navigate('master-data')"
-                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                      :class="[
-                        activePage === 'master-data'
-                          ? 'bg-button text-white font-semibold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                        isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                      ]"
-                    >
-                      <i class="fa-solid fa-sliders text-xs"></i
-                      ><span v-if="!isCollapsed" class="truncate"
-                        >Master Data</span
-                      >
-                    </a>
-                  </li>
-                  <li
-                    v-if="
-                      isSuperadmin &&
-                      isMenuVisible('Akses Pengguna User Role', 'users')
-                    "
-                  >
-                    <a
-                      href="#"
-                      @click.prevent="navigate('users')"
-                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                      :class="[
-                        activePage === 'users'
-                          ? 'bg-button text-white font-semibold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                        isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                      ]"
-                    >
-                      <i class="fa-solid fa-users-gear text-xs"></i
-                      ><span v-if="!isCollapsed" class="truncate"
-                        >Akses Pengguna</span
-                      >
+                      <i :class="['fa-solid text-xs', child.icon]"></i>
+                      <span v-if="!isCollapsed" class="truncate">{{
+                        child.label
+                      }}</span>
                     </a>
                   </li>
                 </ul>
@@ -739,16 +241,209 @@ const props = defineProps({
 const emit = defineEmits(["close-sidebar", "change-page", "open-login"]);
 
 const searchMenuQuery = ref("");
+const dropdowns = reactive({ units: false, campaign: false, system: false });
 
-// State Akordeon Dropdown Setiap Group
-const dropdowns = reactive({
-  units: false,
-  campaign: true,
-  marketing: false,
-  executive: false,
-  system: false,
+const isCollapsed = computed(() => store.isSidebarCollapsed);
+const toggleCollapse = () => store.toggleSidebarCollapse();
+const isLoggedIn = computed(() => !!store.currentUser);
+const userData = computed(() => store.currentUser || {});
+const isSuperadmin = computed(
+  () =>
+    (userData.value?.role || userData.value?.Role || "").toUpperCase() ===
+    "SUPERADMIN",
+);
+const hasUnitAccess = (unitName) => store.canAccessPage(`unit-${unitName}`);
+
+// ==========================================
+// KONFIGURASI MENU DATA-DRIVEN
+// ==========================================
+const menuConfig = computed(() => [
+  {
+    type: "link",
+    id: "main",
+    label: "Dashboard",
+    icon: "fa-house",
+    keywords: "dashboard utama",
+    condition: () => store.canAccessPage("main"),
+  },
+  {
+    type: "link",
+    id: "daily-report",
+    label: "Laporan Harian",
+    icon: "fa-file-invoice",
+    keywords: "laporan harian",
+    condition: () => store.canAccessPage("daily-report"),
+  },
+  {
+    type: "link",
+    id: "summary",
+    label: "Business Summary",
+    icon: "fa-chart-line",
+    keywords: "unit summary rekap",
+    condition: () => store.canAccessPage("summary"),
+  },
+  {
+    type: "group",
+    id: "units",
+    label: "Business Unit",
+    icon: "fa-building",
+    condition: () =>
+      isLoggedIn.value &&
+      (hasUnitAccess("NHP") || hasUnitAccess("NHC") || hasUnitAccess("KG")),
+    children: [
+      {
+        id: "unit-NHP",
+        label: "Nur Hidayah Press",
+        icon: "fa-book-open",
+        keywords: "nur hidayah press nhp",
+        condition: () => hasUnitAccess("NHP"),
+      },
+      {
+        id: "unit-NHC",
+        label: "Nusaragam x Pengaosan",
+        icon: "fa-shirt",
+        keywords: "nusaragam pengaosan nhc",
+        condition: () => hasUnitAccess("NHC"),
+      },
+      {
+        id: "unit-KG",
+        label: "Karta Grafika",
+        icon: "fa-print",
+        keywords: "karta grafika kg",
+        condition: () => hasUnitAccess("KG"),
+      },
+    ],
+  },
+  {
+    type: "group",
+    id: "campaign",
+    label: "Workspace",
+    icon: "fa-bullhorn",
+    condition: () =>
+      isLoggedIn.value &&
+      (store.canAccessPage("progress") ||
+        store.canAccessPage("digmar") ||
+        store.canAccessPage("leads") ||
+        store.canAccessPage("spv-report")),
+    children: [
+      {
+        id: "progress",
+        label: "Team Progress",
+        icon: "fa-bars-progress",
+        keywords: "campaign progress progres program",
+        condition: () => store.canAccessPage("progress"),
+      },
+      {
+        id: "digmar",
+        label: "Socmed Analytics",
+        icon: "fa-share-nodes",
+        keywords: "socmed analytics",
+        condition: () => store.canAccessPage("digmar"),
+      },
+      {
+        id: "leads",
+        label: "Leads & Campaign",
+        icon: "fa-users-rays",
+        keywords: "leads campaign",
+        condition: () => store.canAccessPage("leads"),
+      },
+      {
+        id: "spv-report",
+        label: "Division Report",
+        icon: "fa-file-signature",
+        keywords: "laporan divisi spv pekanan",
+        condition: () => store.canAccessPage("spv-report"),
+      },
+    ],
+  },
+  {
+    type: "link",
+    id: "notes",
+    label: "Notes",
+    icon: "fa-note-sticky",
+    keywords: "catatan pribadi notes",
+    condition: () => store.canAccessPage("notes"),
+  },
+  {
+    type: "link",
+    id: "aduan",
+    label: "Customer Support",
+    icon: "fa-headset",
+    keywords: "customer support aduan layanan",
+    condition: () => store.canAccessPage("aduan"),
+  },
+  {
+    type: "link",
+    id: "promo",
+    label: "Marketing Budget",
+    icon: "fa-wallet",
+    keywords: "marketing budget biaya promosi ads",
+    condition: () => store.canAccessPage("promo"),
+  },
+  {
+    type: "link",
+    id: "report",
+    label: "Executive Report",
+    icon: "fa-file-invoice-dollar",
+    keywords: "laporan executive export",
+    condition: () => store.canAccessPage("report"),
+  },
+  {
+    type: "group",
+    id: "system",
+    label: "System Settings",
+    icon: "fa-gear",
+    activeColor:
+      "bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold",
+    condition: () => isLoggedIn.value && isSuperadmin.value,
+    children: [
+      {
+        id: "master-data",
+        label: "Master Data",
+        icon: "fa-sliders",
+        keywords: "master data system target",
+        condition: () => isSuperadmin.value,
+      },
+      {
+        id: "users",
+        label: "Akses Pengguna",
+        icon: "fa-users-gear",
+        keywords: "akses pengguna user role",
+        condition: () => isSuperadmin.value,
+      },
+    ],
+  },
+]);
+
+// Logika Filter Pencarian yang Lebih Bersih
+const filteredMenus = computed(() => {
+  const query = searchMenuQuery.value.toLowerCase();
+  return menuConfig.value.reduce((acc, menu) => {
+    if (!menu.condition()) return acc;
+
+    if (menu.type === "link") {
+      if (
+        !query ||
+        menu.label.toLowerCase().includes(query) ||
+        menu.keywords.includes(query)
+      )
+        acc.push(menu);
+    } else if (menu.type === "group") {
+      const validChildren = menu.children.filter(
+        (child) =>
+          child.condition() &&
+          (!query ||
+            child.label.toLowerCase().includes(query) ||
+            child.keywords.includes(query)),
+      );
+      if (validChildren.length > 0)
+        acc.push({ ...menu, children: validChildren });
+    }
+    return acc;
+  }, []);
 });
 
+// --- HELPER FUNCTIONS ---
 const toggleDropdown = (key) => {
   if (isCollapsed.value) {
     store.toggleSidebarCollapse();
@@ -758,59 +453,7 @@ const toggleDropdown = (key) => {
   }
 };
 
-const isGroupActive = (pages) => pages.includes(props.activePage);
-
-// Auto Open Group saat Halaman Aktif Diganti
-watch(
-  () => props.activePage,
-  (newPage) => {
-    if (["unit-NHP", "unit-NHC", "unit-KG"].includes(newPage))
-      dropdowns.units = true;
-    if (["progress", "digmar", "leads"].includes(newPage))
-      dropdowns.campaign = true;
-    if (["promo", "spv-report", "aduan"].includes(newPage))
-      dropdowns.marketing = true;
-    if (["report"].includes(newPage)) dropdowns.executive = true;
-    if (["master-data", "users"].includes(newPage)) dropdowns.system = true;
-  },
-  { immediate: true },
-);
-
-watch(
-  () => props.isOpen,
-  (newVal) => {
-    if (window.innerWidth < 768) {
-      document.body.style.overflow = newVal ? "hidden" : "";
-    }
-  },
-);
-
-const isCollapsed = computed(() => store.isSidebarCollapsed);
-const toggleCollapse = () => store.toggleSidebarCollapse();
-
-const isLoggedIn = computed(() => !!store.currentUser);
-const userData = computed(() => store.currentUser || {});
-
-const isSuperadmin = computed(() => {
-  const role = userData.value?.role || userData.value?.Role;
-  return role ? role.toUpperCase() === "SUPERADMIN" : false;
-});
-
-const hasUnitAccess = (unitName) => store.canAccessPage(`unit-${unitName}`);
-
-const isMenuVisible = (menuName, pageKey) => {
-  if (!searchMenuQuery.value) return true;
-  const q = searchMenuQuery.value.toLowerCase();
-  return (
-    menuName.toLowerCase().includes(q) || pageKey.toLowerCase().includes(q)
-  );
-};
-
-const shouldShowGroup = (menuItems) => {
-  return menuItems.some(
-    (item) => item.access && isMenuVisible(item.name, item.page),
-  );
-};
+const isGroupActive = (pageIds) => pageIds.includes(props.activePage);
 
 const navigate = (page) => {
   emit("change-page", page);
@@ -819,4 +462,29 @@ const navigate = (page) => {
     emit("close-sidebar");
   }
 };
+
+// --- WATCHERS ---
+watch(
+  () => props.activePage,
+  (newPage) => {
+    // Auto-expand grup jika anak menu sedang aktif
+    menuConfig.value.forEach((menu) => {
+      if (
+        menu.type === "group" &&
+        menu.children.some((c) => c.id === newPage)
+      ) {
+        dropdowns[menu.id] = true;
+      }
+    });
+  },
+  { immediate: true },
+);
+
+watch(
+  () => props.isOpen,
+  (newVal) => {
+    if (window.innerWidth < 768)
+      document.body.style.overflow = newVal ? "hidden" : "";
+  },
+);
 </script>

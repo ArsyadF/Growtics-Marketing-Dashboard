@@ -109,7 +109,7 @@
 /* ==========================================================================
    3. GLASSMORPHISM STYLES
    ========================================================================== */
-.glass-card {
+/* .glass-card {
   background: rgba(255, 255, 255, 0.80);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -131,6 +131,31 @@
   background: rgba(20, 20, 20, 0.204);
   backdrop-filter: blur(8px);
   border: 1px solid rgba(244, 255, 251, 0.15);
+  color: #f1f5f9;
+} */
+
+.glass-card {
+  background: rgba(255, 255, 255);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.dark .glass-card {
+  background: #171725;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.glass-input {
+  background: rgba(255, 255, 255);
+  backdrop-filter: blur(8px);
+  border: 1px solid #dbdbdba2;
+}
+
+.dark .glass-input {
+  background: rgba(20, 20, 20);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(244, 255, 251);
   color: #f1f5f9;
 }
 

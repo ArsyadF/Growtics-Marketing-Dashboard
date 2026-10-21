@@ -1,13 +1,22 @@
 <!-- src/views/PagePromo.vue -->
 <template>
-  <section id="page-promo" class="page-section space-y-4 md:space-y-6">
+  <section
+    id="page-promo"
+    class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6"
+  >
     <!-- Header Section -->
     <div
-      class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
+      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
     >
       <div>
+        <h2
+          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
+        >
+          <i class="fa-solid fa-bullhorn text-rose-500"></i>
+          <span>Manajemen Biaya Promosi</span>
+        </h2>
         <p
-          class="text-slate-500 dark:text-slate-400 text-sm md:text-xs font-normal"
+          class="text-slate-500 dark:text-slate-400 text-sm md:text-xs font-normal mt-0.5"
         >
           Rekapitulasi dan Tren Pengeluaran Promosi Tiap Unit.
         </p>
@@ -15,15 +24,17 @@
       <button
         v-if="store.canEditPage('promo')"
         @click="store.openModal('promo')"
-        class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-4 py-2.5 rounded-xl font-semibold text-sm md:text-xs shadow-md transition-all w-full sm:w-auto text-center cursor-pointer"
+        class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-4 py-2.5 rounded-xl font-semibold text-sm md:text-xs shadow-md transition-all w-full sm:w-auto text-center cursor-pointer flex items-center justify-center gap-1.5"
       >
-        <i class="fa-solid fa-plus mr-1.5"></i>Input Biaya Promosi
+        <i class="fa-solid fa-plus text-xs"></i>Input Biaya Promosi
       </button>
     </div>
 
     <!-- 1. Metric Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-      <div class="glass-card p-4 rounded-2xl flex items-center justify-between">
+      <div
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center justify-between"
+      >
         <div>
           <p class="text-xs text-slate-400 font-normal">Total Biaya Promosi</p>
           <h3 class="text-xl md:text-base font-semibold text-rose-500 mt-0.5">
@@ -37,7 +48,9 @@
         </div>
       </div>
 
-      <div class="glass-card p-4 rounded-2xl flex items-center justify-between">
+      <div
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center justify-between"
+      >
         <div>
           <p class="text-xs text-slate-400 font-normal">Rata-rata / Bulan</p>
           <h3
@@ -47,13 +60,15 @@
           </h3>
         </div>
         <div
-          class="w-10 h-10 rounded-xl bg-[#25eba11a] text-[#1caa80] flex items-center justify-center font-semibold"
+          class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-semibold"
         >
           <i class="fa-solid fa-calculator text-sm"></i>
         </div>
       </div>
 
-      <div class="glass-card p-4 rounded-2xl flex items-center justify-between">
+      <div
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center justify-between"
+      >
         <div>
           <p class="text-xs text-slate-400 font-normal">
             Pengeluaran Tertinggi
@@ -75,7 +90,9 @@
     </div>
 
     <!-- 2. Management Data Table dengan Bulk Action & Sorting -->
-    <div class="glass-card rounded-2xl p-4 md:p-6 space-y-4">
+    <div
+      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-2xl p-4 md:p-6 border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
+    >
       <div
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
       >
@@ -121,7 +138,7 @@
             <select
               v-model="itemsPerPage"
               @change="currentPage = 1"
-              class="glass-input rounded-xl p-1.5 text-sm md:text-xs dark:bg-slate-800 outline-none font-semibold"
+              class="glass-input rounded-xl p-1.5 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none font-semibold"
             >
               <option value="25">25</option>
               <option value="50">50</option>
@@ -133,56 +150,64 @@
       </div>
 
       <!-- Area Scrollable Tabel -->
-      <div class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1">
-        <table class="min-w-full text-sm md:text-xs text-left border-collapse">
+      <div
+        class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1 custom-scrollbar"
+      >
+        <table
+          class="min-w-full text-sm md:text-xs text-left border-collapse whitespace-nowrap"
+        >
           <thead
-            class="bg-white/80 dark:bg-slate-800/90 text-slate-400 sticky top-0 backdrop-blur-md z-10 font-semibold uppercase text-xs md:text-xs"
+            class="bg-slate-50/95 dark:bg-slate-800/95 text-slate-400 sticky top-0 backdrop-blur-md z-10 font-semibold uppercase text-xs shadow-sm"
           >
             <tr>
-              <th class="py-2.5 px-3 w-8 text-center">
+              <th
+                class="py-2.5 px-3 w-8 text-center border-b border-slate-200 dark:border-slate-700"
+              >
                 <input
                   type="checkbox"
                   :checked="isAllSelected"
                   @change="toggleSelectAll"
-                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4"
                 />
               </th>
               <th
                 @click="sortTable('Tanggal')"
-                class="py-2.5 px-4 cursor-pointer select-none"
+                class="py-2.5 px-4 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700"
               >
                 Tanggal <i class="fa-solid fa-sort text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Unit')"
-                class="py-2.5 px-4 cursor-pointer select-none"
+                class="py-2.5 px-4 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700"
               >
                 Unit Usaha <i class="fa-solid fa-sort text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('BiayaPromosi')"
-                class="py-2.5 px-4 cursor-pointer select-none"
+                class="py-2.5 px-4 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700"
               >
                 Biaya Promosi <i class="fa-solid fa-sort text-xs ml-1"></i>
               </th>
               <th
                 v-if="store.canEditPage('promo')"
-                class="py-2.5 px-4 text-center"
+                class="py-2.5 px-4 text-center border-b border-slate-200 dark:border-slate-700"
               >
                 Aksi
               </th>
             </tr>
           </thead>
 
-          <tbody class="divide-y dark:divide-slate-800/80 font-normal">
+          <tbody
+            class="divide-y divide-slate-100 dark:divide-slate-800/60 font-normal text-slate-700 dark:text-slate-200"
+          >
             <tr v-if="store.isLoading">
-              <td colspan="5" class="text-center py-4 text-slate-400">
+              <td colspan="5" class="text-center py-6 text-slate-400">
                 Memuat data promosi...
               </td>
             </tr>
 
             <tr v-else-if="paginatedPromo.length === 0">
-              <td colspan="5" class="text-center py-4 text-slate-400">
+              <td colspan="5" class="text-center py-6 text-slate-400">
                 Tidak ada data biaya promosi.
               </td>
             </tr>
@@ -191,7 +216,7 @@
               v-else
               v-for="item in paginatedPromo"
               :key="getDocId(item)"
-              class="hover:bg-white/20 dark:hover:bg-slate-800/40"
+              class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
               :class="{
                 'bg-purple-500/10 dark:bg-purple-500/20': selectedIds.includes(
                   getDocId(item),
@@ -203,10 +228,10 @@
                   type="checkbox"
                   :value="getDocId(item)"
                   v-model="selectedIds"
-                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4"
                 />
               </td>
-              <td class="py-3 px-4">
+              <td class="py-3 px-4 font-medium">
                 {{ item.Tanggal ? String(item.Tanggal).substring(0, 10) : "-" }}
               </td>
               <td class="py-3 px-4 font-semibold">{{ item.Unit || "-" }}</td>
@@ -219,7 +244,7 @@
               >
                 <button
                   @click="store.openModal('promo', item)"
-                  class="text-[#1caa80] hover:text-[#1caa80] p-1 cursor-pointer"
+                  class="text-emerald-600 hover:underline p-1 cursor-pointer"
                   title="Edit Promo"
                 >
                   <i class="fa-solid fa-pen text-xs"></i>
@@ -250,13 +275,13 @@
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
-            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
           >
             <i class="fa-solid fa-chevron-left text-xs"></i>
           </button>
 
           <span
-            class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-[#1caa80] font-semibold"
+            class="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 font-semibold"
           >
             {{ currentPage }} / {{ totalPages }}
           </span>
@@ -264,7 +289,7 @@
           <button
             @click="currentPage++"
             :disabled="currentPage === totalPages"
-            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
           >
             <i class="fa-solid fa-chevron-right text-xs"></i>
           </button>
@@ -391,7 +416,6 @@ const rawPromo = computed(() => {
   return list.filter((p) => isDateInFilter(p.Tanggal));
 });
 
-// Rekap Bulanan
 const monthlyRecap = computed(() => {
   const recapMap = {};
   rawPromo.value.forEach((item) => {
@@ -423,7 +447,6 @@ const rataRataBulan = computed(() => {
   return totalBiayaPromosi.value / monthlyRecap.value.length;
 });
 
-// Safe-guard untuk maxMonth agar tidak undefined saat data kosong
 const maxMonth = computed(() => {
   if (!monthlyRecap.value || monthlyRecap.value.length === 0) {
     return { bulan: "", total: 0 };
@@ -551,7 +574,7 @@ const executeConfirmAction = async () => {
       clearSelection();
     } else if (confirmModal.targetId) {
       const res = await api.deleteData("promosi", confirmModal.targetId);
-      if (res.success) {
+      if (res && res.success) {
         selectedIds.value = selectedIds.value.filter(
           (id) => id !== confirmModal.targetId,
         );

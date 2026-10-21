@@ -1,16 +1,18 @@
-<!-- dashboard.vue -->
+<!-- src/views/PageSummary.vue -->
 <template>
-  <section id="page-main" class="page-section space-y-4 md:space-y-6">
+  <section
+    id="page-main"
+    class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6"
+  >
     <!-- Top Row: Kinerja Finansial & Funnel Marketing -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-stretch">
       <!-- Card Kinerja Finansial -->
       <div
-        class="lg:col-span-7 glass-card rounded-2xl p-4 md:p-5 flex flex-col justify-start relative overflow-hidden"
+        class="lg:col-span-7 glass-card bg-white/90 dark:bg-slate-900/90 rounded-2xl p-4 md:p-5 flex flex-col justify-between border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden"
       >
         <!-- Baris Atas: Nominal Utama -->
         <div class="flex items-end justify-between gap-3">
           <div class="min-w-0">
-            <!-- Mobile: text-sm (lebih besar) -> Desktop: text-xs (lebih ringkas) -->
             <span
               class="text-sm md:text-xs font-semibold uppercase text-theme tracking-wider block mb-0.5"
             >
@@ -19,11 +21,11 @@
             <h2
               class="text-xl md:text-2xl font-semibold text-slate-800 dark:text-slate-100 leading-none truncate"
             >
-              <!-- Tampilan Mobile (Ringkas: Rp 14,4 M) -->
+              <!-- Tampilan Mobile (Ringkas) -->
               <span class="sm:hidden">{{
                 formatRpDynamic(totRevFiltered, true)
               }}</span>
-              <!-- Tampilan Desktop (Lengkap: Rp 14.424.470.067) -->
+              <!-- Tampilan Desktop (Lengkap) -->
               <span class="hidden sm:inline">{{
                 formatRpDynamic(totRevFiltered, false)
               }}</span>
@@ -32,9 +34,8 @@
 
           <!-- Badge Target -->
           <div class="flex flex-col items-end shrink-0">
-            <!-- Mobile: text-sm (sentuhan lebih luas) -> Desktop: text-xs -->
             <span
-              class="inline-block text-sm md:text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-3 py-1.5 md:px-2.5 md:py-1 rounded-full border border-emerald-500/20 leading-tight"
+              class="inline-block text-sm md:text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1.5 md:px-2.5 md:py-1 rounded-full border border-emerald-500/20 leading-tight"
             >
               {{ persenCapaian }}% Target
             </span>
@@ -52,51 +53,77 @@
 
         <!-- Baris Bawah: Sub-Metrik Ringkas -->
         <div
-          class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-slate-200/50 dark:border-slate-800/80"
+          class="grid grid-cols-2 md:grid-cols-2 gap-2 text-center mt-4 pt-3 border-t border-slate-100 dark:border-slate-800"
         >
-          <div>
-            <p class="text-slate-400 text-sm md:text-xs mb-0.5">Sisa Target</p>
-            <p
-              class="font-semibold text-rose-500 dark:text-rose-400 truncate text-base md:text-sm"
-            >
-              <span class="sm:hidden">{{
-                formatRpDynamic(gap > 0 ? gap : 0, true)
-              }}</span>
-              <span class="hidden sm:inline">{{
-                formatRpDynamic(gap > 0 ? gap : 0, false)
-              }}</span>
-            </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div>
+              <p class="text-slate-400 text-sm md:text-xs mb-0.5">
+                Sisa Target
+              </p>
+              <p
+                class="font-semibold text-rose-500 dark:text-rose-400 truncate text-base md:text-sm"
+              >
+                <span class="sm:hidden">{{
+                  formatRpDynamic(gap > 0 ? gap : 0, true)
+                }}</span>
+                <span class="hidden sm:inline">{{
+                  formatRpDynamic(gap > 0 ? gap : 0, false)
+                }}</span>
+              </p>
+            </div>
+            <div>
+              <p class="text-slate-400 text-sm md:text-xs mb-0.5">
+                vs Thn Lalu
+              </p>
+              <p class="font-semibold text-theme truncate text-base md:text-sm">
+                <span class="sm:hidden">{{
+                  formatRpDynamic(selisihThnLalu, true)
+                }}</span>
+                <span class="hidden sm:inline">{{
+                  formatRpDynamic(selisihThnLalu, false)
+                }}</span>
+              </p>
+            </div>
           </div>
-          <div>
-            <p class="text-slate-400 text-sm md:text-xs mb-0.5">vs Thn Lalu</p>
-            <p class="font-semibold text-theme truncate text-base md:text-sm">
-              <span class="sm:hidden">{{
-                formatRpDynamic(selisihThnLalu, true)
-              }}</span>
-              <span class="hidden sm:inline">{{
-                formatRpDynamic(selisihThnLalu, false)
-              }}</span>
-            </p>
-          </div>
-          <div>
-            <p class="text-slate-400 text-sm md:text-xs mb-0.5">Biaya Promo</p>
-            <p
-              class="font-semibold text-slate-700 dark:text-slate-300 truncate text-base md:text-sm"
-            >
-              <span class="sm:hidden">{{
-                formatRpDynamic(totPromo, true)
-              }}</span>
-              <span class="hidden sm:inline">{{
-                formatRpDynamic(totPromo, false)
-              }}</span>
-            </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div>
+              <p class="text-slate-400 text-sm md:text-xs mb-0.5">
+                Growth (%):
+              </p>
+              <p
+                class="font-semibold truncate text-base md:text-sm"
+                :class="
+                  Number(persenThnLalu) >= 0
+                    ? 'text-emerald-600 dark:text-emerald-400'
+                    : 'text-rose-500 dark:text-rose-400'
+                "
+              >
+                {{ persenThnLalu }}%
+              </p>
+            </div>
+            <div>
+              <p class="text-slate-400 text-sm md:text-xs mb-0.5">
+                Biaya Promo
+              </p>
+              <p
+                class="font-semibold text-slate-700 dark:text-slate-300 truncate text-base md:text-sm"
+              >
+                <span class="sm:hidden">{{
+                  formatRpDynamic(totPromo, true)
+                }}</span>
+                <span class="hidden sm:inline">{{
+                  formatRpDynamic(totPromo, false)
+                }}</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Card Funnel Marketing -->
       <div
-        class="lg:col-span-5 glass-card rounded-2xl md:rounded-1xl p-4 md:p-6 flex flex-col justify-between"
+        class="lg:col-span-5 glass-card bg-white/90 dark:bg-slate-900/90 rounded-2xl p-4 md:p-6 flex flex-col justify-between border border-slate-100 dark:border-slate-800 shadow-sm"
       >
         <div class="flex justify-between items-center mb-3 md:mb-4">
           <span
@@ -115,24 +142,22 @@
           class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center my-auto py-2"
         >
           <div
-            class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60"
+            class="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/60"
           >
             <p
-              class="text-sm md:text-xs text-slate-400 uppercase font-semibold tracking-wider"
+              class="text-xs text-slate-400 uppercase font-semibold tracking-wider"
             >
               Campaign
             </p>
-            <h4
-              class="text-base md:text-sm font-semibold text-theme dark:text-theme mt-1"
-            >
+            <h4 class="text-base md:text-sm font-semibold text-theme mt-1">
               {{ totCamp.toLocaleString("id-ID") }}
             </h4>
           </div>
           <div
-            class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60"
+            class="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/60"
           >
             <p
-              class="text-sm md:text-xs text-slate-400 uppercase font-semibold tracking-wider"
+              class="text-xs text-slate-400 uppercase font-semibold tracking-wider"
             >
               Leads
             </p>
@@ -141,10 +166,10 @@
             </h4>
           </div>
           <div
-            class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60"
+            class="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/60"
           >
             <p
-              class="text-sm md:text-xs text-slate-400 uppercase font-semibold tracking-wider"
+              class="text-xs text-slate-400 uppercase font-semibold tracking-wider"
             >
               Follow Up
             </p>
@@ -153,16 +178,14 @@
             </h4>
           </div>
           <div
-            class="p-2.5 bg-[#f1f5f9] dark:bg-slate-900/50 rounded-2xl border border-white/20 dark:border-slate-800/60"
+            class="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/60"
           >
             <p
-              class="text-sm md:text-xs text-slate-400 uppercase font-semibold tracking-wider"
+              class="text-xs text-slate-400 uppercase font-semibold tracking-wider"
             >
               Pesanan
             </p>
-            <h4
-              class="text-base md:text-sm font-semibold text-theme dark:text-theme mt-1"
-            >
+            <h4 class="text-base md:text-sm font-semibold text-theme mt-1">
               {{ totOrder.toLocaleString("id-ID") }}
             </h4>
           </div>
@@ -172,7 +195,6 @@
 
     <!-- Cards Performa Unit Usaha -->
     <div>
-      <!-- Header Section -->
       <h3
         class="font-semibold text-slate-800 dark:text-slate-100 mb-2.5 text-base md:text-sm uppercase tracking-wider flex items-center gap-1.5"
       >
@@ -180,17 +202,15 @@
         Rekap Performa Unit Usaha
       </h3>
 
-      <!-- Grid Responsive: 2 Kolom di Mobile (NHP Span 2), 3 Kolom di Desktop -->
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3.5 md:gap-4">
         <div
           v-for="(u, index) in ['NHP', 'NHC', 'KG']"
           :key="u"
           @click="store.navigate(`unit-${u}`)"
-          class="glass-card p-3.5 sm:p-3.5 rounded-2xl dark:border-slate-800 hover:border-theme/40 transition-all cursor-pointer group flex flex-col justify-between"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:border-theme/40 transition-all cursor-pointer group flex flex-col justify-between"
           :class="{ 'col-span-2 sm:col-span-1': index === 0 }"
         >
           <div>
-            <!-- BARIS 1: Nama Unit & Badge Persentase -->
             <div class="flex items-center justify-between mb-2">
               <h4
                 class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm group-hover:text-theme transition-colors"
@@ -204,13 +224,11 @@
               </span>
             </div>
 
-            <!-- BARIS 2 & 3: Label Rev & Nilai Rev Menonjol (Hero Value) -->
             <div class="mb-2">
               <span
                 class="text-sm md:text-xs text-slate-400 font-semibold block leading-none mb-0.5"
+                >Rev:</span
               >
-                Rev:
-              </span>
               <h5
                 class="text-base font-semibold text-theme truncate leading-tight"
               >
@@ -223,7 +241,6 @@
               </h5>
             </div>
 
-            <!-- BARIS 4: Label Tgt & Nilai Target Ringkas -->
             <div
               class="flex items-center gap-1 text-sm md:text-xs text-slate-500 dark:text-slate-400"
             >
@@ -241,9 +258,8 @@
             </div>
           </div>
 
-          <!-- Progress Bar -->
           <div
-            class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 sm:h-1.5 rounded-full mt-2.5 overflow-hidden"
+            class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2.5 overflow-hidden"
           >
             <div
               class="bg-button h-full rounded-full transition-all duration-500"
@@ -254,11 +270,10 @@
       </div>
     </div>
 
-    <!-- BARIS 1 CHARTS: Horizontal Unit, Vertikal Rev vs Promo, Pie Platform -->
+    <!-- BARIS 1 CHARTS -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
-      <!-- 1. Horizontal Bar: Rekap Penjualan Tiap Unit -->
       <div
-        class="lg:col-span-5 glass-card p-4 rounded-2xl flex flex-col justify-between"
+        class="lg:col-span-5 glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between"
       >
         <h3
           class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
@@ -270,9 +285,8 @@
         </div>
       </div>
 
-      <!-- 2. Vertikal Bar: Perbandingan Revenue vs Biaya Promosi -->
       <div
-        class="lg:col-span-3 glass-card p-4 rounded-2xl flex flex-col justify-between"
+        class="lg:col-span-3 glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between"
       >
         <h3
           class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
@@ -284,17 +298,14 @@
         </div>
       </div>
 
-      <!-- 3. Pie/Doughnut Chart: Penjualan per Platform -->
       <div
-        class="lg:col-span-4 glass-card p-4 rounded-2xl flex flex-col justify-between"
+        class="lg:col-span-4 glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between"
       >
         <h3
           class="font-semibold text-base md:text-sm mb-1 text-slate-800 dark:text-slate-100"
         >
           Penjualan per Platform
         </h3>
-
-        <!-- Ketinggian disesuaikan ke h-36/h-40 agar pas dengan setengah donat -->
         <div
           class="chart-container relative h-36 md:h-40 flex items-center justify-center overflow-hidden"
         >
@@ -303,11 +314,10 @@
       </div>
     </div>
 
-    <!-- BARIS 2 CHARTS: Rekap Per Divisi, Perbandingan Tahun Ini vs Lalu -->
+    <!-- BARIS 2 CHARTS -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
-      <!-- 1. Bar Chart: Rekap Penjualan Tiap Divisi -->
       <div
-        class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-between"
+        class="lg:col-span-5 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between"
       >
         <h3
           class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
@@ -319,9 +329,8 @@
         </div>
       </div>
 
-      <!-- 2. Line Chart: Perbandingan Trend Revenue (Tahun Ini vs Tahun Lalu) -->
       <div
-        class="lg:col-span-7 glass-card p-4 md:p-5 rounded-2xl md:rounded-1xl flex flex-col justify-between"
+        class="lg:col-span-7 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between"
       >
         <h3
           class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
@@ -335,7 +344,7 @@
     </div>
   </section>
 
-  <!-- ==================== MOBILE FLOATING ACTION BUTTON (FAB) FILTER ==================== -->
+  <!-- MOBILE FLOATING ACTION BUTTON (FAB) FILTER -->
   <div class="md:hidden fixed bottom-20 right-4 z-40">
     <button
       @click="isFilterModalOpen = true"
@@ -349,7 +358,7 @@
     </button>
   </div>
 
-  <!-- ==================== POPUP MODAL FILTER TANGGAL (MOBILE) ==================== -->
+  <!-- POPUP MODAL FILTER TANGGAL (MOBILE) -->
   <Teleport to="body">
     <div
       v-if="isFilterModalOpen"
@@ -357,7 +366,7 @@
       @click.self="isFilterModalOpen = false"
     >
       <div
-        class="absolute mb-20 w-full max-w-sm glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 animate-in fade-in slide-in-from-bottom-4 duration-200"
+        class="absolute mb-20 w-full max-w-sm glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800"
       >
         <div
           class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
@@ -365,12 +374,11 @@
           <h3
             class="font-semibold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2"
           >
-            <i class="fa-solid fa-filter text-theme"></i>
-            Filter Rentang Tanggal
+            <i class="fa-solid fa-filter text-theme"></i> Filter Rentang Tanggal
           </h3>
           <button
             @click="isFilterModalOpen = false"
-            class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer transition-colors"
+            class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
           >
             <i class="fa-solid fa-xmark text-lg"></i>
           </button>
@@ -385,7 +393,7 @@
             <input
               v-model="tempStartDate"
               type="date"
-              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 outline-none focus:border-theme transition-colors text-sm"
+              class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 outline-none focus:border-theme text-sm"
             />
           </div>
           <div>
@@ -396,7 +404,7 @@
             <input
               v-model="tempEndDate"
               type="date"
-              class="w-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 outline-none focus:border-theme transition-colors text-sm"
+              class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 outline-none focus:border-theme text-sm"
             />
           </div>
         </div>
@@ -404,13 +412,13 @@
         <div class="flex items-center gap-2 pt-2">
           <button
             @click="resetFilterMobile"
-            class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 py-3 rounded-xl font-semibold text-sm transition-all text-center cursor-pointer"
+            class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-700 dark:text-slate-200 py-3 rounded-xl font-semibold text-sm cursor-pointer"
           >
             Reset
           </button>
           <button
             @click="applyFilterMobile"
-            class="flex-1 bg-button text-white py-3 rounded-xl font-semibold text-sm transition-all shadow-md text-center cursor-pointer hover:opacity-95"
+            class="flex-1 bg-button text-white py-3 rounded-xl font-semibold text-sm shadow-md cursor-pointer hover:opacity-95"
           >
             Terapkan
           </button>
@@ -426,6 +434,9 @@ import { store } from "../store";
 import Chart from "chart.js/auto";
 
 const isFilterModalOpen = ref(false);
+const tempStartDate = ref("");
+const tempEndDate = ref("");
+
 watch(
   () => store.filterDates,
   (newDates) => {
@@ -435,7 +446,6 @@ watch(
   { deep: true },
 );
 
-// --- FILTER ACTIONS ---
 const applyFilter = () => {
   store.filterDates.start = tempStartDate.value;
   store.filterDates.end = tempEndDate.value;
@@ -444,10 +454,8 @@ const applyFilter = () => {
 const resetFilter = () => {
   const startOfYear = getStartOfYearString();
   const today = getTodayString();
-
   tempStartDate.value = startOfYear;
   tempEndDate.value = today;
-
   store.filterDates.start = startOfYear;
   store.filterDates.end = today;
 };
@@ -462,11 +470,6 @@ const resetFilterMobile = () => {
   isFilterModalOpen.value = false;
 };
 
-// State Sementara Input Tanggal
-const tempStartDate = ref("");
-const tempEndDate = ref("");
-
-// --- HELPER DATES ---
 function getTodayString() {
   return new Date().toISOString().split("T")[0];
 }
@@ -476,7 +479,6 @@ function getStartOfYearString() {
   return `${currentYear}-01-01`;
 }
 
-// --- INITIALIZATION ---
 onMounted(() => {
   if (!store.filterDates.start) {
     store.filterDates.start = getStartOfYearString();
@@ -484,7 +486,6 @@ onMounted(() => {
   if (!store.filterDates.end) {
     store.filterDates.end = getTodayString();
   }
-
   tempStartDate.value = store.filterDates.start;
   tempEndDate.value = store.filterDates.end;
 });
@@ -503,17 +504,8 @@ const MONTH_NAMES = [
   "Nov",
   "Des",
 ];
-
-// Tahun Dinamis
 const currentYear = ref(new Date().getFullYear());
 const lastYear = ref(currentYear.value - 1);
-
-const formatRp = (num) =>
-  new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(num || 0);
 
 function isDateInFilter(dStr) {
   if (!dStr) return false;
@@ -529,20 +521,15 @@ function isDateInFilter(dStr) {
   return true;
 }
 
-const filteredRev = computed(() => {
-  const revData = store.db?.revenue || [];
-  return revData.filter((r) => isDateInFilter(r.Tanggal));
-});
-
-const filteredPromo = computed(() => {
-  const promoData = store.db?.promo || [];
-  return promoData.filter((p) => isDateInFilter(p.Tanggal));
-});
-
-const filteredLeads = computed(() => {
-  const leadsData = store.db?.leads || [];
-  return leadsData.filter((l) => isDateInFilter(l.Tanggal));
-});
+const filteredRev = computed(() =>
+  (store.db?.revenue || []).filter((r) => isDateInFilter(r.Tanggal)),
+);
+const filteredPromo = computed(() =>
+  (store.db?.promo || []).filter((p) => isDateInFilter(p.Tanggal)),
+);
+const filteredLeads = computed(() =>
+  (store.db?.leads || []).filter((l) => isDateInFilter(l.Tanggal)),
+);
 
 const targetTahun = computed(() =>
   Number(store.db.master?.TargetTahunIni || 0),
@@ -557,17 +544,56 @@ const persenCapaian = computed(() =>
     : "0",
 );
 
-const revThnLalu = computed(() =>
-  (store.db?.revenue || []).filter(
-    (r) => r.Tanggal && new Date(r.Tanggal).getFullYear() === lastYear.value,
-  ),
-);
+const revThnLalu = computed(() => {
+  // Mengambil data tahun lalu yang disesuaikan dengan rentang bulan/hari dari filter aktif
+  const startDateStr = store.filterDates?.start;
+  const endDateStr = store.filterDates?.end;
+
+  return (store.db?.revenue || []).filter((r) => {
+    if (!r.Tanggal) return false;
+    const d = new Date(r.Tanggal);
+    if (d.getFullYear() !== lastYear.value) return false;
+
+    if (startDateStr && endDateStr) {
+      const startD = new Date(startDateStr);
+      const endD = new Date(endDateStr);
+
+      // Memetakan ke tanggal di tahun lalu untuk perbandingan yang apple-to-apple
+      const mappedStart = new Date(
+        lastYear.value,
+        startD.getMonth(),
+        startD.getDate(),
+      ).setHours(0, 0, 0, 0);
+      const mappedEnd = new Date(
+        lastYear.value,
+        endD.getMonth(),
+        endD.getDate(),
+      ).setHours(23, 59, 59, 999);
+      const currentD = d.setHours(0, 0, 0, 0);
+
+      return currentD >= mappedStart && currentD <= mappedEnd;
+    }
+    return true;
+  });
+});
+
 const revThnLaluTotal = computed(() =>
   revThnLalu.value.reduce((s, r) => s + Number(r.Revenue || 0), 0),
 );
+
 const selisihThnLalu = computed(
   () => totRevFiltered.value - revThnLaluTotal.value,
 );
+
+const persenThnLalu = computed(() => {
+  if (revThnLaluTotal.value === 0)
+    return totRevFiltered.value > 0 ? "100.0" : "0.0";
+  return (
+    ((totRevFiltered.value - revThnLaluTotal.value) / revThnLaluTotal.value) *
+    100
+  ).toFixed(1);
+});
+
 const totPromo = computed(() =>
   filteredPromo.value.reduce((s, p) => s + Number(p.BiayaPromosi || 0), 0),
 );
@@ -591,8 +617,7 @@ const pctOrderFromLeads = computed(() =>
 );
 
 function getUnitRev(unit) {
-  const revList = filteredRev.value || [];
-  return revList
+  return (filteredRev.value || [])
     .filter((r) => r.Unit === unit)
     .reduce((s, r) => s + Number(r.Revenue || 0), 0);
 }
@@ -604,7 +629,6 @@ function getUnitCapaian(unit) {
   return t > 0 ? ((getUnitRev(unit) / t) * 100).toFixed(1) : "0";
 }
 
-// Canvas References
 const chartUnitRef = ref(null);
 const chartRevVsPromoRef = ref(null);
 const chartPlatPieRef = ref(null);
@@ -617,7 +641,6 @@ let cUnitInstance = null,
   cDivisiInstance = null,
   cTrendCompareInstance = null;
 
-// Array Warna Variatif untuk Bar Chart
 const CHART_COLORS = [
   "#3b82f6",
   "#10b981",
@@ -640,7 +663,6 @@ function renderCharts() {
   if (cDivisiInstance) cDivisiInstance.destroy();
   if (cTrendCompareInstance) cTrendCompareInstance.destroy();
 
-  // 1. Horizontal Bar: Rekap Penjualan Tiap Unit (dengan Rounded Bar)
   const uNames = ["NHP", "NHC", "KG"];
   const uRevs = uNames.map((u) => getUnitRev(u));
   if (chartUnitRef.value) {
@@ -653,7 +675,7 @@ function renderCharts() {
             label: "Revenue Unit",
             data: uRevs,
             backgroundColor: CHART_COLORS,
-            borderRadius: 8, // <-- Ujung Rounded
+            borderRadius: 8,
           },
         ],
       },
@@ -661,7 +683,6 @@ function renderCharts() {
     });
   }
 
-  // 2. Vertikal Bar: Perbandingan Revenue vs Biaya Promosi
   if (chartRevVsPromoRef.value) {
     cRevVsPromoInstance = new Chart(chartRevVsPromoRef.value, {
       type: "bar",
@@ -672,7 +693,7 @@ function renderCharts() {
             label: "Nominal (Rp)",
             data: [totRevFiltered.value, totPromo.value],
             backgroundColor: ["#10b981", "#f43f5e"],
-            borderRadius: 8, // <-- Ujung Rounded
+            borderRadius: 8,
           },
         ],
       },
@@ -680,7 +701,6 @@ function renderCharts() {
     });
   }
 
-  // 3. Pie/Doughnut Chart: Rekap Penjualan per Platform
   const pMap = {};
   filteredRev.value.forEach((r) => {
     pMap[r.Platform || "Lainnya"] =
@@ -703,31 +723,25 @@ function renderCharts() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        rotation: -90, // Mulai menggambar dari sudut kiri (-90°)
-        circumference: 180, // Hanya menggambar setengah lingkaran (180°)
+        rotation: -90,
+        circumference: 180,
         cutout: "65%",
         plugins: {
           legend: {
             position: "bottom",
-            labels: {
-              boxWidth: 10,
-              padding: 6,
-              font: { size: 10 },
-            },
+            labels: { boxWidth: 10, padding: 6, font: { size: 10 } },
           },
         },
       },
     });
   }
 
-  // 4. Bar Chart: Rekap Penjualan Tiap Divisi (URUT ABJAD + WARNA VARIAN + ROUNDED)
   const divMap = {};
   filteredRev.value.forEach((r) => {
     const divKey = r.Divisi || r.Kategori || "Umum";
     divMap[divKey] = (divMap[divKey] || 0) + Number(r.Revenue || 0);
   });
 
-  // Logika Pengurutan Abjad A-Z
   const sortedDivisiLabels = Object.keys(divMap).sort((a, b) =>
     a.localeCompare(b, "id", { sensitivity: "base" }),
   );
@@ -745,27 +759,23 @@ function renderCharts() {
           {
             label: "Revenue Divisi",
             data: sortedDivisiValues.length > 0 ? sortedDivisiValues : [0],
-            backgroundColor: CHART_COLORS.slice(0, sortedDivisiLabels.length), // Warna bervariasi tiap balok
-            borderRadius: 8, // <-- Ujung Rounded
+            backgroundColor: CHART_COLORS.slice(0, sortedDivisiLabels.length),
+            borderRadius: 8,
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false }, // Sembunyikan legend tunggal agar warna variatif bersih
-        },
+        plugins: { legend: { display: false } },
       },
     });
   }
 
-  // 5. Line Chart: Perbandingan Tahun Ini vs Tahun Lalu
   const monthlyCurrentYear = Array(12).fill(0);
   const monthlyLastYear = Array(12).fill(0);
 
-  const allRevenue = store.db?.revenue || [];
-  allRevenue.forEach((r) => {
+  (store.db?.revenue || []).forEach((r) => {
     if (!r.Tanggal) return;
     const dateObj = new Date(r.Tanggal);
     const yr = dateObj.getFullYear();
@@ -821,24 +831,17 @@ watch([filteredRev, filteredPromo, store.filterDates], () => renderCharts(), {
   deep: true,
 });
 
-// Helper Format Rupiah Dinamis (Lengkap di Desktop, Ringkas di Mobile)
 const formatRpDynamic = (val, isCompact = false) => {
   if (!val || isNaN(val)) return "Rp 0";
   const num = Number(val);
-
-  // Jika opsi compact aktif (biasanya di mobile)
   if (isCompact) {
     if (Math.abs(num) >= 1_000_000_000) {
-      // Format Miliar: 14.424.470.067 -> Rp 14,4 M
-      return `Rp ${(num / 1_000_000_000).toLocaleString("id-ID", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} M`;
+      return `Rp ${(num / 1_000_000_000).toLocaleString("id-ID", { minimumFractionDigits: 1, maximumFractionDigits: 3 })} M`;
     }
     if (Math.abs(num) >= 1_000_000) {
-      // Format Juta: 4.735.529.933 -> Rp 4.735,5 jt
-      return `Rp ${(num / 1_000_000).toLocaleString("id-ID", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} jt`;
+      return `Rp ${(num / 1_000_000).toLocaleString("id-ID", { minimumFractionDigits: 1, maximumFractionDigits: 3 })} jt`;
     }
   }
-
-  // Format Standar Lengkap
   return `Rp ${new Intl.NumberFormat("id-ID").format(num)}`;
 };
 </script>

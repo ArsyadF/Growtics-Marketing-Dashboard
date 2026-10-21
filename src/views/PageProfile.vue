@@ -1,74 +1,264 @@
 <!-- src/views/PageProfile.vue -->
 <template>
-  <section id="page-profile" class="page-section space-y-4 md:space-y-6">
-    <div class="glass-card p-6 rounded-3xl max-w-2xl mx-auto space-y-6">
-      <!-- Profile Display Header -->
+  <section
+    id="page-profile"
+    class="page-section space-y-4 md:space-y-6 max-w-4xl mx-auto pb-20 md:pb-6"
+  >
+    <!-- 1. HERO HEADER CARD (Fresh Modern Glass & Theme Backdrop) -->
+    <div
+      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden"
+    >
+      <!-- Top Navigation & Action Bar -->
+      <!-- <div class="flex items-center justify-between relative z-10 mb-4">
+        <span
+          class="text-xs font-semibold px-3 py-1 rounded-full bg-theme/10 text-theme border border-theme/20 uppercase tracking-wider"
+        >
+          {{ userProfile.Role || userProfile.role || "Super Admin" }}
+        </span>
+        
+        <button
+          @click="triggerFileInput"
+          type="button"
+          class="w-10 h-10 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 hover:bg-theme/10 hover:text-theme text-slate-600 dark:text-slate-300 flex items-center justify-center transition-colors cursor-pointer border border-slate-200/50 dark:border-slate-700/50"
+          title="Ubah Foto"
+        >
+          <i class="fa-solid fa-camera text-sm"></i>
+        </button>
+      </div> -->
+
+      <!-- Avatar & Information Section -->
       <div
-        class="flex items-center gap-5 border-b border-slate-200/50 dark:border-slate-800/80 pb-6"
+        class="flex flex-col items-center text-center space-y-3 relative z-10 my-2"
       >
         <div class="relative group cursor-pointer" @click="triggerFileInput">
           <img
             :src="avatarPreviewUrl"
             alt="Avatar Profile"
-            class="w-20 h-20 rounded-full object-cover border-2 border-theme shadow-lg shrink-0 transition-all group-hover:brightness-90"
+            class="w-28 h-28 sm:w-32 sm:h-32 rounded-full object-cover border-4 border-slate-100 dark:border-slate-800 shadow-md transition-transform group-hover:scale-105"
           />
           <div
-            class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            class="absolute inset-0 bg-black/30 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
           >
-            <i class="fa-solid fa-camera text-white text-lg"></i>
+            <i class="fa-solid fa-pen text-white text-base"></i>
           </div>
         </div>
 
+        <div
+          class="flex flex-row w-full items-center justify-between text-left"
+        >
+          <div>
+            <h2
+              class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100"
+            >
+              {{
+                userProfile.Nama ||
+                userProfile.nama ||
+                userProfile.name ||
+                "User Pengguna"
+              }}
+            </h2>
+
+            <!-- <span class="text-theme font-semibold">{{
+              userProfile.Divisi || userProfile.divisi || "Divisi Kerja"
+            }}</span>
+            <span
+              class="inline-block w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700"
+            ></span>
+            <span>{{
+              userProfile.Unit || userProfile.unit || "Unit Usaha"
+            }}</span> -->
+
+            <p class="text-xs text-slate-400 font-normal mt-1">
+              {{ userProfile.Email || userProfile.email || "email@domain.com" }}
+            </p>
+          </div>
+
+          <!-- Quick Action Icons -->
+          <div class="flex items-center gap-2.5 pt-2">
+            <button
+              @click="triggerFileInput"
+              type="button"
+              class="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-theme flex items-center justify-center transition-colors cursor-pointer border border-slate-200/50 dark:border-slate-700/50"
+              title="Upload Foto"
+            >
+              <i class="fa-solid fa-image text-sm"></i>
+            </button>
+            <button
+              @click="activeTab = 'edit'"
+              type="button"
+              class="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-theme flex items-center justify-center transition-colors cursor-pointer border border-slate-200/50 dark:border-slate-700/50"
+              title="Edit Profil"
+            >
+              <i class="fa-solid fa-user-pen text-sm"></i>
+            </button>
+            <button
+              @click="handleLogout"
+              type="button"
+              class="w-10 h-10 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 flex items-center justify-center transition-colors cursor-pointer border border-rose-500/20"
+              title="Keluar"
+            >
+              <i class="fa-solid fa-right-from-bracket text-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. METRIC STAT CARDS (3 Floating Badge Rows) -->
+    <div class="grid grid-cols-3 gap-3 md:gap-4 px-1">
+      <div
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs flex flex-col items-center justify-center"
+      >
+        <div
+          class="w-8 h-8 rounded-xl bg-theme/10 text-theme flex items-center justify-center mb-1 text-xs"
+        >
+          <i class="fa-solid fa-building"></i>
+        </div>
+        <h4
+          class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate w-full"
+        >
+          {{ form.unit || "-" }}
+        </h4>
+        <p class="text-[10px] sm:text-xs text-slate-400 font-normal">
+          Unit Usaha
+        </p>
+      </div>
+
+      <div
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs flex flex-col items-center justify-center"
+      >
+        <div
+          class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-1 text-xs"
+        >
+          <i class="fa-solid fa-sitemap"></i>
+        </div>
+        <h4
+          class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate w-full"
+        >
+          {{ form.divisi || "-" }}
+        </h4>
+        <p class="text-[10px] sm:text-xs text-slate-400 font-normal">Divisi</p>
+      </div>
+
+      <div
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs flex flex-col items-center justify-center"
+      >
+        <div
+          class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-1 text-xs"
+        >
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h4
+          class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate w-full"
+        >
+          {{ userProfile.Role || userProfile.role || "Super Admin" }}
+        </h4>
+        <p class="text-[10px] sm:text-xs text-slate-400 font-normal">
+          Hak Akses
+        </p>
+      </div>
+    </div>
+
+    <!-- 3. MAIN FORM & DETAILS SECTION -->
+    <div
+      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-3xl p-5 md:p-6 border border-slate-100 dark:border-slate-800 shadow-sm space-y-5"
+    >
+      <!-- Navigasi Tab Sederhana -->
+      <div
+        class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3"
+      >
+        <button
+          @click="activeTab = 'about'"
+          type="button"
+          class="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all"
+          :class="
+            activeTab === 'about'
+              ? 'bg-button text-white shadow-xs'
+              : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 bg-slate-100 dark:bg-slate-800'
+          "
+        >
+          Informasi Bio
+        </button>
+        <button
+          @click="activeTab = 'edit'"
+          type="button"
+          class="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all"
+          :class="
+            activeTab === 'edit'
+              ? 'bg-button text-white shadow-xs'
+              : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 bg-slate-100 dark:bg-slate-800'
+          "
+        >
+          Pengaturan Profil
+        </button>
+      </div>
+
+      <!-- Tab 1: Ringkasan Bio & Informasi -->
+      <div v-if="activeTab === 'about'" class="space-y-4 text-xs">
         <div>
-          <h3
-            class="text-xl md:text-base font-semibold text-slate-800 dark:text-slate-100"
+          <h4 class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1">
+            Bio / Deskripsi Ringkas
+          </h4>
+          <p
+            class="text-slate-600 dark:text-slate-300 font-normal leading-relaxed"
           >
             {{
-              userProfile.Nama ||
-              userProfile.nama ||
-              userProfile.name ||
-              "Admin User"
+              form.bio ||
+              "Belum ada bio atau catatan deskripsi profil yang ditambahkan."
             }}
-          </h3>
-          <p class="text-sm md:text-xs text-theme font-semibold uppercase">
-            {{ userProfile.Role || userProfile.role || "Super Admin" }}
           </p>
-          <p class="text-xs md:text-xs text-slate-400 mt-0.5 font-normal">
-            {{ userProfile.Email || userProfile.email || "-" }}
-          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <div
+            class="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800"
+          >
+            <span class="text-slate-400 font-normal">Unit Usaha Utama</span>
+            <p
+              class="font-semibold text-slate-800 dark:text-slate-100 mt-0.5 text-sm"
+            >
+              {{ form.unit || "-" }}
+            </p>
+          </div>
+          <div
+            class="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800"
+          >
+            <span class="text-slate-400 font-normal"
+              >Divisi / Bagian Pekerjaan</span
+            >
+            <p
+              class="font-semibold text-slate-800 dark:text-slate-100 mt-0.5 text-sm"
+            >
+              {{ form.divisi || "-" }}
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Form Update Profile -->
-      <form
-        @submit.prevent="saveUserProfile"
-        class="space-y-4 text-sm md:text-xs"
-      >
+      <!-- Tab 2: Form Pengeditan Data Profil -->
+      <form v-else @submit.prevent="saveUserProfile" class="space-y-4 text-xs">
         <div>
           <label
-            class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            >Nama Lengkap</label
           >
-            Nama Lengkap
-          </label>
           <input
             v-model="form.nama"
             type="text"
             required
-            class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
+            class="w-full glass-input rounded-xl p-2.5 text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/60 dark:border-slate-700/60"
           />
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- DROPDOWN UNIT (Master Data) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label
-              class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
+              class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
+              >Unit Usaha Utama</label
             >
-              Unit Usaha Utama
-            </label>
             <select
               v-model="form.unit"
-              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none bg-white dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-200"
+              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 font-semibold text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700/60"
             >
               <option value="">-- Pilih Unit --</option>
               <option
@@ -76,21 +266,19 @@
                 :key="u.code"
                 :value="u.code"
               >
-                {{ u.code }} ({{ u.name }})
+                {{ u.code }} - {{ u.name }}
               </option>
             </select>
           </div>
 
-          <!-- DROPDOWN DIVISI (Master Data) -->
           <div>
             <label
-              class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
+              class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
+              >Divisi / Bagian Pekerjaan</label
             >
-              Divisi / Bagian Pekerjaan
-            </label>
             <select
               v-model="form.divisi"
-              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none bg-white dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-200"
+              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 font-semibold text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700/60"
             >
               <option value="">-- Pilih Divisi --</option>
               <option
@@ -104,23 +292,18 @@
           </div>
         </div>
 
-        <!-- UPLOAD FOTO PROFIL (FILE / URL) -->
         <div>
           <label
-            class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            >Foto Profil (URL / Unggah File)</label
           >
-            Foto Profil (Avatar)
-          </label>
-
           <div class="flex gap-2 items-center">
             <input
               v-model="form.avatarUrl"
               type="text"
-              placeholder="Pilih file atau tempel URL foto..."
-              class="flex-1 glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
+              placeholder="Tempel URL atau pilih file..."
+              class="flex-1 glass-input rounded-xl p-2.5 text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/60 dark:border-slate-700/60"
             />
-
-            <!-- Hidden Input File -->
             <input
               ref="fileInputRef"
               type="file"
@@ -128,81 +311,53 @@
               class="hidden"
               @change="handleFileUpload"
             />
-
-            <!-- Tombol Upload HP/Lokal -->
             <button
               type="button"
               @click="triggerFileInput"
-              class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-2.5 rounded-xl font-semibold text-sm md:text-xs transition-all flex items-center gap-1.5 shrink-0 border border-slate-200 dark:border-slate-700 cursor-pointer"
+              class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-2.5 rounded-xl font-semibold text-xs cursor-pointer border border-slate-200 dark:border-slate-700"
             >
-              <i class="fa-solid fa-upload text-theme"></i>
-              <span>Upload</span>
+              Unggah
             </button>
           </div>
         </div>
 
-        <div class="pt-2 border-t border-slate-200/50 dark:border-slate-800/80">
+        <div>
           <label
-            class="block text-sm md:text-xs font-semibold mb-1 text-theme dark:text-theme"
+            class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            >Ganti Password</label
           >
-            Ganti Password
-          </label>
           <input
             v-model="form.password"
             type="password"
-            placeholder="Masukkan password baru (Kosongkan jika tidak diubah)"
-            class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
+            placeholder="Ketik password baru jika ingin diubah..."
+            class="w-full glass-input rounded-xl p-2.5 text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/60 dark:border-slate-700/60"
           />
         </div>
 
         <div>
           <label
-            class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            >Bio / Deskripsi Singkat</label
           >
-            Deskripsi / Bio Profil
-          </label>
-
-          <!-- PILIHAN EMOTICON EKSPRESIF CEPAT -->
-          <div
-            class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-1.5 [scrollbar-width:none]"
-          >
-            <button
-              v-for="emoji in EXPRESSIVE_EMOJIS"
-              :key="emoji"
-              type="button"
-              @click="appendEmojiToBio(emoji)"
-              class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-emerald-500/10 text-sm flex items-center justify-center shrink-0 border border-slate-200 dark:border-slate-700 transition-transform active:scale-95 cursor-pointer"
-            >
-              {{ emoji }}
-            </button>
-          </div>
-
           <textarea
             v-model="form.bio"
             rows="3"
-            placeholder="Tuliskan bio atau status singkat Anda..."
-            class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
+            placeholder="Tuliskan bio profil Anda..."
+            class="w-full glass-input rounded-xl p-2.5 text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/60 dark:border-slate-700/60"
           ></textarea>
         </div>
 
+        <!-- Tombol Simpan Berwarna Tema Utama App -->
         <button
           type="submit"
           :disabled="isSaving"
-          class="w-full bg-button text-white font-semibold py-2.5 rounded-xl text-sm md:text-xs transition-all shadow-md disabled:opacity-50 cursor-pointer"
+          class="w-full bg-button text-white font-semibold p-3 rounded-xl text-xs transition-all shadow-md cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 mt-2"
         >
-          {{ isSaving ? "Menyimpan..." : "Simpan Perubahan Profil" }}
+          <i v-if="isSaving" class="fa-solid fa-spinner fa-spin"></i>
+          <i v-else class="fa-solid fa-floppy-disk"></i>
+          <span>{{ isSaving ? "Menyimpan..." : "Simpan" }}</span>
         </button>
       </form>
-
-      <!-- Logout Action -->
-      <div class="pt-4 border-t border-slate-200/50 dark:border-slate-800/80">
-        <button
-          @click="handleLogout"
-          class="w-full bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 border border-rose-500/30 py-3 rounded-xl font-semibold text-sm md:text-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
-        >
-          <i class="fa-solid fa-right-from-bracket"></i> Keluar (Logout)
-        </button>
-      </div>
     </div>
   </section>
 </template>
@@ -215,30 +370,7 @@ import { api } from "../services/api";
 const emit = defineEmits(["logout-success"]);
 
 const fileInputRef = ref(null);
-
-// Pilihan Emoticon Ekspresif untuk Form Bio
-const EXPRESSIVE_EMOJIS = [
-  "🚀",
-  "🔥",
-  "💡",
-  "🎯",
-  "⚡",
-  "💪",
-  "😎",
-  "☕",
-  "💻",
-  "✨",
-  "📊",
-  "✅",
-  "🎉",
-  "🌟",
-  "🏼",
-  "👍",
-  "🙌",
-  "📝",
-  "🌈",
-  "🏆",
-];
+const activeTab = ref("about");
 
 const userProfile = ref({
   Nama: "",
@@ -247,6 +379,7 @@ const userProfile = ref({
   Avatar: "",
   Bio: "",
   Divisi: "",
+  Unit: "",
 });
 
 const form = ref({
@@ -260,10 +393,6 @@ const form = ref({
 
 const isSaving = ref(false);
 
-const appendEmojiToBio = (emoji) => {
-  form.value.bio += (form.value.bio ? " " : "") + emoji;
-};
-
 const avatarPreviewUrl = computed(() => {
   if (form.value.avatarUrl && form.value.avatarUrl.length > 5) {
     return form.value.avatarUrl;
@@ -274,7 +403,7 @@ const avatarPreviewUrl = computed(() => {
     userProfile.value.nama ||
     userProfile.value.name ||
     "User";
-  return `https://ui-avatars.com/api/?name=${encodeURIComponent(nameToUse)}`;
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(nameToUse)}&background=0D8ABC&color=fff`;
 });
 
 const triggerFileInput = () => {
@@ -356,7 +485,7 @@ const saveUserProfile = async () => {
 
     const res = await api.updateData("Users", currentUserId, payload);
 
-    if (res.success || res) {
+    if (res && (res.success || res)) {
       const updatedUser = {
         ...store.currentUser,
         ...payload,
@@ -367,7 +496,7 @@ const saveUserProfile = async () => {
 
       store.openAlert(
         "Berhasil",
-        "Profil & Foto berhasil diperbarui!",
+        "Profil berhasil diperbarui!",
         null,
         "success",
       );

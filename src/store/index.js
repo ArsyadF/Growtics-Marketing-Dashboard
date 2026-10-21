@@ -3,7 +3,9 @@ import { reactive } from 'vue';
 import { api } from '../services/api';
 
 export const store = reactive({
-  // Status Akses & UI State Global
+  // ==========================================
+  // 1. STATE & KONFIGURASI GLOBAL
+  // ==========================================
   isAccessGranted: false,
   isSidebarCollapsed: false,
   isMobileSidebarOpen: false,
@@ -12,44 +14,68 @@ export const store = reactive({
   currentPage: 'main',
   currentUnit: '',
   
-  // Sesi Pengguna
   currentUser: JSON.parse(localStorage.getItem('SESSION_USER')) || null,
   
-  // Filter Tanggal Dashboard
   filterDates: {
     start: '2026-01-01',
     end: new Date().toISOString().split('T')[0]
   },
 
-  // Database State Global (Dideklarasikan lengkap agar terdeteksi reaktif sejak awal)
   db: {
     revenue: [],
     promo: [],
     leads: [],
     users: [],
-    programs: [], // Untuk Kanban Program Tim
-    aduanList: [], // Data Tiket Aduan Customer Care
-    spvReports: [], // Data Laporan Pekanan SPV
-    master: {}    // Terhubung ke Target & Master Entitas Unit
+    programs: [],
+    aduanList: [], 
+    spvReports: [], 
+    master: {}    
   },
 
-  // Centralized Modal & Alert Management
-  activeModal: null, // 'login', 'revenue', 'leads', 'promo', 'target', 'user', 'kodeakses', 'alert', dll.
+  // ==========================================
+  // 2. STATE & METHODS MODAL/ALERT
+  // ==========================================
+  activeModal: null, 
   selectedItemForEdit: null,
   editPayload: null,
   alertPayload: {
     title: '',
     message: '',
-    type: 'info', // 'info', 'success', 'warning'
+    type: 'info', 
     onConfirm: null
   },
 
-  // --- STATE TEMA ---
+  openAlert(title, message, onConfirm = null, type = 'warning') {
+    this.alertPayload = { title, message, onConfirm, type };
+    this.activeModal = 'alert';
+  },
+
+  closeAlert() {
+    this.activeModal = null;
+    this.alertPayload = { title: '', message: '', type: 'info', onConfirm: null };
+  },
+
+  openModal(modalName, itemData = null) {
+    this.activeModal = modalName;
+    this.selectedItemForEdit = itemData;
+  },
+
+  closeModal() {
+    this.activeModal = null;
+    this.selectedItemForEdit = null;
+  },
+
+  toggleSidebarCollapse() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  },
+
+  // ==========================================
+  // 3. STATE & METHODS TEMA (UI)
+  // ==========================================
   themePreference: localStorage.getItem('THEME_PREFERENCE') || 'system',
   isDarkMode: false,
   activeThemeColor: localStorage.getItem('APP_THEME_COLOR') || '#149B73',
 
-  // Preset Warna Aksen
   colorPresets: [
     { id: 'green', name: 'Hijau', hex: '#0db988', lightHex: '#2EE59D' },
     { id: 'orange', name: 'Kuning Oranye', hex: '#F59E0B', lightHex: '#FBBF24' },
@@ -59,7 +85,6 @@ export const store = reactive({
     { id: 'red', name: 'Merah', hex: '#DC2626', lightHex: '#F87171' }
   ],
 
-  // --- METHODS TEMA (LIGHT/DARK/SYSTEM) ---
   initTheme() {
     const savedTheme = localStorage.getItem('THEME_PREFERENCE') || 'system';
     this.setTheme(savedTheme);
@@ -96,7 +121,6 @@ export const store = reactive({
     this.setTheme(this.isDarkMode ? 'light' : 'dark');
   },
 
-  // --- METHODS AKSEN WARNA ---
   setThemeColor(hexColor, lightHexColor = null) {
     this.activeThemeColor = hexColor;
     localStorage.setItem('APP_THEME_COLOR', hexColor);
@@ -117,28 +141,9 @@ export const store = reactive({
     }
   },
 
-  // --- METHODS MODAL & ALERT ---
-  openAlert(title, message, onConfirm = null, type = 'warning') {
-    this.alertPayload = { title, message, onConfirm, type };
-    this.activeModal = 'alert';
-  },
-
-  closeAlert() {
-    this.activeModal = null;
-    this.alertPayload = { title: '', message: '', type: 'info', onConfirm: null };
-  },
-
-  openModal(modalName, itemData = null) {
-    this.activeModal = modalName;
-    this.selectedItemForEdit = itemData;
-  },
-
-  closeModal() {
-    this.activeModal = null;
-    this.selectedItemForEdit = null;
-  },
-
-  // --- METHODS NOTIFIKASI ---
+  // ==========================================
+  // 4. STATE & METHODS NOTIFIKASI
+  // ==========================================
   notifications: JSON.parse(localStorage.getItem('APP_NOTIFICATIONS')) || [
     { id: 1, title: 'Sistem Siap', message: 'Selamat datang di Dashboard Marketing', time: 'Baru saja', read: false }
   ],
@@ -170,14 +175,15 @@ export const store = reactive({
     localStorage.removeItem('APP_NOTIFICATIONS');
   },
 
-  // --- DATABASE OPERATIONS ---
+  // ==========================================
+  // 5. DATABASE & USER SESSION OPERATIONS
+  // ==========================================
   async loadFullDatabase() {
     this.isLoading = true;
     try {
       const res = await api.getAllData();
       this.parseDB(res);
 
-      // Sync Data User Aktif jika sudah login
       if (this.currentUser && this.currentUser.email) {
         const foundUser = this.db.users.find(u => 
           (u.email && u.email.toLowerCase() === this.currentUser.email.toLowerCase()) || 
@@ -208,8 +214,6 @@ export const store = reactive({
     this.db.programs = Array.isArray(parsed.programs) ? parsed.programs : [];
     this.db.master = parsed.master || parsed.settings || {};
     
-    // PEMETAAN DATA TIKET ADUAN
-    // Memastikan gambar Base64 terpetakan sempurna walaupun nama kunci variabel berbeda dari server (imageUrl/ImageUrl/image)
     const rawAduan = Array.isArray(parsed.aduanList) 
       ? parsed.aduanList 
       : (Array.isArray(parsed.aduan) ? parsed.aduan : []);
@@ -219,7 +223,6 @@ export const store = reactive({
       imageUrl: item.imageUrl || item.ImageUrl || item.image || item.Image || ""
     }));
 
-    // PEMETAAN DATA LAPORAN PEKANAN SPV
     this.db.spvReports = Array.isArray(parsed.spvReports) 
       ? parsed.spvReports 
       : (Array.isArray(parsed.spv_reports) ? parsed.spv_reports : []);
@@ -241,11 +244,14 @@ export const store = reactive({
     this.currentPage = 'main';
   },
 
-  toggleSidebarCollapse() {
-    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  // ==========================================
+  // 6. ROUTING & PERMISSIONS
+  // ==========================================
+  navigate(page) {
+    this.currentPage = page;
+    window.history.pushState({ page: page }, "", `#${page}`);
   },
 
-  // --- PERMISSIONS & ROUTING ---
   canAccessPage(pageKey) {
     if (pageKey === 'profile') return true;
     if (!this.isAccessGranted) return false;
@@ -258,7 +264,7 @@ export const store = reactive({
       return !!this.currentUser.permissions[pageKey].access;
     }
 
-    return true; // Fallback jika perizinan belum di-set
+    return true; 
   },
 
   canEditPage(pageId) {
@@ -279,19 +285,10 @@ export const store = reactive({
     return false;
   },
 
-  navigate(page) {
-    this.currentPage = page;
-    window.history.pushState({ page: page }, "", `#${page}`);
-  },
-
-  // Tambahkan di dalam objek store pada src/store/index.js
-
-canExportImport() {
-  if (!this.currentUser) return false;
-  const role = String(this.currentUser.role || this.currentUser.Role || '').toUpperCase();
-  
-  // Mengizinkan Superadmin, Admin Unit, dan SPV
-  return ['SUPERADMIN', 'ADMIN_UNIT', 'ADMIN', 'SPV'].includes(role);
-}
-
+  canExportImport() {
+    if (!this.currentUser) return false;
+    const role = String(this.currentUser.role || this.currentUser.Role || '').toUpperCase();
+    
+    return ['SUPERADMIN', 'ADMIN_UNIT', 'ADMIN', 'SPV'].includes(role);
+  }
 });

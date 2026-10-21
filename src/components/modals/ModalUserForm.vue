@@ -1,24 +1,24 @@
 <!-- src/components/UserModal.vue -->
 <template>
   <div
-    class="fixed inset-0 z-[10010] bg-slate-950/50 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
+    class="fixed inset-0 z-[10010] bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
   >
     <div
-      class="glass-card w-full max-w-2xl bg-white/95 dark:bg-slate-900/95 rounded-3xl p-6 shadow-2xl space-y-5 max-h-[90vh] flex flex-col"
+      class="glass-card bg-white/95 dark:bg-slate-900/95 border border-slate-100 dark:border-slate-800 w-full max-w-2xl rounded-3xl p-6 shadow-2xl space-y-5 max-h-[90vh] flex flex-col"
     >
       <!-- Header Modal -->
       <div
-        class="flex items-center justify-between pb-3 border-b border-slate-200/50 dark:border-slate-800 shrink-0"
+        class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 shrink-0"
       >
         <h3
           class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
         >
-          <i class="fa-solid fa-user-shield text-[#1caa80]"></i>
+          <i class="fa-solid fa-user-shield text-theme"></i>
           {{ isEdit ? "Edit Hak Akses Pengguna" : "Tambah Pengguna Baru" }}
         </h3>
         <button
           @click="$emit('close')"
-          class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer"
+          class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer transition-colors"
         >
           <i class="fa-solid fa-xmark text-base"></i>
         </button>
@@ -40,7 +40,7 @@
               v-model="form.nama"
               type="text"
               required
-              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
               placeholder="Masukkan nama"
             />
           </div>
@@ -54,7 +54,7 @@
               type="email"
               required
               :disabled="isEdit"
-              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal disabled:opacity-50"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal disabled:opacity-50 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
               placeholder="user@growtics.com"
             />
           </div>
@@ -64,13 +64,14 @@
           <div>
             <label
               class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
-              >Password {{ isEdit ? "(Isi jika ingin merubah)" : "" }}</label
             >
+              Password {{ isEdit ? "(Isi jika ingin merubah)" : "" }}
+            </label>
             <input
               v-model="form.password"
               type="password"
               :required="!isEdit"
-              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
               placeholder="******"
             />
           </div>
@@ -81,7 +82,7 @@
             >
             <select
               v-model="form.role"
-              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-semibold bg-transparent dark:bg-slate-800 text-slate-700 dark:text-slate-200"
+              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-semibold bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200"
             >
               <option value="USER">USER / STAF</option>
               <option value="SPV">SPV (Supervisor)</option>
@@ -108,7 +109,7 @@
               >
               <select
                 v-model="form.unit"
-                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none bg-white dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-200 focus:border-blue-400"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none bg-white dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-200"
               >
                 <option value="">-- Pilih Unit --</option>
                 <option v-for="u in masterUnits" :key="u.code" :value="u.code">
@@ -122,7 +123,7 @@
               >
               <select
                 v-model="form.divisi"
-                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none focus:border-blue-400 bg-white dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-200"
+                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none bg-white dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-200"
               >
                 <option value="">-- Pilih Divisi --</option>
                 <option
@@ -140,12 +141,11 @@
         <!-- Checkbox Matrix Hak Akses Halaman -->
         <div
           v-if="form.role !== 'SUPERADMIN'"
-          class="pt-3 border-t border-slate-200/50 dark:border-slate-800 space-y-2"
+          class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2"
         >
           <div class="flex items-center justify-between">
             <div>
-              <label
-                class="block text-sm md:text-xs font-semibold text-theme dark:text-theme"
+              <label class="block text-sm md:text-xs font-semibold text-theme"
                 >Atur Akses Halaman & Fitur Edit</label
               >
               <p class="text-xs text-slate-400 mt-0.5 font-normal">
@@ -156,20 +156,20 @@
             <button
               type="button"
               @click="toggleAllPermissions"
-              class="text-xs font-semibold text-theme dark:text-theme hover:underline cursor-pointer shrink-0 bg-theme/10 px-2 py-1 rounded-md"
+              class="text-xs font-semibold text-theme hover:underline cursor-pointer shrink-0 bg-theme/10 px-2.5 py-1 rounded-lg"
             >
               {{ isAllSelected ? "Matikan Semua" : "Buka Semua" }}
             </button>
           </div>
 
           <div
-            class="border border-slate-200/60 dark:border-slate-800 rounded-2xl overflow-hidden text-xs"
+            class="border border-slate-200/60 dark:border-slate-800 rounded-2xl overflow-hidden text-xs max-h-56 overflow-y-auto custom-scrollbar"
           >
-            <table class="w-full text-left border-collapse">
-              <thead>
-                <tr
-                  class="bg-slate-100/70 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 border-b border-slate-200/60 dark:border-slate-800"
-                >
+            <table class="w-full text-left border-collapse whitespace-nowrap">
+              <thead
+                class="bg-slate-50 dark:bg-slate-800/90 text-slate-500 sticky top-0 backdrop-blur-md z-10 shadow-xs"
+              >
+                <tr>
                   <th class="p-2.5 font-semibold">Halaman / Modul</th>
                   <th class="p-2.5 font-semibold text-center w-24">
                     Bisa Akses
@@ -179,27 +179,27 @@
                   </th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
+              <tbody
+                class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-200"
+              >
                 <tr
                   v-for="page in pagesList"
                   :key="page.id"
-                  class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
+                  class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
                 >
-                  <td
-                    class="p-2.5 font-normal text-slate-700 dark:text-slate-200"
-                  >
+                  <td class="p-2.5 font-normal flex items-center gap-2">
                     <i
                       :class="page.icon"
-                      class="w-5 text-center mr-1 text-theme"
+                      class="w-4 text-center text-theme"
                     ></i>
-                    {{ page.label }}
+                    <span>{{ page.label }}</span>
                   </td>
                   <td class="p-2.5 text-center">
                     <input
                       type="checkbox"
                       v-model="form.permissions[page.id].access"
                       @change="onAccessChange(page.id)"
-                      class="w-4 h-4 rounded text-[#1caa80] focus:ring-0 cursor-pointer accent-emerald-600"
+                      class="w-4 h-4 rounded text-theme focus:ring-0 cursor-pointer accent-emerald-600"
                     />
                   </td>
                   <td class="p-2.5 text-center">
@@ -207,7 +207,7 @@
                       type="checkbox"
                       v-model="form.permissions[page.id].canEdit"
                       :disabled="!form.permissions[page.id].access"
-                      class="w-4 h-4 rounded text-[#1caa80] focus:ring-0 cursor-pointer disabled:opacity-30 accent-emerald-600"
+                      class="w-4 h-4 rounded text-theme focus:ring-0 cursor-pointer disabled:opacity-30 accent-emerald-600"
                     />
                   </td>
                 </tr>
@@ -220,7 +220,7 @@
           v-else
           class="p-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/50 rounded-2xl text-xs text-emerald-700 dark:text-emerald-300 flex gap-2 items-center"
         >
-          <i class="fa-solid fa-shield-halved text-base"></i>
+          <i class="fa-solid fa-shield-halved text-base shrink-0"></i>
           <p class="font-normal">
             <strong class="font-semibold">Superadmin</strong> memiliki akses
             penuh ke seluruh halaman dan hak akses edit tanpa pembatasan.
@@ -229,7 +229,7 @@
 
         <!-- Button Submit -->
         <div
-          class="pt-4 border-t border-slate-200/50 dark:border-slate-800 flex justify-end gap-2 shrink-0"
+          class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-2 shrink-0"
         >
           <button
             type="button"
@@ -240,7 +240,7 @@
           </button>
           <button
             type="submit"
-            class="px-5 py-2 rounded-xl text-sm md:text-xs font-semibold bg-button text-white shadow-md hover:from-[#149b73] hover:to-[#149b73] cursor-pointer transition-all flex items-center gap-1.5"
+            class="px-5 py-2 rounded-xl text-sm md:text-xs font-semibold bg-button text-white shadow-md hover:opacity-95 cursor-pointer transition-all flex items-center gap-1.5"
           >
             <i class="fa-solid fa-floppy-disk text-xs"></i>
             {{ isEdit ? "Simpan Perubahan" : "Tambah User" }}
@@ -253,8 +253,7 @@
 
 <script setup>
 import { ref, reactive, computed, watch } from "vue";
-import { store } from "../store";
-
+import { store } from "../../store";
 const props = defineProps({
   userData: { type: Object, default: null },
 });
@@ -262,11 +261,8 @@ const props = defineProps({
 const emit = defineEmits(["close", "save"]);
 
 const isEdit = ref(!!props.userData);
-
-// Integrasi Master Data Unit Usaha
 const masterUnits = computed(() => store.db?.master?.unitList || []);
 
-// Daftar Halaman Lengkap
 const pagesList = [
   { id: "summary", label: "Rekap Bisnis", icon: "fa-solid fa-chart-line" },
   { id: "notes", label: "Notes / Catatan", icon: "fa-solid fa-note-sticky" },

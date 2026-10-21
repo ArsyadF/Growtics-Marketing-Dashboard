@@ -1,52 +1,71 @@
 <!-- src/views/PageLeads.vue -->
 <template>
-  <section id="page-leads" class="page-section space-y-4 md:space-y-6">
+  <section
+    id="page-leads"
+    class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6"
+  >
     <!-- Header Section -->
     <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
       <div>
-        <p class="text-slate-500 dark:text-slate-400 text-sm md:text-xs">
+        <h2
+          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
+        >
+          <i class="fa-solid fa-users-rays text-emerald-600"></i>
+          <span>Leads & Campaign Management</span>
+        </h2>
+        <p class="text-slate-500 dark:text-slate-400 text-sm md:text-xs mt-0.5">
           Progres Campaign, Database Leads, Follow Up, & Pesanan.
         </p>
       </div>
       <button
         v-if="store.canEditPage('leads')"
         @click="store.openModal('leads')"
-        class="bg-button text-white px-4 py-2.5 rounded-xl font-semibold text-sm md:text-xs shadow-md hover:from-[#149b73] hover:to-[#149b73] w-full sm:w-auto cursor-pointer"
+        class="bg-button text-white px-4 py-2.5 rounded-xl font-semibold text-sm md:text-xs shadow-md w-full sm:w-auto cursor-pointer flex items-center justify-center gap-1.5 transition-all"
       >
-        <i class="fa-solid fa-plus mr-1.5"></i>Input Leads & Campaign
+        <i class="fa-solid fa-plus"></i>Input Leads & Campaign
       </button>
     </div>
 
     <!-- 1. Metric Summary Boxes -->
     <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5 md:gap-4">
-      <div class="glass-card p-3 rounded-xl text-center">
-        <p class="text-xs md:text-xs text-slate-400">Total Campaign</p>
-        <h3 class="text-base md:text-xl font-semibold mt-0.5">
+      <div
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs"
+      >
+        <p class="text-xs text-slate-400">Total Campaign</p>
+        <h3
+          class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
+        >
           {{ sumCamp.toLocaleString("id-ID") }}
         </h3>
       </div>
-      <div class="glass-card p-3 rounded-xl text-center">
-        <p class="text-xs md:text-xs text-slate-400">Database Leads</p>
+      <div
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs"
+      >
+        <p class="text-xs text-slate-400">Database Leads</p>
         <h3 class="text-base md:text-xl font-semibold text-theme mt-0.5">
           {{ sumLeads.toLocaleString("id-ID") }}
         </h3>
       </div>
-      <div class="glass-card p-3 rounded-xl text-center">
-        <p class="text-xs md:text-xs text-slate-400">Follow Up</p>
+      <div
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs"
+      >
+        <p class="text-xs text-slate-400">Follow Up</p>
         <h3 class="text-base md:text-xl font-semibold text-amber-500 mt-0.5">
           {{ sumFu.toLocaleString("id-ID") }}
         </h3>
       </div>
-      <div class="glass-card p-3 rounded-xl text-center">
-        <p class="text-xs md:text-xs text-slate-400">Jumlah Pesanan</p>
+      <div
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs"
+      >
+        <p class="text-xs text-slate-400">Jumlah Pesanan</p>
         <h3 class="text-base md:text-xl font-semibold text-emerald-500 mt-0.5">
           {{ sumOrder.toLocaleString("id-ID") }}
         </h3>
       </div>
       <div
-        class="glass-card p-3 rounded-xl text-center col-span-2 sm:col-span-1"
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 text-center col-span-2 sm:col-span-1 shadow-xs"
       >
-        <p class="text-xs md:text-xs text-slate-400">% Konversi</p>
+        <p class="text-xs text-slate-400">% Konversi</p>
         <h3 class="text-base md:text-xl font-semibold text-teal-500 mt-0.5">
           {{ pctOrderPerCamp }}%
         </h3>
@@ -57,174 +76,176 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
       <!-- Kolom 1: Rekap Leads Per Bulan -->
       <div
-        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
+        class="lg:col-span-4 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-start h-full"
       >
-        <div>
-          <h3
-            class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
-          >
-            Rekap Leads Per Bulan
-          </h3>
-          <div class="overflow-y-auto max-h-[260px] pr-1 custom-scrollbar">
-            <table class="min-w-full text-sm md:text-xs text-left">
-              <thead
-                class="bg-white/40 dark:bg-slate-800/60 text-slate-400 sticky top-0 backdrop-blur-md"
+        <h3
+          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
+        >
+          Rekap Leads Per Bulan
+        </h3>
+        <div class="overflow-y-auto max-h-[260px] pr-1 custom-scrollbar">
+          <table class="min-w-full text-sm md:text-xs text-left">
+            <thead
+              class="bg-slate-50 dark:bg-slate-800/80 text-slate-400 sticky top-0 backdrop-blur-md"
+            >
+              <tr>
+                <th class="py-2 px-3">Bulan</th>
+                <th class="py-2 px-3 text-right">Database Leads</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
+              <tr v-if="monthlyRecap.length === 0">
+                <td colspan="2" class="text-center py-4 text-slate-400">
+                  Belum ada data bulanan.
+                </td>
+              </tr>
+              <tr
+                v-else
+                v-for="(row, idx) in monthlyRecap"
+                :key="idx"
+                class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
               >
-                <tr>
-                  <th class="py-2 px-3">Bulan</th>
-                  <th class="py-2 px-3 text-right">Database Leads</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y dark:divide-slate-800/80">
-                <tr v-if="monthlyRecap.length === 0">
-                  <td colspan="2" class="text-center py-4 text-slate-400">
-                    Belum ada data bulanan.
-                  </td>
-                </tr>
-                <tr
-                  v-else
-                  v-for="(row, idx) in monthlyRecap"
-                  :key="idx"
-                  class="hover:bg-white/20 dark:hover:bg-slate-800/40"
+                <td
+                  class="py-2.5 px-3 font-medium text-slate-700 dark:text-slate-300"
                 >
-                  <td class="py-2.5 px-3 font-normal">{{ row.bulan }}</td>
-                  <td class="py-2.5 px-3 text-right font-semibold text-theme">
-                    {{ row.total.toLocaleString("id-ID") }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                  {{ row.bulan }}
+                </td>
+                <td class="py-2.5 px-3 text-right font-semibold text-theme">
+                  {{ row.total.toLocaleString("id-ID") }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
       <!-- Kolom 2: Rekap Leads Per Triwulan -->
       <div
-        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
+        class="lg:col-span-4 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-start h-full"
       >
-        <div>
-          <h3
-            class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
+        <h3
+          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
+        >
+          Rekap Triwulan
+        </h3>
+        <div class="grid grid-cols-1 gap-2.5">
+          <div
+            v-for="(q, idx) in quarterlyRecap"
+            :key="idx"
+            class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800 flex justify-between items-center"
           >
-            Rekap Triwulan
-          </h3>
-          <div class="grid grid-cols-1 gap-2.5">
-            <div
-              v-for="(q, idx) in quarterlyRecap"
-              :key="idx"
-              class="p-3 bg-white/30 dark:bg-slate-800/40 rounded-xl border border-white/20 dark:border-slate-700/50 flex justify-between items-center"
+            <p
+              class="text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300"
             >
-              <p
-                class="text-sm md:text-xs font-semibold text-slate-500 dark:text-slate-400"
-              >
-                {{ q.quarter }}
-              </p>
-              <p class="text-sm md:text-xs font-semibold text-emerald-600">
-                {{ q.total.toLocaleString("id-ID") }}
-              </p>
-            </div>
+              {{ q.quarter }}
+            </p>
+            <p
+              class="text-sm md:text-xs font-semibold text-emerald-600 dark:text-emerald-400"
+            >
+              {{ q.total.toLocaleString("id-ID") }}
+            </p>
           </div>
         </div>
       </div>
 
       <!-- Kolom 3: Grafik Trend Leads Bulanan -->
       <div
-        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
+        class="lg:col-span-4 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-start h-full"
       >
-        <div>
-          <div class="flex justify-between items-center mb-3">
-            <h3
-              class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm flex items-center gap-1.5"
+        <div class="flex justify-between items-center mb-3">
+          <h3
+            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm flex items-center gap-1.5"
+          >
+            <i class="fa-solid fa-chart-line text-emerald-600"></i>Grafik Trend
+            Leads
+          </h3>
+          <span class="text-xs text-slate-400 font-normal"
+            >Tahun {{ new Date().getFullYear() }}</span
+          >
+        </div>
+
+        <div
+          v-if="monthlyRecap.length === 0"
+          class="h-52 flex items-center justify-center text-sm md:text-xs text-slate-400"
+        >
+          Belum ada data grafik.
+        </div>
+
+        <div v-else class="relative h-52 w-full pt-4">
+          <div
+            class="absolute inset-x-0 top-6 bottom-8 flex flex-col justify-between pointer-events-none"
+          >
+            <div
+              class="border-b border-dashed border-slate-200 dark:border-slate-700/50"
+            ></div>
+            <div
+              class="border-b border-dashed border-slate-200 dark:border-slate-700/50"
+            ></div>
+            <div
+              class="border-b border-dashed border-slate-200 dark:border-slate-700/50"
+            ></div>
+          </div>
+
+          <svg
+            class="w-full h-36 overflow-visible relative z-0"
+            viewBox="0 0 300 100"
+            preserveAspectRatio="none"
+          >
+            <defs>
+              <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1caa80" stop-opacity="0.30" />
+                <stop offset="100%" stop-color="#1caa80" stop-opacity="0.0" />
+              </linearGradient>
+            </defs>
+            <path :d="areaPath" fill="url(#blueGradient)" />
+            <path
+              :d="linePath"
+              fill="none"
+              stroke="#1caa80"
+              stroke-width="3.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              vector-effect="non-scaling-stroke"
+            />
+          </svg>
+
+          <div class="absolute inset-x-0 top-4 h-36 z-10 pointer-events-none">
+            <div
+              v-for="(pt, idx) in chartPointsHTML"
+              :key="idx"
+              class="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto group cursor-pointer"
+              :style="{ left: `${pt.xPct}%`, top: `${pt.yPct}%` }"
             >
-              <i class="fa-solid fa-chart-line text-emerald-600"></i>Grafik
-              Trend Leads Bulanan
-            </h3>
-            <span class="text-xs md:text-xs text-slate-400 font-normal"
-              >Tahun {{ new Date().getFullYear() }}</span
-            >
+              <div
+                class="w-4 h-4 rounded-full bg-white border-2 border-[#1caa80] shadow-md transition-transform duration-200 group-hover:scale-125 group-hover:bg-emerald-500"
+              ></div>
+              <div
+                class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-semibold py-1 px-2 rounded-md shadow-lg whitespace-nowrap pointer-events-none"
+              >
+                {{ pt.val.toLocaleString("id-ID") }}
+              </div>
+            </div>
           </div>
 
           <div
-            v-if="monthlyRecap.length === 0"
-            class="h-52 flex items-center justify-center text-sm md:text-xs text-slate-400"
+            class="flex justify-between items-center text-xs text-slate-400 font-normal mt-2 px-1"
           >
-            Belum ada data grafik.
-          </div>
-
-          <div v-else class="relative h-52 w-full pt-4">
-            <div
-              class="absolute inset-x-0 top-6 bottom-8 flex flex-col justify-between pointer-events-none"
+            <span
+              v-for="(m, idx) in monthlyRecap"
+              :key="idx"
+              class="text-center truncate w-full"
             >
-              <div
-                class="border-b border-dashed border-slate-200 dark:border-slate-700/50"
-              ></div>
-              <div
-                class="border-b border-dashed border-slate-200 dark:border-slate-700/50"
-              ></div>
-              <div
-                class="border-b border-dashed border-slate-200 dark:border-slate-700/50"
-              ></div>
-            </div>
-
-            <svg
-              class="w-full h-36 overflow-visible relative z-0"
-              viewBox="0 0 300 100"
-              preserveAspectRatio="none"
-            >
-              <defs>
-                <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#1caa80" stop-opacity="0.30" />
-                  <stop offset="100%" stop-color="#1caa80" stop-opacity="0.0" />
-                </linearGradient>
-              </defs>
-              <path :d="areaPath" fill="url(#blueGradient)" />
-              <path
-                :d="linePath"
-                fill="none"
-                stroke="#1caa80"
-                stroke-width="3.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                vector-effect="non-scaling-stroke"
-              />
-            </svg>
-
-            <div class="absolute inset-x-0 top-4 h-36 z-10 pointer-events-none">
-              <div
-                v-for="(pt, idx) in chartPointsHTML"
-                :key="idx"
-                class="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto group cursor-pointer"
-                :style="{ left: `${pt.xPct}%`, top: `${pt.yPct}%` }"
-              >
-                <div
-                  class="w-4 h-4 rounded-full bg-white border-2 border-[#1caa80] shadow-md transition-transform duration-200 group-hover:scale-125 group-hover:bg-emerald-500"
-                ></div>
-                <div
-                  class="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-semibold py-1 px-2 rounded-md shadow-lg whitespace-nowrap pointer-events-none"
-                >
-                  {{ pt.val.toLocaleString("id-ID") }}
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="flex justify-between items-center text-xs md:text-xs text-slate-400 font-normal mt-2 px-1"
-            >
-              <span
-                v-for="(m, idx) in monthlyRecap"
-                :key="idx"
-                class="text-center truncate w-full"
-              >
-                {{ m.bulan.substring(0, 3) }}
-              </span>
-            </div>
+              {{ m.bulan.substring(0, 3) }}
+            </span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 3. Management Data Table dengan Bulk Action & Sorting -->
-    <div class="glass-card p-4 md:p-6 rounded-2xl space-y-4">
+    <div
+      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
+    >
       <div
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
       >
@@ -236,7 +257,7 @@
           </h3>
           <span
             v-if="selectedIds.length > 0"
-            class="text-xs md:text-xs text-purple-600 font-semibold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
+            class="text-xs text-purple-600 font-semibold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
           >
             {{ selectedIds.length }} Dipilih
           </span>
@@ -269,7 +290,7 @@
             <select
               v-model="limit"
               @change="currentPage = 1"
-              class="glass-input rounded-xl p-2 md:p-1.5 text-sm md:text-xs outline-none dark:bg-slate-800"
+              class="glass-input rounded-xl p-2 md:p-1.5 text-sm md:text-xs outline-none bg-slate-50 dark:bg-slate-800"
             >
               <option value="25">25</option>
               <option value="50">50</option>
@@ -284,27 +305,31 @@
       <div
         class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1 custom-scrollbar"
       >
-        <table class="min-w-full text-sm md:text-xs text-left">
+        <table
+          class="min-w-full text-sm md:text-xs text-left border-collapse whitespace-nowrap"
+        >
           <thead
-            class="bg-white/80 dark:bg-slate-800/90 text-slate-400 sticky top-0 backdrop-blur-md z-10"
+            class="bg-slate-50/95 dark:bg-slate-800/95 text-slate-400 sticky top-0 backdrop-blur-md z-10 shadow-sm"
           >
-            <tr class="font-semibold uppercase text-xs md:text-xs">
-              <th class="py-2.5 px-3 w-8 text-center">
+            <tr class="font-semibold uppercase text-xs">
+              <th
+                class="py-2.5 px-3 w-8 text-center border-b border-slate-200 dark:border-slate-700"
+              >
                 <input
                   type="checkbox"
                   :checked="isAllSelected"
                   @change="toggleSelectAll"
-                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4"
                   title="Pilih Semua di Halaman Ini"
                 />
               </th>
               <th
                 @click="sortTable('Tanggal')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700"
               >
                 Tanggal
                 <i
-                  class="fa-solid text-xs md:text-xs ml-1"
+                  class="fa-solid ml-1"
                   :class="
                     sortKey === 'Tanggal'
                       ? sortAsc
@@ -316,11 +341,11 @@
               </th>
               <th
                 @click="sortTable('Unit')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700"
               >
                 Unit
                 <i
-                  class="fa-solid text-xs md:text-xs ml-1"
+                  class="fa-solid ml-1"
                   :class="
                     sortKey === 'Unit'
                       ? sortAsc
@@ -332,11 +357,11 @@
               </th>
               <th
                 @click="sortTable('Campaign')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700"
               >
                 Campaign
                 <i
-                  class="fa-solid text-xs md:text-xs ml-1"
+                  class="fa-solid ml-1"
                   :class="
                     sortKey === 'Campaign'
                       ? sortAsc
@@ -348,11 +373,11 @@
               </th>
               <th
                 @click="sortTable('DatabaseLeads')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700"
               >
                 Leads
                 <i
-                  class="fa-solid text-xs md:text-xs ml-1"
+                  class="fa-solid ml-1"
                   :class="
                     sortKey === 'DatabaseLeads'
                       ? sortAsc
@@ -364,11 +389,11 @@
               </th>
               <th
                 @click="sortTable('FollowUp')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700"
               >
                 FU
                 <i
-                  class="fa-solid text-xs md:text-xs ml-1"
+                  class="fa-solid ml-1"
                   :class="
                     sortKey === 'FollowUp'
                       ? sortAsc
@@ -380,11 +405,11 @@
               </th>
               <th
                 @click="sortTable('Pesanan')"
-                class="py-2.5 px-3 cursor-pointer select-none"
+                class="py-2.5 px-3 cursor-pointer select-none border-b border-slate-200 dark:border-slate-700"
               >
                 Pesanan
                 <i
-                  class="fa-solid text-xs md:text-xs ml-1"
+                  class="fa-solid ml-1"
                   :class="
                     sortKey === 'Pesanan'
                       ? sortAsc
@@ -396,20 +421,22 @@
               </th>
               <th
                 v-if="store.canEditPage('leads')"
-                class="py-2.5 px-3 text-center"
+                class="py-2.5 px-3 text-center border-b border-slate-200 dark:border-slate-700"
               >
                 Aksi
               </th>
             </tr>
           </thead>
-          <tbody class="divide-y dark:divide-slate-800/80">
+          <tbody
+            class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-200"
+          >
             <tr v-if="store.isLoading">
-              <td colspan="8" class="text-center py-4 text-slate-400">
+              <td colspan="8" class="text-center py-6 text-slate-400">
                 Memuat data leads...
               </td>
             </tr>
             <tr v-else-if="paginatedLeads.length === 0">
-              <td colspan="8" class="text-center py-4 text-slate-400">
+              <td colspan="8" class="text-center py-6 text-slate-400">
                 Tidak ada data leads terfilter.
               </td>
             </tr>
@@ -417,44 +444,44 @@
               v-else
               v-for="l in paginatedLeads"
               :key="getLeadId(l)"
-              class="hover:bg-white/20 dark:hover:bg-slate-800/40"
+              class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
               :class="{
                 'bg-purple-500/10 dark:bg-purple-500/20': selectedIds.includes(
                   getLeadId(l),
                 ),
               }"
             >
-              <td class="py-2 px-3 text-center" @click.stop>
+              <td class="py-2.5 px-3 text-center" @click.stop>
                 <input
                   type="checkbox"
                   :value="getLeadId(l)"
                   v-model="selectedIds"
-                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4"
                 />
               </td>
-              <td class="py-2 px-3">
+              <td class="py-2.5 px-3 font-medium">
                 {{ l.Tanggal ? String(l.Tanggal).substring(0, 10) : "-" }}
               </td>
-              <td class="py-2 px-3 font-semibold">{{ l.Unit || "-" }}</td>
-              <td class="py-2 px-3">
+              <td class="py-2.5 px-3 font-semibold">{{ l.Unit || "-" }}</td>
+              <td class="py-2.5 px-3">
                 {{ (Number(l.Campaign) || 0).toLocaleString("id-ID") }}
               </td>
-              <td class="py-2 px-3 text-theme font-semibold">
+              <td class="py-2.5 px-3 text-theme font-semibold">
                 {{ (Number(l.DatabaseLeads) || 0).toLocaleString("id-ID") }}
               </td>
-              <td class="py-2 px-3 text-amber-500 font-semibold">
+              <td class="py-2.5 px-3 text-amber-500 font-semibold">
                 {{ (Number(l.FollowUp) || 0).toLocaleString("id-ID") }}
               </td>
-              <td class="py-2 px-3 text-emerald-500 font-semibold">
+              <td class="py-2.5 px-3 text-emerald-500 font-semibold">
                 {{ (Number(l.Pesanan) || 0).toLocaleString("id-ID") }}
               </td>
               <td
                 v-if="store.canEditPage('leads')"
-                class="py-2 px-3 text-center whitespace-nowrap"
+                class="py-2.5 px-3 text-center whitespace-nowrap"
               >
                 <button
                   @click="store.openModal('leads', l)"
-                  class="text-theme hover:text-theme p-1 mr-1 cursor-pointer"
+                  class="text-theme hover:underline p-1 mr-1 cursor-pointer"
                   title="Edit Leads"
                 >
                   <i class="fa-solid fa-pen-to-square"></i>
@@ -485,13 +512,13 @@
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
-            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
           >
-            <i class="fa-solid fa-chevron-left text-xs md:text-xs"></i>
+            <i class="fa-solid fa-chevron-left text-xs"></i>
           </button>
 
           <span
-            class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-semibold"
+            class="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 font-semibold"
           >
             {{ currentPage }} / {{ totalPages }}
           </span>
@@ -499,15 +526,15 @@
           <button
             @click="currentPage++"
             :disabled="currentPage === totalPages"
-            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
           >
-            <i class="fa-solid fa-chevron-right text-xs md:text-xs"></i>
+            <i class="fa-solid fa-chevron-right text-xs"></i>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- MODAL CUSTOM POPUP CONFIRMATION (GANTI ALERT/DEFAULT POPUP) -->
+    <!-- MODAL CUSTOM POPUP KONFIRMASI -->
     <Teleport to="body">
       <div
         v-if="confirmModal.isOpen"
@@ -529,9 +556,7 @@
               >
                 {{ confirmModal.title }}
               </h4>
-              <p
-                class="text-xs md:text-xs text-slate-500 dark:text-slate-400 mt-0.5"
-              >
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 {{ confirmModal.message }}
               </p>
             </div>
@@ -543,7 +568,7 @@
             <button
               @click="closeConfirmModal"
               type="button"
-              class="px-4 py-2.5 md:py-2 rounded-xl text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
+              class="px-4 py-2 rounded-xl text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
             >
               Batal
             </button>
@@ -551,7 +576,7 @@
               @click="executeConfirmAction"
               type="button"
               :disabled="store.isLoading"
-              class="px-4 py-2.5 md:py-2 rounded-xl text-sm md:text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              class="px-4 py-2 rounded-xl text-sm md:text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
               <i v-if="store.isLoading" class="fa-solid fa-spinner fa-spin"></i>
               <span>Ya, Hapus</span>
@@ -571,14 +596,10 @@ import { api } from "../services/api";
 const currentPage = ref(1);
 const limit = ref("25");
 
-// State untuk Sorting
 const sortKey = ref("Tanggal");
 const sortAsc = ref(false);
-
-// State untuk Bulk Select
 const selectedIds = ref([]);
 
-// State Custom Modal Popup Konfirmasi (Bukan Alert)
 const confirmModal = reactive({
   isOpen: false,
   title: "",
@@ -622,7 +643,6 @@ const filteredLeads = computed(() => {
   return list.filter((l) => isDateInFilter(l.Tanggal));
 });
 
-// Computed Data terurut
 const sortedLeads = computed(() => {
   return [...filteredLeads.value].sort((a, b) => {
     let modifier = sortAsc.value ? 1 : -1;
@@ -656,7 +676,6 @@ const sortTable = (key) => {
   }
 };
 
-// Summary metrics
 const sumCamp = computed(() =>
   filteredLeads.value.reduce((s, l) => s + Number(l.Campaign || 0), 0),
 );
@@ -673,7 +692,6 @@ const pctOrderPerCamp = computed(() =>
   sumCamp.value > 0 ? ((sumOrder.value / sumCamp.value) * 100).toFixed(1) : "0",
 );
 
-// Pagination Calculations
 const totalPages = computed(() => {
   if (limit.value === "ALL") return 1;
   const perPage = Number(limit.value);
@@ -697,7 +715,6 @@ const endItem = computed(() => {
   return Math.min(end, sortedLeads.value.length);
 });
 
-// Checkbox Select All / Deselect
 const isAllSelected = computed(() => {
   if (paginatedLeads.value.length === 0) return false;
   return paginatedLeads.value.every((l) =>
@@ -729,7 +746,6 @@ watch(
   { deep: true },
 );
 
-// Rekap Bulanan
 const monthlyRecap = computed(() => {
   const recapMap = {};
   filteredLeads.value.forEach((item) => {
@@ -752,7 +768,6 @@ const monthlyRecap = computed(() => {
     }));
 });
 
-// Rekap Triwulan
 const quarterlyRecap = computed(() => {
   const qMap = {
     "Q1 (Jan - Mar)": 0,
@@ -774,7 +789,6 @@ const quarterlyRecap = computed(() => {
   return Object.keys(qMap).map((q) => ({ quarter: q, total: qMap[q] }));
 });
 
-// Perhitungan Grafik
 const chartPointsHTML = computed(() => {
   const data = monthlyRecap.value;
   if (data.length === 0) return [];
@@ -810,7 +824,6 @@ const areaPath = computed(() => {
   return `${linePath.value} L ${lastX} 100 L ${firstX} 100 Z`;
 });
 
-// FUNGSI UNTUK MEMBUKA CUSTOM MODAL POPUP (TANPA ALERT)
 const promptSingleDelete = (docId) => {
   confirmModal.isOpen = true;
   confirmModal.title = "Hapus Data Leads";
@@ -834,7 +847,6 @@ const closeConfirmModal = () => {
   confirmModal.isBulk = false;
 };
 
-// EKSEKUSI PENGHAPUSAN SETELAH DIKONFIRMASI DI MODAL
 const executeConfirmAction = async () => {
   store.isLoading = true;
   try {
