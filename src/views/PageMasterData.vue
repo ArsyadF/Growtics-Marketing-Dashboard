@@ -1,9 +1,9 @@
 <!-- src/views/PageMasterData.vue -->
 <template>
-  <div class="space-y-4 md:space-y-6">
+  <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
     <!-- HEADER BAR -->
     <div
-      class="glass-card p-4 md:p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4"
+      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4"
     >
       <div>
         <h3
@@ -21,7 +21,7 @@
 
     <!-- SECTION 1: MASTER TARGET REVENUE (GLOBAL & UNIT) -->
     <div
-      class="glass-card p-4 md:p-5 rounded-2xl space-y-4 border border-emerald-500/20 bg-emerald-500/5"
+      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl space-y-4 border border-emerald-500/20 bg-emerald-500/5 shadow-sm"
     >
       <div
         class="flex items-center justify-between border-b border-emerald-500/20 pb-3"
@@ -55,7 +55,7 @@
             v-model.number="targets.TargetTahunIni"
             type="number"
             placeholder="Rp Target Global"
-            class="w-full glass-input rounded-xl px-3 py-2 font-bold text-emerald-600 outline-none dark:bg-slate-800"
+            class="w-full glass-input rounded-xl px-3 py-2 font-bold text-emerald-600 outline-none bg-slate-50 dark:bg-slate-800"
           />
         </div>
         <div v-for="u in unitList" :key="u.code">
@@ -66,7 +66,7 @@
             v-model.number="targets['Target' + u.code]"
             type="number"
             :placeholder="'Rp Target ' + u.code"
-            class="w-full glass-input rounded-xl px-3 py-2 font-bold text-slate-800 dark:text-slate-100 outline-none dark:bg-slate-800"
+            class="w-full glass-input rounded-xl px-3 py-2 font-bold text-slate-800 dark:text-slate-100 outline-none bg-slate-50 dark:bg-slate-800"
           />
         </div>
       </div>
@@ -76,7 +76,7 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 items-start">
       <!-- 2. MASTER UNIT USAHA -->
       <div
-        class="glass-card p-4 rounded-2xl space-y-4 border border-white/50 dark:border-slate-800"
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl space-y-4 border border-slate-100 dark:border-slate-800 shadow-sm"
       >
         <div
           class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5"
@@ -107,14 +107,14 @@
             type="text"
             placeholder="Kode (NHP)"
             required
-            class="w-1/3 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none dark:bg-slate-800 uppercase font-bold text-slate-800 dark:text-slate-100"
+            class="w-1/3 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 uppercase font-bold text-slate-800 dark:text-slate-100"
           />
           <input
             v-model="newUnitName"
             type="text"
             placeholder="Nama Lengkap Unit..."
             required
-            class="flex-1 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none dark:bg-slate-800 text-slate-800 dark:text-slate-100"
+            class="flex-1 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
           />
           <button
             type="submit"
@@ -124,7 +124,9 @@
           </button>
         </form>
 
-        <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1">
+        <div
+          class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar"
+        >
           <div
             v-for="(u, idx) in unitList"
             :key="idx"
@@ -145,7 +147,7 @@
               <button
                 @click="saveEditUnit(idx)"
                 type="button"
-                class="text-emerald-600 hover:text-emerald-700 p-1"
+                class="text-emerald-600 hover:text-emerald-700 p-1 cursor-pointer"
                 title="Simpan"
               >
                 <i class="fa-solid fa-check"></i>
@@ -153,7 +155,7 @@
               <button
                 @click="cancelEditUnit"
                 type="button"
-                class="text-slate-400 hover:text-slate-600 p-1"
+                class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
                 title="Batal"
               >
                 <i class="fa-solid fa-xmark"></i>
@@ -198,7 +200,7 @@
 
       <!-- 3. MASTER DIVISI -->
       <div
-        class="glass-card p-4 rounded-2xl space-y-4 border border-white/50 dark:border-slate-800"
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl space-y-4 border border-slate-100 dark:border-slate-800 shadow-sm"
       >
         <div
           class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5"
@@ -229,7 +231,7 @@
             type="text"
             placeholder="Nama Divisi Baru..."
             required
-            class="flex-1 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none dark:bg-slate-800 text-slate-800 dark:text-slate-100"
+            class="flex-1 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
           />
           <button
             type="submit"
@@ -239,7 +241,9 @@
           </button>
         </form>
 
-        <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1">
+        <div
+          class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar"
+        >
           <div
             v-for="(d, idx) in divisiList"
             :key="idx"
@@ -255,7 +259,7 @@
               <button
                 @click="saveEditDivisi(idx)"
                 type="button"
-                class="text-emerald-600 hover:text-emerald-700 p-1"
+                class="text-emerald-600 hover:text-emerald-700 p-1 cursor-pointer"
                 title="Simpan"
               >
                 <i class="fa-solid fa-check"></i>
@@ -263,7 +267,7 @@
               <button
                 @click="cancelEditDivisi"
                 type="button"
-                class="text-slate-400 hover:text-slate-600 p-1"
+                class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
                 title="Batal"
               >
                 <i class="fa-solid fa-xmark"></i>
@@ -301,7 +305,7 @@
 
       <!-- 4. MASTER PLATFORM SALES -->
       <div
-        class="glass-card p-4 rounded-2xl space-y-4 border border-white/50 dark:border-slate-800"
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl space-y-4 border border-slate-100 dark:border-slate-800 shadow-sm"
       >
         <div
           class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5"
@@ -332,7 +336,7 @@
             type="text"
             placeholder="Nama Platform Baru..."
             required
-            class="flex-1 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none dark:bg-slate-800 text-slate-800 dark:text-slate-100"
+            class="flex-1 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
           />
           <button
             type="submit"
@@ -342,7 +346,9 @@
           </button>
         </form>
 
-        <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1">
+        <div
+          class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar"
+        >
           <div
             v-for="(p, idx) in platformList"
             :key="idx"
@@ -358,7 +364,7 @@
               <button
                 @click="saveEditPlatform(idx)"
                 type="button"
-                class="text-purple-600 hover:text-purple-700 p-1"
+                class="text-purple-600 hover:text-purple-700 p-1 cursor-pointer"
                 title="Simpan"
               >
                 <i class="fa-solid fa-check"></i>
@@ -366,7 +372,7 @@
               <button
                 @click="cancelEditPlatform"
                 type="button"
-                class="text-slate-400 hover:text-slate-600 p-1"
+                class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
                 title="Batal"
               >
                 <i class="fa-solid fa-xmark"></i>
@@ -424,13 +430,11 @@ const targets = reactive({
   TargetTahunIni: 1000000000,
 });
 
-// State Form Tambah Baru
 const newUnitCode = ref("");
 const newUnitName = ref("");
 const newDivisiName = ref("");
 const newPlatformName = ref("");
 
-// State Inline Edit Item
 const editingUnitIndex = ref(null);
 const editingUnitCode = ref("");
 const editingUnitName = ref("");
@@ -480,7 +484,6 @@ onMounted(() => {
   });
 });
 
-// --- HELPER INLINE EDIT UNIT USAHA ---
 const startEditUnit = (idx) => {
   editingUnitIndex.value = idx;
   editingUnitCode.value = unitList.value[idx].code;
@@ -495,7 +498,6 @@ const saveEditUnit = (idx) => {
 
   const oldCode = unitList.value[idx].code;
 
-  // Jika kode unit berubah, migrasikan properti target-nya
   if (oldCode !== newCode) {
     targets["Target" + newCode] = targets["Target" + oldCode] || 0;
     delete targets["Target" + oldCode];
@@ -528,7 +530,6 @@ const removeUnit = (idx) => {
   unitList.value.splice(idx, 1);
 };
 
-// --- HELPER INLINE EDIT DIVISI ---
 const startEditDivisi = (idx) => {
   editingDivisiIndex.value = idx;
   editingDivisiName.value = divisiList.value[idx];
@@ -555,7 +556,6 @@ const removeDivisi = (idx) => {
   divisiList.value.splice(idx, 1);
 };
 
-// --- HELPER INLINE EDIT PLATFORM ---
 const startEditPlatform = (idx) => {
   editingPlatformIndex.value = idx;
   editingPlatformName.value = platformList.value[idx];
@@ -582,7 +582,6 @@ const removePlatform = (idx) => {
   platformList.value.splice(idx, 1);
 };
 
-// --- SIMPAN TERPISAH KE FIRESTORE / BACKEND ---
 const saveTargetsOnly = async () => {
   savingState.targets = true;
   if (!store.db.master) store.db.master = {};

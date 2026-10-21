@@ -1,8 +1,11 @@
 <!-- src/views/PageUsers.vue -->
 <template>
-  <section id="page-users" class="page-section space-y-4 md:space-y-6">
+  <section
+    id="page-users"
+    class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6"
+  >
     <div
-      class="glass-card p-4 md:p-6 rounded-3xl flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3"
     >
       <div>
         <h3
@@ -34,20 +37,26 @@
       </div>
     </div>
 
-    <div class="glass-card p-4 md:p-6 rounded-3xl overflow-hidden">
+    <div
+      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden"
+    >
       <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm md:text-xs border-collapse">
+        <table
+          class="w-full text-left text-sm md:text-xs border-collapse whitespace-nowrap"
+        >
           <thead>
             <tr
-              class="border-b border-slate-200/60 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider text-xs"
+              class="border-b border-slate-200 dark:border-slate-700 text-slate-500 font-semibold uppercase tracking-wider text-xs bg-slate-50/50 dark:bg-slate-800/50"
             >
-              <th class="pb-3 px-2">Pengguna & Penempatan</th>
-              <th class="pb-3 px-2">Role</th>
-              <th class="pb-3 px-2">Akses Halaman</th>
-              <th class="pb-3 px-2 text-right" v-if="canManageUsers">Aksi</th>
+              <th class="pb-3 px-3">Pengguna & Penempatan</th>
+              <th class="pb-3 px-3">Role</th>
+              <th class="pb-3 px-3">Akses Halaman</th>
+              <th class="pb-3 px-3 text-right" v-if="canManageUsers">Aksi</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
+          <tbody
+            class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-200"
+          >
             <tr v-if="store.isLoading && usersList.length === 0">
               <td
                 colspan="4"
@@ -71,10 +80,10 @@
               v-else
               v-for="user in usersList"
               :key="user.id"
-              class="hover:bg-slate-50/50 dark:hover:bg-slate-800/30 transition-colors"
+              class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
             >
               <!-- Info User & Unit/Divisi Masterdata -->
-              <td class="py-3 px-2">
+              <td class="py-3 px-3">
                 <div class="flex items-center gap-3">
                   <img
                     :src="
@@ -114,9 +123,9 @@
               </td>
 
               <!-- Role -->
-              <td class="py-3 px-2">
+              <td class="py-3 px-3">
                 <span
-                  class="px-2.5 py-1 rounded-lg text-xs font-semibold uppercase"
+                  class="px-2.5 py-1 rounded-lg text-xs font-semibold uppercase border"
                   :class="getRoleBadgeClass(user.role || user.Role)"
                 >
                   {{ user.role || user.Role || "USER" }}
@@ -124,10 +133,10 @@
               </td>
 
               <!-- Rincian Akses Halaman -->
-              <td class="py-3 px-2">
+              <td class="py-3 px-3">
                 <div
                   v-if="(user.role || user.Role) === 'SUPERADMIN'"
-                  class="text-xs text-theme dark:text-theme font-semibold"
+                  class="text-xs text-theme font-semibold"
                 >
                   <i class="fa-solid fa-shield-halved mr-1"></i> Akses Penuh
                   (Superadmin)
@@ -138,7 +147,7 @@
                       v-for="(perm, pageKey) in user.permissions"
                       :key="pageKey"
                       v-show="perm.access"
-                      class="px-2 py-0.5 rounded-md text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300"
+                      class="px-2 py-0.5 rounded-md text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
                     >
                       {{ getPageLabel(pageKey) }}
                     </span>
@@ -150,7 +159,7 @@
               </td>
 
               <!-- Aksi -->
-              <td class="py-3 px-2 text-right" v-if="canManageUsers">
+              <td class="py-3 px-3 text-right" v-if="canManageUsers">
                 <div class="flex items-center justify-end gap-1.5">
                   <button
                     @click="openEditUserModal(user)"
@@ -190,7 +199,7 @@
 import { ref, computed } from "vue";
 import { store } from "../store";
 import { api } from "../services/api";
-import UserModal from "../components/UserModal.vue";
+import UserModal from "../components/modals/ModalUserForm.vue";
 
 const usersList = computed(() => store.db.users || []);
 const isModalOpen = ref(false);
@@ -205,7 +214,8 @@ const getRoleBadgeClass = (role) => {
   const r = String(role || "").toUpperCase();
   if (r === "SUPERADMIN")
     return "bg-purple-500/10 text-purple-600 border-purple-500/30";
-  if (r === "ADMIN") return "bg-[#25eba11a] text-theme border-theme/30";
+  if (r === "ADMIN")
+    return "bg-emerald-500/10 text-emerald-600 border-emerald-500/30";
   return "bg-slate-500/10 text-slate-600 border-slate-500/30";
 };
 

@@ -55,9 +55,8 @@
           </p>
         </div>
 
-        <!-- RUNNING TEXT BIO + EMOTICON ANIMASI KHAS TELEGRAM/WA -->
+        <!-- RUNNING TEXT BIO + EMOTICON ANIMASI -->
         <div class="mt-2 flex items-center gap-2">
-          <!-- Kotak Running Text Bersih -->
           <div
             @click="openBioModal"
             class="flex-1 bg-black/25 hover:bg-black/35 backdrop-blur-md rounded-2xl px-4 py-2 flex items-center border border-white/20 cursor-pointer transition-all overflow-hidden"
@@ -72,7 +71,6 @@
             </div>
           </div>
 
-          <!-- Emoticon Animasi Dinamis Bergaya Telegram / WhatsApp -->
           <div
             @click="openBioModal"
             class="shrink-0 text-4xl md:text-3xl cursor-pointer hover:scale-125 transition-transform drop-shadow-md select-none px-1 flex items-center justify-center"
@@ -85,7 +83,7 @@
       </div>
     </div>
 
-    <!-- 4. AKTIVITAS TERKINI (JADWAL / TUGAS TERDEKAT STAF) -->
+    <!-- 2. AKTIVITAS TERKINI (TUGAS DEADLINE TERDEKAT) -->
     <div
       class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-3xl p-4 mx-4 md:p-5 border border-slate-100 dark:border-slate-800 shadow-sm space-y-3 relative z-10"
     >
@@ -93,8 +91,8 @@
         <h3
           class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-1.5"
         >
-          <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i>
-          Tugas Deadline Terdekat Anda
+          <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i> Tugas
+          Deadline Terdekat Anda
         </h3>
         <button
           @click="navTo('progress')"
@@ -117,13 +115,13 @@
             >
               {{ task.title || task.Judul }}
             </p>
-            <p class="text-xs md:text-xs text-slate-400">
+            <p class="text-xs text-slate-400">
               DL: {{ task.deadline || task.Deadline || "-" }} • Unit
               {{ task.unit || task.Unit }}
             </p>
           </div>
           <span
-            class="px-2.5 py-1 rounded-full text-xs md:text-xs font-semibold shrink-0 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+            class="px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
           >
             {{ task.progress || 0 }}%
           </span>
@@ -139,21 +137,19 @@
       </div>
     </div>
 
-    <!-- 2. RINGKASAN LAPORAN OPERASIONAL -->
+    <!-- 3. RINGKASAN LAPORAN OPERASIONAL -->
     <div>
       <h3
         class="text-sm md:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5 px-1 flex items-center gap-1.5"
       >
-        <i class="fa-solid fa-[#25eba1] fa-chart-pie"></i>
-        Ringkasan Aktivitas Anda
+        <i class="fa-solid fa-chart-pie"></i> Ringkasan Aktivitas Anda
       </h3>
 
-      <!-- grid-cols-4 langsung aktif dari mobile hingga desktop -->
       <div class="grid grid-cols-4 gap-2 sm:gap-3">
         <!-- Kartu 1: Tugas Berjalan -->
         <div
           @click="navTo('progress', 'in progress')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-blue-500/40 transition-all"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-blue-500/40 transition-all"
         >
           <div
             class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm sm:text-base shrink-0"
@@ -167,7 +163,7 @@
               Tugas Aktif
             </p>
             <p
-              class="text-sm sm:text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
+              class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ myActiveTasksCount }}
             </p>
@@ -177,7 +173,7 @@
         <!-- Kartu 2: Tugas Selesai -->
         <div
           @click="navTo('progress', 'completed')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-emerald-500/40 transition-all"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-emerald-500/40 transition-all"
         >
           <div
             class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm sm:text-base shrink-0"
@@ -191,7 +187,7 @@
               Tugas Selesai
             </p>
             <p
-              class="text-sm sm:text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
+              class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ myCompletedTasksCount }}
             </p>
@@ -201,7 +197,7 @@
         <!-- Kartu 3: Aduan Menunggu -->
         <div
           @click="navTo('aduan')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-amber-500/40 transition-all"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-rose-500/40 transition-all"
         >
           <div
             class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-sm sm:text-base shrink-0"
@@ -215,7 +211,7 @@
               Aduan Open
             </p>
             <p
-              class="text-sm sm:text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
+              class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ openTicketsCount }}
             </p>
@@ -225,7 +221,7 @@
         <!-- Kartu 4: Catatan/Notes -->
         <div
           @click="navTo('notes')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center sm:items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-purple-500/40 transition-all"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-amber-500/40 transition-all"
         >
           <div
             class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm sm:text-base shrink-0"
@@ -239,7 +235,7 @@
               Notes
             </p>
             <p
-              class="text-sm sm:text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 leading-tight"
+              class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight"
             >
               {{ notesCount }}
             </p>
@@ -248,29 +244,25 @@
       </div>
     </div>
 
+    <!-- 4. AKSES MODUL & FITUR (PERBAIKAN SIMETRIS & CENTER MOBILE) -->
     <div class="p-2 rounded-3xl space-y-4">
       <div class="flex items-center justify-between pb-3">
-        <div>
-          <h4
-            class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-          >
-            <i class="fa-solid fa-shapes text-theme"></i>
-            Akses Modul & Fitur
-          </h4>
-        </div>
+        <h4
+          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
+        >
+          <i class="fa-solid fa-shapes text-theme"></i> Akses Modul & Fitur
+        </h4>
       </div>
 
-      <!-- GRID 3 KOLOM / RESPONSIVE ALAH FLIP (FLOATING ICON EFFECT) -->
       <div
-        class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-6 gap-y-14 pt-6"
+        class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-6 gap-y-16 pt-8"
       >
         <button
           v-for="menu in filteredFeatures"
           :key="menu.id"
           @click="navigateTo(menu.id)"
-          class="glass-card bg-white/90 group flex flex-col items-center justify-start p-3 pt-2 pb-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-700/60 shadow-xs hover:shadow-md transition-all cursor-pointer relative"
+          class="w-full glass-card bg-white/90 group flex flex-col items-center justify-start p-3 pt-2 pb-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-700/60 shadow-xs hover:shadow-md transition-all cursor-pointer relative"
         >
-          <!-- Badge indikator jika ada fitur baru -->
           <span
             v-if="menu.badge"
             class="absolute -top-8 -right-1 bg-rose-500 text-white font-semibold text-[9px] px-1.5 py-0.2 rounded-full uppercase shadow-xs z-20"
@@ -278,7 +270,6 @@
             {{ menu.badge }}
           </span>
 
-          <!-- Floating Icon Container (Mengambang Keluar ke Atas) -->
           <div
             class="-mt-12 w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-xl md:text-2xl mb-1.5 transition-transform duration-200 group-hover:-translate-y-1 group-hover:scale-105 shadow-md z-10"
             :class="menu.bgClass || 'bg-theme/10 text-theme'"
@@ -286,9 +277,8 @@
             <i :class="menu.icon"></i>
           </div>
 
-          <!-- Label Menu -->
           <span
-            class="text-xs md:text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight group-hover:text-theme line-clamp-2"
+            class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight group-hover:text-theme line-clamp-2"
           >
             {{ menu.label }}
           </span>
@@ -318,20 +308,18 @@
             <button
               @click="isBioModalOpen = false"
               type="button"
-              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
             >
               <i class="fa-solid fa-xmark text-lg"></i>
             </button>
           </div>
 
           <form @submit.prevent="saveBio" class="space-y-4 text-sm md:text-xs">
-            <!-- Pilihan Emoticon Ekspresif (Hanya Pilih 1, Tidak Masuk ke Teks) -->
             <div>
               <label
                 class="block text-slate-500 dark:text-slate-400 font-semibold mb-1"
+                >Pilih Emoticon Ekspresif:</label
               >
-                Pilih Emoticon Ekspresif:
-              </label>
               <div
                 class="flex items-center gap-1.5 overflow-x-auto pb-2 [scrollbar-width:none]"
               >
@@ -352,13 +340,11 @@
               </div>
             </div>
 
-            <!-- Form Textarea Status (Bersih tanpa tumpukan emoticon) -->
             <div>
               <label
                 class="block text-slate-500 dark:text-slate-400 font-semibold mb-1"
+                >Teks Status:</label
               >
-                Teks Status:
-              </label>
               <textarea
                 v-model="bioFormText"
                 rows="3"
@@ -367,7 +353,6 @@
               ></textarea>
             </div>
 
-            <!-- Modal Footer Controls -->
             <div
               class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
             >
@@ -375,14 +360,14 @@
                 @click="isBioModalOpen = false"
                 type="button"
                 :disabled="isSavingBio"
-                class="px-4 py-2.5 md:py-2 rounded-xl font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer"
+                class="px-4 py-2.5 rounded-xl font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 :disabled="isSavingBio"
-                class="px-5 py-2.5 md:py-2 rounded-xl font-semibold bg-button text-white shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                class="px-5 py-2.5 rounded-xl font-semibold bg-button text-white shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 <i
                   v-if="isSavingBio"
@@ -401,7 +386,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { store } from "../store/index.js";
 import { api } from "../services/api.js";
 
@@ -435,15 +420,16 @@ const bioFormText = ref("");
 const selectedEmoji = ref("🚀");
 const isSavingBio = ref(false);
 
-const rawBioText = computed(() => {
-  return (
+// State untuk menyimpan jumlah note aktual
+const myNotesList = ref([]);
+
+const rawBioText = computed(
+  () =>
     currentUser.value.Bio ||
     currentUser.value.bio ||
-    "lagi fokus, jangan diganggu 🚀"
-  );
-});
+    "Stay on focus, don't give up! 🚀",
+);
 
-// MEMISAHKAN TEKS DARI EMOJI UNTUK RUNNING TEXT
 const cleanedBioText = computed(() => {
   const emojiRegex =
     /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu;
@@ -451,7 +437,6 @@ const cleanedBioText = computed(() => {
   return clean || rawBioText.value;
 });
 
-// MENGAMBIL EMOJI AKTIF
 const activeEmoji = computed(() => {
   const emojiRegex =
     /[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu;
@@ -459,39 +444,21 @@ const activeEmoji = computed(() => {
   return matches && matches.length > 0 ? matches[matches.length - 1] : "🚀";
 });
 
-// KELAS ANIMASI BERDASARKAN KARAKTER EMOJI (GAYA TELEGRAM / WHATSAPP)
 const emojiAnimationClass = computed(() => {
   const emoji = activeEmoji.value;
-
-  // 1. Api / Roket / Kilat -> Efek Meluncur / Membal Cepat
-  if (["🚀", "🔥", "⚡"].includes(emoji)) {
-    return "tg-anim-launch";
-  }
-  // 2. Senyum / Sinis / Keren -> Efek Geleng-geleng / Wiggle Unyu
-  if (["😏", "😎", "🙌", "👍"].includes(emoji)) {
-    return "tg-anim-wiggle";
-  }
-  // 3. Kopi / Komputer / Target -> Efek Detak Jantung / Pulse Jelas
-  if (["☕", "💻", "🎯", "💡"].includes(emoji)) {
-    return "tg-anim-heartbeat";
-  }
-  // 4. Bintang / Binar / Pelangi -> Efek Berputar & Bersinar
-  if (["✨", "🌟", "🌈", "🎉"].includes(emoji)) {
-    return "tg-anim-spin-glow";
-  }
-  // Default Animasi Bounce Telegram
+  if (["🚀", "🔥", "⚡"].includes(emoji)) return "tg-anim-launch";
+  if (["😏", "😎", "🙌", "👍"].includes(emoji)) return "tg-anim-wiggle";
+  if (["☕", "💻", "🎯", "💡"].includes(emoji)) return "tg-anim-heartbeat";
+  if (["✨", "🌟", "🌈", "🎉"].includes(emoji)) return "tg-anim-spin-glow";
   return "tg-anim-bounce";
 });
 
 const openBioModal = () => {
-  // Ambil teks bersih tanpa emoji untuk ditaruh di textarea
   bioFormText.value = cleanedBioText.value;
-  // Set emoticon terpilih saat ini
   selectedEmoji.value = activeEmoji.value;
   isBioModalOpen.value = true;
 };
 
-// Fungsi memilih emoticon (TIDAK menambahkan ke teks)
 const selectEmoji = (emoji) => {
   selectedEmoji.value = emoji;
 };
@@ -509,22 +476,13 @@ const saveBio = async () => {
 
   isSavingBio.value = true;
   try {
-    // Gabungkan teks bersih dan 1 emoticon pilihan di akhir
     const finalBio =
       `${bioFormText.value.trim()} ${selectedEmoji.value}`.trim();
-
-    const payload = {
-      bio: finalBio,
-      Bio: finalBio,
-    };
+    const payload = { bio: finalBio, Bio: finalBio };
 
     const res = await api.updateData("Users", myId, payload);
     if (res.success || res) {
-      const updatedUser = {
-        ...store.currentUser,
-        ...payload,
-      };
-      store.setCurrentUser(updatedUser);
+      store.setCurrentUser({ ...store.currentUser, ...payload });
       store.addNotification(
         "Berhasil",
         "Status bio berhasil diperbarui!",
@@ -539,7 +497,6 @@ const saveBio = async () => {
       );
     }
   } catch (err) {
-    console.error("Gagal simpan bio:", err);
     store.addNotification("Error", err.message, "warning");
   } finally {
     isSavingBio.value = false;
@@ -556,39 +513,28 @@ const greetingTime = computed(() => {
 
 const skyTheme = computed(() => {
   const hour = new Date().getHours();
-
-  if (hour >= 3 && hour < 11) {
+  if (hour >= 3 && hour < 11)
     return {
-      background: "bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-600",
       glow: "bg-amber-300",
       celestialClass:
         "bg-amber-400/30 text-amber-200 border border-amber-300/40",
       celestialIcon: "fa-solid fa-sun",
     };
-  }
-
-  if (hour >= 11 && hour < 15) {
+  if (hour >= 11 && hour < 15)
     return {
-      background: "bg-gradient-to-br from-sky-400 via-blue-500 to-indigo-600",
       glow: "bg-yellow-200",
       celestialClass:
         "bg-yellow-300/40 text-yellow-100 border border-yellow-200/50",
       celestialIcon: "fa-solid fa-sun-bright",
     };
-  }
-
-  if (hour >= 15 && hour < 18) {
+  if (hour >= 15 && hour < 18)
     return {
-      background: "bg-gradient-to-br from-amber-500 via-orange-600 to-rose-700",
       glow: "bg-amber-400",
       celestialClass:
         "bg-orange-400/30 text-amber-200 border border-amber-200/40",
       celestialIcon: "fa-solid fa-sun",
     };
-  }
-
   return {
-    background: "bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900",
     glow: "bg-indigo-400",
     celestialClass:
       "bg-indigo-400/20 text-yellow-200 border border-indigo-300/30",
@@ -597,14 +543,7 @@ const skyTheme = computed(() => {
 });
 
 const navTo = (pageId, filterStatus = null) => {
-  // Simpan filter status ke store jika ada
-  if (filterStatus) {
-    store.activeProgressFilter = filterStatus; // e.g. 'completed' atau 'todo'
-  } else {
-    store.activeProgressFilter = "all";
-  }
-
-  // Berpindah halaman
+  store.activeProgressFilter = filterStatus || "all";
   store.currentPage = pageId;
 };
 
@@ -617,11 +556,8 @@ const isSpvOrAdmin = computed(() => {
 
 const myTasks = computed(() => {
   const allPrograms = store.db?.programs || store.programs || [];
-
-  // Jika SPV/Superadmin, bisa melihat semua tugas
   if (isSpvOrAdmin.value) return allPrograms;
 
-  // Jika user biasa, hanya tugas yang ditugaskan (assigned) ke dirinya atau yang dia buat
   const myId = currentUser.value?.id || currentUser.value?.email;
   const myName = currentUser.value?.nama;
 
@@ -629,41 +565,53 @@ const myTasks = computed(() => {
     const assignedIds = p.assignedPicIds || [];
     const assignedUsers = p.assignedUsers || [];
     const picName = p.picName || p.PIC || "";
-
     const isAssigned =
       assignedIds.includes(myId) ||
       (myName && assignedUsers.includes(myName)) ||
       (myName && picName.toLowerCase().includes(myName.toLowerCase()));
-
     return isAssigned || p.createdBy === myId;
   });
 });
 
-const myActiveTasksCount = computed(() => {
-  return myTasks.value.filter((t) => (t.status || t.Status) === "In Progress")
-    .length;
-});
+const myActiveTasksCount = computed(
+  () =>
+    myTasks.value.filter((t) => (t.status || t.Status) === "In Progress")
+      .length,
+);
+const myCompletedTasksCount = computed(
+  () =>
+    myTasks.value.filter((t) => (t.status || t.Status) === "Completed").length,
+);
+const openTicketsCount = computed(
+  () =>
+    (store.db?.aduanList || store.aduanList || []).filter(
+      (a) => a.status === "Open",
+    ).length,
+);
 
-const myCompletedTasksCount = computed(() => {
-  return myTasks.value.filter((t) => (t.status || t.Status) === "Completed")
-    .length;
-});
+// MENGAMBIL JUMLAH CATATAN SECARA REAKTIF & AKURAT
+const fetchNotesCount = async () => {
+  const currentUserId =
+    currentUser.value?.email || currentUser.value?.id || "guest";
+  try {
+    if (api && api.getUserNotes) {
+      const res = await api.getUserNotes(currentUserId);
+      myNotesList.value = res || [];
+    } else {
+      myNotesList.value = store.db?.notes || store.notes || [];
+    }
+  } catch (err) {
+    myNotesList.value = store.db?.notes || store.notes || [];
+  }
+};
 
-const openTicketsCount = computed(() => {
-  const aduanList = store.db?.aduanList || store.aduanList || [];
-  return aduanList.filter((a) => a.status === "Open").length;
-});
+const notesCount = computed(() => myNotesList.value.length);
 
-const notesCount = computed(() => {
-  const notes = store.db?.notes || store.notes || [];
-  return notes.length;
-});
-
-const myUpcomingTasks = computed(() => {
-  return myTasks.value
+const myUpcomingTasks = computed(() =>
+  myTasks.value
     .filter((t) => (t.status || t.Status) !== "Completed")
-    .slice(0, 3);
-});
+    .slice(0, 3),
+);
 
 const allSidebarFeatures = [
   {
@@ -733,7 +681,6 @@ const allSidebarFeatures = [
     icon: "fa-solid fa-file-signature",
     bgClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
   },
-
   {
     id: "aduan",
     label: "Customer Support",
@@ -760,26 +707,33 @@ const allSidebarFeatures = [
   },
 ];
 
-// Menyaring menu berdasarkan hak akses pengguna
 const filteredFeatures = computed(() => {
   const role = String(
     store.currentUser?.role || store.currentUser?.Role || "",
   ).toUpperCase();
   if (role === "SUPERADMIN") return allSidebarFeatures;
-
   const userPerms = store.currentUser?.permissions || {};
-  return allSidebarFeatures.filter((menu) => {
-    return userPerms[menu.id]?.access;
-  });
+  return allSidebarFeatures.filter((menu) => userPerms[menu.id]?.access);
 });
 
 const navigateTo = (pageId) => {
   store.currentPage = pageId;
 };
+
+onMounted(() => {
+  fetchNotesCount();
+});
+
+watch(
+  () => store.currentUser,
+  () => {
+    fetchNotesCount();
+  },
+  { deep: true },
+);
 </script>
 
 <style scoped>
-/* 1. ANIMASI RUNNING TEXT (MARQUEE) */
 @keyframes marquee {
   0% {
     transform: translateX(100%);
@@ -788,19 +742,14 @@ const navigateTo = (pageId) => {
     transform: translateX(-100%);
   }
 }
-
 .animate-marquee {
   display: inline-block;
   animation: marquee 16s linear infinite;
 }
-
 .animate-marquee:hover {
   animation-play-state: paused;
 }
 
-/* 2. SPESIFIKASI ANIMASI EMOTICON BERGAYA TELEGRAM / WHATSAPP */
-
-/* A. Membal Elastis (Bounce TG) */
 @keyframes tgBounce {
   0%,
   100% {
@@ -820,7 +769,6 @@ const navigateTo = (pageId) => {
   animation: tgBounce 1.8s ease-in-out infinite;
 }
 
-/* B. Meluncur / Mendorong (Launch) untuk Roket/Api */
 @keyframes tgLaunch {
   0%,
   100% {
@@ -834,7 +782,6 @@ const navigateTo = (pageId) => {
   animation: tgLaunch 1.4s ease-in-out infinite;
 }
 
-/* C. Geleng-geleng Unyu (Wiggle) untuk Senyum/Sinis */
 @keyframes tgWiggle {
   0%,
   100% {
@@ -851,7 +798,6 @@ const navigateTo = (pageId) => {
   animation: tgWiggle 1.5s ease-in-out infinite;
 }
 
-/* D. Detak Jantung / Pompa (Heartbeat) untuk Kopi/Komputer */
 @keyframes tgHeartbeat {
   0%,
   100% {
@@ -874,7 +820,6 @@ const navigateTo = (pageId) => {
   animation: tgHeartbeat 1.6s ease-in-out infinite;
 }
 
-/* E. Berputar & Memancar (Spin & Glow) untuk Bintang/Sparkle */
 @keyframes tgSpinGlow {
   0% {
     transform: rotate(0deg) scale(1);

@@ -1,34 +1,45 @@
 <!-- src/views/PageUnit.vue -->
 <template>
-  <section id="page-unit" class="page-section space-y-4 md:space-y-6">
+  <section
+    id="page-unit"
+    class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6"
+  >
     <!-- Filter Header Card -->
-    <div class="glass-card p-4 rounded-2xl space-y-3">
+    <div
+      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-3"
+    >
       <div
         class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
       >
         <div>
-          <p class="text-slate-400 text-sm md:text-xs">
+          <h2
+            class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
+          >
+            <i class="fa-solid fa-chart-pie text-emerald-600"></i>
+            <span>Unit Usaha: {{ selectedUnitName }}</span>
+          </h2>
+          <p
+            class="text-slate-500 dark:text-slate-400 text-sm md:text-xs mt-0.5"
+          >
             Sesuaikan rekap berdasarkan bulan, divisi, atau platform.
           </p>
         </div>
 
         <!-- BUTTON GROUP: EXPORT, IMPORT & TAMBAH DATA -->
         <div class="flex items-center gap-2 flex-wrap shrink-0">
-          <!-- Tombol Export Excel -->
           <button
             v-if="store.canExportImport()"
             @click="handleExportRevenue"
-            class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-2xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
           >
             <i class="fa-solid fa-file-excel"></i>
             <span>Export Excel</span>
           </button>
 
-          <!-- Tombol Import Excel -->
           <button
             v-if="store.canExportImport()"
             @click="isImportModalOpen = true"
-            class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-2xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
+            class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
           >
             <i class="fa-solid fa-file-import"></i>
             <span>Import Excel</span>
@@ -37,10 +48,9 @@
           <button
             v-if="store.canEditPage('unit-' + selectedUnitName)"
             @click="store.openModal('revenue', { Unit: selectedUnitName })"
-            class="bg-button hover:from-[#149b73] hover:to-[#149b73] text-white px-4 py-2.5 md:py-2 rounded-xl font-semibold text-sm md:text-xs shadow-md transition-all text-center cursor-pointer"
+            class="bg-button text-white px-4 py-2.5 md:py-2 rounded-xl font-semibold text-sm md:text-xs shadow-md transition-all text-center cursor-pointer flex items-center gap-1.5"
           >
-            <i class="fa-solid fa-plus mr-1.5"></i>Input Revenue
-            {{ selectedUnitName }}
+            <i class="fa-solid fa-plus"></i>Input Revenue {{ selectedUnitName }}
           </button>
 
           <!-- Modul Revenue Modal Import -->
@@ -56,16 +66,16 @@
 
       <!-- Filters Row -->
       <div
-        class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-200/50 dark:border-slate-800/80"
+        class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-100 dark:border-slate-800"
       >
         <div>
           <label
-            class="block text-sm md:text-xs font-semibold text-slate-400 uppercase mb-1"
+            class="block text-xs font-semibold text-slate-500 uppercase mb-1"
             >Filter Bulan</label
           >
           <select
             v-model="filterMonth"
-            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs dark:bg-slate-800 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
           >
             <option value="ALL">Semua Bulan (Jan - Des)</option>
             <option
@@ -80,12 +90,12 @@
 
         <div>
           <label
-            class="block text-sm md:text-xs font-semibold text-slate-400 uppercase mb-1"
+            class="block text-xs font-semibold text-slate-500 uppercase mb-1"
             >Filter Divisi</label
           >
           <select
             v-model="filterDivisi"
-            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs dark:bg-slate-800 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
           >
             <option value="ALL">Semua Divisi</option>
             <option v-for="div in masterDivisiList" :key="div" :value="div">
@@ -96,12 +106,12 @@
 
         <div>
           <label
-            class="block text-sm md:text-xs font-semibold text-slate-400 uppercase mb-1"
+            class="block text-xs font-semibold text-slate-500 uppercase mb-1"
             >Filter Platform</label
           >
           <select
             v-model="filterPlatform"
-            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs dark:bg-slate-800 outline-none"
+            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
           >
             <option value="ALL">Semua Platform</option>
             <option
@@ -117,11 +127,11 @@
     </div>
 
     <!-- Summary Metrics Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
       <div
-        class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-emerald-400"
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs border-l-4 border-l-emerald-400"
       >
-        <p class="text-slate-400 text-sm md:text-xs">Revenue Unit (Filtered)</p>
+        <p class="text-xs text-slate-400">Revenue Unit (Filtered)</p>
         <h3
           class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
         >
@@ -130,9 +140,9 @@
       </div>
 
       <div
-        class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-blue-400"
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs border-l-4 border-l-blue-400"
       >
-        <p class="text-slate-400 text-sm md:text-xs">Target Unit</p>
+        <p class="text-xs text-slate-400">Target Unit</p>
         <h3
           class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
         >
@@ -141,9 +151,9 @@
       </div>
 
       <div
-        class="glass-card p-4 md:p-5 rounded-2xl border-l-4 border-l-amber-400"
+        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs border-l-4 border-l-amber-400"
       >
-        <p class="text-slate-400 text-sm md:text-xs">% Kontribusi Global</p>
+        <p class="text-xs text-slate-400">% Kontribusi Global</p>
         <h3
           class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
         >
@@ -156,26 +166,26 @@
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
       <!-- 1. Rekap Revenue Per Bulan -->
       <div
-        class="lg:col-span-4 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
+        class="lg:col-span-4 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-start h-full"
       >
         <h3
           class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
         >
           Rekap Revenue Per Bulan
         </h3>
-        <div class="overflow-y-auto max-h-[260px] pr-1">
+        <div class="overflow-y-auto max-h-[260px] pr-1 custom-scrollbar">
           <table class="min-w-full text-sm md:text-xs text-left">
             <thead
-              class="bg-white/40 dark:bg-slate-800/60 text-slate-400 sticky top-0 backdrop-blur-md"
+              class="bg-slate-50 dark:bg-slate-800/80 text-slate-400 sticky top-0 backdrop-blur-md"
             >
               <tr>
                 <th class="py-2 px-3 font-semibold">Bulan</th>
                 <th class="py-2 px-3 text-right font-semibold">Revenue</th>
               </tr>
             </thead>
-            <tbody class="divide-y dark:divide-slate-800/80">
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
               <tr v-if="monthlyRecap.length === 0">
-                <td colspan="2" class="text-center py-3 text-slate-400">
+                <td colspan="2" class="text-center py-4 text-slate-400">
                   Belum ada data.
                 </td>
               </tr>
@@ -183,10 +193,12 @@
                 v-else
                 v-for="(row, idx) in monthlyRecap"
                 :key="idx"
-                class="hover:bg-white/20 dark:hover:bg-slate-800/40"
+                class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
               >
-                <td class="py-2 px-3">{{ row.bulan }}</td>
-                <td class="py-2 px-3 text-right font-semibold text-theme">
+                <td class="py-2.5 px-3 text-slate-700 dark:text-slate-300">
+                  {{ row.bulan }}
+                </td>
+                <td class="py-2.5 px-3 text-right font-semibold text-theme">
                   {{ formatRupiah(row.revenue) }}
                 </td>
               </tr>
@@ -197,7 +209,7 @@
 
       <!-- 2. Rekap Triwulan -->
       <div
-        class="lg:col-span-3 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
+        class="lg:col-span-3 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-start h-full"
       >
         <h3
           class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
@@ -208,10 +220,10 @@
           <div
             v-for="(q, idx) in quarterlyRecap"
             :key="idx"
-            class="p-2.5 bg-white/30 dark:bg-slate-800/40 rounded-xl border border-white/20 dark:border-slate-700/50 flex justify-between items-center"
+            class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800 flex justify-between items-center"
           >
             <span
-              class="text-sm md:text-xs font-semibold text-slate-500 dark:text-slate-400"
+              class="text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300"
               >{{ q.quarter }}</span
             >
             <span class="text-sm md:text-xs font-semibold text-theme">{{
@@ -223,7 +235,7 @@
 
       <!-- 3. Chart Trend Revenue Bulanan -->
       <div
-        class="lg:col-span-5 glass-card p-4 md:p-5 rounded-2xl flex flex-col justify-start h-full"
+        class="lg:col-span-5 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-start h-full"
       >
         <h3
           class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
@@ -237,7 +249,9 @@
     </div>
 
     <!-- Management Data Table -->
-    <div class="glass-card p-4 md:p-6 rounded-2xl space-y-4">
+    <div
+      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
+    >
       <div
         class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
       >
@@ -249,7 +263,7 @@
           </h3>
           <span
             v-if="selectedIds.length > 0"
-            class="text-xs md:text-xs text-purple-600 font-semibold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
+            class="text-xs text-purple-600 font-semibold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
           >
             {{ selectedIds.length }} Dipilih
           </span>
@@ -281,7 +295,7 @@
             <select
               v-model="itemsPerPage"
               @change="currentPage = 1"
-              class="glass-input rounded-xl p-1.5 text-sm md:text-xs dark:bg-slate-800 outline-none"
+              class="glass-input rounded-xl p-1.5 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none"
             >
               <option value="25">25</option>
               <option value="50">50</option>
@@ -293,77 +307,82 @@
       </div>
 
       <!-- Area Scrollable Tabel dengan Sticky Header -->
-      <div class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1">
-        <table class="min-w-full text-sm md:text-xs text-left">
+      <div
+        class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1 custom-scrollbar"
+      >
+        <table
+          class="min-w-full text-sm md:text-xs text-left border-collapse whitespace-nowrap"
+        >
           <thead
-            class="bg-white/80 dark:bg-slate-800/90 text-slate-400 sticky top-0 backdrop-blur-md z-10"
+            class="bg-slate-50/95 dark:bg-slate-800/95 text-slate-400 sticky top-0 backdrop-blur-md z-10 shadow-sm"
           >
-            <tr>
-              <th class="py-2.5 px-3 w-8 text-center">
+            <tr class="font-semibold uppercase text-xs">
+              <th
+                class="py-2.5 px-3 w-8 text-center border-b border-slate-200 dark:border-slate-700"
+              >
                 <input
                   type="checkbox"
                   :checked="isAllSelected"
                   @change="toggleSelectAll"
-                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4"
                 />
               </th>
               <th
                 @click="sortTable('Tanggal')"
-                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold border-b border-slate-200 dark:border-slate-700"
               >
-                Tanggal <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
+                Tanggal <i class="fa-solid fa-sort text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Divisi')"
-                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold border-b border-slate-200 dark:border-slate-700"
               >
-                Divisi <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
+                Divisi <i class="fa-solid fa-sort text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Platform')"
-                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold border-b border-slate-200 dark:border-slate-700"
               >
-                Platform
-                <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
+                Platform <i class="fa-solid fa-sort text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('JumlahPesanan')"
-                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold border-b border-slate-200 dark:border-slate-700"
               >
-                Jumlah Pesanan
-                <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
+                Jumlah Pesanan <i class="fa-solid fa-sort text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Revenue')"
-                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold border-b border-slate-200 dark:border-slate-700"
               >
-                Revenue <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
+                Revenue <i class="fa-solid fa-sort text-xs ml-1"></i>
               </th>
               <th
                 @click="sortTable('Keterangan')"
-                class="py-2.5 px-3 cursor-pointer select-none font-semibold"
+                class="py-2.5 px-3 cursor-pointer select-none font-semibold border-b border-slate-200 dark:border-slate-700"
               >
-                Keterangan
-                <i class="fa-solid fa-sort text-xs md:text-xs ml-1"></i>
+                Keterangan <i class="fa-solid fa-sort text-xs ml-1"></i>
               </th>
               <th
                 v-if="store.canEditPage('unit-' + selectedUnitName)"
-                class="py-2.5 px-4 text-center font-semibold"
+                class="py-2.5 px-4 text-center font-semibold border-b border-slate-200 dark:border-slate-700"
               >
                 Aksi
               </th>
             </tr>
           </thead>
 
-          <tbody class="divide-y dark:divide-slate-800/80">
+          <tbody
+            class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-200"
+          >
             <tr v-if="store.isLoading">
-              <td colspan="8" class="text-center py-4 text-slate-400">
+              <td colspan="8" class="text-center py-6 text-slate-400">
                 Memuat data revenue...
               </td>
             </tr>
 
             <tr v-else-if="paginatedRevenue.length === 0">
-              <td colspan="8" class="text-center py-4 text-slate-400">
+              <td colspan="8" class="text-center py-6 text-slate-400">
                 Tidak ada data revenue.
               </td>
             </tr>
@@ -372,27 +391,29 @@
               v-else
               v-for="item in paginatedRevenue"
               :key="getDocId(item)"
-              class="hover:bg-white/20 dark:hover:bg-slate-800/40"
+              class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
               :class="{
                 'bg-purple-500/10 dark:bg-purple-500/20': selectedIds.includes(
                   getDocId(item),
                 ),
               }"
             >
-              <td class="py-2 px-3 text-center" @click.stop>
+              <td class="py-2.5 px-3 text-center" @click.stop>
                 <input
                   type="checkbox"
                   :value="getDocId(item)"
                   v-model="selectedIds"
-                  class="accent-purple-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
+                  class="accent-purple-600 rounded cursor-pointer w-4 h-4"
                 />
               </td>
-              <td class="py-2 px-3">
+              <td class="py-2.5 px-3 font-medium">
                 {{ item.Tanggal ? String(item.Tanggal).substring(0, 10) : "-" }}
               </td>
-              <td class="py-2 px-3 font-semibold">{{ item.Divisi || "-" }}</td>
-              <td class="py-2 px-3">{{ item.Platform || "-" }}</td>
-              <td class="py-2 px-3 font-semibold text-amber-500">
+              <td class="py-2.5 px-3 font-semibold">
+                {{ item.Divisi || "-" }}
+              </td>
+              <td class="py-2.5 px-3">{{ item.Platform || "-" }}</td>
+              <td class="py-2.5 px-3 font-semibold text-amber-500">
                 {{
                   Number(
                     item.JumlahPesanan || item.pesanan || 0,
@@ -400,22 +421,22 @@
                 }}
                 Pcs
               </td>
-              <td class="py-2 px-3 font-semibold text-theme">
+              <td class="py-2.5 px-3 font-semibold text-theme">
                 {{ formatRupiah(item.Revenue || item.Nominal) }}
               </td>
               <td
-                class="py-2 px-3 text-slate-500 max-w-[150px] truncate"
+                class="py-2.5 px-3 text-slate-500 max-w-[150px] truncate"
                 :title="item.Keterangan"
               >
                 {{ item.Keterangan || "-" }}
               </td>
               <td
                 v-if="store.canEditPage('unit-' + selectedUnitName)"
-                class="py-2 px-3 text-center space-x-2 whitespace-nowrap"
+                class="py-2.5 px-3 text-center space-x-2 whitespace-nowrap"
               >
                 <button
                   @click="store.openModal('revenue', item)"
-                  class="text-theme hover:text-theme p-1.5 cursor-pointer"
+                  class="text-theme hover:underline p-1.5 cursor-pointer"
                   title="Edit Revenue"
                 >
                   <i class="fa-solid fa-pen"></i>
@@ -446,23 +467,21 @@
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
-            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
           >
-            <i class="fa-solid fa-chevron-left text-xs md:text-xs"></i>
+            <i class="fa-solid fa-chevron-left text-xs"></i>
           </button>
 
-          <span
-            class="px-3 py-1.5 rounded-lg bg-[#25eba11a] text-theme font-semibold"
-          >
+          <span class="px-3 py-1.5 rounded-lg text-theme font-semibold">
             {{ currentPage }} / {{ totalPages }}
           </span>
 
           <button
             @click="currentPage++"
             :disabled="currentPage === totalPages"
-            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-white/40 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
           >
-            <i class="fa-solid fa-chevron-right text-xs md:text-xs"></i>
+            <i class="fa-solid fa-chevron-right text-xs"></i>
           </button>
         </div>
       </div>
@@ -504,7 +523,7 @@
             <button
               @click="closeConfirmModal"
               type="button"
-              class="px-4 py-2.5 md:py-2 rounded-xl text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
+              class="px-4 py-2 rounded-xl text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
             >
               Batal
             </button>
@@ -512,7 +531,7 @@
               @click="executeConfirmAction"
               type="button"
               :disabled="store.isLoading"
-              class="px-4 py-2.5 md:py-2 rounded-xl text-sm md:text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              class="px-4 py-2 rounded-xl text-sm md:text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
             >
               <i v-if="store.isLoading" class="fa-solid fa-spinner fa-spin"></i>
               <span>Ya, Hapus</span>
@@ -530,7 +549,7 @@ import { store } from "../store";
 import { api } from "../services/api";
 import Chart from "chart.js/auto";
 import { exportToExcelBySchema } from "../utils/excelHandler.js";
-import ModalImportExcel from "../components/ModalImportExcel.vue";
+import ModalImportExcel from "../components/modals/ModalImportExcel.vue";
 
 const MONTH_NAMES = [
   "Januari",
@@ -584,11 +603,8 @@ const masterPlatformList = computed(
 );
 
 const isImportModalOpen = ref(false);
-
-// Ambil daftar revenue dari store
 const revenueList = computed(() => store.db?.revenue || []);
 
-// HANDLER EXPORT EXCEL REVENUE
 const handleExportRevenue = () => {
   exportToExcelBySchema(
     `Data_Revenue_${selectedUnitName.value}`,
@@ -597,30 +613,21 @@ const handleExportRevenue = () => {
   );
 };
 
-// HANDLER EKSEKUSI IMPORT EXCEL REVENUE (PERBAIKAN DENGAN ID BARU FIRESTORE)
 const handleImportRevenueConfirm = async ({ itemsToSave, stats }) => {
   store.isLoading = true;
   try {
-    // Loop dan simpan setiap item ke Firestore
     for (const item of itemsToSave) {
-      // Bersihkan properti ID lama jika ada dari hasil parsing Excel/lokal
       const payload = { ...item };
       delete payload.id;
       delete payload.Timestamp;
 
-      // Panggil api.saveData untuk membuat dokumen baru di Firestore
       const res = await api.saveData("Revenue", payload);
-
-      // Jika butuh ID langsung dipasang ke local store
       if (res && res.success && res.id) {
         payload.id = res.id;
         payload.Timestamp = res.id;
       }
     }
-
-    // Refresh database global dari Firestore agar data ber-ID baru siap di-edit / di-delete
     await store.loadFullDatabase();
-
     store.addNotification(
       "Import Revenue Selesai",
       `Berhasil ditambahkan: ${stats.added}, Diperbarui: ${stats.updated}, Diabaikan: ${stats.ignored}`,
@@ -656,10 +663,8 @@ const confirmModal = reactive({
 const chartUnitMonthlyTrendRef = ref(null);
 let trendChartInstance = null;
 
-// PERBAIKAN PENTING: Mengambil ID Unik Dokumen Firestore secara Presisi
 function getDocId(item) {
   if (!item) return "";
-  // Mengambil ID Firestore (id) atau Timestamp fallback
   return String(item.id || item.Timestamp || item.idDokumen || "");
 }
 
@@ -694,7 +699,6 @@ const globalTargetTotal = computed(() =>
 
 const filteredRevenue = computed(() => {
   const allRevenue = store.db.revenue || [];
-
   return allRevenue.filter((item) => {
     if (item.Unit !== selectedUnitName.value) return false;
     if (!isDateInFilter(item.Tanggal)) return false;
@@ -876,7 +880,6 @@ const closeConfirmModal = () => {
   confirmModal.isBulk = false;
 };
 
-// PERBAIKAN UTAMA: LOGIKA EKSEKUSI PENGHAPUSAN FIRESTORE
 const executeConfirmAction = async () => {
   store.isLoading = true;
   try {
@@ -885,7 +888,6 @@ const executeConfirmAction = async () => {
     if (confirmModal.isBulk) {
       for (const id of selectedIds.value) {
         if (!id) continue;
-        // Panggil api.deleteData dengan sheetName 'Revenue' (di-map ke koleksi 'revenues' di Firestore)
         const res = await api.deleteData("Revenue", id);
         if (res && res.success) successCount++;
       }
@@ -910,7 +912,6 @@ const executeConfirmAction = async () => {
       );
     }
 
-    // WAJIB: Muat ulang database dari Firestore untuk menyegarkan UI
     await store.loadFullDatabase();
   } catch (err) {
     console.error("Gagal menghapus revenue:", err);

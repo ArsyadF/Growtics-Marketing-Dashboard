@@ -29,75 +29,27 @@
           >
             Pilih Unit Usaha
           </p>
-
           <div class="grid grid-cols-3 gap-2">
-            <!-- Unit NHP -->
-            <button
-              v-if="store.canAccessPage('unit-NHP')"
-              @click.stop="selectUnit('unit-NHP')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <div
-                class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform"
+            <template v-for="menu in unitMenus" :key="menu.id">
+              <button
+                v-if="menu.condition()"
+                @click.stop="menu.action"
+                class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
               >
-                <i class="fa-solid fa-book-open"></i>
-              </div>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >NHP</span
-              >
-            </button>
-
-            <!-- Unit NHC -->
-            <button
-              v-if="store.canAccessPage('unit-NHC')"
-              @click.stop="selectUnit('unit-NHC')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <div
-                class="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform"
-              >
-                <i class="fa-solid fa-shirt"></i>
-              </div>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >NHC</span
-              >
-            </button>
-
-            <!-- Unit KG -->
-            <button
-              v-if="store.canAccessPage('unit-KG')"
-              @click.stop="selectUnit('unit-KG')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <div
-                class="w-9 h-9 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform"
-              >
-                <i class="fa-solid fa-print"></i>
-              </div>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >KG</span
-              >
-            </button>
-
-            <!-- Summary Unit -->
-            <button
-              v-if="store.canAccessPage('summary')"
-              @click.stop="selectUnit('summary')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <div
-                class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform"
-              >
-                <i class="fa-solid fa-chart-line"></i>
-              </div>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Rekap Unit</span
-              >
-            </button>
+                <div
+                  :class="[
+                    'w-9 h-9 rounded-xl flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform',
+                    menu.iconClass,
+                  ]"
+                >
+                  <i :class="menu.icon"></i>
+                </div>
+                <span
+                  class="text-xs font-semibold text-slate-700 dark:text-slate-200"
+                  >{{ menu.label }}</span
+                >
+              </button>
+            </template>
           </div>
         </div>
       </transition>
@@ -113,119 +65,27 @@
           >
             Input Data Baru
           </p>
-
           <div class="grid grid-cols-3 gap-2">
-            <button
-              v-if="store.canEditPage('revenue')"
-              @click.stop="openAddModal('revenue')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <span
-                class="w-7 h-7 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs shrink-0"
+            <template v-for="menu in addMenus" :key="menu.id">
+              <button
+                v-if="menu.condition()"
+                @click.stop="menu.action"
+                class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
               >
-                <i class="fa-solid fa-sack-dollar"></i>
-              </span>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Revenue</span
-              >
-            </button>
-
-            <button
-              v-if="store.canEditPage('leads')"
-              @click.stop="openAddModal('leads')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <span
-                class="w-7 h-7 rounded-lg bg-teal-500/10 text-teal-600 flex items-center justify-center text-xs shrink-0"
-              >
-                <i class="fa-solid fa-users-rays"></i>
-              </span>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Leads</span
-              >
-            </button>
-
-            <button
-              v-if="store.canEditPage('promo')"
-              @click.stop="openAddModal('promo')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <span
-                class="w-7 h-7 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs shrink-0"
-              >
-                <i class="fa-solid fa-bullhorn"></i>
-              </span>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Promosi</span
-              >
-            </button>
-
-            <button
-              v-if="store.canEditPage('progress')"
-              @click.stop="openAddModal('progress')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <span
-                class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs shrink-0"
-              >
-                <i class="fa-solid fa-bars-progress"></i>
-              </span>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Progress</span
-              >
-            </button>
-
-            <button
-              v-if="store.canEditPage('spv-report')"
-              @click.stop="openAddModal('spv-report')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <span
-                class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xs shrink-0"
-              >
-                <i class="fa-solid fa-file-signature"></i>
-              </span>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Divisi</span
-              >
-            </button>
-
-            <button
-              v-if="store.canEditPage('notes')"
-              @click.stop="openAddModal('notes')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <span
-                class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs shrink-0"
-              >
-                <i class="fa-solid fa-note-sticky"></i>
-              </span>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Notes</span
-              >
-            </button>
-
-            <button
-              v-if="store.canEditPage('daily-report')"
-              @click.stop="openAddModal('daily-report')"
-              class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <span
-                class="w-7 h-7 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs shrink-0"
-              >
-                <i class="fa-solid fa-file-invoice"></i>
-              </span>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Laporan Harian</span
-              >
-            </button>
+                <span
+                  :class="[
+                    'w-7 h-7 rounded-lg flex items-center justify-center text-xs shrink-0',
+                    menu.iconClass,
+                  ]"
+                >
+                  <i :class="menu.icon"></i>
+                </span>
+                <span
+                  class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center"
+                  >{{ menu.label }}</span
+                >
+              </button>
+            </template>
           </div>
         </div>
       </transition>
@@ -241,76 +101,33 @@
           >
             Modul Workspace
           </p>
-
           <div class="grid grid-cols-2 gap-2">
-            <button
-              v-if="store.canAccessPage('progress')"
-              @click.stop="navTo('progress')"
-              class="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-emerald-500/10 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <div
-                class="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition-transform"
+            <template v-for="menu in workspaceMenus" :key="menu.id">
+              <button
+                v-if="menu.condition()"
+                @click.stop="menu.action"
+                class="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
+                :class="menu.hoverBg"
               >
-                <i class="fa-solid fa-bars-progress"></i>
-              </div>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight"
-                >Team Progress</span
-              >
-            </button>
-
-            <button
-              v-if="store.canAccessPage('digmar')"
-              @click.stop="navTo('digmar')"
-              class="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-blue-500/10 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <div
-                class="w-9 h-9 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition-transform"
-              >
-                <i class="fa-solid fa-share-nodes"></i>
-              </div>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight"
-                >Socmed Analytics</span
-              >
-            </button>
-
-            <button
-              v-if="store.canAccessPage('leads')"
-              @click.stop="navTo('leads')"
-              class="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-teal-500/10 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <div
-                class="w-9 h-9 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition-transform"
-              >
-                <i class="fa-solid fa-users-rays"></i>
-              </div>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight"
-                >Leads & Campaign</span
-              >
-            </button>
-
-            <button
-              v-if="store.canAccessPage('spv-report')"
-              @click.stop="navTo('spv-report')"
-              class="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-purple-500/10 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-            >
-              <div
-                class="w-9 h-9 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition-transform"
-              >
-                <i class="fa-solid fa-file-signature"></i>
-              </div>
-              <span
-                class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight"
-                >Division Report</span
-              >
-            </button>
+                <div
+                  :class="[
+                    'w-9 h-9 rounded-xl flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition-transform',
+                    menu.iconClass,
+                  ]"
+                >
+                  <i :class="menu.icon"></i>
+                </div>
+                <span
+                  class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight"
+                  >{{ menu.label }}</span
+                >
+              </button>
+            </template>
           </div>
         </div>
       </transition>
 
-      <!-- MAIN NAVBAR LEBIH PRESISI TANPA CLIPPATH YANG MERUSAK RADIUS -->
+      <!-- MAIN NAVBAR -->
       <nav
         class="pointer-events-auto relative z-30 w-full h-16 flex items-center justify-between"
       >
@@ -343,15 +160,13 @@
               />
             </linearGradient>
           </defs>
-
-          <!-- Path SVG dengan sudut atas lebih tegas/normal (r=16/rounded-2xl) -->
           <path
             d="M 0 20 C 0 8.954 8.954 0 20 0 L 140 0 C 149 0 153 5 158 11 C 164 19 171 25 187.5 25 C 204 25 211 19 217 11 C 222 5 226 0 235 0 L 355 0 C 366.046 0 375 8.954 375 20 L 375 44 C 375 55.046 366.046 64 355 64 L 20 64 C 8.954 64 0 55.046 0 44 Z"
             fill="url(#nav-glass-gradient)"
           />
         </svg>
 
-        <!-- CONTAINER ITEM NAVIGASI -->
+        <!-- CONTAINER ITEM NAVIGASI UTAMA -->
         <div
           class="relative z-10 w-full flex items-center justify-around h-full px-2"
         >
@@ -469,30 +284,186 @@ const navContainerRef = ref(null);
 const closePopup = () => {
   activePopup.value = null;
 };
-
 const togglePopup = (type) => {
-  if (activePopup.value === type) {
-    activePopup.value = null;
-  } else {
-    activePopup.value = type;
-  }
+  activePopup.value = activePopup.value === type ? null : type;
 };
 
 const navTo = (page) => {
   store.currentPage = page;
-  activePopup.value = null;
+  closePopup();
 };
 
 const selectUnit = (unitPage) => {
   store.currentPage = unitPage;
-  activePopup.value = null;
+  closePopup();
 };
 
-const handleDocumentClick = (event) => {
-  if (activePopup.value && navContainerRef.value) {
-    if (!navContainerRef.value.contains(event.target)) {
-      closePopup();
+const openAddModal = (modalName) => {
+  closePopup();
+  // Menyederhanakan logika if-else yang panjang
+  const pageOverrides = [
+    "revenue",
+    "leads",
+    "promo",
+    "progress",
+    "spv-report",
+    "daily-report",
+    "notes",
+  ];
+  if (pageOverrides.includes(modalName)) {
+    if (
+      modalName !== "notes" ||
+      (store.canAccessPage && store.canAccessPage("notes"))
+    ) {
+      store.currentPage = modalName;
     }
+  }
+  store.openModal(modalName);
+};
+
+// ==========================================
+// KONFIGURASI MENU DATA-DRIVEN
+// ==========================================
+const unitMenus = [
+  {
+    id: "unit-NHP",
+    label: "NHP",
+    icon: "fa-solid fa-book-open",
+    iconClass: "bg-teal-500/10 text-teal-600",
+    condition: () => store.canAccessPage("unit-NHP"),
+    action: () => selectUnit("unit-NHP"),
+  },
+  {
+    id: "unit-NHC",
+    label: "NHC",
+    icon: "fa-solid fa-shirt",
+    iconClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+    condition: () => store.canAccessPage("unit-NHC"),
+    action: () => selectUnit("unit-NHC"),
+  },
+  {
+    id: "unit-KG",
+    label: "KG",
+    icon: "fa-solid fa-print",
+    iconClass: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+    condition: () => store.canAccessPage("unit-KG"),
+    action: () => selectUnit("unit-KG"),
+  },
+  {
+    id: "summary",
+    label: "Rekap Unit",
+    icon: "fa-solid fa-chart-line",
+    iconClass: "bg-teal-500/10 text-teal-600",
+    condition: () => store.canAccessPage("summary"),
+    action: () => selectUnit("summary"),
+  },
+];
+
+const addMenus = [
+  {
+    id: "revenue",
+    label: "Revenue",
+    icon: "fa-solid fa-sack-dollar",
+    iconClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+    condition: () => store.canEditPage("revenue"),
+    action: () => openAddModal("revenue"),
+  },
+  {
+    id: "leads",
+    label: "Leads",
+    icon: "fa-solid fa-users-rays",
+    iconClass: "bg-teal-500/10 text-teal-600",
+    condition: () => store.canEditPage("leads"),
+    action: () => openAddModal("leads"),
+  },
+  {
+    id: "promo",
+    label: "Promosi",
+    icon: "fa-solid fa-bullhorn",
+    iconClass: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+    condition: () => store.canEditPage("promo"),
+    action: () => openAddModal("promo"),
+  },
+  {
+    id: "progress",
+    label: "Progress",
+    icon: "fa-solid fa-bars-progress",
+    iconClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    condition: () => store.canEditPage("progress"),
+    action: () => openAddModal("progress"),
+  },
+  {
+    id: "spv-report",
+    label: "Divisi",
+    icon: "fa-solid fa-file-signature",
+    iconClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+    condition: () => store.canEditPage("spv-report"),
+    action: () => openAddModal("spv-report"),
+  },
+  {
+    id: "notes",
+    label: "Notes",
+    icon: "fa-solid fa-note-sticky",
+    iconClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+    condition: () => store.canEditPage("notes"),
+    action: () => openAddModal("notes"),
+  },
+  {
+    id: "daily-report",
+    label: "Laporan Harian",
+    icon: "fa-solid fa-file-invoice",
+    iconClass: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+    condition: () => store.canEditPage("daily-report"),
+    action: () => openAddModal("daily-report"),
+  },
+];
+
+const workspaceMenus = [
+  {
+    id: "progress",
+    label: "Team Progress",
+    icon: "fa-solid fa-bars-progress",
+    iconClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    hoverBg: "hover:bg-emerald-500/10",
+    condition: () => store.canAccessPage("progress"),
+    action: () => navTo("progress"),
+  },
+  {
+    id: "digmar",
+    label: "Socmed Analytics",
+    icon: "fa-solid fa-share-nodes",
+    iconClass: "bg-pink-500/10 text-pink-600 dark:text-pink-400",
+    hoverBg: "hover:bg-blue-500/10",
+    condition: () => store.canAccessPage("digmar"),
+    action: () => navTo("digmar"),
+  },
+  {
+    id: "leads",
+    label: "Leads & Campaign",
+    icon: "fa-solid fa-users-rays",
+    iconClass: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+    hoverBg: "hover:bg-teal-500/10",
+    condition: () => store.canAccessPage("leads"),
+    action: () => navTo("leads"),
+  },
+  {
+    id: "spv-report",
+    label: "Division Report",
+    icon: "fa-solid fa-file-signature",
+    iconClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+    hoverBg: "hover:bg-purple-500/10",
+    condition: () => store.canAccessPage("spv-report"),
+    action: () => navTo("spv-report"),
+  },
+];
+
+const handleDocumentClick = (event) => {
+  if (
+    activePopup.value &&
+    navContainerRef.value &&
+    !navContainerRef.value.contains(event.target)
+  ) {
+    closePopup();
   }
 };
 
@@ -505,28 +476,6 @@ onUnmounted(() => {
   window.removeEventListener("click", handleDocumentClick);
   window.removeEventListener("touchstart", handleDocumentClick);
 });
-
-const openAddModal = (modalName) => {
-  activePopup.value = null;
-
-  if (modalName === "progress") {
-    store.currentPage = "progress";
-    store.openModal("progress");
-  } else if (modalName === "spv-report") {
-    store.currentPage = "spv-report";
-    store.openModal("spv-report");
-  } else if (modalName === "daily-report") {
-    store.currentPage = "daily-report";
-    store.openModal("daily-report");
-  } else if (modalName === "notes") {
-    if (store.canAccessPage && store.canAccessPage("notes")) {
-      store.currentPage = "notes";
-    }
-    store.openModal("notes");
-  } else {
-    store.openModal(modalName);
-  }
-};
 </script>
 
 <style scoped>
@@ -539,7 +488,6 @@ const openAddModal = (modalName) => {
   opacity: 0;
   transform: translateY(16px) scale(0.9);
 }
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;

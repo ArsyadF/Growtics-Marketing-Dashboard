@@ -1,109 +1,84 @@
 <!-- src/components/LoginModal.vue -->
 <template>
-  <div
-    v-if="isOpen"
-    class="fixed inset-0 z-[10002] bg-slate-950/70 backdrop-blur-md flex justify-center items-center p-4"
-  >
-    <div
-      class="glass-card bg-white/95 dark:bg-slate-900/95 w-full max-w-md p-6 md:p-8 rounded-3xl shadow-2xl border border-white/60 dark:border-blue-900/40 space-y-6 relative"
-    >
-      <!-- Tombol Close Modal -->
+  <BaseModal maxWidth="max-w-md" @close="closeModal">
+    <template #header>
       <button
         @click="closeModal"
-        class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
+        class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1 cursor-pointer z-10"
       >
         <i class="fa-solid fa-xmark text-base"></i>
       </button>
+    </template>
 
-      <!-- Header Portal -->
-      <div class="text-center space-y-2">
-        <div
-          class="inline-flex p-3 bg-button text-white rounded-2xl shadow-lg text-xl mb-2"
-        >
-          <i class="fa-solid fa-chart-pie"></i>
-        </div>
-        <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100">
-          Portal Marketing
-        </h2>
-        <p class="text-xs text-slate-500 dark:text-slate-400 font-normal">
-          Silakan masuk untuk akses fitur manajemen data.
-        </p>
-      </div>
-
-      <!-- Pesan Error Login -->
+    <div class="text-center space-y-2 mb-6 pt-2">
       <div
-        v-if="errorMessage"
-        class="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-500 text-xs font-semibold text-center"
+        class="inline-flex p-3 bg-button text-white rounded-2xl shadow-lg text-xl mb-2"
       >
-        {{ errorMessage }}
+        <i class="fa-solid fa-chart-pie"></i>
       </div>
-
-      <!-- Form Login -->
-      <form @submit.prevent="handleLogin" class="space-y-4 text-sm md:text-xs">
-        <div>
-          <label
-            class="block text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
-          >
-            Email / Username
-          </label>
-          <input
-            v-model="email"
-            type="text"
-            required
-            placeholder="admin@marketing.com"
-            class="w-full glass-input rounded-xl p-3 text-sm md:text-xs outline-none font-normal"
-          />
-        </div>
-
-        <div>
-          <label
-            class="block text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 mb-1"
-          >
-            Password
-          </label>
-          <input
-            v-model="password"
-            type="password"
-            required
-            placeholder="••••••••"
-            class="w-full glass-input rounded-xl p-3 text-sm md:text-xs outline-none font-normal"
-          />
-        </div>
-
-        <button
-          type="submit"
-          :disabled="isSubmitting"
-          class="w-full bg-button hover:from-[#149b73] hover:to-[#149b73] text-white font-semibold py-3 rounded-xl text-sm md:text-xs transition-all shadow-md mt-2 disabled:opacity-50 cursor-pointer flex items-center justify-center"
-        >
-          <i
-            v-if="!isSubmitting"
-            class="fa-solid fa-right-to-bracket mr-2 text-xs"
-          ></i>
-          <i v-else class="fa-solid fa-circle-notch fa-spin mr-2 text-xs"></i>
-          <span>{{
-            isSubmitting ? "Memverifikasi..." : "Masuk Aplikasi"
-          }}</span>
-        </button>
-      </form>
+      <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100">
+        Portal Marketing
+      </h2>
+      <p class="text-xs text-slate-500 font-normal">
+        Silakan masuk untuk akses fitur manajemen data.
+      </p>
     </div>
-  </div>
+
+    <div
+      v-if="errorMessage"
+      class="mb-4 p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-rose-500 text-xs font-semibold text-center"
+    >
+      {{ errorMessage }}
+    </div>
+
+    <form @submit.prevent="handleLogin" class="space-y-4 text-sm md:text-xs">
+      <div>
+        <label
+          class="block font-semibold text-slate-600 dark:text-slate-300 mb-1"
+          >Email / Username</label
+        >
+        <input
+          v-model="email"
+          type="text"
+          required
+          class="w-full glass-input rounded-xl p-3 outline-none"
+        />
+      </div>
+      <div>
+        <label
+          class="block font-semibold text-slate-600 dark:text-slate-300 mb-1"
+          >Password</label
+        >
+        <input
+          v-model="password"
+          type="password"
+          required
+          class="w-full glass-input rounded-xl p-3 outline-none"
+        />
+      </div>
+      <button
+        type="submit"
+        :disabled="isSubmitting"
+        class="w-full bg-button text-white font-semibold py-3 rounded-xl transition-all shadow-md mt-2 disabled:opacity-50 flex items-center justify-center cursor-pointer"
+      >
+        <i
+          v-if="!isSubmitting"
+          class="fa-solid fa-right-to-bracket mr-2 text-xs"
+        ></i>
+        <i v-else class="fa-solid fa-circle-notch fa-spin mr-2 text-xs"></i>
+        <span>{{ isSubmitting ? "Memverifikasi..." : "Masuk Aplikasi" }}</span>
+      </button>
+    </form>
+  </BaseModal>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { store } from "../store";
 import { api } from "../services/api";
-
-defineProps({
-  isOpen: {
-    type: Boolean,
-    default: true,
-  },
-});
+import BaseModal from "./BaseModal.vue";
 
 const emit = defineEmits(["close", "login-success"]);
-
-// State Input
 const email = ref("");
 const password = ref("");
 const errorMessage = ref("");
@@ -114,33 +89,22 @@ const closeModal = () => {
   emit("close");
 };
 
-// Handler Autentikasi Login (Menggunakan api.js)
 const handleLogin = async () => {
   errorMessage.value = "";
   isSubmitting.value = true;
-
   try {
-    // Memanggil api.validateUserLogin yang menangani kapitalisasi field 'Email' & 'email'
     const res = await api.validateUserLogin(email.value.trim(), password.value);
-
     if (res.success) {
-      // 1. Simpan data user yang berhasil login ke State Store Global & LocalStorage
       store.setCurrentUser(res.user);
       store.isAccessGranted = true;
-
-      // 2. Fetch seluruh database Firestore untuk role terautentikasi
       await store.loadFullDatabase();
-
-      // 3. Emit event & Tutup Modal Login
       emit("login-success", res.user);
       closeModal();
     } else {
       errorMessage.value = res.message || "Email atau Password salah!";
     }
   } catch (error) {
-    console.error("Login Error:", error);
-    errorMessage.value =
-      "Terjadi kesalahan sistem saat mencoba login: " + error.message;
+    errorMessage.value = "Terjadi kesalahan sistem.";
   } finally {
     isSubmitting.value = false;
   }
