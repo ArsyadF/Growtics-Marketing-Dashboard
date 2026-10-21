@@ -197,7 +197,7 @@
         <!-- Kartu 3: Aduan Menunggu -->
         <div
           @click="navTo('aduan')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-amber-500/40 transition-all"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-rose-500/40 transition-all"
         >
           <div
             class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-sm sm:text-base shrink-0"
@@ -221,7 +221,7 @@
         <!-- Kartu 4: Catatan/Notes -->
         <div
           @click="navTo('notes')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-purple-500/40 transition-all"
+          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-amber-500/40 transition-all"
         >
           <div
             class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm sm:text-base shrink-0"
@@ -427,7 +427,7 @@ const rawBioText = computed(
   () =>
     currentUser.value.Bio ||
     currentUser.value.bio ||
-    "lagi fokus, jangan diganggu 🚀",
+    "Stay on focus, don't give up! 🚀",
 );
 
 const cleanedBioText = computed(() => {
