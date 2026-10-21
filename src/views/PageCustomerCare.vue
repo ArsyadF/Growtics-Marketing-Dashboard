@@ -756,7 +756,7 @@ import { ref, reactive, computed } from "vue";
 import { store } from "../store/index.js";
 import { api } from "../services/api.js";
 import { exportToExcelBySchema } from "../utils/excelHandler.js";
-import ModalImportExcel from "../components/Modals/ModalImportExcel.vue";
+import ModalImportExcel from "../components/modals/ModalImportExcel.vue";
 
 const isImportModalOpen = ref(false);
 
