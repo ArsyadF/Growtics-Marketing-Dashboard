@@ -10,7 +10,9 @@ import {
   updateDoc, 
   deleteDoc, 
   query, 
-  where 
+  where,
+  limit,
+  getCountFromServer
 } from "firebase/firestore";
 
 // Peta koleksi global untuk fungsi CRUD Generic
@@ -31,7 +33,7 @@ export const api = {
   // 1. AUTENTIKASI & AKSES PUBLIK
   // ==========================================
   
-  async getPublicDataWithPasscode(passcode) {
+ async getPublicDataWithPasscode(passcode) {
     try {
       const passcodeDocRef = doc(firestoreDb, "settings", "passcode");
       const passcodeSnap = await getDoc(passcodeDocRef);
@@ -42,8 +44,25 @@ export const api = {
       }
 
       if (String(passcode) === validCode) {
-        const fullData = await this.getAllData();
-        return { success: true, data: fullData };
+        // ❌ HAPUS: const fullData = await this.getAllData();
+        
+        // ✅ CUKUP AMBIL SATU DOKUMEN MASTER ATAU RETURN OBJECT KOSONG UNTUK VERIFIKASI KODE
+        const masterSnap = await getDoc(doc(firestoreDb, "settings", "master"));
+        const masterData = masterSnap.exists() ? masterSnap.data() : {};
+
+        return { 
+          success: true, 
+          data: { 
+            master: masterData,
+            revenue: [],
+            promo: [],
+            leads: [],
+            users: [],
+            programs: [],
+            aduanList: [],
+            spvReports: []
+          } 
+        };
       } else {
         return { success: false, message: "Kode Akses Publik Salah!" };
       }
@@ -77,7 +96,7 @@ export const api = {
           id: d.id, 
           nama: dData.nama || dData.Nama || '',
           email: dData.email || dData.Email || '',
-          role: dData.role || dData.Role || 'ADMIN_UNIT',
+          role: dData.role || dData.Role || '',
           unit: dData.unit || dData.Unit || (Array.isArray(units) ? units[0] : ''),
           divisi: dData.divisi || dData.Divisi || '',
           aksesUnit: Array.isArray(units) ? units : [units],
@@ -98,108 +117,224 @@ export const api = {
     }
   },
 
+  async getDashboardSummary(userId) {
+  try {
+    // 1. Hitung jumlah Notes milik user
+    const notesQuery = query(collection(firestoreDb, "user_notes"), where("userId", "==", String(userId)));
+    const notesSnap = await getCountFromServer(notesQuery);
+    const notesCount = notesSnap.data().count;
+
+    // 2. Hitung jumlah Program / Tugas Aktif & Selesai
+    const progQuery = query(collection(firestoreDb, "programs"));
+    const progSnap = await getDocs(progQuery); // Ambil ringan khusus status & PIC saja
+    
+    let activeTasks = 0;
+    let completedTasks = 0;
+    let upcomingList = [];
+
+    progSnap.docs.forEach(d => {
+      const data = d.data();
+      const status = data.status || data.Status || 'To Do';
+      
+      // Filter tugas milik user yang sedang login (sesuaikan logika PIC Anda)
+      // Jika ingin global untuk admin/SPV, bisa langsung hitung
+      if (status === 'In Progress') activeTasks++;
+      if (status === 'Completed') completedTasks++;
+
+      upcomingList.push({
+        id: d.id,
+        title: data.title || data.Judul || '',
+        status: status,
+        progress: Number(data.progress || data.Progress || 0),
+        deadline: data.deadline || data.Deadline || '',
+        unit: data.unit || data.Unit || 'NHP',
+        assignedPicIds: data.assignedPicIds || [],
+        assignedUsers: data.assignedUsers || []
+      });
+    });
+
+    // 3. Hitung jumlah Aduan Open
+    const aduanQuery = query(collection(firestoreDb, "aduan"), where("status", "==", "Open"));
+    const aduanSnap = await getCountFromServer(aduanQuery);
+    const openTicketsCount = aduanSnap.data().count;
+
+    return {
+      notesCount,
+      activeTasks,
+      completedTasks,
+      openTicketsCount,
+      upcomingList: upcomingList.slice(0) // Ambil 5 teratas saja untuk list deadline
+    };
+  } catch (err) {
+    console.error("Gagal mengambil ringkasan dashboard:", err);
+    return { notesCount: 0, activeTasks: 0, completedTasks: 0, openTicketsCount: 0, upcomingList: [] };
+  }
+},
+
   // ==========================================
   // 2. PENGAMBILAN DATA GLOBAL
   // ==========================================
   
-  async getAllData() {
+//  async getAllData() {
+//     try {
+//       // ✅ PASANG LIMIT PADA SEMUA KOLEKSI BESAR DI DALAM PROMISE.ALL
+//       const [
+//         revSnap, promoSnap, leadsSnap, usersSnap, targetSnap, 
+//         passcodeSnap, masterSnap, programsSnap, aduanSnap, spvReportsSnap
+//       ] = await Promise.all([
+//         getDocs(query(collection(firestoreDb, "revenues"), limit())),
+//         getDocs(query(collection(firestoreDb, "promosi"), limit())),
+//         getDocs(query(collection(firestoreDb, "leads"), limit())),
+//         getDocs(query(collection(firestoreDb, "users"), limit())),
+//         getDoc(doc(firestoreDb, "settings", "targets")),
+//         getDoc(doc(firestoreDb, "settings", "passcode")),
+//         getDoc(doc(firestoreDb, "settings", "master")),
+//         getDocs(query(collection(firestoreDb, "programs"), limit())),
+//         getDocs(query(collection(firestoreDb, "aduan"), limit())),
+//         getDocs(query(collection(firestoreDb, "spv_reports"), limit()))
+//       ]);
+
+//       const revenue = revSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
+//       const promo = promoSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
+//       const leads = leadsSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
+//       const programs = programsSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
+//       const spvReports = spvReportsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+//       const aduanList = aduanSnap.docs.map(d => {
+//         const data = d.data();
+//         return {
+//           id: d.id,
+//           ...data,
+//           imageUrl: data.imageUrl || data.ImageUrl || data.image || data.Image || ""
+//         };
+//       });
+      
+//       const users = usersSnap.docs.map(d => {
+//         const u = d.data();
+//         let units = u.aksesUnit;
+//         if (!units) {
+//           units = u.unit || u.Unit ? [u.unit || u.Unit] : ['NHP'];
+//         }
+
+//         return {
+//           id: d.id,
+//           nama: u.nama || u.Nama || '',
+//           email: u.email || u.Email || '',
+//           role: u.role || u.Role || '',
+//           unit: u.unit || u.Unit || (Array.isArray(units) ? units[0] : ''),
+//           divisi: u.divisi || u.Divisi || '',
+//           aksesUnit: Array.isArray(units) ? units : [units],
+//           permissions: u.permissions || null,
+//           avatarUrl: u.avatarUrl || u.Avatar || u.avatar || '',
+//           // 🔒 AMAN: Field password dihapus agar tidak bocor di Network Inspect
+//           bio: u.bio || u.Bio || ''
+//         };
+//       });
+      
+//       let master = {
+//         unitList: [
+//           { code: 'NHP', name: 'Unit Nur Hidayah Press' },
+//           { code: 'NHC', name: 'Unit Nur Hidayah Collection' },
+//           { code: 'KG', name: 'Unit Karta Grafika' }
+//         ],
+//         divisiList: ['CS Deal', 'Zona 1A', 'Zona 1B', 'Zona 2', 'Zona 3', 'Digital Marketing', 'Offline', 'Penerbitan & Cetak', 'Produksi & Logistik'],
+//         platformList: ['Shopee', 'TikTok Shop', 'WhatsApp', 'Website', 'Toko Ladang', 'Blibli', 'Event', 'Mitra', 'Kunjungan', 'Konsinyasi']
+//       };
+
+//       if (targetSnap.exists()) {
+//         const tData = targetSnap.data();
+//         const targetNHP = Number(tData.TargetNHP || 0);
+//         const targetNHC = Number(tData.TargetNHC || 0);
+//         const targetKG = Number(tData.TargetKG || 0);
+        
+//         master = {
+//           ...master,
+//           ...tData,
+//           TargetNHP: targetNHP,
+//           TargetNHC: targetNHC,
+//           TargetKG: targetKG,
+//           TargetTahunIni: tData.TargetTahunIni || (targetNHP + targetNHC + targetKG)
+//         };
+//       }
+      
+//       if (passcodeSnap.exists()) {
+//         master.KodeAkses = passcodeSnap.data().code;
+//       }
+
+//       if (masterSnap.exists()) {
+//         const mData = masterSnap.data();
+//         if (mData.unitList) master.unitList = mData.unitList;
+//         if (mData.divisiList) master.divisiList = mData.divisiList;
+//         if (mData.platformList) master.platformList = mData.platformList;
+//       }
+
+//       return { revenue, promo, leads, users, master, programs, aduanList, spvReports };
+//     } catch (err) {
+//       console.error("Error fetching data:", err);
+//       return { revenue: [], promo: [], leads: [], users: [], master: {}, programs: [], aduanList: [], spvReports: [] };
+//     }
+//   },
+
+  // Modul penarikan data ringan khusus pasca-login
+ // Modul penarikan data ringan khusus pasca-login dengan proteksi akses master
+  async getPostLoginData(currentUser = null) {
     try {
-      const [
-        revSnap, promoSnap, leadsSnap, usersSnap, targetSnap, 
-        passcodeSnap, masterSnap, programsSnap, aduanSnap, spvReportsSnap
-      ] = await Promise.all([
-        getDocs(collection(firestoreDb, "revenues")),
-        getDocs(collection(firestoreDb, "promosi")),
-        getDocs(collection(firestoreDb, "leads")),
-        getDocs(collection(firestoreDb, "users")),
-        getDoc(doc(firestoreDb, "settings", "targets")),
-        getDoc(doc(firestoreDb, "settings", "passcode")),
-        getDoc(doc(firestoreDb, "settings", "master")),
-        getDocs(collection(firestoreDb, "programs")),
-        getDocs(collection(firestoreDb, "aduan")),
-        getDocs(collection(firestoreDb, "spv_reports"))
-      ]);
+      const role = String(currentUser?.role || currentUser?.Role || "").toUpperCase();
+      const hasMasterAccess = role === "SUPERADMIN" || (currentUser?.permissions?.["master-data"]?.access === true);
 
-      const revenue = revSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
-      const promo = promoSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
-      const leads = leadsSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
-      const programs = programsSnap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
-      const spvReports = spvReportsSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-
-      const aduanList = aduanSnap.docs.map(d => {
-        const data = d.data();
-        return {
-          id: d.id,
-          ...data,
-          imageUrl: data.imageUrl || data.ImageUrl || data.image || data.Image || ""
-        };
-      });
-      
-      const users = usersSnap.docs.map(d => {
-        const u = d.data();
-        let units = u.aksesUnit;
-        if (!units) {
-          units = u.unit || u.Unit ? [u.unit || u.Unit] : ['NHP'];
-        }
-
-        return {
-          id: d.id,
-          nama: u.nama || u.Nama || '',
-          email: u.email || u.Email || '',
-          role: u.role || u.Role || 'ADMIN_UNIT',
-          unit: u.unit || u.Unit || (Array.isArray(units) ? units[0] : ''),
-          divisi: u.divisi || u.Divisi || '',
-          aksesUnit: Array.isArray(units) ? units : [units],
-          permissions: u.permissions || null,
-          avatarUrl: u.avatarUrl || u.Avatar || u.avatar || '',
-          password: u.password || u.Password || '',
-          bio: u.bio || u.Bio || ''
-        };
-      });
-      
       let master = {
-        unitList: [
-          { code: 'NHP', name: 'Unit Nur Hidayah Press' },
-          { code: 'NHC', name: 'Unit Nur Hidayah Creative' },
-          { code: 'KG', name: 'Unit Karta Grafika' }
-        ],
-        divisiList: ['CS Deal', 'Zona 1A', 'Zona 1B', 'Zona 2', 'Zona 3', 'Digital Marketing', 'Offline', 'Penerbitan & Cetak', 'Produksi & Logistik'],
-        platformList: ['Shopee', 'TikTok Shop', 'WhatsApp', 'Website', 'Siplah', 'Toko Ladang', 'Blibli', 'Event', 'Mitra', 'Kunjungan', 'Konsinyasi']
+        unitList: [{ code: 'NHP', name: 'Unit Nur Hidayah Press' }],
+        divisiList: [],
+        platformList: []
       };
 
-      if (targetSnap.exists()) {
-        const tData = targetSnap.data();
-        const targetNHP = Number(tData.TargetNHP || 0);
-        const targetNHC = Number(tData.TargetNHC || 0);
-        const targetKG = Number(tData.TargetKG || 0);
-        
+      // 🔒 Hanya ambil data master sensitif dari Firestore jika user benar-benar memiliki hak akses
+      if (hasMasterAccess) {
+        const [targetSnap, passcodeSnap, masterSnap] = await Promise.all([
+          getDoc(doc(firestoreDb, "settings", "targets")),
+          getDoc(doc(firestoreDb, "settings", "passcode")),
+          getDoc(doc(firestoreDb, "settings", "master"))
+        ]);
+
         master = {
-          ...master,
-          ...tData,
-          TargetNHP: targetNHP,
-          TargetNHC: targetNHC,
-          TargetKG: targetKG,
-          TargetTahunIni: tData.TargetTahunIni || (targetNHP + targetNHC + targetKG)
+          unitList: [
+            { code: 'NHP', name: 'Unit Nur Hidayah Press' },
+            { code: 'NHC', name: 'Unit Nur Hidayah Collection' },
+            { code: 'KG', name: 'Unit Karta Grafika' }
+          ],
+          divisiList: ['CS Deal', 'Zona 1A', 'Zona 1B', 'Zona 2', 'Zona 3', 'Digital Marketing', 'Offline', 'Penerbitan & Cetak', 'Produksi & Logistik'],
+          platformList: ['Shopee', 'TikTok Shop', 'WhatsApp', 'Website', 'Toko Ladang', 'Blibli', 'Event', 'Mitra', 'Kunjungan', 'Konsinyasi']
         };
-      }
-      
-      if (passcodeSnap.exists()) {
-        master.KodeAkses = passcodeSnap.data().code;
+
+        if (targetSnap.exists()) {
+          const tData = targetSnap.data();
+          master = { ...master, ...tData };
+        }
+        if (passcodeSnap.exists()) master.KodeAkses = passcodeSnap.data().code;
+        if (masterSnap.exists()) {
+          const mData = masterSnap.data();
+          if (mData.unitList) master.unitList = mData.unitList;
+          if (mData.divisiList) master.divisiList = mData.divisiList;
+          if (mData.platformList) master.platformList = mData.platformList;
+        }
       }
 
-      if (masterSnap.exists()) {
-        const mData = masterSnap.data();
-        if (mData.unitList) master.unitList = mData.unitList;
-        if (mData.divisiList) master.divisiList = mData.divisiList;
-        if (mData.platformList) master.platformList = mData.platformList;
-      }
-
-      return { revenue, promo, leads, users, master, programs, aduanList, spvReports };
+      return { 
+        revenue: [], 
+        promo: [], 
+        leads: [], 
+        users: [], 
+        master, 
+        programs: [], 
+        aduanList: [], 
+        spvReports: [] 
+      };
     } catch (err) {
-      console.error("Error fetching Firestore data:", err);
+      console.error("Error fetching post-login data:", err);
       return { revenue: [], promo: [], leads: [], users: [], master: {}, programs: [], aduanList: [], spvReports: [] };
     }
   },
+
 
   // ==========================================
   // 3. GENERIC CRUD OPERATIONS
@@ -209,6 +344,8 @@ export const api = {
     try {
       const colName = COLLECTION_MAP[sheetName] || sheetName.toLowerCase();
       const docRef = await addDoc(collection(firestoreDb, colName), payload);
+      localStorage.removeItem(`CACHE_${sheetName.toUpperCase()}`);
+      
       return { success: true, message: `Data ${sheetName} berhasil ditambahkan!`, id: docRef.id };
     } catch (err) {
       return { success: false, message: err.message };
@@ -219,6 +356,8 @@ export const api = {
     try {
       const colName = COLLECTION_MAP[sheetName] || sheetName.toLowerCase();
       const docRef = doc(firestoreDb, colName, String(docId));
+      localStorage.removeItem(`CACHE_${sheetName.toUpperCase()}`);
+
       await updateDoc(docRef, payload);
       return { success: true, message: `Data ${sheetName} berhasil diperbarui!` };
     } catch (err) {
@@ -230,6 +369,8 @@ export const api = {
     try {
       const colName = COLLECTION_MAP[sheetName] || sheetName.toLowerCase();
       await deleteDoc(doc(firestoreDb, colName, String(docId)));
+      localStorage.removeItem(`CACHE_${sheetName.toUpperCase()}`);
+
       return { success: true, message: `Data ${sheetName} berhasil dihapus!` };
     } catch (err) {
       return { success: false, message: err.message };
@@ -379,6 +520,27 @@ export const api = {
       return [];
     }
   },
+
+  async getUserNotesCountOnly(userId) {
+  try {
+    const q = query(
+      collection(firestoreDb, "user_notes"), 
+      where("userId", "==", String(userId))
+    );
+    const querySnapshot = await getDocs(q);
+    // Hanya mengembalikan id dan title, mengabaikan 'images' atau 'content' yang besar
+    const notes = querySnapshot.docs.map(d => ({
+      id: d.id,
+      title: d.data().title || '',
+      createdAt: d.data().createdAt || 0
+      // ❌ Properti images / content sengaja tidak ditarik agar hemat bandwidth!
+    }));
+    return notes.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  } catch (err) {
+    console.error("Gagal mengambil ringkasan catatan:", err);
+    return [];
+  }
+},
 
   async saveUserNote(userId, noteItem) {
     try {
@@ -558,5 +720,199 @@ export const api = {
     } catch (err) {
       return { success: false, message: err.message };
     }
-  }  
+  },
+  
+  async getPrograms() {
+  try {
+    const q = query(collection(firestoreDb, "programs"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
+  } catch (err) {
+    console.error("Gagal getPrograms:", err);
+    return [];
+  }
+},
+
+async getProgramsLight() {
+  try {
+    const q = query(collection(firestoreDb, "programs")); // Tanpa limit agar hitungan akurat
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({
+      id: d.id,
+      status: d.data().status || d.data().Status || 'To Do',
+      progress: Number(d.data().progress || d.data().Progress || 0),
+      deadline: d.data().deadline || d.data().Deadline || '',
+      title: d.data().title || d.data().Judul || '',
+      assignedPicIds: d.data().assignedPicIds || [],
+      assignedUsers: d.data().assignedUsers || [],
+      createdBy: d.data().createdBy || ''
+    }));
+  } catch (err) {
+    console.error("Gagal getProgramsLight:", err);
+    return [];
+  }
+},
+
+async getAduanList() {
+  const CACHE_KEY = 'CACHE_ADUAN_LIST';
+  const cached = localStorage.getItem(CACHE_KEY);
+  if (cached) return JSON.parse(cached);
+
+  try {
+    const q = query(collection(firestoreDb, "aduan"));
+    const snap = await getDocs(q);
+    const aduanList = snap.docs.map(d => ({
+      
+        id: d.id,
+        ticketNo: data.ticketNo || '',
+        customerName: data.customerName || '',
+        unit: data.unit || 'NHP',
+        status: data.status || 'Open',
+        priority: data.priority || 'Sedang',
+        date: data.date || '',
+        description: data.description || '',
+        category: data.category || '', 
+        contact: data.contact || '',
+        createdBy: data.createdBy || ''
+      }));
+      localStorage.setItem(CACHE_KEY, JSON.stringify(aduanList));
+    return aduanList; 
+  } catch (err) {
+    console.error("Gagal getAduanList:", err);
+    return [];
+  }
+},
+
+async getAduanListLight() {
+  try {
+    const q = query(collection(firestoreDb, "aduan")); // Tanpa limit agar hitungan akurat
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({
+      id: d.id,
+      status: d.data().status || 'Open'
+    }));
+  } catch (err) {
+    console.error("Gagal getAduanListLight:", err);
+    return [];
+  }
+},
+
+async getAduanDetail(docId) {
+  try {
+    const docRef = doc(firestoreDb, "aduan", String(docId));
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      return {
+        id: docSnap.id,
+        ...data,
+        imageUrl: data.imageUrl || data.ImageUrl || data.image || data.Image || ""
+      };
+    }
+    return null;
+  } catch (err) {
+    console.error("Gagal getAduanDetail:", err);
+    return null;
+  }
+},
+
+async getRevenues() {
+  try {
+    const q = query(collection(firestoreDb, "revenues"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
+  } catch (err) {
+    console.error("Gagal getRevenues:", err);
+    return [];
+  }
+},
+
+async getPromos() {
+  try {
+    const q = query(collection(firestoreDb, "promosi"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
+  } catch (err) {
+    console.error("Gagal getPromos:", err);
+    return [];
+  }
+},
+
+async getLeads() {
+  try {
+    const q = query(collection(firestoreDb, "leads"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ Timestamp: d.id, id: d.id, ...d.data() }));
+  } catch (err) {
+    console.error("Gagal getLeads:", err);
+    return [];
+  }
+},
+
+async getSpvReports() {
+  try {
+    const q = query(collection(firestoreDb, "spv_reports"));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch (err) {
+    console.error("Gagal getSpvReports:", err);
+    return [];
+  }
+},
+
+async getUsers() {
+    const CACHE_KEY = 'CACHE_USERS';
+    
+    // 1. Cek apakah cache sudah ada di LocalStorage
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    if (cachedData) {
+      console.log("[Cache] Mengambil data users dari LocalStorage");
+      return JSON.parse(cachedData);
+    }
+
+    // 2. Jika belum ada, ambil dari Firestore
+    try {
+      const q = query(collection(firestoreDb, "users"));
+      const snap = await getDocs(q);
+      
+      const usersList = snap.docs.map(d => {
+        const u = d.data();
+        let units = u.aksesUnit;
+        if (!units) {
+          units = u.unit || u.Unit ? [u.unit || u.Unit] : ['NHP'];
+        }
+        return {
+          id: d.id,
+          nama: u.nama || u.Nama || '',
+          email: u.email || u.Email || '',
+          role: u.role || u.Role || '',
+          unit: u.unit || u.Unit || (Array.isArray(units) ? units[0] : ''),
+          divisi: u.divisi || u.Divisi || '',
+          aksesUnit: Array.isArray(units) ? units : [units],
+          permissions: u.permissions || null,
+          avatarUrl: u.avatarUrl || u.Avatar || u.avatar || '',
+          bio: u.bio || u.Bio || ''
+        };
+      });
+
+      // 3. Simpan ke LocalStorage sebelum dikembalikan
+      localStorage.setItem(CACHE_KEY, JSON.stringify(usersList));
+      return usersList;
+      
+    } catch (err) {
+      console.error("Gagal mengambil data users:", err);
+      return [];
+    }
+  },
+
+// 4. Fungsi Pembersihan Cache saat Logout
+  clearAllCache() {
+    // Hapus semua key cache yang berawalan CACHE_
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith('CACHE_')) {
+        localStorage.removeItem(key);
+      }
+    });
+    console.log("[Cache] Semua cache lokal berhasil dibersihkan.");
+  }
 };

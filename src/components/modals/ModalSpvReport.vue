@@ -1,33 +1,23 @@
 <!-- src/components/modals/ModalSpvReport.vue -->
 <template>
-  <BaseModal
-    title="Input Laporan Pekanan SPV"
-    maxWidth="max-w-lg"
-    @close="$emit('close')"
-  >
-    <form @submit.prevent="saveData" class="space-y-3 text-sm md:text-xs">
+  <BaseModal title="Input Laporan Pekanan SPV" maxWidth="max-w-lg" @close="$emit('close')">
+    <form @submit.prevent="saveData" class="space-y-3 ui-text-body">
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label
-            class="block mb-1 font-semibold text-slate-600 dark:text-slate-300"
-            >Tanggal Laporan</label
-          >
+          <label class="block mb-1 font-semibold ui-text-secondary">Tanggal Laporan</label>
           <input
             type="date"
             v-model="form.tanggal"
             required
-            class="w-full glass-input rounded-xl p-2.5 outline-none font-normal"
+            class="w-full rounded-xl p-2.5 font-normal ui-input ui-input-inherit min-h-0"
           />
         </div>
         <div>
-          <label
-            class="block mb-1 font-semibold text-slate-600 dark:text-slate-300"
-            >Divisi</label
-          >
+          <label class="block mb-1 font-semibold ui-text-secondary">Divisi</label>
           <select
             v-model="form.divisi"
             required
-            class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold"
+            class="w-full rounded-xl p-2.5 font-semibold ui-input ui-input-inherit min-h-0"
           >
             <option v-for="div in availableDivisions" :key="div" :value="div">
               {{ div }}
@@ -36,34 +26,28 @@
         </div>
       </div>
       <div>
-        <label
-          class="block font-semibold text-slate-600 dark:text-slate-300 mb-1"
+        <label class="block font-semibold mb-1 ui-text-secondary"
           >Capaian & Rangkuman Pekan Ini</label
         >
         <textarea
           v-model="form.capaian"
           rows="3"
           required
-          class="w-full glass-input rounded-xl p-3 outline-none resize-none"
+          class="w-full rounded-xl p-3 resize-none ui-input ui-input-inherit min-h-0"
         ></textarea>
       </div>
       <div>
-        <label
-          class="block font-semibold text-slate-600 dark:text-slate-300 mb-1"
-          >Kendala & Problem Field</label
-        >
+        <label class="block font-semibold mb-1 ui-text-secondary">Kendala & Problem Field</label>
         <textarea
           v-model="form.kendala"
           rows="2"
-          class="w-full glass-input rounded-xl p-3 outline-none resize-none"
+          class="w-full rounded-xl p-3 resize-none ui-input ui-input-inherit min-h-0"
         ></textarea>
       </div>
-      <div
-        class="flex justify-end pt-2 border-t border-slate-100 dark:border-slate-800 mt-4"
-      >
+      <div class="flex justify-end pt-2 border-t border-slate-100 dark:border-slate-800 mt-4">
         <button
           type="submit"
-          class="w-full bg-button text-white px-4 py-2.5 rounded-xl font-semibold shadow-md cursor-pointer disabled:opacity-50"
+          class="w-full px-4 py-2.5 rounded-xl shadow-md cursor-pointer disabled:opacity-50 ui-button min-h-0 gap-0 ui-button-primary border-0 ui-button-inherit"
           :disabled="store.isLoading"
         >
           Simpan Laporan Divisi

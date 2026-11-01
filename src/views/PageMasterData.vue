@@ -3,32 +3,23 @@
   <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
     <!-- HEADER BAR -->
     <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4"
+      class="ui-card md:p-5 border border-slate-100 dark:border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4"
     >
       <div>
-        <h3
-          class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
+        <h3 class="text-sm md:text-base font-bold flex items-center gap-2 ui-text-primary">
           <i class="fa-solid fa-sliders text-theme"></i>
           Manajemen Master Data & Target System
         </h3>
-        <p class="text-[11px] md:text-xs text-slate-400 mt-0.5">
-          Kelola entitas utama secara independen. Perubahan disimpan secara
-          terpisah.
+        <p class="text-[11px] md:text-xs mt-0.5 ui-text-muted">
+          Kelola entitas utama secara independen. Perubahan disimpan secara terpisah.
         </p>
       </div>
     </div>
 
     <!-- SECTION 1: MASTER TARGET REVENUE (GLOBAL & UNIT) -->
-    <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl space-y-4 border border-emerald-500/20 bg-emerald-500/5 shadow-sm"
-    >
-      <div
-        class="flex items-center justify-between border-b border-emerald-500/20 pb-3"
-      >
-        <h4
-          class="font-bold text-xs md:text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
+    <div class="ui-card md:p-5 space-y-4 border border-emerald-500/20 bg-emerald-500/5">
+      <div class="flex items-center justify-between border-b border-emerald-500/20 pb-3">
+        <h4 class="font-bold text-xs md:text-sm flex items-center gap-2 ui-text-primary">
           <i class="fa-solid fa-bullseye text-theme"></i>
           Master Target Revenue (1 Tahun)
         </h4>
@@ -36,37 +27,30 @@
           @click="saveTargetsOnly"
           :disabled="savingState.targets"
           type="button"
-          class="bg-button text-white font-bold px-3.5 py-1.5 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+          class="px-3.5 py-1.5 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 ui-button ui-button-primary min-h-0"
         >
-          <i
-            class="fa-solid fa-floppy-disk"
-            :class="{ 'fa-spin': savingState.targets }"
-          ></i>
+          <i class="fa-solid fa-floppy-disk" :class="{ 'fa-spin': savingState.targets }"></i>
           <span>{{ savingState.targets ? "Simpan..." : "Simpan Target" }}</span>
         </button>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
         <div>
-          <label class="block text-slate-500 font-semibold mb-1"
-            >Target Global (1 Tahun):</label
-          >
+          <label class="block text-slate-500 font-semibold mb-1">Target Global (1 Tahun):</label>
           <input
             v-model.number="targets.TargetTahunIni"
             type="number"
             placeholder="Rp Target Global"
-            class="w-full glass-input rounded-xl px-3 py-2 font-bold text-emerald-600 outline-none bg-slate-50 dark:bg-slate-800"
+            class="w-full rounded-xl px-3 py-2 font-bold text-emerald-600 bg-slate-50 dark:bg-slate-800 ui-input min-h-0"
           />
         </div>
         <div v-for="u in unitList" :key="u.code">
-          <label class="block text-slate-500 font-semibold mb-1"
-            >Target Unit {{ u.code }}:</label
-          >
+          <label class="block text-slate-500 font-semibold mb-1">Target Unit {{ u.code }}:</label>
           <input
             v-model.number="targets['Target' + u.code]"
             type="number"
             :placeholder="'Rp Target ' + u.code"
-            class="w-full glass-input rounded-xl px-3 py-2 font-bold text-slate-800 dark:text-slate-100 outline-none bg-slate-50 dark:bg-slate-800"
+            class="w-full rounded-xl px-3 py-2 font-bold bg-slate-50 dark:bg-slate-800 ui-input ui-text-primary min-h-0"
           />
         </div>
       </div>
@@ -75,15 +59,11 @@
     <!-- GRID MANAGEMENT 3 KOLOM ENTITAS INDEPENDEN -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 items-start">
       <!-- 2. MASTER UNIT USAHA -->
-      <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl space-y-4 border border-slate-100 dark:border-slate-800 shadow-sm"
-      >
+      <div class="ui-card space-y-4 border border-slate-100 dark:border-slate-800">
         <div
           class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5"
         >
-          <h4
-            class="font-bold text-xs md:text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2"
-          >
+          <h4 class="font-bold text-xs md:text-sm flex items-center gap-2 ui-text-primary">
             <i class="fa-solid fa-building text-blue-500"></i>
             Master Unit Usaha
           </h4>
@@ -91,12 +71,9 @@
             @click="saveUnitsOnly"
             :disabled="savingState.units"
             type="button"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50 ui-button min-h-0"
           >
-            <i
-              class="fa-solid fa-floppy-disk"
-              :class="{ 'fa-spin': savingState.units }"
-            ></i>
+            <i class="fa-solid fa-floppy-disk" :class="{ 'fa-spin': savingState.units }"></i>
             <span>{{ savingState.units ? "..." : "Simpan Unit" }}</span>
           </button>
         </div>
@@ -107,26 +84,24 @@
             type="text"
             placeholder="Kode (NHP)"
             required
-            class="w-1/3 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 uppercase font-bold text-slate-800 dark:text-slate-100"
+            class="w-1/3 rounded-xl px-2.5 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 uppercase font-bold ui-input ui-text-primary min-h-0"
           />
           <input
             v-model="newUnitName"
             type="text"
             placeholder="Nama Lengkap Unit..."
             required
-            class="flex-1 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
+            class="flex-1 rounded-xl px-2.5 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 ui-input ui-text-primary min-h-0"
           />
           <button
             type="submit"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-sm cursor-pointer"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-xl text-xs shadow-sm cursor-pointer ui-button min-h-0"
           >
             <i class="fa-solid fa-plus"></i>
           </button>
         </form>
 
-        <div
-          class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar"
-        >
+        <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar">
           <div
             v-for="(u, idx) in unitList"
             :key="idx"
@@ -137,12 +112,12 @@
               <input
                 v-model="editingUnitCode"
                 type="text"
-                class="w-20 glass-input rounded-lg px-2 py-1 uppercase font-bold text-blue-600 dark:bg-slate-900"
+                class="w-20 rounded-lg px-2 py-1 uppercase font-bold text-blue-600 dark:bg-slate-900 ui-input min-h-0"
               />
               <input
                 v-model="editingUnitName"
                 type="text"
-                class="flex-1 glass-input rounded-lg px-2 py-1 text-slate-700 dark:text-slate-200 dark:bg-slate-900"
+                class="flex-1 rounded-lg px-2 py-1 dark:bg-slate-900 ui-input ui-text-secondary min-h-0"
               />
               <button
                 @click="saveEditUnit(idx)"
@@ -155,7 +130,7 @@
               <button
                 @click="cancelEditUnit"
                 type="button"
-                class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
+                class="hover:text-slate-600 p-1 cursor-pointer ui-text-muted"
                 title="Batal"
               >
                 <i class="fa-solid fa-xmark"></i>
@@ -170,16 +145,13 @@
                 >
                   {{ u.code }}
                 </span>
-                <span
-                  class="font-semibold text-slate-700 dark:text-slate-200 truncate"
-                  >{{ u.name }}</span
-                >
+                <span class="font-semibold truncate ui-text-secondary">{{ u.name }}</span>
               </div>
               <div class="flex items-center gap-1">
                 <button
                   @click="startEditUnit(idx)"
                   type="button"
-                  class="text-slate-400 hover:text-blue-500 p-1 cursor-pointer"
+                  class="hover:text-blue-500 p-1 cursor-pointer ui-text-muted"
                   title="Edit Unit"
                 >
                   <i class="fa-solid fa-pen text-xs"></i>
@@ -187,7 +159,7 @@
                 <button
                   @click="removeUnit(idx)"
                   type="button"
-                  class="text-slate-400 hover:text-rose-500 p-1 cursor-pointer"
+                  class="hover:text-rose-500 p-1 cursor-pointer ui-text-muted"
                   title="Hapus Unit"
                 >
                   <i class="fa-solid fa-trash-can text-xs"></i>
@@ -199,15 +171,11 @@
       </div>
 
       <!-- 3. MASTER DIVISI -->
-      <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl space-y-4 border border-slate-100 dark:border-slate-800 shadow-sm"
-      >
+      <div class="ui-card space-y-4 border border-slate-100 dark:border-slate-800">
         <div
           class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5"
         >
-          <h4
-            class="font-bold text-xs md:text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2"
-          >
+          <h4 class="font-bold text-xs md:text-sm flex items-center gap-2 ui-text-primary">
             <i class="fa-solid fa-sitemap text-emerald-600"></i>
             Master Divisi
           </h4>
@@ -215,12 +183,9 @@
             @click="saveDivisionsOnly"
             :disabled="savingState.divisions"
             type="button"
-            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50 ui-button min-h-0"
           >
-            <i
-              class="fa-solid fa-floppy-disk"
-              :class="{ 'fa-spin': savingState.divisions }"
-            ></i>
+            <i class="fa-solid fa-floppy-disk" :class="{ 'fa-spin': savingState.divisions }"></i>
             <span>{{ savingState.divisions ? "..." : "Simpan Divisi" }}</span>
           </button>
         </div>
@@ -231,19 +196,17 @@
             type="text"
             placeholder="Nama Divisi Baru..."
             required
-            class="flex-1 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
+            class="flex-1 rounded-xl px-2.5 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 ui-input ui-text-primary min-h-0"
           />
           <button
             type="submit"
-            class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-sm cursor-pointer"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs shadow-sm cursor-pointer ui-button min-h-0"
           >
             <i class="fa-solid fa-plus"></i>
           </button>
         </form>
 
-        <div
-          class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar"
-        >
+        <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar">
           <div
             v-for="(d, idx) in divisiList"
             :key="idx"
@@ -254,7 +217,7 @@
               <input
                 v-model="editingDivisiName"
                 type="text"
-                class="flex-1 glass-input rounded-lg px-2 py-1 text-slate-700 dark:text-slate-200 dark:bg-slate-900"
+                class="flex-1 rounded-lg px-2 py-1 dark:bg-slate-900 ui-input ui-text-secondary min-h-0"
               />
               <button
                 @click="saveEditDivisi(idx)"
@@ -267,7 +230,7 @@
               <button
                 @click="cancelEditDivisi"
                 type="button"
-                class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
+                class="hover:text-slate-600 p-1 cursor-pointer ui-text-muted"
                 title="Batal"
               >
                 <i class="fa-solid fa-xmark"></i>
@@ -276,15 +239,12 @@
 
             <!-- Mode Display Divisi -->
             <template v-else>
-              <span
-                class="font-semibold text-slate-700 dark:text-slate-200 truncate flex-1"
-                >{{ d }}</span
-              >
+              <span class="font-semibold truncate flex-1 ui-text-secondary">{{ d }}</span>
               <div class="flex items-center gap-1">
                 <button
                   @click="startEditDivisi(idx)"
                   type="button"
-                  class="text-slate-400 hover:text-emerald-600 p-1 cursor-pointer"
+                  class="hover:text-emerald-600 p-1 cursor-pointer ui-text-muted"
                   title="Edit Divisi"
                 >
                   <i class="fa-solid fa-pen text-xs"></i>
@@ -292,7 +252,7 @@
                 <button
                   @click="removeDivisi(idx)"
                   type="button"
-                  class="text-slate-400 hover:text-rose-500 p-1 cursor-pointer"
+                  class="hover:text-rose-500 p-1 cursor-pointer ui-text-muted"
                   title="Hapus Divisi"
                 >
                   <i class="fa-solid fa-trash-can text-xs"></i>
@@ -304,15 +264,11 @@
       </div>
 
       <!-- 4. MASTER PLATFORM SALES -->
-      <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl space-y-4 border border-slate-100 dark:border-slate-800 shadow-sm"
-      >
+      <div class="ui-card space-y-4 border border-slate-100 dark:border-slate-800">
         <div
           class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-2.5"
         >
-          <h4
-            class="font-bold text-xs md:text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2"
-          >
+          <h4 class="font-bold text-xs md:text-sm flex items-center gap-2 ui-text-primary">
             <i class="fa-solid fa-store text-purple-600"></i>
             Master Platform Sales
           </h4>
@@ -320,12 +276,9 @@
             @click="savePlatformsOnly"
             :disabled="savingState.platforms"
             type="button"
-            class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-3 py-1 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50"
+            class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded-xl text-xs shadow-sm transition-all flex items-center gap-1 cursor-pointer disabled:opacity-50 ui-button min-h-0"
           >
-            <i
-              class="fa-solid fa-floppy-disk"
-              :class="{ 'fa-spin': savingState.platforms }"
-            ></i>
+            <i class="fa-solid fa-floppy-disk" :class="{ 'fa-spin': savingState.platforms }"></i>
             <span>{{ savingState.platforms ? "..." : "Simpan Platform" }}</span>
           </button>
         </div>
@@ -336,19 +289,17 @@
             type="text"
             placeholder="Nama Platform Baru..."
             required
-            class="flex-1 glass-input rounded-xl px-2.5 py-1.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
+            class="flex-1 rounded-xl px-2.5 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 ui-input ui-text-primary min-h-0"
           />
           <button
             type="submit"
-            class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs shadow-sm cursor-pointer"
+            class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1.5 rounded-xl text-xs shadow-sm cursor-pointer ui-button min-h-0"
           >
             <i class="fa-solid fa-plus"></i>
           </button>
         </form>
 
-        <div
-          class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar"
-        >
+        <div class="space-y-2 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar">
           <div
             v-for="(p, idx) in platformList"
             :key="idx"
@@ -359,7 +310,7 @@
               <input
                 v-model="editingPlatformName"
                 type="text"
-                class="flex-1 glass-input rounded-lg px-2 py-1 text-slate-700 dark:text-slate-200 dark:bg-slate-900"
+                class="flex-1 rounded-lg px-2 py-1 dark:bg-slate-900 ui-input ui-text-secondary min-h-0"
               />
               <button
                 @click="saveEditPlatform(idx)"
@@ -372,7 +323,7 @@
               <button
                 @click="cancelEditPlatform"
                 type="button"
-                class="text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
+                class="hover:text-slate-600 p-1 cursor-pointer ui-text-muted"
                 title="Batal"
               >
                 <i class="fa-solid fa-xmark"></i>
@@ -381,15 +332,12 @@
 
             <!-- Mode Display Platform -->
             <template v-else>
-              <span
-                class="font-semibold text-slate-700 dark:text-slate-200 truncate flex-1"
-                >{{ p }}</span
-              >
+              <span class="font-semibold truncate flex-1 ui-text-secondary">{{ p }}</span>
               <div class="flex items-center gap-1">
                 <button
                   @click="startEditPlatform(idx)"
                   type="button"
-                  class="text-slate-400 hover:text-purple-600 p-1 cursor-pointer"
+                  class="hover:text-purple-600 p-1 cursor-pointer ui-text-muted"
                   title="Edit Platform"
                 >
                   <i class="fa-solid fa-pen text-xs"></i>
@@ -397,7 +345,7 @@
                 <button
                   @click="removePlatform(idx)"
                   type="button"
-                  class="text-slate-400 hover:text-rose-500 p-1 cursor-pointer"
+                  class="hover:text-rose-500 p-1 cursor-pointer ui-text-muted"
                   title="Hapus Platform"
                 >
                   <i class="fa-solid fa-trash-can text-xs"></i>
@@ -412,7 +360,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { store } from "../store";
 import { api } from "../services/api";
 

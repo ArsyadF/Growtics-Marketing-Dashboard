@@ -6,12 +6,12 @@
   >
     <!-- 1. HERO HEADER CARD (Fresh Modern Glass & Theme Backdrop) -->
     <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden"
+      class="glass-card rounded-3xl p-6 border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden"
     >
       <!-- Top Navigation & Action Bar -->
       <!-- <div class="flex items-center justify-between relative z-10 mb-4">
         <span
-          class="text-xs font-semibold px-3 py-1 rounded-full bg-theme/10 text-theme border border-theme/20 uppercase tracking-wider"
+          class="text-xs font-semibold px-3 py-1 rounded-full theme-tint text-theme border theme-border-soft uppercase tracking-wider"
         >
           {{ userProfile.Role || userProfile.role || "Super Admin" }}
         </span>
@@ -19,7 +19,7 @@
         <button
           @click="triggerFileInput"
           type="button"
-          class="w-10 h-10 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 hover:bg-theme/10 hover:text-theme text-slate-600 dark:text-slate-300 flex items-center justify-center transition-colors cursor-pointer border border-slate-200/50 dark:border-slate-700/50"
+          class="w-10 h-10 rounded-2xl bg-slate-100/80 dark:bg-slate-800/80 glass-hover hover:text-theme text-slate-600 dark:text-slate-300 flex items-center justify-center transition-colors cursor-pointer border border-slate-200/50 dark:border-slate-700/50"
           title="Ubah Foto"
         >
           <i class="fa-solid fa-camera text-sm"></i>
@@ -27,9 +27,7 @@
       </div> -->
 
       <!-- Avatar & Information Section -->
-      <div
-        class="flex flex-col items-center text-center space-y-3 relative z-10 my-2"
-      >
+      <div class="flex flex-col items-center text-center space-y-3 relative z-10 my-2">
         <div class="relative group cursor-pointer" @click="triggerFileInput">
           <img
             :src="avatarPreviewUrl"
@@ -43,19 +41,10 @@
           </div>
         </div>
 
-        <div
-          class="flex flex-row w-full items-center justify-between text-left"
-        >
+        <div class="flex flex-row w-full items-center justify-between text-left">
           <div>
-            <h2
-              class="text-xl sm:text-2xl font-bold text-slate-800 dark:text-slate-100"
-            >
-              {{
-                userProfile.Nama ||
-                userProfile.nama ||
-                userProfile.name ||
-                "User Pengguna"
-              }}
+            <h2 class="text-xl sm:text-2xl font-bold ui-text-primary">
+              {{ userProfile.Nama || userProfile.nama || userProfile.name || "User Pengguna" }}
             </h2>
 
             <!-- <span class="text-theme font-semibold">{{
@@ -68,7 +57,7 @@
               userProfile.Unit || userProfile.unit || "Unit Usaha"
             }}</span> -->
 
-            <p class="text-xs text-slate-400 font-normal mt-1">
+            <p class="text-xs font-normal mt-1 ui-text-muted">
               {{ userProfile.Email || userProfile.email || "email@domain.com" }}
             </p>
           </div>
@@ -78,7 +67,7 @@
             <button
               @click="triggerFileInput"
               type="button"
-              class="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-theme flex items-center justify-center transition-colors cursor-pointer border border-slate-200/50 dark:border-slate-700/50"
+              class="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:text-theme flex items-center justify-center transition-colors cursor-pointer border border-slate-200/50 dark:border-slate-700/50 ui-button ui-text-secondary min-h-0"
               title="Upload Foto"
             >
               <i class="fa-solid fa-image text-sm"></i>
@@ -86,7 +75,7 @@
             <button
               @click="activeTab = 'edit'"
               type="button"
-              class="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-theme flex items-center justify-center transition-colors cursor-pointer border border-slate-200/50 dark:border-slate-700/50"
+              class="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 hover:text-theme flex items-center justify-center transition-colors cursor-pointer border border-slate-200/50 dark:border-slate-700/50 ui-button ui-text-secondary min-h-0"
               title="Edit Profil"
             >
               <i class="fa-solid fa-user-pen text-sm"></i>
@@ -94,7 +83,7 @@
             <button
               @click="handleLogout"
               type="button"
-              class="w-10 h-10 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 flex items-center justify-center transition-colors cursor-pointer border border-rose-500/20"
+              class="w-10 h-10 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-500 flex items-center justify-center transition-colors cursor-pointer border border-rose-500/20 ui-button min-h-0"
               title="Keluar"
             >
               <i class="fa-solid fa-right-from-bracket text-sm"></i>
@@ -107,70 +96,58 @@
     <!-- 2. METRIC STAT CARDS (3 Floating Badge Rows) -->
     <div class="grid grid-cols-3 gap-3 md:gap-4 px-1">
       <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs flex flex-col items-center justify-center"
+        class="glass-card p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs flex flex-col items-center justify-center"
       >
         <div
-          class="w-8 h-8 rounded-xl bg-theme/10 text-theme flex items-center justify-center mb-1 text-xs"
+          class="w-8 h-8 rounded-xl theme-tint text-theme flex items-center justify-center mb-1 text-xs"
         >
           <i class="fa-solid fa-building"></i>
         </div>
-        <h4
-          class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate w-full"
-        >
+        <h4 class="text-xs sm:text-sm font-bold truncate w-full ui-text-primary">
           {{ form.unit || "-" }}
         </h4>
-        <p class="text-[10px] sm:text-xs text-slate-400 font-normal">
-          Unit Usaha
-        </p>
+        <p class="text-[10px] sm:text-xs font-normal ui-text-muted">Unit Usaha</p>
       </div>
 
       <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs flex flex-col items-center justify-center"
+        class="glass-card p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs flex flex-col items-center justify-center"
       >
         <div
           class="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-1 text-xs"
         >
           <i class="fa-solid fa-sitemap"></i>
         </div>
-        <h4
-          class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate w-full"
-        >
+        <h4 class="text-xs sm:text-sm font-bold truncate w-full ui-text-primary">
           {{ form.divisi || "-" }}
         </h4>
-        <p class="text-[10px] sm:text-xs text-slate-400 font-normal">Divisi</p>
+        <p class="text-[10px] sm:text-xs font-normal ui-text-muted">Divisi</p>
       </div>
 
       <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs flex flex-col items-center justify-center"
+        class="glass-card p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 text-center shadow-xs flex flex-col items-center justify-center"
       >
         <div
           class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center mb-1 text-xs"
         >
           <i class="fa-solid fa-shield-halved"></i>
         </div>
-        <h4
-          class="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-100 truncate w-full"
-        >
+        <h4 class="text-xs sm:text-sm font-bold truncate w-full ui-text-primary">
           {{ userProfile.Role || userProfile.role || "Super Admin" }}
         </h4>
-        <p class="text-[10px] sm:text-xs text-slate-400 font-normal">
-          Hak Akses
-        </p>
+        <p class="text-[10px] sm:text-xs font-normal ui-text-muted">Hak Akses</p>
       </div>
     </div>
 
     <!-- 3. MAIN FORM & DETAILS SECTION -->
     <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-3xl p-5 md:p-6 border border-slate-100 dark:border-slate-800 shadow-sm space-y-5"
+      class="glass-card rounded-3xl p-5 md:p-6 border border-slate-100 dark:border-slate-800 shadow-sm space-y-5"
     >
       <!-- Navigasi Tab Sederhana -->
-      <div
-        class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3"
-      >
+      <div class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
         <button
           @click="activeTab = 'about'"
           type="button"
-          class="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all"
+          class="px-4 py-2 rounded-xl text-xs cursor-pointer transition-all ui-button min-h-0"
           :class="
             activeTab === 'about'
               ? 'bg-button text-white shadow-xs'
@@ -182,7 +159,7 @@
         <button
           @click="activeTab = 'edit'"
           type="button"
-          class="px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all"
+          class="px-4 py-2 rounded-xl text-xs cursor-pointer transition-all ui-button min-h-0"
           :class="
             activeTab === 'edit'
               ? 'bg-button text-white shadow-xs'
@@ -196,16 +173,9 @@
       <!-- Tab 1: Ringkasan Bio & Informasi -->
       <div v-if="activeTab === 'about'" class="space-y-4 text-xs">
         <div>
-          <h4 class="font-bold text-slate-800 dark:text-slate-100 text-sm mb-1">
-            Bio / Deskripsi Ringkas
-          </h4>
-          <p
-            class="text-slate-600 dark:text-slate-300 font-normal leading-relaxed"
-          >
-            {{
-              form.bio ||
-              "Belum ada bio atau catatan deskripsi profil yang ditambahkan."
-            }}
+          <h4 class="font-bold text-sm mb-1 ui-text-primary">Bio / Deskripsi Ringkas</h4>
+          <p class="font-normal leading-relaxed ui-text-secondary">
+            {{ form.bio || "Belum ada bio atau catatan deskripsi profil yang ditambahkan." }}
           </p>
         </div>
 
@@ -213,22 +183,16 @@
           <div
             class="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800"
           >
-            <span class="text-slate-400 font-normal">Unit Usaha Utama</span>
-            <p
-              class="font-semibold text-slate-800 dark:text-slate-100 mt-0.5 text-sm"
-            >
+            <span class="font-normal ui-text-muted">Unit Usaha Utama</span>
+            <p class="font-semibold mt-0.5 text-sm ui-text-primary">
               {{ form.unit || "-" }}
             </p>
           </div>
           <div
             class="p-3.5 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800"
           >
-            <span class="text-slate-400 font-normal"
-              >Divisi / Bagian Pekerjaan</span
-            >
-            <p
-              class="font-semibold text-slate-800 dark:text-slate-100 mt-0.5 text-sm"
-            >
+            <span class="font-normal ui-text-muted">Divisi / Bagian Pekerjaan</span>
+            <p class="font-semibold mt-0.5 text-sm ui-text-primary">
               {{ form.divisi || "-" }}
             </p>
           </div>
@@ -238,54 +202,39 @@
       <!-- Tab 2: Form Pengeditan Data Profil -->
       <form v-else @submit.prevent="saveUserProfile" class="space-y-4 text-xs">
         <div>
-          <label
-            class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
-            >Nama Lengkap</label
-          >
+          <label class="block font-semibold mb-1 ui-text-secondary">Nama Lengkap</label>
           <input
             v-model="form.nama"
             type="text"
             required
-            class="w-full glass-input rounded-xl p-2.5 text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/60 dark:border-slate-700/60"
+            class="w-full rounded-xl p-2.5 text-xs font-normal bg-slate-50 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-primary min-h-0"
           />
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label
-              class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
-              >Unit Usaha Utama</label
-            >
+            <label class="block font-semibold mb-1 ui-text-secondary">Unit Usaha Utama</label>
             <select
               v-model="form.unit"
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 font-semibold text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700/60"
+              class="w-full rounded-xl p-2.5 text-xs bg-slate-50 dark:bg-slate-800 font-semibold border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-secondary min-h-0"
             >
               <option value="">-- Pilih Unit --</option>
-              <option
-                v-for="u in store.db?.master?.unitList"
-                :key="u.code"
-                :value="u.code"
-              >
+              <option v-for="u in store.db?.master?.unitList" :key="u.code" :value="u.code">
                 {{ u.code }} - {{ u.name }}
               </option>
             </select>
           </div>
 
           <div>
-            <label
-              class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            <label class="block font-semibold mb-1 ui-text-secondary"
               >Divisi / Bagian Pekerjaan</label
             >
             <select
               v-model="form.divisi"
-              class="w-full glass-input rounded-xl p-2.5 text-xs outline-none bg-slate-50 dark:bg-slate-800 font-semibold text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700/60"
+              class="w-full rounded-xl p-2.5 text-xs bg-slate-50 dark:bg-slate-800 font-semibold border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-secondary min-h-0"
             >
               <option value="">-- Pilih Divisi --</option>
-              <option
-                v-for="div in store.db?.master?.divisiList"
-                :key="div"
-                :value="div"
-              >
+              <option v-for="div in store.db?.master?.divisiList" :key="div" :value="div">
                 {{ div }}
               </option>
             </select>
@@ -293,8 +242,7 @@
         </div>
 
         <div>
-          <label
-            class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
+          <label class="block font-semibold mb-1 ui-text-secondary"
             >Foto Profil (URL / Unggah File)</label
           >
           <div class="flex gap-2 items-center">
@@ -302,7 +250,7 @@
               v-model="form.avatarUrl"
               type="text"
               placeholder="Tempel URL atau pilih file..."
-              class="flex-1 glass-input rounded-xl p-2.5 text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/60 dark:border-slate-700/60"
+              class="flex-1 rounded-xl p-2.5 text-xs font-normal bg-slate-50 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-primary min-h-0"
             />
             <input
               ref="fileInputRef"
@@ -314,7 +262,7 @@
             <button
               type="button"
               @click="triggerFileInput"
-              class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3.5 py-2.5 rounded-xl font-semibold text-xs cursor-pointer border border-slate-200 dark:border-slate-700"
+              class="bg-slate-100 dark:bg-slate-800 px-3.5 py-2.5 rounded-xl text-xs cursor-pointer border border-slate-200 dark:border-slate-700 ui-button glass-hover ui-text-secondary min-h-0"
             >
               Unggah
             </button>
@@ -322,28 +270,22 @@
         </div>
 
         <div>
-          <label
-            class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
-            >Ganti Password</label
-          >
+          <label class="block font-semibold mb-1 ui-text-secondary">Ganti Password</label>
           <input
             v-model="form.password"
             type="password"
             placeholder="Ketik password baru jika ingin diubah..."
-            class="w-full glass-input rounded-xl p-2.5 text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/60 dark:border-slate-700/60"
+            class="w-full rounded-xl p-2.5 text-xs font-normal bg-slate-50 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-primary min-h-0"
           />
         </div>
 
         <div>
-          <label
-            class="block font-semibold mb-1 text-slate-600 dark:text-slate-300"
-            >Bio / Deskripsi Singkat</label
-          >
+          <label class="block font-semibold mb-1 ui-text-secondary">Bio / Deskripsi Singkat</label>
           <textarea
             v-model="form.bio"
             rows="3"
             placeholder="Tuliskan bio profil Anda..."
-            class="w-full glass-input rounded-xl p-2.5 text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 border border-slate-200/60 dark:border-slate-700/60"
+            class="w-full rounded-xl p-2.5 text-xs font-normal bg-slate-50 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-primary min-h-0"
           ></textarea>
         </div>
 
@@ -351,7 +293,7 @@
         <button
           type="submit"
           :disabled="isSaving"
-          class="w-full bg-button text-white font-semibold p-3 rounded-xl text-xs transition-all shadow-md cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 mt-2"
+          class="w-full p-3 rounded-xl text-xs transition-all shadow-md cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 mt-2 ui-button ui-button-primary min-h-0"
         >
           <i v-if="isSaving" class="fa-solid fa-spinner fa-spin"></i>
           <i v-else class="fa-solid fa-floppy-disk"></i>
@@ -518,6 +460,11 @@ const saveUserProfile = async () => {
 };
 
 const handleLogout = () => {
+  localStorage.removeItem("SESSION_USER");
+  api.clearAllCache();
+  store.currentPage = "main";
+  store.currentUser = null;
+
   store.openAlert(
     "Konfirmasi Keluar",
     "Apakah Anda yakin ingin keluar dari aplikasi?",

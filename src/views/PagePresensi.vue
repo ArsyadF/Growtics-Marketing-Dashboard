@@ -3,18 +3,15 @@
   <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
     <!-- HEADER PAGE & NAVIGASI TAB -->
     <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+      class="glass-card p-4 md:p-5 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
     >
       <div>
-        <h2
-          class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
+        <h2 class="text-base md:text-lg font-bold flex items-center gap-2 ui-text-primary">
           <i class="fa-solid fa-clipboard-user text-emerald-600"></i>
           <span>Absensi & Laporan Linerja Harian</span>
         </h2>
-        <p class="text-xs text-slate-400 mt-0.5">
-          Pencatatan presensi, rekap performa tim, serta manajemen form laporan
-          dinamis.
+        <p class="text-xs mt-0.5 ui-text-muted">
+          Pencatatan presensi, rekap performa tim, serta manajemen form laporan dinamis.
         </p>
       </div>
 
@@ -24,7 +21,7 @@
       >
         <button
           @click="activeTab = 'presensi'"
-          class="px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer"
+          class="px-3 py-1.5 rounded-xl transition-all cursor-pointer ui-button min-h-0"
           :class="
             activeTab === 'presensi'
               ? 'bg-button text-white shadow-sm'
@@ -35,7 +32,7 @@
         </button>
         <button
           @click="activeTab = 'rekap'"
-          class="px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer"
+          class="px-3 py-1.5 rounded-xl transition-all cursor-pointer ui-button min-h-0"
           :class="
             activeTab === 'rekap'
               ? 'bg-button text-white shadow-sm'
@@ -47,7 +44,7 @@
         <button
           v-if="isSuperadmin"
           @click="activeTab = 'builder'"
-          class="px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer"
+          class="px-3 py-1.5 rounded-xl transition-all cursor-pointer ui-button min-h-0"
           :class="
             activeTab === 'builder'
               ? 'bg-button text-white shadow-sm'
@@ -62,16 +59,13 @@
     <!-- ========================================== -->
     <!-- TAB 1: FORM PRESENSI HARIAN (USER) -->
     <!-- ========================================== -->
-    <div
-      v-if="activeTab === 'presensi'"
-      class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6"
-    >
+    <div v-if="activeTab === 'presensi'" class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
       <!-- Status Presensi Hari Ini -->
       <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-5 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
+        class="glass-card p-5 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
       >
         <h3
-          class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5"
+          class="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ui-text-muted"
         >
           <i class="fa-solid fa-calendar-check text-emerald-600"></i>
           Status Hari Ini ({{ todayDateStr }})
@@ -89,7 +83,7 @@
           <h4 class="font-bold text-sm text-emerald-700 dark:text-emerald-400">
             Anda Sudah Presensi!
           </h4>
-          <p class="text-xs text-slate-500 dark:text-slate-400">
+          <p class="text-xs ui-text-description">
             Terima kasih, laporan harian Anda telah tersimpan ke sistem.
           </p>
         </div>
@@ -106,9 +100,8 @@
           <h4 class="font-bold text-sm text-amber-700 dark:text-amber-400">
             Belum Mengisi Absensi
           </h4>
-          <p class="text-xs text-slate-500 dark:text-slate-400">
-            Silakan lengkapi formulir laporan harian di samping sebelum batas
-            jam kerja berakhir.
+          <p class="text-xs ui-text-description">
+            Silakan lengkapi formulir laporan harian di samping sebelum batas jam kerja berakhir.
           </p>
         </div>
 
@@ -116,12 +109,9 @@
         <div
           class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 text-xs space-y-2"
         >
-          <div
-            class="flex items-center justify-between font-bold text-slate-700 dark:text-slate-200"
-          >
+          <div class="flex items-center justify-between font-bold ui-text-secondary">
             <span class="flex items-center gap-1.5"
-              ><i class="fa-solid fa-location-dot text-rose-500"></i> Lokasi
-              Anda</span
+              ><i class="fa-solid fa-location-dot text-rose-500"></i> Lokasi Anda</span
             >
             <button
               @click="getGeoLocation"
@@ -131,9 +121,7 @@
               Refresh
             </button>
           </div>
-          <p
-            class="text-slate-500 dark:text-slate-400 text-[11px] leading-relaxed"
-          >
+          <p class="text-[11px] leading-relaxed ui-text-description">
             {{
               geoCoordinates
                 ? `${geoCoordinates.lat.toFixed(5)}, ${geoCoordinates.lng.toFixed(5)}`
@@ -145,24 +133,18 @@
 
       <!-- Form Isian Dinamis -->
       <div
-        class="lg:col-span-2 glass-card bg-white/90 dark:bg-slate-900/90 p-5 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
+        class="lg:col-span-2 glass-card p-5 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
       >
         <h3
-          class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5"
+          class="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ui-text-muted"
         >
           <i class="fa-solid fa-list-check text-blue-600"></i>
           Form Laporan Harian
         </h3>
 
         <form @submit.prevent="submitAttendance" class="space-y-4 text-xs">
-          <div
-            v-for="field in currentFormSchema.fields"
-            :key="field.id"
-            class="space-y-1"
-          >
-            <label
-              class="block font-semibold text-slate-700 dark:text-slate-300"
-            >
+          <div v-for="field in currentFormSchema.fields" :key="field.id" class="space-y-1">
+            <label class="block font-semibold ui-text-secondary">
               {{ field.label }}
               <span v-if="field.required" class="text-rose-500">*</span>
             </label>
@@ -173,7 +155,7 @@
               v-model="userResponses[field.id]"
               :type="field.type"
               :required="field.required"
-              class="w-full glass-input rounded-xl p-2.5 outline-none text-slate-800 dark:text-slate-100"
+              class="w-full rounded-xl p-2.5 ui-input ui-text-primary min-h-0"
             />
 
             <!-- Input Textarea -->
@@ -182,7 +164,7 @@
               v-model="userResponses[field.id]"
               :required="field.required"
               rows="3"
-              class="w-full glass-input rounded-xl p-2.5 outline-none text-slate-800 dark:text-slate-100 resize-none"
+              class="w-full rounded-xl p-2.5 resize-none ui-input ui-text-primary min-h-0"
             ></textarea>
 
             <!-- Input Select -->
@@ -190,7 +172,7 @@
               v-else-if="field.type === 'select'"
               v-model="userResponses[field.id]"
               :required="field.required"
-              class="w-full glass-input rounded-xl p-2.5 outline-none text-slate-800 dark:text-slate-100"
+              class="w-full rounded-xl p-2.5 ui-input ui-text-primary min-h-0"
             >
               <option value="" disabled>-- Pilih Option --</option>
               <option v-for="opt in field.options" :key="opt" :value="opt">
@@ -202,12 +184,10 @@
           <button
             type="submit"
             :disabled="isSubmitting || hasFilledToday"
-            class="w-full py-3 rounded-2xl font-bold bg-button text-white shadow-md disabled:opacity-50 transition-all cursor-pointer flex items-center justify-center gap-2"
+            class="w-full py-3 rounded-2xl shadow-md disabled:opacity-50 transition-all cursor-pointer flex items-center justify-center gap-2 ui-button ui-button-primary min-h-0"
           >
             <i v-if="isSubmitting" class="fa-solid fa-spinner fa-spin"></i>
-            <span>{{
-              isSubmitting ? "Menyimpan Presensi..." : "Kirim Presensi Harian"
-            }}</span>
+            <span>{{ isSubmitting ? "Menyimpan Presensi..." : "Kirim Presensi Harian" }}</span>
           </button>
         </form>
       </div>
@@ -219,18 +199,15 @@
     <div v-if="activeTab === 'rekap'" class="space-y-4">
       <!-- Toolbar Filter & Ekspor Import -->
       <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3 text-xs"
+        class="glass-card p-4 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-3 text-xs"
       >
         <div class="flex items-center gap-2 w-full md:w-auto">
           <input
             v-model="filterDate"
             type="date"
-            class="glass-input rounded-xl p-2 outline-none text-slate-800 dark:text-slate-100"
+            class="rounded-xl p-2 ui-input ui-text-primary min-h-0"
           />
-          <select
-            v-model="filterUnit"
-            class="glass-input rounded-xl p-2 outline-none text-slate-800 dark:text-slate-100"
-          >
+          <select v-model="filterUnit" class="rounded-xl p-2 ui-input ui-text-primary min-h-0">
             <option value="ALL">Semua Unit</option>
             <option value="NHP">NHP</option>
             <option value="NHC">NHC</option>
@@ -243,7 +220,7 @@
           <button
             @click="exportToCSV"
             type="button"
-            class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 border border-emerald-500/30 px-3 py-2 rounded-xl font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+            class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 border border-emerald-500/30 px-3 py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer ui-button min-h-0"
           >
             <i class="fa-solid fa-file-excel"></i>
             <span>Ekspor CSV</span>
@@ -255,25 +232,18 @@
           >
             <i class="fa-solid fa-file-import"></i>
             <span>Impor Data</span>
-            <input
-              type="file"
-              accept=".csv"
-              class="hidden"
-              @change="importCSV"
-            />
+            <input type="file" accept=".csv" class="hidden" @change="importCSV" />
           </label>
         </div>
       </div>
 
       <!-- Tabel Rekap Presensi -->
       <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-3xl p-4 border border-slate-100 dark:border-slate-800 shadow-sm overflow-x-auto"
+        class="glass-card rounded-3xl p-4 border border-slate-100 dark:border-slate-800 shadow-sm overflow-x-auto"
       >
         <table class="w-full text-left text-xs border-collapse">
           <thead>
-            <tr
-              class="border-b border-slate-200 dark:border-slate-800 text-slate-400"
-            >
+            <tr class="border-b border-slate-200 dark:border-slate-800 ui-text-muted">
               <th class="p-2.5 font-semibold">Nama Staff</th>
               <th class="p-2.5 font-semibold">Unit</th>
               <th class="p-2.5 font-semibold">Waktu Presensi</th>
@@ -287,22 +257,15 @@
               </th>
             </tr>
           </thead>
-          <tbody
-            class="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-200"
-          >
-            <tr
-              v-for="item in filteredAttendances"
-              :key="item.id"
-              class="hover:bg-slate-50/50 dark:hover:bg-slate-800/40"
-            >
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800 ui-text-secondary">
+            <tr v-for="item in filteredAttendances" :key="item.id" class="ui-row-hover">
               <td class="p-2.5 font-bold">{{ item.userName }}</td>
               <td class="p-2.5">
-                <span
-                  class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-semibold"
-                  >{{ item.userUnit }}</span
-                >
+                <span class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-semibold">{{
+                  item.userUnit
+                }}</span>
               </td>
-              <td class="p-2.5 text-slate-400">
+              <td class="p-2.5 ui-text-muted">
                 {{ formatTime(item.timestamp) }}
               </td>
               <td class="p-2.5">
@@ -325,7 +288,7 @@
             <tr v-if="filteredAttendances.length === 0">
               <td
                 :colspan="4 + currentFormSchema.fields.length"
-                class="text-center py-8 text-slate-400"
+                class="text-center py-8 ui-text-muted"
               >
                 Belum ada data rekap presensi pada tanggal/unit ini.
               </td>
@@ -340,26 +303,24 @@
     <!-- ========================================== -->
     <div
       v-if="activeTab === 'builder' && isSuperadmin"
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-5 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-5"
+      class="glass-card p-5 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-5"
     >
       <div
         class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800"
       >
         <div>
-          <h3
-            class="font-bold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
-          >
+          <h3 class="font-bold text-sm flex items-center gap-2 ui-text-primary">
             <i class="fa-solid fa-sliders text-rose-500"></i>
             <span>Google-Form Style Builder</span>
           </h3>
-          <p class="text-xs text-slate-400">
+          <p class="text-xs ui-text-muted">
             Atur kolom & bidang laporan yang wajib diisi oleh staf.
           </p>
         </div>
         <button
           @click="addField"
           type="button"
-          class="bg-button text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1 cursor-pointer"
+          class="px-3 py-1.5 rounded-xl text-xs flex items-center gap-1 cursor-pointer ui-button ui-button-primary min-h-0"
         >
           <i class="fa-solid fa-plus"></i> Tambah Field
         </button>
@@ -375,12 +336,9 @@
             <input
               v-model="field.label"
               placeholder="Label Pertanyaan / Field..."
-              class="flex-1 glass-input rounded-xl p-2 text-xs outline-none font-semibold"
+              class="flex-1 rounded-xl p-2 text-xs font-semibold ui-input min-h-0"
             />
-            <select
-              v-model="field.type"
-              class="glass-input rounded-xl p-2 text-xs outline-none"
-            >
+            <select v-model="field.type" class="rounded-xl p-2 text-xs ui-input min-h-0">
               <option value="text">Teks Isian Singkat</option>
               <option value="textarea">Teks Paragraf / Jawaban Panjang</option>
               <option value="select">Pilihan Ganda (Dropdown)</option>
@@ -400,19 +358,14 @@
             v-if="field.type === 'select'"
             class="space-y-1 pl-2 border-l-2 border-slate-300 dark:border-slate-600"
           >
-            <label class="text-[10px] font-bold text-slate-400"
+            <label class="text-[10px] font-bold ui-text-muted"
               >Opsi Pilihan (Pisahkan dengan koma):</label
             >
             <input
               :value="field.options ? field.options.join(', ') : ''"
-              @input="
-                (e) =>
-                  (field.options = e.target.value
-                    .split(',')
-                    .map((s) => s.trim()))
-              "
+              @input="(e) => (field.options = e.target.value.split(',').map((s) => s.trim()))"
               placeholder="Contoh: WFO, WFH, Dinas Luar"
-              class="w-full glass-input rounded-xl p-1.5 text-xs outline-none"
+              class="w-full rounded-xl p-1.5 text-xs ui-input min-h-0"
             />
           </div>
         </div>
@@ -421,7 +374,7 @@
       <button
         @click="saveFormSchema"
         type="button"
-        class="w-full py-2.5 rounded-xl font-bold bg-button text-white shadow-md cursor-pointer"
+        class="w-full py-2.5 rounded-xl shadow-md cursor-pointer ui-button ui-button-primary min-h-0"
       >
         Simpan Struktur Form Baru
       </button>

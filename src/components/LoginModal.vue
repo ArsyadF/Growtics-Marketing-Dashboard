@@ -4,21 +4,17 @@
     <template #header>
       <button
         @click="closeModal"
-        class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 p-1 cursor-pointer z-10"
+        class="absolute top-4 right-4 hover:text-slate-600 p-1 cursor-pointer z-10 ui-text-muted"
       >
         <i class="fa-solid fa-xmark text-base"></i>
       </button>
     </template>
 
     <div class="text-center space-y-2 mb-6 pt-2">
-      <div
-        class="inline-flex p-3 bg-button text-white rounded-2xl shadow-lg text-xl mb-2"
-      >
+      <div class="inline-flex p-3 bg-button text-white rounded-2xl shadow-lg text-xl mb-2">
         <i class="fa-solid fa-chart-pie"></i>
       </div>
-      <h2 class="text-xl font-semibold text-slate-800 dark:text-slate-100">
-        Portal Marketing
-      </h2>
+      <h2 class="text-xl font-semibold ui-text-primary">Portal Marketing</h2>
       <p class="text-xs text-slate-500 font-normal">
         Silakan masuk untuk akses fitur manajemen data.
       </p>
@@ -31,42 +27,33 @@
       {{ errorMessage }}
     </div>
 
-    <form @submit.prevent="handleLogin" class="space-y-4 text-sm md:text-xs">
+    <form @submit.prevent="handleLogin" class="space-y-4 ui-text-body">
       <div>
-        <label
-          class="block font-semibold text-slate-600 dark:text-slate-300 mb-1"
-          >Email / Username</label
-        >
+        <label class="block font-semibold mb-1 ui-text-secondary">Email / Username</label>
         <input
           v-model="email"
           type="text"
           required
-          class="w-full glass-input rounded-xl p-3 outline-none"
+          class="w-full rounded-xl p-3 ui-input ui-input-inherit min-h-0"
         />
       </div>
       <div>
-        <label
-          class="block font-semibold text-slate-600 dark:text-slate-300 mb-1"
-          >Password</label
-        >
+        <label class="block font-semibold mb-1 ui-text-secondary">Password</label>
         <input
           v-model="password"
           type="password"
           required
-          class="w-full glass-input rounded-xl p-3 outline-none"
+          class="w-full rounded-xl p-3 ui-input ui-input-inherit min-h-0"
         />
       </div>
       <button
         type="submit"
         :disabled="isSubmitting"
-        class="w-full bg-button text-white font-semibold py-3 rounded-xl transition-all shadow-md mt-2 disabled:opacity-50 flex items-center justify-center cursor-pointer"
+        class="w-full py-3 rounded-xl transition-all shadow-md mt-2 disabled:opacity-50 flex items-center justify-center cursor-pointer ui-button min-h-0 px-0 gap-0 ui-button-primary border-0 ui-button-inherit"
       >
-        <i
-          v-if="!isSubmitting"
-          class="fa-solid fa-right-to-bracket mr-2 text-xs"
-        ></i>
+        <i v-if="!isSubmitting" class="fa-solid fa-right-to-bracket mr-2 text-xs"></i>
         <i v-else class="fa-solid fa-circle-notch fa-spin mr-2 text-xs"></i>
-        <span>{{ isSubmitting ? "Memverifikasi..." : "Masuk Aplikasi" }}</span>
+        <span>{{ isSubmitting ? "Memverifikasi..." : "Login" }}</span>
       </button>
     </form>
   </BaseModal>
@@ -97,7 +84,8 @@ const handleLogin = async () => {
     if (res.success) {
       store.setCurrentUser(res.user);
       store.isAccessGranted = true;
-      await store.loadFullDatabase();
+      await store.loadInitialData();
+      // await store.loadFullDatabase();
       emit("login-success", res.user);
       closeModal();
     } else {

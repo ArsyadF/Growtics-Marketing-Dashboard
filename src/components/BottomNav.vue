@@ -1,225 +1,159 @@
 <!-- src/components/BottomNav.vue -->
 <template>
   <div
-    class="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-0 right-0 z-40 md:hidden pointer-events-none flex justify-center px-3"
+    class="bottom-nav fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-0 right-0 z-40 md:hidden pointer-events-none flex justify-center px-3"
   >
-    <!-- BACKDROP GELAP -->
     <transition name="fade">
       <div
         v-if="activePopup"
+        class="pointer-events-auto fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-30"
         @click.stop="closePopup"
         @touchstart.stop="closePopup"
-        class="pointer-events-auto fixed inset-0 bg-slate-950/40 backdrop-blur-xs z-30"
       ></div>
     </transition>
 
-    <!-- CONTAINER NAVBAR -->
-    <div
-      ref="navContainerRef"
-      class="relative w-full max-w-lg pointer-events-auto z-40"
-    >
-      <!-- POPUP 1: Pilihan Unit Usaha -->
+    <div ref="navContainerRef" class="relative w-full max-w-lg pointer-events-auto z-40">
+      <!-- Popup unit -->
       <transition name="pop-up">
         <div
           v-if="activePopup === 'unit'"
-          class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[94%] max-w-xs z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
+          id="bottom-nav-unit"
+          class="ui-popup ui-bottom-popup absolute right-0 bottom-20 left-0 z-40 w-[94%] max-w-80 mx-auto flex flex-col gap-4"
         >
-          <p
-            class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center"
-          >
-            Pilih Unit Usaha
-          </p>
+          <p class="ui-popup-title pt-1 px-3 pb-0.5 text-center">Pilih Unit Usaha</p>
+
           <div class="grid grid-cols-3 gap-2">
             <template v-for="menu in unitMenus" :key="menu.id">
               <button
                 v-if="menu.condition()"
+                type="button"
+                class="ui-popup-menu-item flex flex-col items-center justify-center gap-1.5 min-w-0 p-2.5 text-center"
                 @click.stop="menu.action"
-                class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
               >
-                <div
-                  :class="[
-                    'w-9 h-9 rounded-xl flex items-center justify-center text-sm mb-1 group-hover:scale-110 transition-transform',
-                    menu.iconClass,
-                  ]"
-                >
+                <span class="ui-icon" :class="menu.iconClass">
                   <i :class="menu.icon"></i>
-                </div>
-                <span
-                  class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-                  >{{ menu.label }}</span
-                >
+                </span>
+                <span>{{ menu.label }}</span>
               </button>
             </template>
           </div>
         </div>
       </transition>
 
-      <!-- POPUP 2: Input Data Baru -->
+      <!-- Popup tambah data -->
       <transition name="pop-up">
         <div
           v-if="activePopup === 'add'"
-          class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[94%] max-w-xs z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
+          id="bottom-nav-add"
+          class="ui-popup ui-bottom-popup absolute right-0 bottom-20 left-0 z-40 w-[94%] max-w-80 mx-auto flex flex-col gap-4"
         >
-          <p
-            class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center"
-          >
-            Input Data Baru
-          </p>
+          <p class="ui-popup-title pt-1 px-3 pb-0.5 text-center">Input Data Baru</p>
+
           <div class="grid grid-cols-3 gap-2">
             <template v-for="menu in addMenus" :key="menu.id">
               <button
                 v-if="menu.condition()"
+                type="button"
+                class="ui-popup-menu-item flex flex-col items-center justify-center gap-1.5 min-w-0 p-2.5 text-center"
                 @click.stop="menu.action"
-                class="flex flex-col items-center justify-center p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 hover:bg-[#25eba11a] border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
               >
-                <span
-                  :class="[
-                    'w-7 h-7 rounded-lg flex items-center justify-center text-xs shrink-0',
-                    menu.iconClass,
-                  ]"
-                >
+                <span class="ui-icon ui-icon-sm" :class="menu.iconClass">
                   <i :class="menu.icon"></i>
                 </span>
-                <span
-                  class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center"
-                  >{{ menu.label }}</span
-                >
+                <span>{{ menu.label }}</span>
               </button>
             </template>
           </div>
         </div>
       </transition>
 
-      <!-- POPUP 3: Modul Workspace -->
+      <!-- Popup workspace -->
       <transition name="pop-up">
         <div
           v-if="activePopup === 'workspace'"
-          class="pointer-events-auto absolute bottom-20 left-0 right-0 mx-auto w-[94%] max-w-xs z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-white/20 dark:border-slate-800 p-4 rounded-3xl shadow-2xl space-y-3"
+          id="bottom-nav-workspace"
+          class="ui-popup ui-bottom-popup absolute right-0 bottom-20 left-0 z-40 w-[94%] max-w-80 mx-auto flex flex-col gap-4"
         >
-          <p
-            class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 pt-1 pb-0.5 text-center"
-          >
-            Modul Workspace
-          </p>
+          <p class="ui-popup-title pt-1 px-3 pb-0.5 text-center">Modul Workspace</p>
+
           <div class="grid grid-cols-2 gap-2">
             <template v-for="menu in workspaceMenus" :key="menu.id">
               <button
                 v-if="menu.condition()"
+                type="button"
+                class="ui-popup-menu-item flex flex-col items-center justify-center gap-1.5 min-w-0 p-2.5 text-center"
                 @click.stop="menu.action"
-                class="flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50 transition-all cursor-pointer group"
-                :class="menu.hoverBg"
               >
-                <div
-                  :class="[
-                    'w-9 h-9 rounded-xl flex items-center justify-center text-sm mb-1.5 group-hover:scale-110 transition-transform',
-                    menu.iconClass,
-                  ]"
-                >
+                <span class="ui-icon" :class="menu.iconClass">
                   <i :class="menu.icon"></i>
-                </div>
-                <span
-                  class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight"
-                  >{{ menu.label }}</span
-                >
+                </span>
+                <span>{{ menu.label }}</span>
               </button>
             </template>
           </div>
         </div>
       </transition>
 
-      <!-- MAIN NAVBAR -->
+      <!-- Navigasi utama -->
       <nav
+        aria-label="Navigasi utama"
         class="pointer-events-auto relative z-30 w-full h-16 flex items-center justify-between"
       >
-        <!-- SVG BACKGROUND LAYOUT -->
         <svg
-          class="absolute inset-0 w-full h-full transition-all duration-300"
-          style="filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.15))"
+          aria-hidden="true"
+          class="ui-bottom-background absolute inset-0 w-full h-full"
           viewBox="0 0 375 64"
-          fill="none"
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="none"
         >
-          <defs>
-            <linearGradient
-              id="nav-glass-gradient"
-              x1="0%"
-              y1="100%"
-              x2="100%"
-              y2="0%"
-            >
-              <stop
-                offset="0%"
-                stop-color="var(--primary-color)"
-                stop-opacity="0.9"
-              />
-              <stop
-                offset="100%"
-                stop-color="var(--primary-light)"
-                stop-opacity="0.9"
-              />
-            </linearGradient>
-          </defs>
           <path
             d="M 0 20 C 0 8.954 8.954 0 20 0 L 140 0 C 149 0 153 5 158 11 C 164 19 171 25 187.5 25 C 204 25 211 19 217 11 C 222 5 226 0 235 0 L 355 0 C 366.046 0 375 8.954 375 20 L 375 44 C 375 55.046 366.046 64 355 64 L 20 64 C 8.954 64 0 55.046 0 44 Z"
-            fill="url(#nav-glass-gradient)"
           />
         </svg>
 
-        <!-- CONTAINER ITEM NAVIGASI UTAMA -->
-        <div
-          class="relative z-10 w-full flex items-center justify-around h-full px-2"
-        >
-          <!-- 1. DASHBOARD -->
-          <div class="flex flex-col items-center justify-center">
-            <button
-              @click.stop="navTo('main')"
-              class="items-center transition-all cursor-pointer h-8 w-12 rounded-2xl shrink-0 focus:outline-none"
-              :class="
-                store.currentPage === 'main'
-                  ? 'bg-white text-theme shadow-sm font-semibold'
-                  : 'text-white/80 hover:text-white font-normal'
-              "
-            >
-              <i class="fa-solid fa-house text-sm"></i>
-            </button>
-            <span
-              class="text-xs text-white dark:text-slate-100 mt-0.5 whitespace-nowrap font-normal"
-              >Dashboard</span
-            >
-          </div>
+        <div class="relative z-10 w-full flex items-center justify-around h-full px-2">
+          <button
+            type="button"
+            class="ui-bottom-item flex flex-col items-center justify-center"
+            :class="{ 'is-active': store.currentPage === 'main' }"
+            :aria-current="store.currentPage === 'main' ? 'page' : undefined"
+            @click.stop="navTo('main')"
+          >
+            <span class="ui-bottom-icon flex items-center justify-center w-12 h-8">
+              <i class="fa-solid fa-house"></i>
+            </span>
+            <span class="ui-bottom-label">Dashboard</span>
+          </button>
 
-          <!-- 2. UNIT -->
-          <div class="flex flex-col items-center justify-center">
-            <button
-              @click.stop="togglePopup('unit')"
-              class="items-center transition-all cursor-pointer h-8 w-12 rounded-2xl shrink-0 focus:outline-none"
-              :class="
+          <button
+            type="button"
+            class="ui-bottom-item flex flex-col items-center justify-center"
+            :class="{
+              'is-active':
                 activePopup === 'unit' ||
                 store.currentPage.startsWith('unit-') ||
-                store.currentPage === 'summary'
-                  ? 'bg-white text-theme shadow-sm font-semibold'
-                  : 'text-white/80 hover:text-white font-normal'
-              "
-            >
-              <i class="fa-solid fa-building text-sm"></i>
-            </button>
-            <span
-              class="text-xs text-white mt-0.5 whitespace-nowrap font-normal"
-              >Unit</span
-            >
-          </div>
-
-          <!-- 3. SLOT TENGAH (TOMBOL PLUS) -->
-          <div
-            class="relative flex justify-center items-center w-14 h-full shrink-0"
+                store.currentPage === 'summary',
+            }"
+            :aria-expanded="activePopup === 'unit'"
+            aria-controls="bottom-nav-unit"
+            @click.stop="togglePopup('unit')"
           >
+            <span class="ui-bottom-icon flex items-center justify-center w-12 h-8">
+              <i class="fa-solid fa-building"></i>
+            </span>
+            <span class="ui-bottom-label">Unit</span>
+          </button>
+
+          <div class="relative flex justify-center items-center w-14 h-full shrink-0">
             <button
+              type="button"
+              class="ui-bottom-add absolute -top-4 z-20 flex items-center justify-center w-14 h-14 bg-theme-gradient"
+              :aria-expanded="activePopup === 'add'"
+              aria-controls="bottom-nav-add"
+              :aria-label="
+                activePopup === 'add' ? 'Tutup pilihan input data' : 'Buka pilihan input data'
+              "
               @click.stop="togglePopup('add')"
-              class="absolute -top-4 w-14 h-14 bg-theme-gradient text-white rounded-full shadow-lg flex items-center justify-center text-xl transition-all duration-300 active:scale-90 cursor-pointer border-4 border-slate-100 dark:border-slate-900 z-20 focus:outline-none"
-              :class="{
-                '!bg-slate-200 dark:!bg-slate-700': activePopup === 'add',
-              }"
             >
               <i
                 class="fa-solid fa-plus transition-transform duration-300"
@@ -228,46 +162,36 @@
             </button>
           </div>
 
-          <!-- 4. WORKSPACE -->
-          <div class="flex flex-col items-center justify-center">
-            <button
-              @click.stop="togglePopup('workspace')"
-              class="items-center transition-all cursor-pointer h-8 w-12 rounded-2xl shrink-0 focus:outline-none"
-              :class="
+          <button
+            type="button"
+            class="ui-bottom-item flex flex-col items-center justify-center"
+            :class="{
+              'is-active':
                 activePopup === 'workspace' ||
-                ['progress', 'digmar', 'leads', 'spv-report'].includes(
-                  store.currentPage,
-                )
-                  ? 'bg-white text-theme shadow-sm font-semibold'
-                  : 'text-white/80 hover:text-white font-normal'
-              "
-            >
-              <i class="fa-solid fa-bars-progress text-sm"></i>
-            </button>
-            <span
-              class="text-xs text-white mt-0.5 whitespace-nowrap font-normal"
-              >Workspace</span
-            >
-          </div>
+                ['progress', 'digmar', 'leads', 'spv-report'].includes(store.currentPage),
+            }"
+            :aria-expanded="activePopup === 'workspace'"
+            aria-controls="bottom-nav-workspace"
+            @click.stop="togglePopup('workspace')"
+          >
+            <span class="ui-bottom-icon flex items-center justify-center w-12 h-8">
+              <i class="fa-solid fa-bars-progress"></i>
+            </span>
+            <span class="ui-bottom-label">Workspace</span>
+          </button>
 
-          <!-- 5. ADUAN -->
-          <div class="flex flex-col items-center justify-center">
-            <button
-              @click.stop="navTo('aduan')"
-              class="items-center transition-all cursor-pointer h-8 w-12 rounded-3xl shrink-0 focus:outline-none"
-              :class="
-                store.currentPage === 'aduan'
-                  ? 'bg-white text-theme shadow-sm font-semibold'
-                  : 'text-white/80 hover:text-white font-normal'
-              "
-            >
-              <i class="fa-solid fa-headset text-sm"></i>
-            </button>
-            <span
-              class="text-xs text-white mt-0.5 whitespace-nowrap font-normal"
-              >Aduan</span
-            >
-          </div>
+          <button
+            type="button"
+            class="ui-bottom-item flex flex-col items-center justify-center"
+            :class="{ 'is-active': store.currentPage === 'aduan' }"
+            :aria-current="store.currentPage === 'aduan' ? 'page' : undefined"
+            @click.stop="navTo('aduan')"
+          >
+            <span class="ui-bottom-icon flex items-center justify-center w-12 h-8">
+              <i class="fa-solid fa-headset"></i>
+            </span>
+            <span class="ui-bottom-label">Aduan</span>
+          </button>
         </div>
       </nav>
     </div>
@@ -495,5 +419,81 @@ onUnmounted(() => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+</style>
+
+
+<!-- Gaya khusus komponen; layout utama berada di template. -->
+<style scoped>
+.ui-bottom-item {
+  color: var(--ui-text-muted);
+  cursor: pointer;
+}
+
+.ui-bottom-icon {
+  border-radius: var(--ui-radius-card);
+  font-size: var(--ui-font-xs);
+}
+
+.ui-bottom-label {
+  font-size: var(--ui-font-xs);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.ui-bottom-item.is-active .ui-bottom-icon {
+  background-color: var(--primary-color);
+  color: var(--ui-text-on-primary);
+  box-shadow: var(--ui-shadow-sm);
+}
+
+.ui-bottom-item.is-active .ui-bottom-label {
+  color: var(--ui-selected-text);
+}
+
+.dark .ui-bottom-item {
+  color: #f1f5f9;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ui-bottom-item:not(.is-active):hover .ui-bottom-icon {
+    background-color: var(--glass-hover);
+  }
+}
+.ui-bottom-background {
+  fill: var(--input-background);
+  filter: drop-shadow(0 10px 15px rgb(0 0 0 / 0.15));
+}
+
+.ui-bottom-popup {
+  pointer-events: auto;
+}
+
+.ui-popup-title {
+  color: var(--ui-text-muted);
+  font-size: var(--ui-font-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ui-popup-menu-item {
+  border: 1px solid var(--input-border);
+  border-radius: var(--ui-radius-card);
+  background-color: var(--input-background);
+  color: var(--ui-text-secondary);
+  font-size: var(--ui-font-xs);
+  font-weight: 600;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.ui-bottom-add {
+  border: 4px solid var(--page-background);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 1.25rem;
+  box-shadow: var(--ui-shadow-button);
+  cursor: pointer;
 }
 </style>

@@ -30,79 +30,56 @@
       v-if="store.activeModal === 'login'"
       @close="store.closeModal()"
     />
-    <Passcode />
 
     <!-- KONTEN UTAMA DASHBOARD -->
     <div
-      id="appContent"
-      class="flex w-full min-w-0 min-h-screen transition-all duration-300 relative"
-      :class="{ 'content-locked': !store.isAccessGranted }"
+      class="hidden md:block shrink-0 transition-all duration-300"
+      :class="store.isSidebarCollapsed ? 'w-20' : 'w-64'"
+    ></div>
+
+    <!-- Sidebar Navigation -->
+    <Sidebar
+      :is-open="isSidebarOpen"
+      :active-page="store.currentPage"
+      @close-sidebar="isSidebarOpen = false"
+      @change-page="store.currentPage = $event"
+      @open-login="store.openModal('login')"
+    />
+
+    <!-- Area Konten Utama -->
+    <main
+      class="flex-1 w-full min-w-0 relative flex flex-col pb-16 md:pb-6 z-0"
     >
-      <!-- Spacer Sidebar Desktop -->
+      <Header @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
+
+      <!-- Pembungkus View Utama -->
       <div
-        class="hidden md:block shrink-0 transition-all duration-300"
-        :class="store.isSidebarCollapsed ? 'w-20' : 'w-64'"
-      ></div>
-
-      <!-- Sidebar Navigation -->
-      <Sidebar
-        :is-open="isSidebarOpen"
-        :active-page="store.currentPage"
-        @close-sidebar="isSidebarOpen = false"
-        @change-page="store.currentPage = $event"
-        @open-login="store.openModal('login')"
-      />
-
-      <!-- Area Konten Utama -->
-      <main
-        class="flex-1 w-full min-w-0 relative flex flex-col pb-16 md:pb-6 z-0"
+        class="p-4 md:p-6 flex-1 w-full space-y-4 md:space-y-6 relative z-10"
       >
-        <Header @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
+        <component
+          :is="activeView"
+          v-if="'staff-dashboard'"
+          @open-login="store.openModal('login')"
+        />
 
-        <!-- Pembungkus View Utama -->
+        <!-- Peringatan Akses Ditolak -->
         <div
-          class="p-4 md:p-6 flex-1 w-full space-y-4 md:space-y-6 relative z-10"
+          v-else
+          class="glass-card p-12 text-center rounded-3xl space-y-3 mt-10"
         >
-          <template v-if="store.isAccessGranted">
-            <!-- 1. JIKA DI HALAMAN UTAMA / DASHBOARD STAFF -->
-            <template
-              v-if="['main', 'staff-dashboard'].includes(store.currentPage)"
-            >
-              <!-- <PageSummary v-if="isSuperadminOrSpv" />
-              <PageStaffDashboard v-else /> -->
-
-              <PageStaffDashboard />
-            </template>
-
-            <!-- 2. JIKA DI HALAMAN MODUL KINERJA LAIN -->
-            <template v-else>
-              <component
-                :is="activeView"
-                v-if="store.canAccessPage(store.currentPage)"
-              />
-
-              <!-- Peringatan Akses Ditolak -->
-              <div
-                v-else
-                class="glass-card p-12 text-center rounded-3xl space-y-3 mt-10"
-              >
-                <i class="fa-solid fa-lock text-4xl text-rose-500 mb-2"></i>
-                <h3
-                  class="font-bold text-lg text-slate-800 dark:text-slate-100"
-                >
-                  Akses Terbatas !
-                </h3>
-                <p class="text-xs text-slate-400">
-                  Akun Anda tidak memiliki izin untuk mengakses halaman ini.
-                </p>
-              </div>
-            </template>
-          </template>
+          <i class="fa-solid fa-lock text-4xl text-rose-500 mb-2"></i>
+          <h3 class="font-bold text-lg text-slate-800 dark:text-slate-100">
+            Akses Terbatas !
+          </h3>
+          <p class="text-xs text-slate-400">
+            Akun Anda tidak memiliki izin untuk mengakses halaman ini.
+          </p>
         </div>
+      </div>
 
-        <BottomNav />
-      </main>
-    </div>
+      <BottomNav />
+    </main>
+    <!-- </div> -->
 
     <!-- Pop-up Modals Dynamic -->
     <Modals v-if="store.activeModal && store.activeModal !== 'login'" />
@@ -225,7 +202,7 @@ onMounted(async () => {
     try {
       store.currentUser = JSON.parse(savedUser);
       store.isAccessGranted = true;
-      await store.loadFullDatabase();
+      await store.loadInitialData();
     } catch (e) {
       console.error("Gagal restore session:", e);
     }

@@ -7,7 +7,7 @@
       <!-- Container Utama Modal -->
       <div
         :class="[
-          'glass-card bg-white/95 dark:bg-slate-900/95 rounded-3xl w-full max-h-[95vh] flex flex-col shadow-2xl relative',
+          'glass-card rounded-3xl w-full max-h-[95vh] flex flex-col shadow-2xl relative',
           maxWidth,
         ]"
       >
@@ -17,15 +17,13 @@
             v-if="title"
             class="flex justify-between items-center px-6 py-4 border-b border-slate-100 dark:border-slate-800 shrink-0"
           >
-            <h3
-              class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm flex items-center gap-2"
-            >
+            <h3 class="font-semibold flex items-center gap-2 ui-text-primary ui-text-title">
               <slot name="icon"></slot>
               {{ title }}
             </h3>
             <button
               @click="$emit('close')"
-              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1"
+              class="hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1 ui-text-muted"
             >
               <i class="fa-solid fa-xmark text-lg"></i>
             </button>
@@ -33,7 +31,7 @@
         </slot>
 
         <!-- Body / Konten Utama (Scrollable) -->
-        <div class="p-6 overflow-y-auto custom-scrollbar flex-1">
+        <div class="p-6 min-h-0 overflow-y-auto custom-scrollbar flex-1">
           <slot></slot>
         </div>
 

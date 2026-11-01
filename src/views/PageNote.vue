@@ -1,32 +1,24 @@
 <!-- src/views/PageNote.vue -->
 <template>
-  <section
-    id="page-note"
-    class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6"
-  >
+  <section id="page-note" class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6">
     <!-- Header Halaman & Tombol Buat Catatan -->
     <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+      class="ui-card border border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
     >
       <div>
-        <h2
-          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
+        <h2 class="font-semibold flex items-center gap-2 ui-text-primary ui-text-title">
           <i class="fa-solid fa-note-sticky text-theme"></i>
           <span>Notes Multi-Model</span>
         </h2>
-        <p
-          class="text-slate-500 dark:text-slate-400 text-sm md:text-xs font-normal mt-0.5"
-        >
-          Dukungan To-Do checklist, upload/paste gambar, rich format, dan
-          variasi gaya kartu.
+        <p class="font-normal mt-0.5 ui-text-description ui-text-body">
+          Dukungan To-Do checklist, upload/paste gambar, rich format, dan variasi gaya kartu.
         </p>
       </div>
 
       <button
         @click="openAddModal"
         type="button"
-        class="bg-button text-white font-semibold px-4 py-2.5 rounded-xl text-sm md:text-xs shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0 w-full sm:w-auto"
+        class="px-4 py-2.5 rounded-xl shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0 w-full sm:w-auto ui-button ui-button-primary min-h-0 ui-text-body"
       >
         <i class="fa-solid fa-plus text-xs"></i>
         <span>Tambah Catatan</span>
@@ -37,13 +29,13 @@
     <div class="flex items-center gap-3">
       <div class="relative flex-1">
         <i
-          class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"
+          class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-xs ui-text-muted"
         ></i>
         <input
           v-model="searchQuery"
           type="text"
           placeholder="Cari catatan, isi to-do, atau ide..."
-          class="w-full glass-input rounded-xl pl-9 pr-4 py-2.5 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 font-normal border border-slate-200/60 dark:border-slate-700/60"
+          class="w-full rounded-xl pl-9 pr-4 py-2.5 bg-slate-50 dark:bg-slate-800 placeholder:text-slate-400 font-normal border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-primary min-h-0 ui-text-body"
         />
       </div>
     </div>
@@ -51,14 +43,10 @@
     <!-- State Loading Data Catatan -->
     <div
       v-if="isLoadingNotes"
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-12 text-center rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-3"
+      class="ui-card p-12 text-center border border-slate-100 dark:border-slate-800 space-y-3"
     >
       <i class="fa-solid fa-circle-notch fa-spin text-2xl text-theme"></i>
-      <p
-        class="text-sm md:text-xs font-semibold text-slate-500 dark:text-slate-400"
-      >
-        Memuat catatan pribadi...
-      </p>
+      <p class="font-semibold ui-text-description ui-text-body">Memuat catatan pribadi...</p>
     </div>
 
     <!-- GRID LIST CATATAN -->
@@ -69,7 +57,7 @@
       <div
         v-for="note in filteredNotes"
         :key="note.id"
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl flex flex-col justify-between transition-all group relative overflow-hidden border shadow-xs"
+        class="glass-card p-4 rounded-2xl flex flex-col justify-between transition-all group relative overflow-hidden border shadow-xs"
         :class="getCardStyleClass(note.cardStyle)"
       >
         <div>
@@ -77,25 +65,21 @@
           <div class="flex items-center justify-between mb-2 gap-2">
             <div class="flex items-center gap-1.5 flex-wrap">
               <span
-                class="text-xs font-semibold uppercase px-2 py-0.5 rounded-full text-theme bg-theme/10 border border-theme/20"
+                class="text-xs font-semibold uppercase px-2 py-0.5 rounded-full text-theme theme-tint border theme-border-soft"
               >
                 {{ note.category || "Umum" }}
               </span>
               <span
-                class="text-xs font-semibold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 uppercase"
+                class="text-xs font-semibold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 uppercase ui-text-description"
               >
                 {{ getStyleLabel(note.cardStyle) }}
               </span>
             </div>
-            <span class="text-xs text-slate-400 font-normal shrink-0">{{
-              note.date
-            }}</span>
+            <span class="text-xs font-normal shrink-0 ui-text-muted">{{ note.date }}</span>
           </div>
 
           <!-- Judul Catatan -->
-          <h4
-            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm mb-2 line-clamp-1"
-          >
+          <h4 class="font-semibold mb-2 line-clamp-1 ui-text-primary ui-text-title">
             {{ note.title }}
           </h4>
 
@@ -108,7 +92,7 @@
               v-for="(item, tIdx) in note.todos"
               :key="tIdx"
               @click.stop="toggleTodoItem(note, tIdx)"
-              class="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800/60 cursor-pointer text-sm md:text-xs transition-colors"
+              class="flex items-center gap-2 p-1.5 rounded-lg cursor-pointer transition-colors glass-hover ui-text-body"
             >
               <i
                 class="fa-solid"
@@ -132,7 +116,7 @@
           <!-- MODEL 2 & 3: STANDAR / HIGHLIGHT RICH TEXT CONTENT -->
           <div
             v-else
-            class="text-sm md:text-xs text-slate-600 dark:text-slate-300 line-clamp-6 leading-relaxed prose dark:prose-invert max-w-none font-normal"
+            class="line-clamp-6 leading-relaxed prose dark:prose-invert max-w-none font-normal ui-text-secondary ui-text-body"
             v-html="note.content"
           ></div>
 
@@ -157,7 +141,7 @@
           <button
             @click="openEditModal(note)"
             type="button"
-            class="p-1.5 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer text-xs"
+            class="p-1.5 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors cursor-pointer text-xs ui-text-muted"
             title="Edit Catatan"
           >
             <i class="fa-solid fa-pen-to-square"></i>
@@ -165,7 +149,7 @@
           <button
             @click="confirmDeleteNote(note)"
             type="button"
-            class="p-1.5 text-slate-400 hover:text-rose-500 transition-colors cursor-pointer text-xs"
+            class="p-1.5 hover:text-rose-500 transition-colors cursor-pointer text-xs ui-text-muted"
             title="Hapus Catatan"
           >
             <i class="fa-solid fa-trash-can"></i>
@@ -177,19 +161,12 @@
     <!-- State Jika Catatan Kosong -->
     <div
       v-else
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-12 text-center rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-3"
+      class="ui-card p-12 text-center border border-slate-100 dark:border-slate-800 space-y-3"
     >
-      <i
-        class="fa-solid fa-note-sticky text-4xl text-slate-300 dark:text-slate-700 mb-1"
-      ></i>
-      <h4
-        class="font-semibold text-base md:text-sm text-slate-700 dark:text-slate-300"
-      >
-        Belum Ada Catatan
-      </h4>
-      <p class="text-sm md:text-xs text-slate-400 max-w-xs mx-auto font-normal">
-        Buat to-do list, ide produk, atau ringkasan rapat dengan format tebal &
-        paste gambar.
+      <i class="fa-solid fa-note-sticky text-4xl text-slate-300 dark:text-slate-700 mb-1"></i>
+      <h4 class="font-semibold ui-text-secondary ui-text-title">Belum Ada Catatan</h4>
+      <p class="max-w-xs mx-auto font-normal ui-text-muted ui-text-body">
+        Buat to-do list, ide produk, atau ringkasan rapat dengan format tebal & paste gambar.
       </p>
     </div>
 
@@ -201,51 +178,43 @@
         @click.self="isModalOpen = false"
       >
         <div
-          class="w-full max-w-lg glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 md:p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto custom-scrollbar"
+          class="w-full max-w-lg glass-card rounded-3xl p-5 md:p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto custom-scrollbar"
         >
           <div
             class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
           >
-            <h3
-              class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
-            >
+            <h3 class="font-semibold ui-text-primary ui-text-title">
               {{ isEdit ? "Edit Catatan" : "Buat Catatan Baru" }}
             </h3>
             <button
               type="button"
               @click="isModalOpen = false"
-              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1"
+              class="hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1 ui-text-muted"
             >
               <i class="fa-solid fa-xmark text-lg"></i>
             </button>
           </div>
 
-          <form @submit.prevent="saveNote" class="space-y-4 text-sm md:text-xs">
+          <form @submit.prevent="saveNote" class="space-y-4 ui-text-body">
             <!-- Judul Catatan -->
             <div>
-              <label
-                class="block text-slate-600 dark:text-slate-300 font-semibold mb-1"
-                >Judul Catatan:</label
-              >
+              <label class="block font-semibold mb-1 ui-text-secondary">Judul Catatan:</label>
               <input
                 v-model="form.title"
                 type="text"
                 required
                 placeholder="Misal: Draft Strategi Marketing NHP"
-                class="w-full glass-input rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800 outline-none font-semibold text-sm md:text-xs border border-slate-200/60 dark:border-slate-700/60"
+                class="w-full rounded-xl px-3 py-2.5 bg-slate-50 dark:bg-slate-800 font-semibold border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-primary min-h-0 ui-text-body"
               />
             </div>
 
             <!-- Kategori & Pilihan Model Kartu Visual -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label
-                  class="block text-slate-600 dark:text-slate-300 font-semibold mb-1"
-                  >Kategori:</label
-                >
+                <label class="block font-semibold mb-1 ui-text-secondary">Kategori:</label>
                 <select
                   v-model="form.category"
-                  class="w-full glass-input rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800 outline-none font-normal border border-slate-200/60 dark:border-slate-700/60"
+                  class="w-full rounded-xl px-3 py-2.5 bg-slate-50 dark:bg-slate-800 font-normal border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-primary min-h-0"
                 >
                   <option value="Umum">Umum</option>
                   <option value="Ide Konten">Ide Konten</option>
@@ -255,13 +224,12 @@
               </div>
 
               <div>
-                <label
-                  class="block text-slate-600 dark:text-slate-300 font-semibold mb-1"
+                <label class="block font-semibold mb-1 ui-text-secondary"
                   >Model / Tampilan Kartu:</label
                 >
                 <select
                   v-model="form.cardStyle"
-                  class="w-full glass-input rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800 outline-none font-semibold text-theme border border-slate-200/60 dark:border-slate-700/60"
+                  class="w-full rounded-xl px-3 py-2.5 bg-slate-50 dark:bg-slate-800 font-semibold text-theme border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-primary min-h-0"
                 >
                   <option value="standard">Teks & Rich Format</option>
                   <option value="checklist">To-Do Checklist</option>
@@ -276,16 +244,11 @@
               v-if="form.cardStyle === 'checklist'"
               class="space-y-2 p-3 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/60 dark:border-slate-800"
             >
-              <label
-                class="block text-slate-700 dark:text-slate-200 font-semibold mb-1"
+              <label class="block font-semibold mb-1 ui-text-secondary"
                 >Daftar Tugas (Checklist):</label
               >
 
-              <div
-                v-for="(todo, index) in form.todos"
-                :key="index"
-                class="flex items-center gap-2"
-              >
+              <div v-for="(todo, index) in form.todos" :key="index" class="flex items-center gap-2">
                 <input
                   type="checkbox"
                   v-model="todo.done"
@@ -295,7 +258,7 @@
                   type="text"
                   v-model="todo.text"
                   placeholder="Nama tugas..."
-                  class="flex-1 glass-input rounded-xl px-2.5 py-1.5 text-sm md:text-xs text-slate-800 dark:text-slate-100 bg-white dark:bg-slate-900 outline-none font-normal border border-slate-200/60 dark:border-slate-700/60"
+                  class="flex-1 rounded-xl px-2.5 py-1.5 bg-white dark:bg-slate-900 font-normal border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-primary min-h-0 ui-text-body"
                 />
                 <button
                   type="button"
@@ -318,8 +281,7 @@
             <!-- JIKA MODEL TEXT / RICH FORMAT -->
             <div v-else class="space-y-1.5">
               <div class="flex flex-wrap items-center justify-between gap-2">
-                <label
-                  class="block text-slate-600 dark:text-slate-300 font-semibold"
+                <label class="block font-semibold ui-text-secondary"
                   >Isi Catatan & Format Teks:</label
                 >
 
@@ -330,7 +292,7 @@
                   <button
                     type="button"
                     @click="execCommand('bold')"
-                    class="px-2 py-0.5 font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-xs cursor-pointer"
+                    class="px-2 py-0.5 rounded text-xs cursor-pointer ui-button glass-hover min-h-0"
                     title="Bold"
                   >
                     B
@@ -338,7 +300,7 @@
                   <button
                     type="button"
                     @click="execCommand('italic')"
-                    class="px-2 py-0.5 italic hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-xs font-normal cursor-pointer"
+                    class="px-2 py-0.5 italic rounded text-xs font-normal cursor-pointer ui-button glass-hover min-h-0"
                     title="Italic"
                   >
                     I
@@ -346,7 +308,7 @@
                   <button
                     type="button"
                     @click="execCommand('underline')"
-                    class="px-2 py-0.5 underline hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-xs font-normal cursor-pointer"
+                    class="px-2 py-0.5 underline rounded text-xs font-normal cursor-pointer ui-button glass-hover min-h-0"
                     title="Underline"
                   >
                     U
@@ -354,7 +316,7 @@
                   <button
                     type="button"
                     @click="execCommand('insertUnorderedList')"
-                    class="px-2 py-0.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-xs cursor-pointer"
+                    class="px-2 py-0.5 rounded text-xs cursor-pointer ui-button glass-hover min-h-0"
                     title="Bullet List"
                   >
                     <i class="fa-solid fa-list-ul"></i>
@@ -362,7 +324,7 @@
                   <button
                     type="button"
                     @click="execCommand('insertOrderedList')"
-                    class="px-2 py-0.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-xs cursor-pointer"
+                    class="px-2 py-0.5 rounded text-xs cursor-pointer ui-button glass-hover min-h-0"
                     title="Numbering"
                   >
                     <i class="fa-solid fa-list-ol"></i>
@@ -375,23 +337,17 @@
                 ref="editorRef"
                 contenteditable="true"
                 @paste="handlePasteImage"
-                class="w-full glass-input rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-800 outline-none min-h-[140px] max-h-[220px] overflow-y-auto leading-relaxed prose dark:prose-invert font-normal text-sm md:text-xs border border-slate-200/60 dark:border-slate-700/60 custom-scrollbar"
+                class="w-full glass-input rounded-xl px-3 py-2.5 bg-slate-50 dark:bg-slate-800 outline-none min-h-[140px] max-h-[220px] overflow-y-auto leading-relaxed prose dark:prose-invert font-normal border border-slate-200/60 dark:border-slate-700/60 custom-scrollbar ui-text-primary ui-text-body"
               ></div>
-              <p class="text-xs text-slate-400 italic font-normal">
-                Tips: Anda bisa langsung menempelkan gambar dengan Ctrl + V di
-                area editor.
+              <p class="text-xs italic font-normal ui-text-muted">
+                Tips: Anda bisa langsung menempelkan gambar dengan Ctrl + V di area editor.
               </p>
             </div>
 
             <!-- UPLOAD & GALLERY GAMBAR -->
-            <div
-              class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800"
-            >
+            <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
               <div class="flex justify-between items-center">
-                <label
-                  class="block text-slate-600 dark:text-slate-300 font-semibold"
-                  >Sisipkan Gambar:</label
-                >
+                <label class="block font-semibold ui-text-secondary">Sisipkan Gambar:</label>
                 <input
                   type="file"
                   ref="fileInputRef"
@@ -412,11 +368,7 @@
                 v-if="form.images.length > 0"
                 class="flex gap-2 overflow-x-auto pb-1 custom-scrollbar"
               >
-                <div
-                  v-for="(img, idx) in form.images"
-                  :key="idx"
-                  class="relative shrink-0 group"
-                >
+                <div v-for="(img, idx) in form.images" :key="idx" class="relative shrink-0 group">
                   <img
                     :src="img"
                     class="w-16 h-16 object-cover rounded-xl border border-slate-200 dark:border-slate-700"
@@ -424,7 +376,7 @@
                   <button
                     type="button"
                     @click="removeImage(idx)"
-                    class="absolute -top-1 -right-1 bg-rose-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs shadow-xs cursor-pointer"
+                    class="absolute -top-1 -right-1 bg-rose-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs shadow-xs cursor-pointer ui-button min-h-0"
                   >
                     <i class="fa-solid fa-xmark"></i>
                   </button>
@@ -440,22 +392,17 @@
                 type="button"
                 @click="isModalOpen = false"
                 :disabled="isSubmitting"
-                class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl font-semibold cursor-pointer disabled:opacity-50 text-sm md:text-xs transition-colors"
+                class="bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-xl cursor-pointer disabled:opacity-50 transition-colors ui-button glass-hover ui-text-secondary min-h-0 ui-text-body"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 :disabled="isSubmitting"
-                class="bg-button text-white px-5 py-2 rounded-xl font-semibold shadow-md hover:opacity-95 cursor-pointer flex items-center gap-2 disabled:opacity-50 text-sm md:text-xs transition-all"
+                class="px-5 py-2 rounded-xl shadow-md hover:opacity-95 cursor-pointer flex items-center gap-2 disabled:opacity-50 transition-all ui-button ui-button-primary min-h-0 ui-text-body"
               >
-                <i
-                  v-if="isSubmitting"
-                  class="fa-solid fa-circle-notch fa-spin text-xs"
-                ></i>
-                <span>{{
-                  isSubmitting ? "Memproses..." : "Simpan Catatan"
-                }}</span>
+                <i v-if="isSubmitting" class="fa-solid fa-circle-notch fa-spin text-xs"></i>
+                <span>{{ isSubmitting ? "Memproses..." : "Simpan Catatan" }}</span>
               </button>
             </div>
           </form>

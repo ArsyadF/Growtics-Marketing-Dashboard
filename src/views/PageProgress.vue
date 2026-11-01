@@ -1,1222 +1,1082 @@
 <!-- src/views/PageProgress.vue -->
 <template>
-  <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
-    <!-- HEADER BAR: LAYOUT PERSIS KODE AWAL + FILTER STATUS -->
-    <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl flex flex-cols-1 md:flex-cols-2 lg:flex-cols-1 gap-4 items-center justify-between relative z-10 border border-slate-100 dark:border-slate-800 shadow-sm"
-    >
-      <!-- KOLOM 1: JUDUL & SUBDESKRIPSI -->
-      <div class="lg:col-span-4 xl:col-span-5 space-y-1">
-        <h3
-          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
-          <i class="fa-solid fa-kanban text-theme"></i>
-          <span>Board Progres Program Tim</span>
-        </h3>
-        <p
-          class="text-xs md:text-xs text-slate-500 dark:text-slate-400 font-normal leading-tight"
-        >
-          {{
-            isSpvOrAdmin
-              ? "Kelola dan tugaskan program kerja ke staff divisi."
-              : "Pantau dan perbarui progres program kerja yang ditugaskan kepada Anda."
-          }}
-        </p>
-      </div>
+  <div
+    v-if="!canViewPage"
+    class="glass-card p-12 text-center rounded-3xl space-y-3 mt-10 shadow-sm border border-slate-100 dark:border-slate-800"
+  >
+    <i class="fa-solid fa-lock text-4xl text-rose-500 mb-2"></i>
+    <h3 class="font-bold text-lg ui-text-primary">Akses Modul Dibatasi</h3>
+    <p class="text-xs ui-text-muted">Anda tidak memiliki hak akses ke modul ini.</p>
+  </div>
 
-      <!-- KOLOM 2: FILTER & TOMBOL AKSI -->
+  <template v-else>
+    <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
+      <!-- HEADER BAR: LAYOUT PERSIS KODE AWAL + FILTER STATUS -->
       <div
-        class="hidden md:flex lg:col-span-8 xl:col-span-7 flex-wrap items-center justify-start md:justify-end gap-2"
+        class="ui-card md:p-5 flex flex-cols-1 md:flex-cols-2 lg:flex-cols-1 gap-4 items-center justify-between relative z-10 border border-slate-100 dark:border-slate-800"
       >
-        <!-- Toggle Quick Filter: Tugas Saya -->
-        <button
-          @click="filterMyTasks = !filterMyTasks"
-          type="button"
-          class="px-3.5 py-2.5 md:px-3 md:py-2 rounded-xl text-sm md:text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer border shrink-0"
-          :class="
-            filterMyTasks
-              ? 'bg-button text-white border-transparent shadow-xs'
-              : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-700'
-          "
-        >
-          <i
-            class="fa-solid"
-            :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"
-          ></i>
-          <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
-        </button>
-
-        <!-- FILTER STATUS PROGRES -->
-        <div class="relative shrink-0">
-          <button
-            @click.stop="toggleFilterMenu('status')"
-            type="button"
-            class="glass-input rounded-xl px-3 py-2 text-sm md:text-xs font-semibold bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer border border-slate-200/80 dark:border-slate-700"
-          >
-            <i class="fa-solid fa-list-check text-purple-500"></i>
-            <span
-              >Status ({{
-                selectedStatuses.length ? selectedStatuses.length : "Semua"
-              }})</span
-            >
-            <i
-              class="fa-solid fa-chevron-down text-xs md:text-xs ml-1 opacity-60"
-            ></i>
-          </button>
-
-          <div
-            v-if="activeFilterMenu === 'status'"
-            @click.stop
-            class="absolute right-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-100 dark:border-slate-800 z-30 space-y-2"
-          >
-            <div
-              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
-            >
-              <span
-                class="text-xs md:text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Filter Status</span
-              >
-              <button
-                type="button"
-                @click="toggleAllStatuses"
-                class="text-xs md:text-xs font-semibold text-theme hover:underline cursor-pointer"
-              >
-                {{
-                  selectedStatuses.length === columns.length ? "Reset" : "Semua"
-                }}
-              </button>
-            </div>
-            <div
-              class="space-y-1.5 max-h-48 overflow-y-auto pr-1 custom-scrollbar"
-            >
-              <label
-                v-for="st in columns"
-                :key="st"
-                class="flex items-center gap-2 text-sm md:text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg font-normal"
-              >
-                <input
-                  type="checkbox"
-                  :value="st"
-                  v-model="selectedStatuses"
-                  class="accent-emerald-600 rounded w-4 h-4 md:w-3.5 md:h-3.5 cursor-pointer"
-                />
-                <span class="flex items-center gap-1.5 truncate">
-                  <span
-                    class="w-2 h-2 rounded-full shrink-0"
-                    :class="getColumnDotColor(st)"
-                  ></span>
-                  <span>{{ st }}</span>
-                </span>
-              </label>
-            </div>
-          </div>
+        <!-- KOLOM 1: JUDUL & SUBDESKRIPSI -->
+        <div class="lg:col-span-4 xl:col-span-5 space-y-1">
+          <h3 class="font-semibold flex items-center gap-2 ui-text-primary ui-text-title">
+            <i class="fa-solid fa-kanban text-theme"></i>
+            <span>Board Progres Program Tim</span>
+          </h3>
+          <p class="text-xs md:text-xs font-normal leading-tight ui-text-description">
+            {{
+              isSpvOrAdmin
+                ? "Kelola dan tugaskan program kerja ke staff divisi."
+                : "Pantau dan perbarui progres program kerja yang ditugaskan kepada Anda."
+            }}
+          </p>
         </div>
 
-        <!-- FILTER 1: MULTI-UNIT -->
-        <div class="relative shrink-0">
-          <button
-            @click.stop="toggleFilterMenu('unit')"
-            type="button"
-            class="glass-input rounded-xl px-3 py-2 text-sm md:text-xs font-semibold bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer border border-slate-200/80 dark:border-slate-700"
-          >
-            <i class="fa-solid fa-building text-blue-500"></i>
-            <span
-              >Unit ({{
-                selectedUnits.length ? selectedUnits.length : "Semua"
-              }})</span
-            >
-            <i
-              class="fa-solid fa-chevron-down text-xs md:text-xs ml-1 opacity-60"
-            ></i>
-          </button>
-
-          <div
-            v-if="activeFilterMenu === 'unit'"
-            @click.stop
-            class="absolute right-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-100 dark:border-slate-800 z-30 space-y-2"
-          >
-            <div
-              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
-            >
-              <span
-                class="text-xs md:text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Filter Unit</span
-              >
-              <button
-                type="button"
-                @click="toggleAllUnits"
-                class="text-xs md:text-xs font-semibold text-theme hover:underline cursor-pointer"
-              >
-                {{
-                  selectedUnits.length === masterUnits.length
-                    ? "Reset"
-                    : "Semua"
-                }}
-              </button>
-            </div>
-            <div
-              class="space-y-1.5 max-h-48 overflow-y-auto pr-1 custom-scrollbar"
-            >
-              <label
-                v-for="u in masterUnits"
-                :key="u.code"
-                class="flex items-center gap-2 text-sm md:text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg font-normal"
-              >
-                <input
-                  type="checkbox"
-                  :value="u.code"
-                  v-model="selectedUnits"
-                  class="accent-emerald-600 rounded w-4 h-4 md:w-3.5 md:h-3.5 cursor-pointer"
-                />
-                <span class="truncate">Unit {{ u.code }}</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- FILTER 2: MULTI-DIVISI -->
-        <div class="relative shrink-0">
-          <button
-            @click.stop="toggleFilterMenu('divisi')"
-            type="button"
-            class="glass-input rounded-xl px-3 py-2 text-sm md:text-xs font-semibold bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer border border-slate-200/80 dark:border-slate-700"
-          >
-            <i class="fa-solid fa-sitemap text-amber-500"></i>
-            <span
-              >Divisi ({{
-                selectedDivisions.length ? selectedDivisions.length : "Semua"
-              }})</span
-            >
-            <i
-              class="fa-solid fa-chevron-down text-xs md:text-xs ml-1 opacity-60"
-            ></i>
-          </button>
-
-          <div
-            v-if="activeFilterMenu === 'divisi'"
-            @click.stop
-            class="absolute right-0 mt-2 w-60 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-100 dark:border-slate-800 z-30 space-y-2"
-          >
-            <div
-              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
-            >
-              <span
-                class="text-xs md:text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Filter Divisi</span
-              >
-              <button
-                type="button"
-                @click="toggleAllDivisions"
-                class="text-xs md:text-xs font-semibold text-theme hover:underline cursor-pointer"
-              >
-                {{
-                  selectedDivisions.length === availableDivisions.length
-                    ? "Reset"
-                    : "Semua"
-                }}
-              </button>
-            </div>
-            <div
-              class="space-y-1.5 max-h-48 overflow-y-auto pr-1 custom-scrollbar"
-            >
-              <label
-                v-for="div in availableDivisions"
-                :key="div"
-                class="flex items-center gap-2 text-sm md:text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg font-normal"
-              >
-                <input
-                  type="checkbox"
-                  :value="div"
-                  v-model="selectedDivisions"
-                  class="accent-emerald-600 rounded w-4 h-4 md:w-3.5 md:h-3.5 cursor-pointer"
-                />
-                <span class="truncate">{{ div }}</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- FILTER 3: MULTI-PIC -->
-        <div class="relative shrink-0">
-          <button
-            @click.stop="toggleFilterMenu('pic')"
-            type="button"
-            class="glass-input rounded-xl px-3 py-2 text-sm md:text-xs font-semibold bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center gap-1.5 cursor-pointer border border-slate-200/80 dark:border-slate-700"
-          >
-            <i class="fa-solid fa-user-gear text-theme"></i>
-            <span
-              >PIC ({{
-                selectedPics.length ? selectedPics.length : "Semua"
-              }})</span
-            >
-            <i
-              class="fa-solid fa-chevron-down text-xs md:text-xs ml-1 opacity-60"
-            ></i>
-          </button>
-
-          <div
-            v-if="activeFilterMenu === 'pic'"
-            @click.stop
-            class="absolute right-0 mt-2 w-56 glass-card bg-white dark:bg-slate-900 rounded-2xl p-3 shadow-xl border border-slate-100 dark:border-slate-800 z-30 space-y-2"
-          >
-            <div
-              class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
-            >
-              <span
-                class="text-xs md:text-xs font-semibold text-slate-700 dark:text-slate-200"
-                >Filter PIC Board</span
-              >
-              <button
-                type="button"
-                @click="toggleAllPics"
-                class="text-xs md:text-xs font-semibold text-theme hover:underline cursor-pointer"
-              >
-                {{
-                  selectedPics.length === registeredUsers.length
-                    ? "Reset"
-                    : "Semua"
-                }}
-              </button>
-            </div>
-            <div
-              class="space-y-1.5 max-h-48 overflow-y-auto pr-1 custom-scrollbar"
-            >
-              <label
-                v-for="user in registeredUsers"
-                :key="user.id"
-                class="flex items-center gap-2 text-sm md:text-xs text-slate-700 dark:text-slate-300 cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg font-normal"
-              >
-                <input
-                  type="checkbox"
-                  :value="user.id"
-                  v-model="selectedPics"
-                  class="accent-emerald-600 rounded w-4 h-4 md:w-3.5 md:h-3.5 cursor-pointer"
-                />
-                <span class="truncate">{{ user.nama }}</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <!-- TOMBOL TAMBAH PROGRAM -->
-        <button
-          v-if="isSpvOrAdmin"
-          @click="openAddModal"
-          type="button"
-          class="bg-button text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-xl text-sm md:text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0 hover:opacity-95"
-        >
-          <i class="fa-solid fa-plus text-xs"></i>
-          <span>Tambah Program</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- METRIK STATISTIK PROGRAM -->
-    <div class="grid grid-cols-4 sm:grid-cols-5 gap-2.5 md:gap-4 relative z-0">
-      <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 flex flex-col justify-between p-[14px] rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs"
-      >
-        <span class="text-xs md:text-xs text-slate-400 font-normal block"
-          >Total Program</span
-        >
-        <h4
-          class="text-base md:text-xl font-bold text-slate-800 dark:text-slate-100 mt-0.5"
-        >
-          {{ filteredPrograms.length }}
-        </h4>
-      </div>
-      <div
-        class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-blue-500/20 bg-blue-500/5 shadow-xs"
-      >
-        <span
-          class="text-xs md:text-xs text-blue-600 dark:text-blue-400 font-normal block"
-          >In Progress</span
-        >
-        <h4
-          class="text-base md:text-xl font-bold text-blue-700 dark:text-blue-300 mt-0.5"
-        >
-          {{ countByStatus("In Progress") }}
-        </h4>
-      </div>
-      <div
-        class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-amber-500/20 bg-amber-500/5 shadow-xs"
-      >
-        <span
-          class="text-xs md:text-xs text-amber-600 dark:text-amber-400 font-normal block"
-          >In Review / H-7</span
-        >
-        <h4
-          class="text-base md:text-xl font-bold text-amber-700 dark:text-amber-300 mt-0.5"
-        >
-          {{ warningProgramsCount }}
-        </h4>
-      </div>
-      <div
-        class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-rose-500/20 bg-rose-500/5 shadow-xs"
-      >
-        <span
-          class="text-xs md:text-xs text-rose-600 dark:text-rose-400 font-normal block"
-          >Overdue (Terlewat)</span
-        >
-        <h4
-          class="text-base md:text-xl font-bold text-rose-700 dark:text-rose-300 mt-0.5"
-        >
-          {{ overdueProgramsCount }}
-        </h4>
-      </div>
-      <div
-        class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1 shadow-xs"
-      >
-        <span
-          class="text-xs md:text-xs text-emerald-600 dark:text-emerald-400 font-normal block"
-          >Completed</span
-        >
-        <h4
-          class="text-base md:text-xl font-bold text-emerald-700 dark:text-emerald-300 mt-0.5"
-        >
-          {{ countByStatus("Completed") }}
-        </h4>
-      </div>
-
-      <!-- TOGGLE DISPLAY MODE DESKTOP -->
-      <div
-        class="block sm:hidden glass-card rounded-2xl border border-slate-100 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 col-span-2 sm:col-span-1"
-      >
-        <div class="flex items-center gap-2 p-2 justify-between">
-          <button
-            @click="filterMyTasks = !filterMyTasks"
-            type="button"
-            class="lg:hidden p-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer border"
-            :class="
-              filterMyTasks
-                ? 'bg-button text-white border-transparent shadow-xs'
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
-            "
-          >
-            <i
-              class="fa-solid"
-              :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"
-            ></i>
-            <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
-          </button>
-          <button
-            v-if="isSpvOrAdmin"
-            @click="openAddModal"
-            type="button"
-            class="lg:hidden bg-button text-white font-semibold p-2 rounded-xl text-sm shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
-          >
-            <i class="fa-solid fa-plus text-xs"></i>
-            <span class="lg:hidden sm:inline"> Tugas</span>
-          </button>
-        </div>
-
-        <div class="flex items-center gap-2 p-2 justify-between">
-          <span class="text-xs font-semibold text-slate-400 px-1"
-            >Mode Tampilan</span
-          >
-          <div
-            class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/60 dark:border-slate-700"
-          >
-            <button
-              @click="displayMode = 'kanban'"
-              type="button"
-              class="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer"
-              :class="
-                displayMode === 'kanban'
-                  ? 'bg-white dark:bg-slate-900 text-theme shadow-xs'
-                  : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
-              "
-              title="Tampilan Kanban / Board"
-            >
-              <i class="fa-solid fa-table-columns"></i>
-              <span class="hidden sm:inline">Board</span>
-            </button>
-            <button
-              @click="displayMode = 'list'"
-              type="button"
-              class="px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer"
-              :class="
-                displayMode === 'list'
-                  ? 'bg-white dark:bg-slate-900 text-theme shadow-xs'
-                  : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
-              "
-              title="Tampilan Ringkas / List Tabel"
-            >
-              <i class="fa-solid fa-list-check"></i>
-              <span class="hidden sm:inline">Ringkas</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TOGGLE DISPLAY MODE MOBILE -->
-    <div class="hidden sm:flex items-center gap-2 p-1 justify-end">
-      <div class="hidden lg:flex col-span-2 sm:col-span-1">
-        <div class="flex items-center gap-2 p-2 justify-between">
-          <button
-            @click="filterMyTasks = !filterMyTasks"
-            type="button"
-            class="lg:hidden p-2 rounded-xl text-sm md:text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer border"
-            :class="
-              filterMyTasks
-                ? 'bg-button text-white border-transparent shadow-xs'
-                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
-            "
-          >
-            <i
-              class="fa-solid"
-              :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"
-            ></i>
-            <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
-          </button>
-          <button
-            v-if="isSpvOrAdmin"
-            @click="openAddModal"
-            type="button"
-            class="lg:hidden bg-button text-white font-semibold p-2 rounded-xl text-sm md:text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
-          >
-            <i class="fa-solid fa-plus text-xs"></i>
-            <span class="lg:hidden sm:inline"> Tugas</span>
-          </button>
-        </div>
-      </div>
-
-      <div
-        class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/60 dark:border-slate-700"
-      >
-        <span class="text-xs font-semibold text-slate-400 px-1"
-          >Mode Tampilan</span
-        >
-
-        <button
-          @click="displayMode = 'kanban'"
-          type="button"
-          class="px-2.5 py-1.5 rounded-lg text-sm md:text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer"
-          :class="
-            displayMode === 'kanban'
-              ? 'bg-white dark:bg-slate-900 text-theme shadow-xs'
-              : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
-          "
-          title="Tampilan Kanban / Board"
-        >
-          <i class="fa-solid fa-table-columns"></i>
-          <span class="hidden sm:inline">Board</span>
-        </button>
-        <button
-          @click="displayMode = 'list'"
-          type="button"
-          class="px-2.5 py-1.5 rounded-lg text-sm md:text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer"
-          :class="
-            displayMode === 'list'
-              ? 'bg-white dark:bg-slate-900 text-theme shadow-xs'
-              : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
-          "
-          title="Tampilan Ringkas / List Tabel"
-        >
-          <i class="fa-solid fa-list-check"></i>
-          <span class="hidden sm:inline">Ringkas</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- MOBILE HEADER SWITCHER UNTUK KANBAN -->
-    <div
-      v-if="displayMode === 'kanban'"
-      class="md:hidden glass-card p-2.5 rounded-2xl bg-white/90 dark:bg-slate-900/90 flex items-center justify-between border border-slate-100 dark:border-slate-800 shadow-xs"
-    >
-      <div class="flex items-center gap-2">
-        <span
-          class="w-3 h-3 rounded-full"
-          :class="getColumnDotColor(mobileActiveStatus)"
-        ></span>
-        <h4
-          class="text-sm font-bold uppercase text-slate-800 dark:text-slate-100"
-        >
-          {{ mobileActiveStatus }}
-        </h4>
-        <span
-          class="text-xs font-semibold text-theme bg-theme/10 px-2 py-0.5 rounded-full"
-        >
-          {{ getItemsByStatus(mobileActiveStatus).length }}
-        </span>
-      </div>
-
-      <div class="flex items-center gap-1">
-        <button
-          @click="prevMobileStatus"
-          type="button"
-          class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-sm active:scale-90 transition-transform cursor-pointer"
-        >
-          <i class="fa-solid fa-chevron-left"></i>
-        </button>
-
-        <span class="text-xs font-semibold text-slate-400 px-1">
-          {{ mobileStatusIndex + 1 }}/{{ columns.length }}
-        </span>
-
-        <button
-          @click="nextMobileStatus"
-          type="button"
-          class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-sm active:scale-90 transition-transform cursor-pointer"
-        >
-          <i class="fa-solid fa-chevron-right"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- MODE 1: KANBAN BOARD VIEW -->
-    <div
-      v-if="displayMode === 'kanban'"
-      class="grid grid-cols-1 md:grid-cols-4 gap-3.5 md:gap-4 items-start relative z-0"
-    >
-      <div
-        v-for="status in visibleColumns"
-        :key="status"
-        @dragover.prevent
-        @drop="onDrop($event, status)"
-        class="glass-card p-3 rounded-2xl space-y-3 bg-slate-50/60 dark:bg-slate-900/40 min-h-[480px] border border-slate-100 dark:border-slate-800/80"
-      >
+        <!-- KOLOM 2: FILTER & TOMBOL AKSI -->
         <div
-          class="hidden md:flex items-center justify-between px-1 pb-1 border-b border-slate-200/60 dark:border-slate-800"
+          class="hidden md:flex lg:col-span-8 xl:col-span-7 flex-wrap items-center justify-start md:justify-end gap-2"
         >
-          <h4
-            class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5"
+          <!-- Toggle Quick Filter: Tugas Saya -->
+          <button
+            @click="filterMyTasks = !filterMyTasks"
+            type="button"
+            class="px-3.5 py-2.5 md:px-3 md:py-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer border shrink-0 ui-button min-h-0 ui-text-body"
+            :class="
+              filterMyTasks
+                ? 'bg-button text-white border-transparent shadow-xs'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200/80 dark:border-slate-700'
+            "
           >
-            <span
-              class="w-2 h-2 rounded-full"
-              :class="getColumnDotColor(status)"
-            ></span>
-            {{ status }}
+            <i class="fa-solid" :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"></i>
+            <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
+          </button>
+
+          <!-- FILTER STATUS PROGRES -->
+          <div class="relative shrink-0">
+            <button
+              @click.stop="toggleFilterMenu('status')"
+              type="button"
+              class="rounded-xl px-3 py-2 bg-slate-50 dark:bg-slate-800 flex items-center gap-1.5 cursor-pointer border border-slate-200/80 dark:border-slate-700 ui-button ui-button-glass ui-text-secondary min-h-0 ui-text-body"
+            >
+              <i class="fa-solid fa-list-check text-purple-500"></i>
+              <span
+                >Status ({{ selectedStatuses.length ? selectedStatuses.length : "Semua" }})</span
+              >
+              <i class="fa-solid fa-chevron-down text-xs md:text-xs ml-1 opacity-60"></i>
+            </button>
+
+            <div
+              v-if="activeFilterMenu === 'status'"
+              @click.stop
+              class="absolute right-0 mt-2 w-56 glass-card rounded-2xl p-3 shadow-xl border border-slate-100 dark:border-slate-800 z-30 space-y-2"
+            >
+              <div
+                class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+              >
+                <span class="text-xs md:text-xs font-semibold ui-text-secondary"
+                  >Filter Status</span
+                >
+                <button
+                  type="button"
+                  @click="toggleAllStatuses"
+                  class="text-xs md:text-xs font-semibold text-theme hover:underline cursor-pointer"
+                >
+                  {{ selectedStatuses.length === columns.length ? "Reset" : "Semua" }}
+                </button>
+              </div>
+              <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
+                <label
+                  v-for="st in columns"
+                  :key="st"
+                  class="flex items-center gap-2 cursor-pointer p-1.5 rounded-lg font-normal glass-hover ui-text-secondary ui-text-body"
+                >
+                  <input
+                    type="checkbox"
+                    :value="st"
+                    v-model="selectedStatuses"
+                    class="accent-emerald-600 rounded w-4 h-4 md:w-3.5 md:h-3.5 cursor-pointer"
+                  />
+                  <span class="flex items-center gap-1.5 truncate">
+                    <span
+                      class="w-2 h-2 rounded-full shrink-0"
+                      :class="getColumnDotColor(st)"
+                    ></span>
+                    <span>{{ st }}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- FILTER 1: MULTI-UNIT -->
+          <div class="relative shrink-0">
+            <button
+              @click.stop="toggleFilterMenu('unit')"
+              type="button"
+              class="rounded-xl px-3 py-2 bg-slate-50 dark:bg-slate-800 flex items-center gap-1.5 cursor-pointer border border-slate-200/80 dark:border-slate-700 ui-button ui-button-glass ui-text-secondary min-h-0 ui-text-body"
+            >
+              <i class="fa-solid fa-building text-blue-500"></i>
+              <span>Unit ({{ selectedUnits.length ? selectedUnits.length : "Semua" }})</span>
+              <i class="fa-solid fa-chevron-down text-xs md:text-xs ml-1 opacity-60"></i>
+            </button>
+
+            <div
+              v-if="activeFilterMenu === 'unit'"
+              @click.stop
+              class="absolute right-0 mt-2 w-56 glass-card rounded-2xl p-3 shadow-xl border border-slate-100 dark:border-slate-800 z-30 space-y-2"
+            >
+              <div
+                class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+              >
+                <span class="text-xs md:text-xs font-semibold ui-text-secondary">Filter Unit</span>
+                <button
+                  type="button"
+                  @click="toggleAllUnits"
+                  class="text-xs md:text-xs font-semibold text-theme hover:underline cursor-pointer"
+                >
+                  {{ selectedUnits.length === masterUnits.length ? "Reset" : "Semua" }}
+                </button>
+              </div>
+              <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
+                <label
+                  v-for="u in masterUnits"
+                  :key="u.code"
+                  class="flex items-center gap-2 cursor-pointer p-1.5 rounded-lg font-normal glass-hover ui-text-secondary ui-text-body"
+                >
+                  <input
+                    type="checkbox"
+                    :value="u.code"
+                    v-model="selectedUnits"
+                    class="accent-emerald-600 rounded w-4 h-4 md:w-3.5 md:h-3.5 cursor-pointer"
+                  />
+                  <span class="truncate">Unit {{ u.code }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- FILTER 2: MULTI-DIVISI -->
+          <div class="relative shrink-0">
+            <button
+              @click.stop="toggleFilterMenu('divisi')"
+              type="button"
+              class="rounded-xl px-3 py-2 bg-slate-50 dark:bg-slate-800 flex items-center gap-1.5 cursor-pointer border border-slate-200/80 dark:border-slate-700 ui-button ui-button-glass ui-text-secondary min-h-0 ui-text-body"
+            >
+              <i class="fa-solid fa-sitemap text-amber-500"></i>
+              <span
+                >Divisi ({{ selectedDivisions.length ? selectedDivisions.length : "Semua" }})</span
+              >
+              <i class="fa-solid fa-chevron-down text-xs md:text-xs ml-1 opacity-60"></i>
+            </button>
+
+            <div
+              v-if="activeFilterMenu === 'divisi'"
+              @click.stop
+              class="absolute right-0 mt-2 w-60 glass-card rounded-2xl p-3 shadow-xl border border-slate-100 dark:border-slate-800 z-30 space-y-2"
+            >
+              <div
+                class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+              >
+                <span class="text-xs md:text-xs font-semibold ui-text-secondary"
+                  >Filter Divisi</span
+                >
+                <button
+                  type="button"
+                  @click="toggleAllDivisions"
+                  class="text-xs md:text-xs font-semibold text-theme hover:underline cursor-pointer"
+                >
+                  {{ selectedDivisions.length === availableDivisions.length ? "Reset" : "Semua" }}
+                </button>
+              </div>
+              <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
+                <label
+                  v-for="div in availableDivisions"
+                  :key="div"
+                  class="flex items-center gap-2 cursor-pointer p-1.5 rounded-lg font-normal glass-hover ui-text-secondary ui-text-body"
+                >
+                  <input
+                    type="checkbox"
+                    :value="div"
+                    v-model="selectedDivisions"
+                    class="accent-emerald-600 rounded w-4 h-4 md:w-3.5 md:h-3.5 cursor-pointer"
+                  />
+                  <span class="truncate">{{ div }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- FILTER 3: MULTI-PIC -->
+          <div class="relative shrink-0">
+            <button
+              @click.stop="toggleFilterMenu('pic')"
+              type="button"
+              class="rounded-xl px-3 py-2 bg-slate-50 dark:bg-slate-800 flex items-center gap-1.5 cursor-pointer border border-slate-200/80 dark:border-slate-700 ui-button ui-button-glass ui-text-secondary min-h-0 ui-text-body"
+            >
+              <i class="fa-solid fa-user-gear text-theme"></i>
+              <span>PIC ({{ selectedPics.length ? selectedPics.length : "Semua" }})</span>
+              <i class="fa-solid fa-chevron-down text-xs md:text-xs ml-1 opacity-60"></i>
+            </button>
+
+            <div
+              v-if="activeFilterMenu === 'pic'"
+              @click.stop
+              class="absolute right-0 mt-2 w-56 glass-card rounded-2xl p-3 shadow-xl border border-slate-100 dark:border-slate-800 z-30 space-y-2"
+            >
+              <div
+                class="flex justify-between items-center pb-1 border-b border-slate-100 dark:border-slate-800"
+              >
+                <span class="text-xs md:text-xs font-semibold ui-text-secondary"
+                  >Filter PIC Board</span
+                >
+                <button
+                  type="button"
+                  @click="toggleAllPics"
+                  class="text-xs md:text-xs font-semibold text-theme hover:underline cursor-pointer"
+                >
+                  {{ selectedPics.length === registeredUsers.length ? "Reset" : "Semua" }}
+                </button>
+              </div>
+              <div class="space-y-1.5 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
+                <label
+                  v-for="user in registeredUsers"
+                  :key="user.id"
+                  class="flex items-center gap-2 cursor-pointer p-1.5 rounded-lg font-normal glass-hover ui-text-secondary ui-text-body"
+                >
+                  <input
+                    type="checkbox"
+                    :value="user.id"
+                    v-model="selectedPics"
+                    class="accent-emerald-600 rounded w-4 h-4 md:w-3.5 md:h-3.5 cursor-pointer"
+                  />
+                  <span class="truncate">{{ user.nama }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- TOMBOL TAMBAH PROGRAM -->
+          <button
+            v-if="isSpvOrAdmin"
+            @click="openAddModal"
+            type="button"
+            class="px-3.5 py-2.5 md:px-3 md:py-2 rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0 hover:opacity-95 ui-button ui-button-primary min-h-0 ui-text-body"
+          >
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span>Tambah Program</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- METRIK STATISTIK PROGRAM -->
+      <div class="grid grid-cols-4 sm:grid-cols-5 gap-2.5 md:gap-4 relative z-0">
+        <div
+          class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs"
+        >
+          <span class="text-xs md:text-xs font-normal block ui-text-muted">Total Program</span>
+          <h4 class="text-base md:text-xl font-bold mt-0.5 ui-text-primary">
+            {{ filteredPrograms.length }}
           </h4>
-          <span
-            class="text-xs md:text-xs font-semibold text-theme bg-theme/10 px-2 py-0.5 rounded-full border border-theme/20"
+        </div>
+        <div
+          class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-blue-500/20 bg-blue-500/5 shadow-xs"
+        >
+          <span class="text-xs md:text-xs text-blue-600 dark:text-blue-400 font-normal block"
+            >In Progress</span
           >
-            {{ getItemsByStatus(status).length }}
+          <h4 class="text-base md:text-xl font-bold text-blue-700 dark:text-blue-300 mt-0.5">
+            {{ countByStatus("In Progress") }}
+          </h4>
+        </div>
+        <div
+          class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-amber-500/20 bg-amber-500/5 shadow-xs"
+        >
+          <span class="text-xs md:text-xs text-amber-600 dark:text-amber-400 font-normal block"
+            >In Review / H-7</span
+          >
+          <h4 class="text-base md:text-xl font-bold text-amber-700 dark:text-amber-300 mt-0.5">
+            {{ warningProgramsCount }}
+          </h4>
+        </div>
+        <div
+          class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-rose-500/20 bg-rose-500/5 shadow-xs"
+        >
+          <span class="text-xs md:text-xs text-rose-600 dark:text-rose-400 font-normal block"
+            >Overdue (Terlewat)</span
+          >
+          <h4 class="text-base md:text-xl font-bold text-rose-700 dark:text-rose-300 mt-0.5">
+            {{ overdueProgramsCount }}
+          </h4>
+        </div>
+        <div
+          class="glass-card flex flex-col justify-between p-[14px] rounded-2xl border border-emerald-500/20 bg-emerald-500/5 col-span-2 sm:col-span-1 shadow-xs"
+        >
+          <span class="text-xs md:text-xs text-emerald-600 dark:text-emerald-400 font-normal block"
+            >Completed</span
+          >
+          <h4 class="text-base md:text-xl font-bold text-emerald-700 dark:text-emerald-300 mt-0.5">
+            {{ countByStatus("Completed") }}
+          </h4>
+        </div>
+
+        <!-- TOGGLE DISPLAY MODE DESKTOP -->
+        <div
+          class="block sm:hidden glass-card rounded-2xl border border-slate-100 dark:border-slate-800 col-span-2 sm:col-span-1"
+        >
+          <div class="flex items-center gap-2 p-2 justify-between">
+            <button
+              @click="filterMyTasks = !filterMyTasks"
+              type="button"
+              class="lg:hidden p-2 rounded-xl text-sm transition-all flex items-center gap-1.5 cursor-pointer border ui-button min-h-0"
+              :class="
+                filterMyTasks
+                  ? 'bg-button text-white border-transparent shadow-xs'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+              "
+            >
+              <i class="fa-solid" :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"></i>
+              <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
+            </button>
+            <button
+              v-if="isSpvOrAdmin"
+              @click="openAddModal"
+              type="button"
+              class="lg:hidden p-2 rounded-xl text-sm shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ui-button ui-button-primary min-h-0"
+            >
+              <i class="fa-solid fa-plus text-xs"></i>
+              <span class="lg:hidden sm:inline"> Tugas</span>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2 p-2 justify-between">
+            <span class="text-xs font-semibold px-1 ui-text-muted">Mode Tampilan</span>
+            <div
+              class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/60 dark:border-slate-700"
+            >
+              <button
+                @click="displayMode = 'kanban'"
+                type="button"
+                class="px-2.5 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1 cursor-pointer ui-button min-h-0"
+                :class="
+                  displayMode === 'kanban'
+                    ? 'bg-white dark:bg-slate-900 text-theme shadow-xs'
+                    : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+                "
+                title="Tampilan Kanban / Board"
+              >
+                <i class="fa-solid fa-table-columns"></i>
+                <span class="hidden sm:inline">Board</span>
+              </button>
+              <button
+                @click="displayMode = 'list'"
+                type="button"
+                class="px-2.5 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1 cursor-pointer ui-button min-h-0"
+                :class="
+                  displayMode === 'list'
+                    ? 'bg-white dark:bg-slate-900 text-theme shadow-xs'
+                    : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+                "
+                title="Tampilan Ringkas / List Tabel"
+              >
+                <i class="fa-solid fa-list-check"></i>
+                <span class="hidden sm:inline">Ringkas</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOGGLE DISPLAY MODE MOBILE -->
+      <div class="hidden sm:flex items-center gap-2 p-1 justify-end">
+        <div class="hidden lg:flex col-span-2 sm:col-span-1">
+          <div class="flex items-center gap-2 p-2 justify-between">
+            <button
+              @click="filterMyTasks = !filterMyTasks"
+              type="button"
+              class="lg:hidden p-2 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer border ui-button min-h-0 ui-text-body"
+              :class="
+                filterMyTasks
+                  ? 'bg-button text-white border-transparent shadow-xs'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700'
+              "
+            >
+              <i class="fa-solid" :class="filterMyTasks ? 'fa-user-check' : 'fa-users'"></i>
+              <span>{{ filterMyTasks ? "Tugas Saya" : "Semua" }}</span>
+            </button>
+            <button
+              v-if="isSpvOrAdmin"
+              @click="openAddModal"
+              type="button"
+              class="lg:hidden p-2 rounded-xl shadow-md transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ui-button ui-button-primary min-h-0 ui-text-body"
+            >
+              <i class="fa-solid fa-plus text-xs"></i>
+              <span class="lg:hidden sm:inline"> Tugas</span>
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/60 dark:border-slate-700"
+        >
+          <span class="text-xs font-semibold px-1 ui-text-muted">Mode Tampilan</span>
+
+          <button
+            @click="displayMode = 'kanban'"
+            type="button"
+            class="px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer ui-button min-h-0 ui-text-body"
+            :class="
+              displayMode === 'kanban'
+                ? 'bg-white dark:bg-slate-900 text-theme shadow-xs'
+                : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+            "
+            title="Tampilan Kanban / Board"
+          >
+            <i class="fa-solid fa-table-columns"></i>
+            <span class="hidden sm:inline">Board</span>
+          </button>
+          <button
+            @click="displayMode = 'list'"
+            type="button"
+            class="px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-pointer ui-button min-h-0 ui-text-body"
+            :class="
+              displayMode === 'list'
+                ? 'bg-white dark:bg-slate-900 text-theme shadow-xs'
+                : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
+            "
+            title="Tampilan Ringkas / List Tabel"
+          >
+            <i class="fa-solid fa-list-check"></i>
+            <span class="hidden sm:inline">Ringkas</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- MOBILE HEADER SWITCHER UNTUK KANBAN -->
+      <div
+        v-if="displayMode === 'kanban'"
+        class="md:hidden glass-card p-2.5 rounded-2xl flex items-center justify-between border border-slate-100 dark:border-slate-800 shadow-xs"
+      >
+        <div class="flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full" :class="getColumnDotColor(mobileActiveStatus)"></span>
+          <h4 class="text-sm font-bold uppercase ui-text-primary">
+            {{ mobileActiveStatus }}
+          </h4>
+          <span class="text-xs font-semibold text-theme theme-tint px-2 py-0.5 rounded-full">
+            {{ getItemsByStatus(mobileActiveStatus).length }}
           </span>
         </div>
 
+        <div class="flex items-center gap-1">
+          <button
+            @click="prevMobileStatus"
+            type="button"
+            class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-sm active:scale-90 transition-transform cursor-pointer ui-button ui-text-secondary min-h-0"
+          >
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+
+          <span class="text-xs font-semibold px-1 ui-text-muted">
+            {{ mobileStatusIndex + 1 }}/{{ columns.length }}
+          </span>
+
+          <button
+            @click="nextMobileStatus"
+            type="button"
+            class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-sm active:scale-90 transition-transform cursor-pointer ui-button ui-text-secondary min-h-0"
+          >
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- MODE 1: KANBAN BOARD VIEW -->
+      <div
+        v-if="displayMode === 'kanban'"
+        class="grid grid-cols-1 md:grid-cols-4 gap-3.5 md:gap-4 items-start relative z-0"
+      >
         <div
-          class="space-y-2.5 max-h-[72vh] overflow-y-auto pr-0.5 custom-scrollbar"
+          v-for="status in visibleColumns"
+          :key="status"
+          @dragover.prevent
+          @drop="onDrop($event, status)"
+          class="glass-card p-3 rounded-2xl space-y-3 bg-slate-50/60 min-h-[480px] border border-slate-100 dark:border-slate-800/80"
         >
           <div
-            v-for="(item, index) in getItemsByStatus(status)"
-            :key="item.id || item.Timestamp"
-            :draggable="canUserEditItem(item)"
-            @dragstart="
-              canUserEditItem(item) ? onDragStart($event, item) : null
-            "
-            @click="openDetailModal(item)"
-            class="glass-card p-3 rounded-xl space-y-2 border bg-white/90 dark:bg-slate-900/90 shadow-xs transition-all relative overflow-hidden group"
-            :class="[
-              canUserEditItem(item)
-                ? 'cursor-grab active:cursor-grabbing hover:border-theme/40'
-                : 'cursor-pointer opacity-90 hover:border-slate-400',
-              isUserAssigned(item)
-                ? 'border-emerald-500/40 ring-1 ring-emerald-500/20'
-                : 'border-slate-100 dark:border-slate-800',
-            ]"
+            class="hidden md:flex items-center justify-between px-1 pb-1 border-b border-slate-200/60 dark:border-slate-800"
           >
-            <div class="flex items-center justify-between text-xs md:text-xs">
-              <div class="flex items-center gap-1">
-                <span
-                  class="w-4 h-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 font-semibold flex items-center justify-center text-[10px]"
-                >
-                  #{{ index + 1 }}
-                </span>
-                <span
-                  class="font-semibold text-theme uppercase bg-theme/10 px-1.5 py-0.5 rounded border border-theme/20 text-[10px]"
-                >
-                  {{ item.division || item.Divisi }}
-                </span>
-              </div>
-              <span
-                class="font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-[10px]"
-              >
-                Unit {{ item.unit || item.Unit }}
-              </span>
-            </div>
-
-            <h5
-              class="font-semibold text-sm md:text-xs text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug group-hover:text-theme transition-colors"
+            <h4
+              class="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 ui-text-secondary"
             >
-              {{ item.title || item.Judul }}
-            </h5>
-
-            <p
-              v-if="item.description || item.Deskripsi"
-              class="text-xs md:text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-tight font-normal"
+              <span class="w-2 h-2 rounded-full" :class="getColumnDotColor(status)"></span>
+              {{ status }}
+            </h4>
+            <span
+              class="text-xs md:text-xs font-semibold text-theme theme-tint px-2 py-0.5 rounded-full border theme-border-soft"
             >
-              {{ item.description || item.Deskripsi }}
-            </p>
+              {{ getItemsByStatus(status).length }}
+            </span>
+          </div>
 
-            <!-- INDIKATOR CHECKS SUB-TASKS -->
+          <div class="space-y-2.5 max-h-[72vh] overflow-y-auto pr-0.5 custom-scrollbar">
             <div
-              v-if="item.todos && item.todos.length > 0"
-              class="flex items-center gap-1.5 text-xs md:text-xs text-slate-500 dark:text-slate-400 bg-slate-100/70 dark:bg-slate-800/60 px-2 py-1 rounded-lg w-fit"
+              v-for="(item, index) in getItemsByStatus(status)"
+              :key="item.id || item.Timestamp"
+              :draggable="canUserEditItem(item)"
+              @dragstart="canUserEditItem(item) ? onDragStart($event, item) : null"
+              @click="openDetailModal(item)"
+              class="glass-card p-3 rounded-xl space-y-2 border shadow-xs transition-all relative overflow-hidden group"
+              :class="[
+                canUserEditItem(item)
+                  ? 'cursor-grab active:cursor-grabbing theme-border-hover'
+                  : 'cursor-pointer opacity-90 hover:border-slate-400',
+                isUserAssigned(item)
+                  ? 'border-emerald-500/40 ring-1 ring-emerald-500/20'
+                  : 'border-slate-100 dark:border-slate-800',
+              ]"
             >
-              <i class="fa-solid fa-list-check text-theme text-xs"></i>
-              <span class="font-semibold text-slate-700 dark:text-slate-300">
-                {{ getCompletedTodosCount(item) }}/{{ item.todos.length }}
-                Sub-tugas
-              </span>
-            </div>
-
-            <div
-              class="flex items-center justify-between text-xs md:text-xs pt-0.5"
-            >
-              <span class="text-slate-400"
-                >DL:
-                <strong
-                  class="text-slate-700 dark:text-slate-300 font-semibold"
-                  >{{ formatDate(item.deadline || item.Deadline) }}</strong
-                ></span
-              >
-              <span
-                class="font-semibold px-1.5 py-0.5 rounded flex items-center gap-1 text-[10px]"
-                :class="getDeadlineBadgeClass(item)"
-              >
-                <i
-                  class="fa-solid text-[10px]"
-                  :class="getDeadlineIconClass(item)"
-                ></i>
-                {{ getDeadlineText(item) }}
-              </span>
-            </div>
-
-            <!-- Footer Multi-PIC Avatar & Progress Bar -->
-            <div
-              class="space-y-1 pt-1.5 border-t border-slate-100 dark:border-slate-800/80"
-            >
-              <div class="flex justify-between items-center text-xs md:text-xs">
-                <div
-                  class="flex items-center gap-1 overflow-x-auto max-w-[140px] custom-scrollbar"
-                >
-                  <i class="fa-solid fa-users text-theme text-xs shrink-0"></i>
+              <div class="flex items-center justify-between text-xs md:text-xs">
+                <div class="flex items-center gap-1">
                   <span
-                    v-for="(name, pIdx) in getAssignedNamesList(item)"
-                    :key="pIdx"
-                    class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap border border-slate-200/60 dark:border-slate-700"
+                    class="w-4 h-4 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 font-semibold flex items-center justify-center text-[10px]"
                   >
-                    {{ name }}
+                    #{{ index + 1 }}
                   </span>
                   <span
-                    v-if="getAssignedNamesList(item).length === 0"
-                    class="text-slate-400 italic text-[10px]"
-                    >Unassigned</span
+                    class="font-semibold text-theme uppercase theme-tint px-1.5 py-0.5 rounded border theme-border-soft text-[10px]"
+                  >
+                    {{ item.division || item.Divisi }}
+                  </span>
+                </div>
+                <span
+                  class="font-semibold bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-[10px] ui-text-description"
+                >
+                  Unit {{ item.unit || item.Unit }}
+                </span>
+              </div>
+
+              <h5
+                class="font-semibold line-clamp-2 leading-snug group-hover:text-theme transition-colors ui-text-primary ui-text-body"
+              >
+                {{ item.title || item.Judul }}
+              </h5>
+
+              <p
+                v-if="item.description || item.Deskripsi"
+                class="text-xs md:text-xs line-clamp-2 leading-tight font-normal ui-text-description"
+              >
+                {{ item.description || item.Deskripsi }}
+              </p>
+
+              <!-- INDIKATOR CHECKS SUB-TASKS -->
+              <div
+                v-if="item.todos && item.todos.length > 0"
+                class="flex items-center gap-1.5 text-xs md:text-xs bg-slate-100/70 dark:bg-slate-800/60 px-2 py-1 rounded-lg w-fit ui-text-description"
+              >
+                <i class="fa-solid fa-list-check text-theme text-xs"></i>
+                <span class="font-semibold ui-text-secondary">
+                  {{ getCompletedTodosCount(item) }}/{{ item.todos.length }}
+                  Sub-tugas
+                </span>
+              </div>
+
+              <div class="flex items-center justify-between text-xs md:text-xs pt-0.5">
+                <span class="ui-text-muted"
+                  >DL:
+                  <strong class="font-semibold ui-text-secondary">{{
+                    formatDate(item.deadline || item.Deadline)
+                  }}</strong></span
+                >
+                <span
+                  class="font-semibold px-1.5 py-0.5 rounded flex items-center gap-1 text-[10px]"
+                  :class="getDeadlineBadgeClass(item)"
+                >
+                  <i class="fa-solid text-[10px]" :class="getDeadlineIconClass(item)"></i>
+                  {{ getDeadlineText(item) }}
+                </span>
+              </div>
+
+              <!-- Footer Multi-PIC Avatar & Progress Bar -->
+              <div class="space-y-1 pt-1.5 border-t border-slate-100 dark:border-slate-800/80">
+                <div class="flex justify-between items-center text-xs md:text-xs">
+                  <div
+                    class="flex items-center gap-1 overflow-x-auto max-w-[140px] custom-scrollbar"
+                  >
+                    <i class="fa-solid fa-users text-theme text-xs shrink-0"></i>
+                    <span
+                      v-for="(name, pIdx) in getAssignedNamesList(item)"
+                      :key="pIdx"
+                      class="bg-slate-100 dark:bg-slate-800 font-semibold px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap border border-slate-200/60 dark:border-slate-700 ui-text-secondary"
+                    >
+                      {{ name }}
+                    </span>
+                    <span
+                      v-if="getAssignedNamesList(item).length === 0"
+                      class="italic text-[10px] ui-text-muted"
+                      >Unassigned</span
+                    >
+                  </div>
+
+                  <span class="font-semibold text-theme shrink-0"
+                    >{{ item.progress || item.Progress || 0 }}%</span
                   >
                 </div>
 
-                <span class="font-semibold text-theme shrink-0"
-                  >{{ item.progress || item.Progress || 0 }}%</span
-                >
-              </div>
-
-              <div
-                class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden"
-              >
                 <div
-                  class="bg-emerald-600 h-full rounded-full transition-all duration-300"
-                  :style="{
-                    width: `${Math.min(item.progress || item.Progress || 0, 100)}%`,
-                  }"
-                ></div>
+                  class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden"
+                >
+                  <div
+                    class="bg-emerald-600 h-full rounded-full transition-all duration-300"
+                    :style="{
+                      width: `${Math.min(item.progress || item.Progress || 0, 100)}%`,
+                    }"
+                  ></div>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div
-            v-if="getItemsByStatus(status).length === 0"
-            class="text-center py-12 text-slate-400 text-sm md:text-xs border-2 border-dashed border-slate-200 dark:border-slate-800/60 rounded-xl font-normal"
-          >
-            Tidak ada program
+            <div
+              v-if="getItemsByStatus(status).length === 0"
+              class="text-center py-12 border-2 border-dashed border-slate-200 dark:border-slate-800/60 rounded-xl font-normal ui-text-muted ui-text-body"
+            >
+              Tidak ada program
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- MODE 2: RINGKAS / LIST TABLE VIEW -->
-    <div
-      v-else-if="displayMode === 'list'"
-      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-xs"
-    >
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm md:text-xs border-collapse">
-          <thead>
-            <tr
-              class="bg-slate-100/80 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 border-b border-slate-100 dark:border-slate-800 font-semibold uppercase text-xs md:text-xs"
-            >
-              <th class="p-3 w-10 text-center">#</th>
-              <th class="p-3">Judul Program</th>
-              <th class="p-3">Status</th>
-              <th class="p-3">Unit / Divisi</th>
-              <th class="p-3">PIC Staff</th>
-              <th class="p-3">Deadline</th>
-              <th class="p-3 text-center">Progres</th>
-              <th class="p-3 text-right">Aksi</th>
-            </tr>
-          </thead>
-          <tbody
-            class="divide-y divide-slate-100 dark:divide-slate-800/60 font-normal"
-          >
-            <tr
-              v-for="(item, idx) in filteredPrograms"
-              :key="item.id || item.Timestamp"
-              @click="openDetailModal(item)"
-              class="hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer transition-colors"
-            >
-              <td class="p-3 text-center font-semibold text-slate-400">
-                {{ idx + 1 }}
-              </td>
-              <td
-                class="p-3 font-semibold text-slate-800 dark:text-slate-100 max-w-xs"
+      <!-- MODE 2: RINGKAS / LIST TABLE VIEW -->
+      <div
+        v-else-if="displayMode === 'list'"
+        class="glass-card rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-xs"
+      >
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse ui-text-body">
+            <thead>
+              <tr
+                class="bg-slate-100/80 dark:bg-slate-800/80 border-b border-slate-100 dark:border-slate-800 font-semibold uppercase text-xs md:text-xs ui-text-description"
               >
-                <p class="truncate">{{ item.title || item.Judul }}</p>
-                <p
-                  v-if="item.description || item.Deskripsi"
-                  class="text-xs md:text-xs text-slate-400 font-normal truncate"
-                >
-                  {{ item.description || item.Deskripsi }}
-                </p>
-              </td>
-              <td class="p-3 whitespace-nowrap">
-                <span
-                  class="font-semibold px-2 py-0.5 rounded text-xs md:text-xs flex items-center gap-1 w-max text-white"
-                  :class="getColumnDotColor(item.status || item.Status)"
-                >
-                  {{ item.status || item.Status }}
-                </span>
-              </td>
-              <td class="p-3 whitespace-nowrap">
-                <span
-                  class="font-semibold text-theme bg-theme/10 px-2 py-0.5 rounded text-xs md:text-xs border border-theme/20 mr-1"
-                >
-                  {{ item.unit || item.Unit }}
-                </span>
-                <span
-                  class="text-slate-500 dark:text-slate-400 text-xs md:text-xs"
-                >
-                  {{ item.division || item.Divisi }}
-                </span>
-              </td>
-              <td class="p-3 whitespace-nowrap">
-                <div
-                  class="flex items-center gap-1 max-w-[150px] overflow-hidden truncate"
-                >
-                  <span
-                    v-for="(name, pIdx) in getAssignedNamesList(item)"
-                    :key="pIdx"
-                    class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded text-xs md:text-xs"
+                <th class="p-3 w-10 text-center">#</th>
+                <th class="p-3">Judul Program</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Unit / Divisi</th>
+                <th class="p-3">PIC Staff</th>
+                <th class="p-3">Deadline</th>
+                <th class="p-3 text-center">Progres</th>
+                <th class="p-3 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 font-normal">
+              <tr
+                v-for="(item, idx) in filteredPrograms"
+                :key="item.id || item.Timestamp"
+                @click="openDetailModal(item)"
+                class="cursor-pointer transition-colors ui-row-hover"
+              >
+                <td class="p-3 text-center font-semibold ui-text-muted">
+                  {{ idx + 1 }}
+                </td>
+                <td class="p-3 font-semibold max-w-xs ui-text-primary">
+                  <p class="truncate">{{ item.title || item.Judul }}</p>
+                  <p
+                    v-if="item.description || item.Deskripsi"
+                    class="text-xs md:text-xs font-normal truncate ui-text-muted"
                   >
-                    {{ name }}
+                    {{ item.description || item.Deskripsi }}
+                  </p>
+                </td>
+                <td class="p-3 whitespace-nowrap">
+                  <span
+                    class="font-semibold px-2 py-0.5 rounded text-xs md:text-xs flex items-center gap-1 w-max text-white"
+                    :class="getColumnDotColor(item.status || item.Status)"
+                  >
+                    {{ item.status || item.Status }}
                   </span>
-                </div>
-              </td>
+                </td>
+                <td class="p-3 whitespace-nowrap">
+                  <span
+                    class="font-semibold text-theme theme-tint px-2 py-0.5 rounded text-xs md:text-xs border theme-border-soft mr-1"
+                  >
+                    {{ item.unit || item.Unit }}
+                  </span>
+                  <span class="text-xs md:text-xs ui-text-description">
+                    {{ item.division || item.Divisi }}
+                  </span>
+                </td>
+                <td class="p-3 whitespace-nowrap">
+                  <div class="flex items-center gap-1 max-w-[150px] overflow-hidden truncate">
+                    <span
+                      v-for="(name, pIdx) in getAssignedNamesList(item)"
+                      :key="pIdx"
+                      class="bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-xs md:text-xs ui-text-secondary"
+                    >
+                      {{ name }}
+                    </span>
+                  </div>
+                </td>
 
-              <td class="p-3 whitespace-nowrap">
-                <span
-                  :class="getDeadlineBadgeClass(item)"
-                  class="px-2 py-0.5 rounded text-xs md:text-xs font-semibold"
-                >
-                  {{ formatDate(item.deadline || item.Deadline) }}
-                </span>
-              </td>
-              <td
-                class="p-3 text-center whitespace-nowrap font-semibold text-theme"
+                <td class="p-3 whitespace-nowrap">
+                  <span
+                    :class="getDeadlineBadgeClass(item)"
+                    class="px-2 py-0.5 rounded text-xs md:text-xs font-semibold"
+                  >
+                    {{ formatDate(item.deadline || item.Deadline) }}
+                  </span>
+                </td>
+                <td class="p-3 text-center whitespace-nowrap font-semibold text-theme">
+                  {{ item.progress || item.Progress || 0 }}%
+                </td>
+                <td class="p-3 text-right whitespace-nowrap">
+                  <button
+                    type="button"
+                    @click.stop="openDetailModal(item)"
+                    class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:text-theme cursor-pointer transition-colors ui-button ui-text-secondary min-h-0"
+                  >
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                </td>
+              </tr>
+
+              <tr v-if="filteredPrograms.length === 0">
+                <td colspan="8" class="text-center py-8 font-normal ui-text-muted ui-text-body">
+                  Tidak ada data program kerja.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TOMBOL FILTER MELAYANG KHUSUS MOBILE -->
+      <div class="md:hidden fixed bottom-20 right-4 z-40">
+        <button
+          @click="isMobileFilterOpen = true"
+          type="button"
+          class="flex flex-col items-center justify-center active:scale-95 transition-transform cursor-pointer ui-text-muted"
+          title="Buka Filter Program"
+        >
+          <div class="relative">
+            <i
+              class="fa-solid fa-filter flex items-center justify-center w-12 h-12 rounded-full bg-button text-white text-base shadow-lg"
+            ></i>
+            <span
+              v-if="
+                selectedStatuses.length ||
+                selectedUnits.length ||
+                selectedDivisions.length ||
+                selectedPics.length
+              "
+              class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-400 border-2 border-white dark:border-slate-900 rounded-full"
+            ></span>
+          </div>
+          <span class="text-xs font-semibold mt-1 ui-text-secondary">Filter</span>
+        </button>
+      </div>
+
+      <!-- MODAL FILTER BOTTOM SHEET KHUSUS MOBILE -->
+      <Teleport to="body">
+        <div
+          v-if="isMobileFilterOpen"
+          class="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 backdrop-blur-xs md:hidden"
+          @click.self="isMobileFilterOpen = false"
+        >
+          <div
+            class="w-full glass-card rounded-t-3xl p-5 shadow-2xl space-y-4 border-t border-slate-200 dark:border-slate-800 max-h-[85vh] overflow-y-auto"
+          >
+            <div
+              class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800"
+            >
+              <h3 class="font-semibold text-sm flex items-center gap-2 ui-text-primary">
+                <i class="fa-solid fa-sliders text-theme"></i>
+                Filter Program Kerja
+              </h3>
+              <button
+                type="button"
+                @click="isMobileFilterOpen = false"
+                class="hover:text-slate-600 dark:hover:text-slate-200 ui-text-muted"
               >
-                {{ item.progress || item.Progress || 0 }}%
-              </td>
-              <td class="p-3 text-right whitespace-nowrap">
+                <i class="fa-solid fa-xmark text-lg"></i>
+              </button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <!-- 1. DROPDOWN ACCORDION: STATUS -->
+              <div
+                class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
+              >
                 <button
                   type="button"
-                  @click.stop="openDetailModal(item)"
-                  class="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-theme cursor-pointer transition-colors"
+                  @click="mobileAccordion = mobileAccordion === 'status' ? null : 'status'"
+                  class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between ui-button ui-text-secondary min-h-0"
                 >
-                  <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-              </td>
-            </tr>
-
-            <tr v-if="filteredPrograms.length === 0">
-              <td
-                colspan="8"
-                class="text-center py-8 text-slate-400 text-sm md:text-xs font-normal"
-              >
-                Tidak ada data program kerja.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- TOMBOL FILTER MELAYANG KHUSUS MOBILE -->
-    <div class="md:hidden fixed bottom-20 right-4 z-40">
-      <button
-        @click="isMobileFilterOpen = true"
-        type="button"
-        class="flex flex-col text-slate-400 items-center justify-center active:scale-95 transition-transform cursor-pointer"
-        title="Buka Filter Program"
-      >
-        <div class="relative">
-          <i
-            class="fa-solid fa-filter flex items-center justify-center w-12 h-12 rounded-full bg-button text-white text-base shadow-lg"
-          ></i>
-          <span
-            v-if="
-              selectedStatuses.length ||
-              selectedUnits.length ||
-              selectedDivisions.length ||
-              selectedPics.length
-            "
-            class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-400 border-2 border-white dark:border-slate-900 rounded-full"
-          ></span>
-        </div>
-        <span
-          class="text-xs font-semibold text-slate-600 dark:text-slate-300 mt-1"
-          >Filter</span
-        >
-      </button>
-    </div>
-
-    <!-- MODAL FILTER BOTTOM SHEET KHUSUS MOBILE -->
-    <Teleport to="body">
-      <div
-        v-if="isMobileFilterOpen"
-        class="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 backdrop-blur-xs md:hidden"
-        @click.self="isMobileFilterOpen = false"
-      >
-        <div
-          class="w-full glass-card bg-white dark:bg-slate-900 rounded-t-3xl p-5 shadow-2xl space-y-4 border-t border-slate-200 dark:border-slate-800 max-h-[85vh] overflow-y-auto"
-        >
-          <div
-            class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800"
-          >
-            <h3
-              class="font-semibold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
-            >
-              <i class="fa-solid fa-sliders text-theme"></i>
-              Filter Program Kerja
-            </h3>
-            <button
-              type="button"
-              @click="isMobileFilterOpen = false"
-              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
-            >
-              <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-          </div>
-
-          <div class="space-y-3 text-xs">
-            <!-- 1. DROPDOWN ACCORDION: STATUS -->
-            <div
-              class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
-            >
-              <button
-                type="button"
-                @click="
-                  mobileAccordion =
-                    mobileAccordion === 'status' ? null : 'status'
-                "
-                class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between font-semibold text-slate-700 dark:text-slate-200"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-list-check text-purple-500"></i>
-                  <span>Status Progres</span>
-                  <span
-                    v-if="selectedStatuses.length"
-                    class="bg-purple-500/10 text-purple-600 px-2 py-0.5 rounded-full text-xs"
-                  >
-                    {{ selectedStatuses.length }}
-                  </span>
-                </div>
-                <i
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
-                  :class="{ 'rotate-180': mobileAccordion === 'status' }"
-                ></i>
-              </button>
-
-              <div
-                v-if="mobileAccordion === 'status'"
-                class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
-              >
-                <div class="flex justify-end pb-1">
-                  <button
-                    type="button"
-                    @click="toggleAllStatuses"
-                    class="text-xs font-semibold text-theme"
-                  >
-                    {{
-                      selectedStatuses.length === columns.length
-                        ? "Reset"
-                        : "Pilih Semua"
-                    }}
-                  </button>
-                </div>
-                <div
-                  class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto custom-scrollbar"
-                >
-                  <label
-                    v-for="st in columns"
-                    :key="st"
-                    class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-semibold"
-                  >
-                    <input
-                      type="checkbox"
-                      :value="st"
-                      v-model="selectedStatuses"
-                      class="accent-emerald-600 rounded w-3.5 h-3.5"
-                    />
-                    <span class="flex items-center gap-1.5 truncate text-xs">
-                      <span
-                        class="w-2 h-2 rounded-full shrink-0"
-                        :class="getColumnDotColor(st)"
-                      ></span>
-                      <span>{{ st }}</span>
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-purple-500"></i>
+                    <span>Status Progres</span>
+                    <span
+                      v-if="selectedStatuses.length"
+                      class="bg-purple-500/10 text-purple-600 px-2 py-0.5 rounded-full text-xs"
+                    >
+                      {{ selectedStatuses.length }}
                     </span>
-                  </label>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
+                    :class="{ 'rotate-180': mobileAccordion === 'status' }"
+                  ></i>
+                </button>
+
+                <div
+                  v-if="mobileAccordion === 'status'"
+                  class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
+                >
+                  <div class="flex justify-end pb-1">
+                    <button
+                      type="button"
+                      @click="toggleAllStatuses"
+                      class="text-xs font-semibold text-theme"
+                    >
+                      {{ selectedStatuses.length === columns.length ? "Reset" : "Pilih Semua" }}
+                    </button>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto custom-scrollbar">
+                    <label
+                      v-for="st in columns"
+                      :key="st"
+                      class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-semibold ui-text-secondary"
+                    >
+                      <input
+                        type="checkbox"
+                        :value="st"
+                        v-model="selectedStatuses"
+                        class="accent-emerald-600 rounded w-3.5 h-3.5"
+                      />
+                      <span class="flex items-center gap-1.5 truncate text-xs">
+                        <span
+                          class="w-2 h-2 rounded-full shrink-0"
+                          :class="getColumnDotColor(st)"
+                        ></span>
+                        <span>{{ st }}</span>
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. DROPDOWN ACCORDION: UNIT -->
+              <div
+                class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
+              >
+                <button
+                  type="button"
+                  @click="mobileAccordion = mobileAccordion === 'unit' ? null : 'unit'"
+                  class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between ui-button ui-text-secondary min-h-0"
+                >
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-building text-blue-500"></i>
+                    <span>Unit Usaha</span>
+                    <span
+                      v-if="selectedUnits.length"
+                      class="bg-blue-500/10 text-blue-600 px-2 py-0.5 rounded-full text-xs"
+                    >
+                      {{ selectedUnits.length }}
+                    </span>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
+                    :class="{ 'rotate-180': mobileAccordion === 'unit' }"
+                  ></i>
+                </button>
+
+                <div
+                  v-if="mobileAccordion === 'unit'"
+                  class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
+                >
+                  <div class="flex justify-end pb-1">
+                    <button
+                      type="button"
+                      @click="toggleAllUnits"
+                      class="text-xs font-semibold text-theme"
+                    >
+                      {{ selectedUnits.length === masterUnits.length ? "Reset" : "Pilih Semua" }}
+                    </button>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto custom-scrollbar">
+                    <label
+                      v-for="u in masterUnits"
+                      :key="u.code"
+                      class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-semibold ui-text-secondary"
+                    >
+                      <input
+                        type="checkbox"
+                        :value="u.code"
+                        v-model="selectedUnits"
+                        class="accent-emerald-600 rounded w-3.5 h-3.5"
+                      />
+                      <span class="truncate text-xs">Unit {{ u.code }}</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. DROPDOWN ACCORDION: DIVISI -->
+              <div
+                class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
+              >
+                <button
+                  type="button"
+                  @click="mobileAccordion = mobileAccordion === 'divisi' ? null : 'divisi'"
+                  class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between ui-button ui-text-secondary min-h-0"
+                >
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-sitemap text-amber-500"></i>
+                    <span>Divisi</span>
+                    <span
+                      v-if="selectedDivisions.length"
+                      class="bg-amber-500/10 text-amber-600 px-2 py-0.5 rounded-full text-xs"
+                    >
+                      {{ selectedDivisions.length }}
+                    </span>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
+                    :class="{ 'rotate-180': mobileAccordion === 'divisi' }"
+                  ></i>
+                </button>
+
+                <div
+                  v-if="mobileAccordion === 'divisi'"
+                  class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
+                >
+                  <div class="flex justify-end pb-1">
+                    <button
+                      type="button"
+                      @click="toggleAllDivisions"
+                      class="text-xs font-semibold text-theme"
+                    >
+                      {{
+                        selectedDivisions.length === availableDivisions.length
+                          ? "Reset"
+                          : "Pilih Semua"
+                      }}
+                    </button>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto custom-scrollbar">
+                    <label
+                      v-for="div in availableDivisions"
+                      :key="div"
+                      class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-semibold ui-text-secondary"
+                    >
+                      <input
+                        type="checkbox"
+                        :value="div"
+                        v-model="selectedDivisions"
+                        class="accent-emerald-600 rounded w-3.5 h-3.5"
+                      />
+                      <span class="truncate text-xs">{{ div }}</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. DROPDOWN ACCORDION: PIC -->
+              <div
+                class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
+              >
+                <button
+                  type="button"
+                  @click="mobileAccordion = mobileAccordion === 'pic' ? null : 'pic'"
+                  class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between ui-button ui-text-secondary min-h-0"
+                >
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear text-theme"></i>
+                    <span>PIC Penanggung Jawab</span>
+                    <span
+                      v-if="selectedPics.length"
+                      class="theme-tint text-theme px-2 py-0.5 rounded-full text-xs"
+                    >
+                      {{ selectedPics.length }}
+                    </span>
+                  </div>
+                  <i
+                    class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
+                    :class="{ 'rotate-180': mobileAccordion === 'pic' }"
+                  ></i>
+                </button>
+
+                <div
+                  v-if="mobileAccordion === 'pic'"
+                  class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
+                >
+                  <div class="flex justify-end pb-1">
+                    <button
+                      type="button"
+                      @click="toggleAllPics"
+                      class="text-xs font-semibold text-theme"
+                    >
+                      {{ selectedPics.length === registeredUsers.length ? "Reset" : "Pilih Semua" }}
+                    </button>
+                  </div>
+                  <div class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto custom-scrollbar">
+                    <label
+                      v-for="user in registeredUsers"
+                      :key="user.id"
+                      class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 font-semibold ui-text-secondary"
+                    >
+                      <input
+                        type="checkbox"
+                        :value="user.id"
+                        v-model="selectedPics"
+                        class="accent-emerald-600 rounded w-3.5 h-3.5"
+                      />
+                      <span class="truncate text-xs">{{ user.nama }}</span>
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <!-- 2. DROPDOWN ACCORDION: UNIT -->
+            <!-- Footer Actions Mobile -->
             <div
-              class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
+              class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 gap-3"
             >
               <button
                 type="button"
                 @click="
-                  mobileAccordion = mobileAccordion === 'unit' ? null : 'unit'
+                  selectedStatuses = [];
+                  selectedUnits = [];
+                  selectedDivisions = [];
+                  selectedPics = [];
                 "
-                class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between font-semibold text-slate-700 dark:text-slate-200"
+                class="w-1/2 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs cursor-pointer ui-button ui-text-secondary min-h-0"
               >
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-building text-blue-500"></i>
-                  <span>Unit Usaha</span>
-                  <span
-                    v-if="selectedUnits.length"
-                    class="bg-blue-500/10 text-blue-600 px-2 py-0.5 rounded-full text-xs"
-                  >
-                    {{ selectedUnits.length }}
-                  </span>
-                </div>
-                <i
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
-                  :class="{ 'rotate-180': mobileAccordion === 'unit' }"
-                ></i>
+                Reset Filter
               </button>
-
-              <div
-                v-if="mobileAccordion === 'unit'"
-                class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
-              >
-                <div class="flex justify-end pb-1">
-                  <button
-                    type="button"
-                    @click="toggleAllUnits"
-                    class="text-xs font-semibold text-theme"
-                  >
-                    {{
-                      selectedUnits.length === masterUnits.length
-                        ? "Reset"
-                        : "Pilih Semua"
-                    }}
-                  </button>
-                </div>
-                <div
-                  class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto custom-scrollbar"
-                >
-                  <label
-                    v-for="u in masterUnits"
-                    :key="u.code"
-                    class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-semibold"
-                  >
-                    <input
-                      type="checkbox"
-                      :value="u.code"
-                      v-model="selectedUnits"
-                      class="accent-emerald-600 rounded w-3.5 h-3.5"
-                    />
-                    <span class="truncate text-xs">Unit {{ u.code }}</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <!-- 3. DROPDOWN ACCORDION: DIVISI -->
-            <div
-              class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
-            >
               <button
                 type="button"
-                @click="
-                  mobileAccordion =
-                    mobileAccordion === 'divisi' ? null : 'divisi'
-                "
-                class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between font-semibold text-slate-700 dark:text-slate-200"
+                @click="isMobileFilterOpen = false"
+                class="w-1/2 py-2.5 rounded-xl text-xs shadow-md cursor-pointer ui-button ui-button-primary min-h-0"
               >
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-sitemap text-amber-500"></i>
-                  <span>Divisi</span>
-                  <span
-                    v-if="selectedDivisions.length"
-                    class="bg-amber-500/10 text-amber-600 px-2 py-0.5 rounded-full text-xs"
-                  >
-                    {{ selectedDivisions.length }}
-                  </span>
-                </div>
-                <i
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
-                  :class="{ 'rotate-180': mobileAccordion === 'divisi' }"
-                ></i>
+                Terapkan
               </button>
-
-              <div
-                v-if="mobileAccordion === 'divisi'"
-                class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
-              >
-                <div class="flex justify-end pb-1">
-                  <button
-                    type="button"
-                    @click="toggleAllDivisions"
-                    class="text-xs font-semibold text-theme"
-                  >
-                    {{
-                      selectedDivisions.length === availableDivisions.length
-                        ? "Reset"
-                        : "Pilih Semua"
-                    }}
-                  </button>
-                </div>
-                <div
-                  class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto custom-scrollbar"
-                >
-                  <label
-                    v-for="div in availableDivisions"
-                    :key="div"
-                    class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-semibold"
-                  >
-                    <input
-                      type="checkbox"
-                      :value="div"
-                      v-model="selectedDivisions"
-                      class="accent-emerald-600 rounded w-3.5 h-3.5"
-                    />
-                    <span class="truncate text-xs">{{ div }}</span>
-                  </label>
-                </div>
-              </div>
             </div>
-
-            <!-- 4. DROPDOWN ACCORDION: PIC -->
-            <div
-              class="border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden"
-            >
-              <button
-                type="button"
-                @click="
-                  mobileAccordion = mobileAccordion === 'pic' ? null : 'pic'
-                "
-                class="w-full p-3 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between font-semibold text-slate-700 dark:text-slate-200"
-              >
-                <div class="flex items-center gap-2">
-                  <i class="fa-solid fa-user-gear text-theme"></i>
-                  <span>PIC Penanggung Jawab</span>
-                  <span
-                    v-if="selectedPics.length"
-                    class="bg-theme/10 text-theme px-2 py-0.5 rounded-full text-xs"
-                  >
-                    {{ selectedPics.length }}
-                  </span>
-                </div>
-                <i
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
-                  :class="{ 'rotate-180': mobileAccordion === 'pic' }"
-                ></i>
-              </button>
-
-              <div
-                v-if="mobileAccordion === 'pic'"
-                class="p-3 bg-white dark:bg-slate-900 space-y-2 border-t border-slate-100 dark:border-slate-800"
-              >
-                <div class="flex justify-end pb-1">
-                  <button
-                    type="button"
-                    @click="toggleAllPics"
-                    class="text-xs font-semibold text-theme"
-                  >
-                    {{
-                      selectedPics.length === registeredUsers.length
-                        ? "Reset"
-                        : "Pilih Semua"
-                    }}
-                  </button>
-                </div>
-                <div
-                  class="grid grid-cols-2 gap-2 max-h-40 overflow-y-auto custom-scrollbar"
-                >
-                  <label
-                    v-for="user in registeredUsers"
-                    :key="user.id"
-                    class="flex items-center gap-2 p-2 rounded-xl bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-semibold"
-                  >
-                    <input
-                      type="checkbox"
-                      :value="user.id"
-                      v-model="selectedPics"
-                      class="accent-emerald-600 rounded w-3.5 h-3.5"
-                    />
-                    <span class="truncate text-xs">{{ user.nama }}</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Footer Actions Mobile -->
-          <div
-            class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 gap-3"
-          >
-            <button
-              type="button"
-              @click="
-                selectedStatuses = [];
-                selectedUnits = [];
-                selectedDivisions = [];
-                selectedPics = [];
-              "
-              class="w-1/2 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold text-xs cursor-pointer"
-            >
-              Reset Filter
-            </button>
-            <button
-              type="button"
-              @click="isMobileFilterOpen = false"
-              class="w-1/2 py-2.5 rounded-xl bg-button text-white font-semibold text-xs shadow-md cursor-pointer"
-            >
-              Terapkan
-            </button>
           </div>
         </div>
-      </div>
-    </Teleport>
+      </Teleport>
 
-    <!-- KOMPONEN MODAL PROGRES TERPISAH -->
-    <ModalProgress
-      :is-open="isModalOpen"
-      :is-edit="isEdit"
-      :is-spv-or-admin="isSpvOrAdmin"
-      :can-delete-item="canUserDeleteItem(activeItem)"
-      :is-submitting="isSubmitting"
-      :active-item="activeItem"
-      :master-units="masterUnits"
-      :available-divisions="availableDivisions"
-      :registered-users="registeredUsers"
-      @close="isModalOpen = false"
-      @save="saveProgram"
-      @delete="deleteProgram"
-    />
-  </div>
+      <!-- KOMPONEN MODAL PROGRES TERPISAH -->
+      <ModalProgress
+        :is-open="isModalOpen"
+        :is-edit="isEdit"
+        :is-spv-or-admin="isSpvOrAdmin"
+        :can-delete-item="canUserDeleteItem(activeItem)"
+        :is-submitting="isSubmitting"
+        :active-item="activeItem"
+        :master-units="masterUnits"
+        :available-divisions="availableDivisions"
+        :registered-users="registeredUsers"
+        @close="isModalOpen = false"
+        @save="saveProgram"
+        @delete="deleteProgram"
+      />
+    </div>
+  </template>
 </template>
 
 <script setup>
@@ -1260,6 +1120,35 @@ const activeItem = reactive({
   assignedPicIds: [],
   todos: [],
 });
+
+const canViewPage = computed(() => {
+  const user = store.currentUser;
+  if (!user) return false;
+
+  const role = String(user.role || user.Role || "").toUpperCase();
+  if (role === "SUPERADMIN") return true;
+
+  return store.canAccessPage("progress"); // Sesuaikan dengan key modul progres di store
+});
+
+const isLoadingPrograms = ref(false);
+
+const fetchProgressData = async () => {
+  isLoadingPrograms.value = true;
+  try {
+    if (api && api.getProgramsLight) {
+      const res = await api.getProgramsLight();
+      if (res) {
+        if (!store.db) store.db = {};
+        store.db.programs = res;
+      }
+    }
+  } catch (err) {
+    console.error("Gagal memuat data program:", err);
+  } finally {
+    isLoadingPrograms.value = false;
+  }
+};
 
 // ==========================================
 // 2. COMPUTED PROPERTIES
@@ -1764,9 +1653,13 @@ const handleIncomingFilter = () => {
 // 4. LIFECYCLE HOOKS & WATCHERS
 // ==========================================
 onMounted(() => {
+  if (!canViewPage.value) return;
   checkScreenSize();
   window.addEventListener("resize", checkScreenSize);
   window.addEventListener("click", handleOutsideClick);
+
+  fetchProgressData();
+
   if (!isSuperadmin.value && currentUser.value) {
     if (!isSpvOrAdmin.value) {
       filterMyTasks.value = true;

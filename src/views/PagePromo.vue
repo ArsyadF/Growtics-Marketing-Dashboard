@@ -1,30 +1,23 @@
 <!-- src/views/PagePromo.vue -->
 <template>
-  <section
-    id="page-promo"
-    class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6"
-  >
+  <section id="page-promo" class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6">
     <!-- Header Section -->
     <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
+      class="ui-card border border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
     >
       <div>
-        <h2
-          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
+        <h2 class="font-semibold flex items-center gap-2 ui-text-primary ui-text-title">
           <i class="fa-solid fa-bullhorn text-rose-500"></i>
           <span>Manajemen Biaya Promosi</span>
         </h2>
-        <p
-          class="text-slate-500 dark:text-slate-400 text-sm md:text-xs font-normal mt-0.5"
-        >
+        <p class="font-normal mt-0.5 ui-text-description ui-text-body">
           Rekapitulasi dan Tren Pengeluaran Promosi Tiap Unit.
         </p>
       </div>
       <button
         v-if="store.canEditPage('promo')"
         @click="store.openModal('promo')"
-        class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-4 py-2.5 rounded-xl font-semibold text-sm md:text-xs shadow-md transition-all w-full sm:w-auto text-center cursor-pointer flex items-center justify-center gap-1.5"
+        class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white px-4 py-2.5 rounded-xl shadow-md transition-all w-full sm:w-auto text-center cursor-pointer flex items-center justify-center gap-1.5 ui-button min-h-0 ui-text-body"
       >
         <i class="fa-solid fa-plus text-xs"></i>Input Biaya Promosi
       </button>
@@ -33,10 +26,10 @@
     <!-- 1. Metric Summary Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
       <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center justify-between"
+        class="glass-card p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center justify-between"
       >
         <div>
-          <p class="text-xs text-slate-400 font-normal">Total Biaya Promosi</p>
+          <p class="text-xs font-normal ui-text-muted">Total Biaya Promosi</p>
           <h3 class="text-xl md:text-base font-semibold text-rose-500 mt-0.5">
             {{ formatRupiah(totalBiayaPromosi) }}
           </h3>
@@ -49,13 +42,11 @@
       </div>
 
       <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center justify-between"
+        class="glass-card p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center justify-between"
       >
         <div>
-          <p class="text-xs text-slate-400 font-normal">Rata-rata / Bulan</p>
-          <h3
-            class="text-xl md:text-base font-semibold text-slate-700 dark:text-slate-200 mt-0.5"
-          >
+          <p class="text-xs font-normal ui-text-muted">Rata-rata / Bulan</p>
+          <h3 class="text-xl md:text-base font-semibold mt-0.5 ui-text-secondary">
             {{ formatRupiah(rataRataBulan) }}
           </h3>
         </div>
@@ -67,12 +58,10 @@
       </div>
 
       <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center justify-between"
+        class="glass-card p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex items-center justify-between"
       >
         <div>
-          <p class="text-xs text-slate-400 font-normal">
-            Pengeluaran Tertinggi
-          </p>
+          <p class="text-xs font-normal ui-text-muted">Pengeluaran Tertinggi</p>
           <h3 class="text-xl md:text-base font-semibold text-amber-500 mt-0.5">
             {{
               maxMonth && maxMonth.bulan
@@ -90,18 +79,10 @@
     </div>
 
     <!-- 2. Management Data Table dengan Bulk Action & Sorting -->
-    <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-2xl p-4 md:p-6 border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
-    >
-      <div
-        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
-      >
+    <div class="ui-card md:p-6 border border-slate-100 dark:border-slate-800 space-y-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div class="flex items-center gap-2">
-          <h3
-            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
-          >
-            Manajemen Data Biaya Promosi
-          </h3>
+          <h3 class="font-semibold ui-text-primary ui-text-title">Manajemen Data Biaya Promosi</h3>
           <span
             v-if="selectedIds.length > 0"
             class="text-xs text-purple-600 font-semibold bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20"
@@ -110,35 +91,29 @@
           </span>
         </div>
 
-        <div
-          class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end"
-        >
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
           <div v-if="selectedIds.length > 0" class="flex items-center gap-1.5">
             <button
               @click="clearSelection"
-              class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold px-2.5 py-1.5 rounded-xl text-sm md:text-xs cursor-pointer"
+              class="bg-slate-200 dark:bg-slate-700 px-2.5 py-1.5 rounded-xl cursor-pointer ui-button glass-hover ui-text-secondary min-h-0 ui-text-body"
             >
               Batal
             </button>
             <button
               v-if="store.canEditPage('promo')"
               @click="promptBulkDelete"
-              class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-3 py-1.5 rounded-xl text-sm md:text-xs shadow-md cursor-pointer"
+              class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl shadow-md cursor-pointer ui-button min-h-0 ui-text-body"
             >
-              <i class="fa-solid fa-trash mr-1"></i>Hapus ({{
-                selectedIds.length
-              }})
+              <i class="fa-solid fa-trash mr-1"></i>Hapus ({{ selectedIds.length }})
             </button>
           </div>
 
           <div class="flex items-center gap-1.5">
-            <span class="text-sm md:text-xs text-slate-400 font-normal"
-              >Tampilkan:</span
-            >
+            <span class="font-normal ui-text-muted ui-text-body">Tampilkan:</span>
             <select
               v-model="itemsPerPage"
               @change="currentPage = 1"
-              class="glass-input rounded-xl p-1.5 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none font-semibold"
+              class="rounded-xl p-1.5 bg-slate-50 dark:bg-slate-800 font-semibold ui-input min-h-0 ui-text-body"
             >
               <option value="25">25</option>
               <option value="50">50</option>
@@ -150,14 +125,10 @@
       </div>
 
       <!-- Area Scrollable Tabel -->
-      <div
-        class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1 custom-scrollbar"
-      >
-        <table
-          class="min-w-full text-sm md:text-xs text-left border-collapse whitespace-nowrap"
-        >
+      <div class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1 custom-scrollbar">
+        <table class="min-w-full text-left border-collapse whitespace-nowrap ui-text-body">
           <thead
-            class="bg-slate-50/95 dark:bg-slate-800/95 text-slate-400 sticky top-0 backdrop-blur-md z-10 font-semibold uppercase text-xs shadow-sm"
+            class="bg-slate-50/95 dark:bg-slate-800/95 sticky top-0 backdrop-blur-md z-10 font-semibold uppercase text-xs shadow-sm ui-text-muted"
           >
             <tr>
               <th
@@ -198,16 +169,14 @@
           </thead>
 
           <tbody
-            class="divide-y divide-slate-100 dark:divide-slate-800/60 font-normal text-slate-700 dark:text-slate-200"
+            class="divide-y divide-slate-100 dark:divide-slate-800/60 font-normal ui-text-secondary"
           >
             <tr v-if="store.isLoading">
-              <td colspan="5" class="text-center py-6 text-slate-400">
-                Memuat data promosi...
-              </td>
+              <td colspan="5" class="text-center py-6 ui-text-muted">Memuat data promosi...</td>
             </tr>
 
             <tr v-else-if="paginatedPromo.length === 0">
-              <td colspan="5" class="text-center py-6 text-slate-400">
+              <td colspan="5" class="text-center py-6 ui-text-muted">
                 Tidak ada data biaya promosi.
               </td>
             </tr>
@@ -216,11 +185,9 @@
               v-else
               v-for="item in paginatedPromo"
               :key="getDocId(item)"
-              class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+              class="transition-colors ui-row-hover"
               :class="{
-                'bg-purple-500/10 dark:bg-purple-500/20': selectedIds.includes(
-                  getDocId(item),
-                ),
+                'bg-purple-500/10 dark:bg-purple-500/20': selectedIds.includes(getDocId(item)),
               }"
             >
               <td class="py-3 px-3 text-center" @click.stop>
@@ -265,31 +232,26 @@
       <!-- Footer Navigasi Pagination -->
       <div
         v-if="itemsPerPage !== 'ALL' && totalPages > 1"
-        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-sm md:text-xs text-slate-400 font-normal"
+        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 font-normal ui-text-muted ui-text-body"
       >
-        <div>
-          Menampilkan {{ startItem }} - {{ endItem }} dari
-          {{ sortedPromo.length }} data
-        </div>
+        <div>Menampilkan {{ startItem }} - {{ endItem }} dari {{ sortedPromo.length }} data</div>
         <div class="flex items-center gap-1.5">
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
-            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-2.5 py-1.5 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ui-button ui-button-glass glass-hover min-h-0"
           >
             <i class="fa-solid fa-chevron-left text-xs"></i>
           </button>
 
-          <span
-            class="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 font-semibold"
-          >
+          <span class="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-600 font-semibold">
             {{ currentPage }} / {{ totalPages }}
           </span>
 
           <button
             @click="currentPage++"
             :disabled="currentPage === totalPages"
-            class="px-2.5 py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-2.5 py-1.5 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ui-button ui-button-glass glass-hover min-h-0"
           >
             <i class="fa-solid fa-chevron-right text-xs"></i>
           </button>
@@ -305,7 +267,7 @@
         @click.self="closeConfirmModal"
       >
         <div
-          class="glass-card bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-2xl max-w-sm w-full space-y-4 border border-slate-100 dark:border-slate-800"
+          class="glass-card rounded-2xl p-6 shadow-2xl max-w-sm w-full space-y-4 border border-slate-100 dark:border-slate-800"
         >
           <div class="flex items-center gap-3">
             <div
@@ -314,26 +276,20 @@
               <i class="fa-solid fa-triangle-exclamation text-lg"></i>
             </div>
             <div>
-              <h4
-                class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100"
-              >
+              <h4 class="font-semibold ui-text-primary ui-text-title">
                 {{ confirmModal.title }}
               </h4>
-              <p
-                class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-normal"
-              >
+              <p class="text-xs mt-0.5 font-normal ui-text-description">
                 {{ confirmModal.message }}
               </p>
             </div>
           </div>
 
-          <div
-            class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
-          >
+          <div class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
             <button
               @click="closeConfirmModal"
               type="button"
-              class="px-4 py-2 rounded-xl text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
+              class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 cursor-pointer ui-button glass-hover ui-text-secondary min-h-0 ui-text-body"
             >
               Batal
             </button>
@@ -341,7 +297,7 @@
               @click="executeConfirmAction"
               type="button"
               :disabled="store.isLoading"
-              class="px-4 py-2 rounded-xl text-sm md:text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              class="px-4 py-2 rounded-xl text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50 ui-button min-h-0 ui-text-body"
             >
               <i v-if="store.isLoading" class="fa-solid fa-spinner fa-spin"></i>
               <span>Ya, Hapus</span>

@@ -1,0 +1,261 @@
+<!-- src/App.vue -->
+<template>
+  <div
+    id="mainBody"
+    :class="[
+      `pb-[env(safe-area-inset-bottom,16px)]`,
+      'flex min-h-screen w-full text-slate-800 dark:text-slate-100 transition-colors duration-300',
+      store.isDarkMode ? 'bg-gradient-dark dark' : 'bg-gradient-light',
+    ]"
+  >
+    <!-- Indikator Loading Global -->
+    <div
+      v-if="store.isLoading"
+      id="loader"
+      class="fixed inset-0 z-[10005] bg-slate-950/20 backdrop-blur-md flex items-center justify-center"
+    >
+      <div
+        class="flex flex-col items-center gap-3 bg-white/20 dark:bg-slate-900/30 backdrop-blur-xl border border-white/30 dark:border-white/10 p-6 rounded-3xl shadow-2xl"
+      >
+        <i class="fa-solid fa-circle-notch fa-spin text-3xl text-theme"></i>
+        <span
+          class="text-xs font-bold text-slate-800 dark:text-slate-100 drop-shadow-sm"
+          >Memuat...</span
+        >
+      </div>
+    </div>
+
+    <!-- Modal Login & Passcode -->
+    <LoginModal
+      v-if="store.activeModal === 'login'"
+      @close="store.closeModal()"
+    />
+    <Passcode />
+
+    <!-- KONTEN UTAMA DASHBOARD -->
+    <div
+      id="appContent"
+      class="flex w-full min-w-0 min-h-screen transition-all duration-300 relative"
+      :class="{ 'content-locked': !store.isAccessGranted }"
+    >
+      <!-- Spacer Sidebar Desktop -->
+      <div
+        class="hidden md:block shrink-0 transition-all duration-300"
+        :class="store.isSidebarCollapsed ? 'w-20' : 'w-64'"
+      ></div>
+
+      <!-- Sidebar Navigation -->
+      <Sidebar
+        :is-open="isSidebarOpen"
+        :active-page="store.currentPage"
+        @close-sidebar="isSidebarOpen = false"
+        @change-page="store.currentPage = $event"
+        @open-login="store.openModal('login')"
+      />
+
+      <!-- Area Konten Utama -->
+      <main
+        class="flex-1 w-full min-w-0 relative flex flex-col pb-16 md:pb-6 z-0"
+      >
+        <Header @toggle-sidebar="isSidebarOpen = !isSidebarOpen" />
+
+        <!-- Pembungkus View Utama -->
+        <div
+          class="p-4 md:p-6 flex-1 w-full space-y-4 md:space-y-6 relative z-10"
+        >
+          <template v-if="store.isAccessGranted">
+            <!-- 1. JIKA DI HALAMAN UTAMA / DASHBOARD STAFF -->
+            <template
+              v-if="['main', 'staff-dashboard'].includes(store.currentPage)"
+            >
+              <!-- <PageSummary v-if="isSuperadminOrSpv" />
+              <PageStaffDashboard v-else /> -->
+
+              <PageStaffDashboard />
+            </template>
+
+            <!-- 2. JIKA DI HALAMAN MODUL KINERJA LAIN -->
+            <template v-else>
+              <component
+                :is="activeView"
+                v-if="store.canAccessPage(store.currentPage)"
+              />
+
+              <!-- Peringatan Akses Ditolak -->
+              <div
+                v-else
+                class="glass-card p-12 text-center rounded-3xl space-y-3 mt-10"
+              >
+                <i class="fa-solid fa-lock text-4xl text-rose-500 mb-2"></i>
+                <h3
+                  class="font-bold text-lg text-slate-800 dark:text-slate-100"
+                >
+                  Akses Terbatas !
+                </h3>
+                <p class="text-xs text-slate-400">
+                  Akun Anda tidak memiliki izin untuk mengakses halaman ini.
+                </p>
+              </div>
+            </template>
+          </template>
+        </div>
+
+        <BottomNav />
+      </main>
+    </div>
+
+    <!-- Pop-up Modals Dynamic -->
+    <Modals v-if="store.activeModal && store.activeModal !== 'login'" />
+  </div>
+</template>
+
+<script setup>
+import { ref, computed, watch, onMounted, onUnmounted } from "vue";
+import { store } from "./store/index.js";
+
+// Layout & Modals
+import Passcode from "./components/Passcode.vue";
+import Sidebar from "./components/Sidebar.vue";
+import Header from "./components/Header.vue";
+import LoginModal from "./components/LoginModal.vue";
+import Modals from "./components/Modals.vue";
+import BottomNav from "./components/BottomNav.vue";
+
+// Views Utama
+import PageStaffDashboard from "./views/PageStaffDashboard.vue";
+import PageSummary from "./views/PageSummary.vue";
+import PageUnit from "./views/PageUnit.vue";
+import PageLeads from "./views/PageLeads.vue";
+import PagePromo from "./views/PagePromo.vue";
+import PageUsers from "./views/PageUsers.vue";
+import PageProfile from "./views/PageProfile.vue";
+import PageNote from "./views/PageNote.vue";
+import PageProgress from "./views/PageProgress.vue";
+import PageDigmar from "./views/PageDigmar.vue";
+import PageReport from "./views/PageReport.vue";
+import PageSpvReport from "./views/PageSpvReport.vue";
+import PageMasterData from "./views/PageMasterData.vue";
+import PageCustomerCare from "./views/PageCustomerCare.vue";
+import PagePresensi from "./views/PagePresensi.vue";
+import PageDailyReport from "./views/PageDailyReport.vue";
+
+// --- PERBAIKAN BUG: Definisi isSuperadminOrSpv ---
+const isSuperadminOrSpv = computed(() => {
+  if (!store.currentUser) return false;
+  const role = (
+    store.currentUser.role ||
+    store.currentUser.Role ||
+    ""
+  ).toUpperCase();
+  return ["SUPERADMIN", "SPV", "SUPERVISOR", "MANAGER"].includes(role); // Sesuaikan dengan role hierarki Anda
+});
+
+// --- PERBAIKAN: Object Mapping untuk Routing (Mengganti Switch-Case) ---
+const viewMap = {
+  summary: PageSummary,
+  notes: PageNote,
+  progress: PageProgress,
+  digmar: PageDigmar,
+  leads: PageLeads,
+  "spv-report": PageSpvReport,
+  aduan: PageCustomerCare,
+  promo: PagePromo,
+  report: PageReport,
+  "master-data": PageMasterData,
+  users: PageUsers,
+  profile: PageProfile,
+  presensi: PagePresensi,
+  "daily-report": PageDailyReport,
+};
+
+const activeView = computed(() => {
+  if (store.currentPage.startsWith("unit-")) return PageUnit;
+  return viewMap[store.currentPage] || PageStaffDashboard;
+});
+
+// --- STATE NAVIGASI & SWIPE ---
+const isSidebarOpen = ref(false);
+const pageHistory = ref([]);
+const isBackAction = ref(false);
+let touchStartX = 0;
+let touchStartY = 0;
+
+watch(
+  () => store.currentPage,
+  (newPage, oldPage) => {
+    if (isBackAction.value) {
+      isBackAction.value = false;
+      return;
+    }
+    if (
+      oldPage &&
+      newPage !== oldPage &&
+      pageHistory.value[pageHistory.value.length - 1] !== oldPage
+    ) {
+      pageHistory.value.push(oldPage);
+    }
+  },
+);
+
+const handleTouchStart = (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+};
+
+const handleTouchEnd = (e) => {
+  const deltaX = e.changedTouches[0].clientX - touchStartX;
+  const deltaY = e.changedTouches[0].clientY - touchStartY;
+
+  // Deteksi swipe dari ujung kiri untuk membuka sidebar
+  if (deltaX > 70 && Math.abs(deltaY) < 50 && touchStartX < 50) {
+    isSidebarOpen.value = true;
+  }
+};
+
+// --- LIFECYCLE HOOKS ---
+onMounted(async () => {
+  window.addEventListener("touchstart", handleTouchStart, { passive: true });
+  window.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+  store.initTheme();
+  store.initThemeColor();
+
+  const savedUser = localStorage.getItem("SESSION_USER");
+  if (savedUser) {
+    try {
+      store.currentUser = JSON.parse(savedUser);
+      store.isAccessGranted = true;
+      await store.loadFullDatabase();
+    } catch (e) {
+      console.error("Gagal restore session:", e);
+    }
+  }
+
+  // Dukungan tombol Back Native (Android/WebView)
+  window.handleAndroidBack = () => {
+    if (pageHistory.value.length > 0) {
+      isBackAction.value = true;
+      store.currentPage = pageHistory.value.pop();
+      return "true";
+    } else if (store.currentPage !== "main") {
+      isBackAction.value = true;
+      store.currentPage = "main";
+      return "true";
+    }
+    return "false";
+  };
+});
+
+onUnmounted(() => {
+  window.removeEventListener("touchstart", handleTouchStart);
+  window.removeEventListener("touchend", handleTouchEnd);
+});
+</script>
+
+<style>
+.content-locked {
+  filter: blur(16px) grayscale(40%) !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+</style>

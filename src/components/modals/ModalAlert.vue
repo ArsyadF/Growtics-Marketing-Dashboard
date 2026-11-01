@@ -15,14 +15,12 @@
         <i
           class="fa-solid"
           :class="
-            store.alertPayload.type === 'warning'
-              ? 'fa-triangle-exclamation'
-              : 'fa-circle-check'
+            store.alertPayload.type === 'warning' ? 'fa-triangle-exclamation' : 'fa-circle-check'
           "
         ></i>
       </div>
       <div>
-        <h3 class="font-semibold text-slate-800 dark:text-slate-100 text-base">
+        <h3 class="font-semibold text-base ui-text-primary">
           {{ store.alertPayload.title || "Pemberitahuan" }}
         </h3>
         <p class="text-xs text-slate-500 mt-1 font-normal">
@@ -33,13 +31,13 @@
         <button
           v-if="store.alertPayload.onConfirm"
           @click="closeAlert"
-          class="flex-1 bg-slate-200 dark:bg-slate-800 font-semibold py-2.5 rounded-xl text-xs cursor-pointer"
+          class="flex-1 bg-slate-200 dark:bg-slate-800 py-2.5 rounded-xl text-xs cursor-pointer ui-button min-h-0 px-0 gap-0 ui-text-secondary border-0"
         >
           Batal
         </button>
         <button
           @click="confirm"
-          class="flex-1 bg-button text-white font-semibold py-2.5 rounded-xl text-xs shadow-md cursor-pointer"
+          class="flex-1 py-2.5 rounded-xl text-xs shadow-md cursor-pointer ui-button min-h-0 px-0 gap-0 ui-button-primary border-0"
         >
           {{ store.alertPayload.onConfirm ? "Ya, Lanjutkan" : "OK" }}
         </button>

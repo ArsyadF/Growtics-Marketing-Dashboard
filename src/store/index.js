@@ -203,6 +203,20 @@ export const store = reactive({
     }
   },
 
+  // Di dalam actions store/index.js:
+async loadInitialData() {
+    this.isLoading = true;
+    try {
+      // 🔑 Kirim currentUser agar backend bisa memfilter hak akses data master
+      const res = await api.getPostLoginData(this.currentUser); 
+      this.parseDB(res);
+    } catch (err) {
+      console.error("Gagal load initial data:", err);
+    } finally {
+      this.isLoading = false;
+    }
+  },
+  
   parseDB(data) {
     if (!data) return;
     const parsed = typeof data === 'string' ? JSON.parse(data) : data;
@@ -263,8 +277,8 @@ export const store = reactive({
     if (this.currentUser.permissions && this.currentUser.permissions[pageKey]) {
       return !!this.currentUser.permissions[pageKey].access;
     }
-
-    return true; 
+if (pageKey === 'main') return true;
+    return false; 
   },
 
   canEditPage(pageId) {
