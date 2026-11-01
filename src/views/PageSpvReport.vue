@@ -1,22 +1,18 @@
 <!-- src/views/PageSpvReport.vue -->
 <template>
-  <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
+  <div v-if="canViewPage" class="space-y-4 md:space-y-6 pb-20 md:pb-6">
     <!-- HEADER BAR: TITLE & FILTER UNIT -->
     <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl flex flex-col lg:flex-row md:items-center justify-between gap-4 border border-slate-100 dark:border-slate-800 shadow-sm no-print"
+      class="ui-card md:p-5 flex flex-col lg:flex-row md:items-center justify-between gap-4 border border-slate-100 dark:border-slate-800 no-print"
     >
       <div>
-        <h3
-          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
+        <h3 class="font-semibold flex items-center gap-2 ui-text-primary ui-text-title">
           <i class="fa-solid fa-file-signature text-theme"></i>
           <span>Laporan Pekanan & Konsolidasi Direksi</span>
         </h3>
-        <p
-          class="text-xs md:text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-normal leading-tight"
-        >
-          Modul pembuatan rekapitulasi kinerja mingguan per unit usaha maupun
-          konsolidasi seluruh unit.
+        <p class="text-xs md:text-xs mt-0.5 font-normal leading-tight ui-text-description">
+          Modul pembuatan rekapitulasi kinerja mingguan per unit usaha maupun konsolidasi seluruh
+          unit.
         </p>
       </div>
 
@@ -24,11 +20,9 @@
         <select
           v-model="selectedUnitFilter"
           :disabled="!isSuperadmin"
-          class="glass-input rounded-xl px-3 py-2 text-xs font-semibold bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200 outline-none cursor-pointer border border-slate-200/80 dark:border-slate-700 disabled:opacity-70"
+          class="rounded-xl px-3 py-2 text-xs font-semibold bg-slate-50 dark:bg-slate-800 cursor-pointer border border-slate-200/80 dark:border-slate-700 disabled:opacity-70 ui-input ui-text-secondary min-h-0"
         >
-          <option value="ALL" v-if="isSuperadmin">
-            Semua Unit (Konsolidasi)
-          </option>
+          <option value="ALL" v-if="isSuperadmin">Semua Unit (Konsolidasi)</option>
           <option v-for="u in masterUnits" :key="u.code" :value="u.code">
             {{ u.code }} - {{ u.name }}
           </option>
@@ -37,7 +31,7 @@
         <button
           v-if="store.canEditPage('spv-report')"
           @click="openAddReportModal"
-          class="bg-button text-white font-semibold px-3.5 py-2 md:px-4 md:py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 shrink-0 cursor-pointer hover:opacity-95"
+          class="px-3.5 py-2 md:px-4 md:py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 shrink-0 cursor-pointer hover:opacity-95 ui-button ui-button-primary min-h-0"
         >
           <i class="fa-solid fa-pen-to-square"></i>
           <span>+ Laporan</span>
@@ -48,15 +42,12 @@
     <!-- TABEL LAPORAN RINGKAS RESPONSIF MOBILE -->
     <div
       v-if="filteredReports.length > 0"
-      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-xs no-print space-y-0"
+      class="glass-card rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 shadow-xs no-print space-y-0"
     >
       <div
         class="p-3 md:p-4 border-b border-slate-100 dark:border-slate-800 flex flex-wrap justify-between items-center bg-slate-50/50 dark:bg-slate-800/40 gap-2"
       >
-        <div
-          v-if="store.canEditPage('spv-report')"
-          class="flex items-center gap-2"
-        >
+        <div v-if="store.canEditPage('spv-report')" class="flex items-center gap-2">
           <input
             type="checkbox"
             :checked="isAllSelected"
@@ -64,9 +55,7 @@
             class="accent-emerald-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
             title="Pilih Semua Laporan"
           />
-          <span
-            class="text-xs font-semibold text-slate-700 dark:text-slate-200"
-          >
+          <span class="text-xs font-semibold ui-text-secondary">
             Daftar Laporan Terdaftar ({{ filteredReports.length }})
           </span>
         </div>
@@ -74,7 +63,7 @@
         <div class="flex items-center gap-1.5">
           <span
             v-if="selectedReportIds.length > 0"
-            class="text-xs font-semibold text-theme bg-theme/10 px-2 py-0.5 rounded-full border border-theme/20 mr-0.5"
+            class="text-xs font-semibold text-theme theme-tint px-2 py-0.5 rounded-full border theme-border-soft mr-0.5"
           >
             {{ selectedReportIds.length }} Dipilih
           </span>
@@ -82,7 +71,7 @@
           <button
             v-if="selectedReportIds.length > 0"
             @click="clearBulkSelection"
-            class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold px-2.5 py-1 rounded-xl text-xs transition-all flex items-center gap-1 cursor-pointer"
+            class="bg-slate-200 dark:bg-slate-700 px-2.5 py-1 rounded-xl text-xs transition-all flex items-center gap-1 cursor-pointer ui-button glass-hover ui-text-secondary min-h-0"
             title="Batal Pilih Semua"
           >
             <i class="fa-solid fa-xmark"></i>
@@ -92,7 +81,7 @@
           <button
             v-if="selectedReportIds.length > 0"
             @click="confirmBulkDelete"
-            class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-2.5 py-1 rounded-xl text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer"
+            class="bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1 rounded-xl text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer ui-button min-h-0"
           >
             <i class="fa-solid fa-trash"></i>
             <span>Hapus</span>
@@ -101,7 +90,7 @@
           <button
             v-if="selectedReportIds.length > 0"
             @click="generateBulkConsolidation"
-            class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-2.5 py-1 rounded-xl text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer animate-pulse"
+            class="bg-purple-600 hover:bg-purple-700 text-white px-2.5 py-1 rounded-xl text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer animate-pulse ui-button min-h-0"
           >
             <i class="fa-solid fa-layer-group"></i>
             <span>Konsolidasi</span>
@@ -111,17 +100,12 @@
 
       <!-- TABLE LAYOUT MAIN -->
       <div class="w-full overflow-x-auto">
-        <table
-          class="w-full text-left text-xs table-fixed min-w-[620px] md:min-w-full"
-        >
+        <table class="w-full text-left text-xs table-fixed min-w-[620px] md:min-w-full">
           <thead>
             <tr
-              class="bg-slate-100/80 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 font-semibold uppercase text-xs border-b border-slate-100 dark:border-slate-800"
+              class="bg-slate-100/80 dark:bg-slate-800/80 font-semibold uppercase text-xs border-b border-slate-100 dark:border-slate-800 ui-text-description"
             >
-              <th
-                v-if="store.canEditPage('spv-report')"
-                class="p-2 md:p-3 w-8 text-center"
-              >
+              <th v-if="store.canEditPage('spv-report')" class="p-2 md:p-3 w-8 text-center">
                 Pilih
               </th>
               <th
@@ -130,10 +114,7 @@
               >
                 Unit
               </th>
-              <th
-                @click="sortTable('title')"
-                class="p-2 md:p-3 cursor-pointer select-none"
-              >
+              <th @click="sortTable('title')" class="p-2 md:p-3 cursor-pointer select-none">
                 Judul & Periode
               </th>
               <th
@@ -148,23 +129,17 @@
               >
                 Tgl Rilis
               </th>
-              <th
-                v-if="store.canEditPage('spv-report')"
-                class="p-2 md:p-3 w-24 md:w-32 text-right"
-              >
+              <th v-if="store.canEditPage('spv-report')" class="p-2 md:p-3 w-24 md:w-32 text-right">
                 Aksi
               </th>
             </tr>
           </thead>
-          <tbody
-            class="divide-y divide-slate-100 dark:divide-slate-800/60 font-normal"
-          >
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 font-normal">
             <template v-for="rep in sortedReports" :key="rep.id">
               <tr
-                class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+                class="transition-colors ui-row-hover"
                 :class="{
-                  'bg-purple-500/5 dark:bg-purple-500/10':
-                    selectedReportIds.includes(rep.id),
+                  'bg-purple-500/5 dark:bg-purple-500/10': selectedReportIds.includes(rep.id),
                 }"
               >
                 <td
@@ -186,34 +161,25 @@
                     :class="
                       rep.unit === 'ALL'
                         ? 'text-purple-600 bg-purple-500/10 border-purple-500/20'
-                        : 'text-theme bg-theme/10 border-theme/20'
+                        : 'text-theme theme-tint theme-border-soft'
                     "
                   >
                     {{ rep.unit === "ALL" ? "KONSOL" : rep.unit }}
                   </span>
                 </td>
 
-                <td
-                  class="p-2 md:p-3 cursor-pointer overflow-hidden"
-                  @click="toggleExpand(rep.id)"
-                >
-                  <div
-                    class="font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-1 min-w-0"
-                  >
+                <td class="p-2 md:p-3 cursor-pointer overflow-hidden" @click="toggleExpand(rep.id)">
+                  <div class="font-semibold flex items-center gap-1 min-w-0 ui-text-primary">
                     <i
-                      class="fa-solid text-xs text-slate-400 shrink-0 transition-transform duration-200"
+                      class="fa-solid text-xs shrink-0 transition-transform duration-200 ui-text-muted"
                       :class="
-                        expandedReportIds.includes(rep.id)
-                          ? 'fa-chevron-down'
-                          : 'fa-chevron-right'
+                        expandedReportIds.includes(rep.id) ? 'fa-chevron-down' : 'fa-chevron-right'
                       "
                     ></i>
-                    <span class="truncate text-xs" :title="rep.title">{{
-                      rep.title
-                    }}</span>
+                    <span class="truncate text-xs" :title="rep.title">{{ rep.title }}</span>
                   </div>
                   <span
-                    class="text-xs text-slate-400 block truncate ml-3 font-normal"
+                    class="text-xs block truncate ml-3 font-normal ui-text-muted"
                     :title="rep.periode"
                   >
                     {{ rep.periode }}
@@ -241,14 +207,14 @@
                   <div class="flex items-center justify-end gap-1">
                     <button
                       @click="duplicateReport(rep)"
-                      class="bg-amber-500 hover:bg-amber-600 text-white text-xs p-1.5 md:px-2 md:py-1 rounded-lg font-semibold transition-all cursor-pointer shadow-xs"
+                      class="bg-amber-500 hover:bg-amber-600 text-white text-xs p-1.5 md:px-2 md:py-1 rounded-lg transition-all cursor-pointer shadow-xs ui-button min-h-0"
                       title="Duplikat Data Laporan"
                     >
                       <i class="fa-solid fa-copy"></i>
                     </button>
                     <button
                       @click="openExportModal(rep)"
-                      class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1 md:px-2.5 md:py-1 rounded-lg font-semibold transition-all cursor-pointer shadow-xs flex items-center gap-0.5"
+                      class="bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1 md:px-2.5 md:py-1 rounded-lg transition-all cursor-pointer shadow-xs flex items-center gap-0.5 ui-button min-h-0"
                       title="Opsi Ekspor Laporan"
                     >
                       <i class="fa-solid fa-download"></i>
@@ -256,14 +222,14 @@
                     </button>
                     <button
                       @click="openEditReport(rep)"
-                      class="text-slate-400 hover:text-amber-500 p-1 cursor-pointer transition-colors"
+                      class="hover:text-amber-500 p-1 cursor-pointer transition-colors ui-text-muted"
                       title="Edit"
                     >
                       <i class="fa-solid fa-pen-to-square text-xs"></i>
                     </button>
                     <button
                       @click="confirmDeleteReport(rep)"
-                      class="text-slate-400 hover:text-rose-500 p-1 cursor-pointer transition-colors"
+                      class="hover:text-rose-500 p-1 cursor-pointer transition-colors ui-text-muted"
                       title="Hapus"
                     >
                       <i class="fa-solid fa-trash text-xs"></i>
@@ -279,13 +245,10 @@
               >
                 <td colspan="6" class="p-3 md:p-4 space-y-3">
                   <div class="space-y-1">
-                    <strong
-                      class="text-xs font-semibold text-slate-800 dark:text-slate-100 uppercase"
-                    >
+                    <strong class="text-xs font-semibold uppercase ui-text-primary">
                       1. Ringkasan Pesanan & Penjualan ({{
                         rep.unit === "ALL"
-                          ? "KONSOLIDASI: " +
-                            (rep.selectedUnits?.join(", ") || "Semua Unit")
+                          ? "KONSOLIDASI: " + (rep.selectedUnits?.join(", ") || "Semua Unit")
                           : "Unit " + rep.unit
                       }})
                     </strong>
@@ -293,34 +256,27 @@
                       class="grid grid-cols-3 gap-2 md:gap-3 text-center bg-white dark:bg-slate-800 p-2.5 md:p-3 rounded-xl border border-slate-200/80 dark:border-slate-700"
                     >
                       <div>
-                        <span
-                          class="text-xs text-slate-400 block mb-0.5 font-normal"
+                        <span class="text-xs block mb-0.5 font-normal ui-text-muted"
                           >Total Penawaran</span
                         >
-                        <strong
-                          class="text-theme text-base md:text-sm font-semibold"
-                          >{{ formatNumber(rep.ringkasan?.penawaran) }}</strong
-                        >
+                        <strong class="text-theme font-semibold ui-text-title">{{
+                          formatNumber(rep.ringkasan?.penawaran)
+                        }}</strong>
                       </div>
                       <div>
-                        <span
-                          class="text-xs text-slate-400 block mb-0.5 font-normal"
+                        <span class="text-xs block mb-0.5 font-normal ui-text-muted"
                           >Total Pesanan</span
                         >
-                        <strong
-                          class="text-theme text-base md:text-sm font-semibold"
-                          >{{ formatNumber(rep.ringkasan?.pesanan) }}</strong
-                        >
+                        <strong class="text-theme font-semibold ui-text-title">{{
+                          formatNumber(rep.ringkasan?.pesanan)
+                        }}</strong>
                       </div>
                       <div>
-                        <span
-                          class="text-xs text-slate-400 block mb-0.5 font-normal"
+                        <span class="text-xs block mb-0.5 font-normal ui-text-muted"
                           >Total Penjualan (Rp)</span
                         >
-                        <strong
-                          class="text-theme text-base md:text-sm font-semibold"
-                          >Rp
-                          {{ formatNumber(rep.ringkasan?.penjualan) }}</strong
+                        <strong class="text-theme font-semibold ui-text-title"
+                          >Rp {{ formatNumber(rep.ringkasan?.penjualan) }}</strong
                         >
                       </div>
                     </div>
@@ -330,12 +286,11 @@
                     v-if="rep.aktivitasCS"
                     class="p-3 bg-white dark:bg-slate-800 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-1"
                   >
-                    <strong
-                      class="text-slate-800 dark:text-slate-200 block text-xs uppercase font-semibold"
+                    <strong class="block text-xs uppercase font-semibold ui-text-primary"
                       >2. Aktivitas Unit</strong
                     >
                     <div
-                      class="rich-editor-content export-override-font text-xs leading-relaxed text-slate-600 dark:text-slate-300 font-normal"
+                      class="rich-editor-content export-override-font text-xs leading-relaxed font-normal ui-text-secondary"
                       v-html="rep.aktivitasCS"
                     ></div>
                   </div>
@@ -343,8 +298,7 @@
                   <div
                     class="bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-2"
                   >
-                    <strong
-                      class="text-xs font-semibold text-slate-800 dark:text-slate-100 uppercase"
+                    <strong class="text-xs font-semibold uppercase ui-text-primary"
                       >3. Detail Proses Pesanan: Leads & Campaign</strong
                     >
                     <div class="overflow-x-auto">
@@ -352,80 +306,49 @@
                         class="w-full text-xs text-left border-collapse border border-slate-200 dark:border-slate-700"
                       >
                         <thead>
-                          <tr
-                            class="bg-slate-100 dark:bg-slate-700/50 font-semibold"
-                          >
-                            <th
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
+                          <tr class="bg-slate-100 dark:bg-slate-700/50 font-semibold">
+                            <th class="border border-slate-200 dark:border-slate-700 p-1.5">
                               Unit
                             </th>
-                            <th
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
+                            <th class="border border-slate-200 dark:border-slate-700 p-1.5">
                               Data Baru
                             </th>
-                            <th
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
+                            <th class="border border-slate-200 dark:border-slate-700 p-1.5">
                               Penawaran
                             </th>
-                            <th
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
+                            <th class="border border-slate-200 dark:border-slate-700 p-1.5">
                               Follow Up
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr
-                            v-for="(row, idx) in getPemasaranRows(rep)"
-                            :key="idx"
-                          >
+                          <tr v-for="(row, idx) in getPemasaranRows(rep)" :key="idx">
                             <td
                               class="border border-slate-200 dark:border-slate-700 p-1.5 font-semibold"
                             >
                               {{ row.unit }}
                             </td>
-                            <td
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
+                            <td class="border border-slate-200 dark:border-slate-700 p-1.5">
                               {{ formatNumber(row.leads) }}
                             </td>
-                            <td
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
+                            <td class="border border-slate-200 dark:border-slate-700 p-1.5">
                               {{ formatNumber(row.campaign) }}
                             </td>
-                            <td
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
+                            <td class="border border-slate-200 dark:border-slate-700 p-1.5">
                               {{ formatNumber(row.fu) }}
                             </td>
                           </tr>
-                          <tr
-                            class="font-semibold bg-slate-50 dark:bg-slate-700/30"
-                          >
-                            <td
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
+                          <tr class="font-semibold bg-slate-50 dark:bg-slate-700/30">
+                            <td class="border border-slate-200 dark:border-slate-700 p-1.5">
                               TOTAL
                             </td>
-                            <td
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
+                            <td class="border border-slate-200 dark:border-slate-700 p-1.5">
                               {{ formatNumber(getPemasaranTotal(rep).leads) }}
                             </td>
-                            <td
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
-                              {{
-                                formatNumber(getPemasaranTotal(rep).campaign)
-                              }}
+                            <td class="border border-slate-200 dark:border-slate-700 p-1.5">
+                              {{ formatNumber(getPemasaranTotal(rep).campaign) }}
                             </td>
-                            <td
-                              class="border border-slate-200 dark:border-slate-700 p-1.5"
-                            >
+                            <td class="border border-slate-200 dark:border-slate-700 p-1.5">
                               {{ formatNumber(getPemasaranTotal(rep).fu) }}
                             </td>
                           </tr>
@@ -439,11 +362,10 @@
                     class="bg-white dark:bg-slate-800 p-3 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-2"
                   >
                     <div class="flex justify-between items-center">
-                      <strong
-                        class="text-xs font-semibold text-slate-800 dark:text-slate-100 uppercase"
+                      <strong class="text-xs font-semibold uppercase ui-text-primary"
                         >4. Detail Penjualan</strong
                       >
-                      <span class="text-xs text-slate-400 font-normal"
+                      <span class="text-xs font-normal ui-text-muted"
                         >* Klik header untuk mengurutkan data</span
                       >
                     </div>
@@ -452,66 +374,51 @@
                         class="w-full text-xs text-left border-collapse border border-slate-200 dark:border-slate-700"
                       >
                         <thead>
-                          <tr
-                            class="bg-slate-100 dark:bg-slate-700/50 select-none font-semibold"
-                          >
+                          <tr class="bg-slate-100 dark:bg-slate-700/50 select-none font-semibold">
                             <th
                               v-if="isVarActive(rep, 'unit')"
                               @click="sortSalesRows('unit')"
-                              class="border border-slate-200 dark:border-slate-700 p-1.5 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600"
+                              class="border border-slate-200 dark:border-slate-700 p-1.5 cursor-pointer glass-hover"
                             >
                               Unit
-                              <i
-                                class="fa-solid fa-sort text-xs opacity-60 ml-0.5"
-                              ></i>
+                              <i class="fa-solid fa-sort text-xs opacity-60 ml-0.5"></i>
                             </th>
                             <th
                               v-if="isVarActive(rep, 'divisi')"
                               @click="sortSalesRows('divisi')"
-                              class="border border-slate-200 dark:border-slate-700 p-1.5 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600"
+                              class="border border-slate-200 dark:border-slate-700 p-1.5 cursor-pointer glass-hover"
                             >
                               Divisi
-                              <i
-                                class="fa-solid fa-sort text-xs opacity-60 ml-0.5"
-                              ></i>
+                              <i class="fa-solid fa-sort text-xs opacity-60 ml-0.5"></i>
                             </th>
                             <th
                               v-if="isVarActive(rep, 'channel')"
                               @click="sortSalesRows('channel')"
-                              class="border border-slate-200 dark:border-slate-700 p-1.5 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600"
+                              class="border border-slate-200 dark:border-slate-700 p-1.5 cursor-pointer glass-hover"
                             >
                               Channel/Platform
-                              <i
-                                class="fa-solid fa-sort text-xs opacity-60 ml-0.5"
-                              ></i>
+                              <i class="fa-solid fa-sort text-xs opacity-60 ml-0.5"></i>
                             </th>
                             <th
                               v-if="isVarActive(rep, 'pesanan')"
                               @click="sortSalesRows('pesanan')"
-                              class="border border-slate-200 dark:border-slate-700 p-1.5 text-right cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600"
+                              class="border border-slate-200 dark:border-slate-700 p-1.5 text-right cursor-pointer glass-hover"
                             >
                               Pesanan
-                              <i
-                                class="fa-solid fa-sort text-xs opacity-60 ml-0.5"
-                              ></i>
+                              <i class="fa-solid fa-sort text-xs opacity-60 ml-0.5"></i>
                             </th>
                             <th
                               v-if="isVarActive(rep, 'penjualan')"
                               @click="sortSalesRows('penjualan')"
-                              class="border border-slate-200 dark:border-slate-700 p-1.5 text-right cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-600"
+                              class="border border-slate-200 dark:border-slate-700 p-1.5 text-right cursor-pointer glass-hover"
                             >
                               Penjualan (Rp)
-                              <i
-                                class="fa-solid fa-sort text-xs opacity-60 ml-0.5"
-                              ></i>
+                              <i class="fa-solid fa-sort text-xs opacity-60 ml-0.5"></i>
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr
-                            v-for="(row, idx) in getPenjualanRows(rep)"
-                            :key="idx"
-                          >
+                          <tr v-for="(row, idx) in getPenjualanRows(rep)" :key="idx">
                             <td
                               v-if="isVarActive(rep, 'unit')"
                               class="border border-slate-200 dark:border-slate-700 p-1.5 font-semibold"
@@ -534,11 +441,7 @@
                               v-if="isVarActive(rep, 'pesanan')"
                               class="border border-slate-200 dark:border-slate-700 p-1.5 text-right font-normal"
                             >
-                              {{
-                                row.pesanan > 0
-                                  ? formatNumber(row.pesanan)
-                                  : "-"
-                              }}
+                              {{ row.pesanan > 0 ? formatNumber(row.pesanan) : "-" }}
                             </td>
                             <td
                               v-if="isVarActive(rep, 'penjualan')"
@@ -547,9 +450,7 @@
                               Rp {{ formatNumber(row.penjualan) }}
                             </td>
                           </tr>
-                          <tr
-                            class="font-semibold bg-slate-50 dark:bg-slate-700/30"
-                          >
+                          <tr class="font-semibold bg-slate-50 dark:bg-slate-700/30">
                             <td
                               :colspan="getSalesTotalLabelColspan(rep)"
                               class="border border-slate-200 dark:border-slate-700 p-1.5"
@@ -571,9 +472,7 @@
                               class="border border-slate-200 dark:border-slate-700 p-1.5 text-right text-theme"
                             >
                               Rp
-                              {{
-                                formatNumber(getPenjualanTotal(rep).penjualan)
-                              }}
+                              {{ formatNumber(getPenjualanTotal(rep).penjualan) }}
                             </td>
                           </tr>
                         </tbody>
@@ -595,7 +494,7 @@
                   </div>
 
                   <div
-                    class="text-xs text-slate-400 pt-2 border-t border-slate-200 dark:border-slate-800 italic font-normal"
+                    class="text-xs pt-2 border-t border-slate-200 dark:border-slate-800 italic font-normal ui-text-muted"
                   >
                     {{
                       rep.originalAuthors
@@ -614,17 +513,12 @@
     <!-- Empty State -->
     <div
       v-else
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-12 text-center rounded-3xl space-y-3 no-print border border-slate-100 dark:border-slate-800 shadow-xs"
+      class="glass-card p-12 text-center rounded-3xl space-y-3 no-print border border-slate-100 dark:border-slate-800 shadow-xs"
     >
-      <i
-        class="fa-solid fa-file-invoice text-4xl text-slate-300 dark:text-slate-700 mb-1"
-      ></i>
-      <h4 class="font-semibold text-sm text-slate-700 dark:text-slate-300">
-        Belum Ada Laporan Terdaftar
-      </h4>
-      <p class="text-xs text-slate-400 max-w-xs mx-auto font-normal">
-        Klik tombol "+ Laporan" untuk menyusun laporan per unit atau konsolidasi
-        seluruh unit.
+      <i class="fa-solid fa-file-invoice text-4xl text-slate-300 dark:text-slate-700 mb-1"></i>
+      <h4 class="font-semibold text-sm ui-text-secondary">Belum Ada Laporan Terdaftar</h4>
+      <p class="text-xs max-w-xs mx-auto font-normal ui-text-muted">
+        Klik tombol "+ Laporan" untuk menyusun laporan per unit atau konsolidasi seluruh unit.
       </p>
     </div>
 
@@ -636,23 +530,17 @@
         @click.self="isModalOpen = false"
       >
         <div
-          class="w-full max-w-4xl glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 md:p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[92vh] overflow-y-auto custom-scrollbar"
+          class="w-full max-w-4xl glass-card rounded-3xl p-5 md:p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[92vh] overflow-y-auto custom-scrollbar"
         >
           <div
             class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
           >
-            <h3
-              class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100"
-            >
-              {{
-                isEdit
-                  ? "Edit Laporan Pekanan"
-                  : "Form Pembuatan Laporan Pekanan"
-              }}
+            <h3 class="font-semibold ui-text-primary ui-text-title">
+              {{ isEdit ? "Edit Laporan Pekanan" : "Form Pembuatan Laporan Pekanan" }}
             </h3>
             <button
               @click="isModalOpen = false"
-              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1"
+              class="hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1 ui-text-muted"
             >
               <i class="fa-solid fa-xmark text-lg"></i>
             </button>
@@ -661,53 +549,38 @@
           <form @submit.prevent="saveReport" class="space-y-4 text-xs">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label
-                  class="block text-slate-600 dark:text-slate-300 font-semibold mb-1"
-                  >Tipe Unit Laporan:</label
-                >
+                <label class="block font-semibold mb-1 ui-text-secondary">Tipe Unit Laporan:</label>
                 <select
                   v-model="form.unit"
                   @change="onPeriodOrUnitChange"
-                  class="w-full glass-input rounded-xl px-3 py-2 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100 outline-none cursor-pointer border border-slate-200/60 dark:border-slate-700/60 font-semibold"
+                  class="w-full rounded-xl px-3 py-2 bg-slate-50 dark:bg-slate-800 cursor-pointer border border-slate-200/60 dark:border-slate-700/60 font-semibold ui-input ui-text-primary min-h-0"
                 >
-                  <option value="ALL" v-if="isSuperadmin">
-                    Semua Unit (Konsolidasi)
-                  </option>
-                  <option
-                    v-for="u in masterUnits"
-                    :key="u.code"
-                    :value="u.code"
-                  >
+                  <option value="ALL" v-if="isSuperadmin">Semua Unit (Konsolidasi)</option>
+                  <option v-for="u in masterUnits" :key="u.code" :value="u.code">
                     {{ u.code }} - {{ u.name }}
                   </option>
                 </select>
               </div>
 
               <div>
-                <label
-                  class="block text-slate-600 dark:text-slate-300 font-semibold mb-1"
-                  >Dari Tanggal:</label
-                >
+                <label class="block font-semibold mb-1 ui-text-secondary">Dari Tanggal:</label>
                 <input
                   v-model="form.startDate"
                   type="date"
                   required
                   @change="onPeriodOrUnitChange"
-                  class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 font-normal"
+                  class="w-full rounded-xl px-3 py-2 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 font-normal ui-input ui-text-primary min-h-0"
                 />
               </div>
 
               <div>
-                <label
-                  class="block text-slate-600 dark:text-slate-300 font-semibold mb-1"
-                  >Sampai Tanggal:</label
-                >
+                <label class="block font-semibold mb-1 ui-text-secondary">Sampai Tanggal:</label>
                 <input
                   v-model="form.endDate"
                   type="date"
                   required
                   @change="onPeriodOrUnitChange"
-                  class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 font-normal"
+                  class="w-full rounded-xl px-3 py-2 dark:bg-slate-800 border border-slate-200/60 dark:border-slate-700/60 font-normal ui-input ui-text-primary min-h-0"
                 />
               </div>
             </div>
@@ -718,15 +591,10 @@
               class="p-3 bg-purple-500/5 dark:bg-purple-500/10 rounded-2xl border border-purple-500/20 space-y-2"
             >
               <div class="flex justify-between items-center">
-                <label
-                  class="block text-xs font-semibold text-purple-700 dark:text-purple-300"
-                >
-                  <i class="fa-solid fa-list-check mr-1"></i>Pilih Unit Yang
-                  Dikonsolidasikan:
+                <label class="block text-xs font-semibold text-purple-700 dark:text-purple-300">
+                  <i class="fa-solid fa-list-check mr-1"></i>Pilih Unit Yang Dikonsolidasikan:
                 </label>
-                <span
-                  class="text-xs text-purple-600 dark:text-purple-400 font-semibold"
-                >
+                <span class="text-xs text-purple-600 dark:text-purple-400 font-semibold">
                   {{ form.selectedUnits.length }} Unit Terpilih
                 </span>
               </div>
@@ -734,7 +602,7 @@
                 <label
                   v-for="u in masterUnits"
                   :key="u.code"
-                  class="flex items-center gap-2 cursor-pointer text-xs font-semibold text-slate-700 dark:text-slate-200"
+                  class="flex items-center gap-2 cursor-pointer text-xs font-semibold ui-text-secondary"
                 >
                   <input
                     type="checkbox"
@@ -752,15 +620,10 @@
             <div
               class="p-3 bg-blue-500/5 dark:bg-blue-500/10 rounded-2xl border border-blue-500/20 space-y-2"
             >
-              <label
-                class="block text-xs font-semibold text-blue-700 dark:text-blue-300"
-              >
-                <i class="fa-solid fa-sliders mr-1"></i>Pilih Variabel Tampilan
-                Detail Penjualan:
+              <label class="block text-xs font-semibold text-blue-700 dark:text-blue-300">
+                <i class="fa-solid fa-sliders mr-1"></i>Pilih Variabel Tampilan Detail Penjualan:
               </label>
-              <div
-                class="flex flex-wrap gap-4 text-xs font-semibold text-slate-700 dark:text-slate-200"
-              >
+              <div class="flex flex-wrap gap-4 text-xs font-semibold ui-text-secondary">
                 <label class="flex items-center gap-1.5 cursor-pointer">
                   <input
                     type="checkbox"
@@ -814,9 +677,7 @@
               class="p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-2xl border border-slate-200/80 dark:border-slate-700 space-y-3"
             >
               <div class="flex items-center justify-between">
-                <h4
-                  class="font-semibold text-xs text-slate-800 dark:text-slate-100 flex items-center gap-1.5"
-                >
+                <h4 class="font-semibold text-xs flex items-center gap-1.5 ui-text-primary">
                   <i class="fa-solid fa-chart-pie text-theme"></i>
                   Live Preview Rekap Data Terhitung (Verifikasi Data)
                 </h4>
@@ -834,25 +695,19 @@
                 class="grid grid-cols-3 gap-2 text-center bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700"
               >
                 <div>
-                  <span class="text-xs text-slate-400 block font-normal"
-                    >Total Penawaran</span
-                  >
+                  <span class="text-xs block font-normal ui-text-muted">Total Penawaran</span>
                   <strong class="text-theme text-xs font-semibold">{{
                     formatNumber(form.ringkasan.penawaran)
                   }}</strong>
                 </div>
                 <div>
-                  <span class="text-xs text-slate-400 block font-normal"
-                    >Total Pesanan</span
-                  >
+                  <span class="text-xs block font-normal ui-text-muted">Total Pesanan</span>
                   <strong class="text-theme text-xs font-semibold">{{
                     formatNumber(form.ringkasan.pesanan)
                   }}</strong>
                 </div>
                 <div>
-                  <span class="text-xs text-slate-400 block font-normal"
-                    >Total Penjualan</span
-                  >
+                  <span class="text-xs block font-normal ui-text-muted">Total Penjualan</span>
                   <strong class="text-theme text-xs font-semibold"
                     >Rp {{ formatNumber(form.ringkasan.penjualan) }}</strong
                   >
@@ -865,13 +720,13 @@
                   class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-1"
                 >
                   <span
-                    class="font-semibold text-slate-700 dark:text-slate-200 block text-xs uppercase border-b border-slate-100 dark:border-slate-800 pb-1"
+                    class="font-semibold block text-xs uppercase border-b border-slate-100 dark:border-slate-800 pb-1 ui-text-secondary"
                     >Detail Leads & Campaign</span
                   >
                   <table class="w-full text-left">
                     <thead>
                       <tr
-                        class="text-slate-400 border-b border-slate-100 dark:border-slate-800 font-semibold"
+                        class="border-b border-slate-100 dark:border-slate-800 font-semibold ui-text-muted"
                       >
                         <th class="py-1">Unit</th>
                         <th class="py-1">Leads</th>
@@ -881,10 +736,7 @@
                     </thead>
                     <tbody>
                       <tr v-if="previewLeadsRows.length === 0">
-                        <td
-                          colspan="4"
-                          class="text-center py-2 text-slate-400 font-normal"
-                        >
+                        <td colspan="4" class="text-center py-2 font-normal ui-text-muted">
                           Tidak ada data leads di rentang unit ini.
                         </td>
                       </tr>
@@ -914,14 +766,14 @@
                   class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-700 space-y-1"
                 >
                   <span
-                    class="font-semibold text-slate-700 dark:text-slate-200 block text-xs uppercase border-b border-slate-100 dark:border-slate-800 pb-1"
+                    class="font-semibold block text-xs uppercase border-b border-slate-100 dark:border-slate-800 pb-1 ui-text-secondary"
                     >Detail Penjualan Per Channel/Unit</span
                   >
                   <div class="overflow-x-auto">
                     <table class="w-full text-left">
                       <thead>
                         <tr
-                          class="text-slate-400 border-b border-slate-100 dark:border-slate-800 select-none font-semibold"
+                          class="border-b border-slate-100 dark:border-slate-800 select-none font-semibold ui-text-muted"
                         >
                           <th
                             v-if="isVarActive(form, 'unit')"
@@ -964,7 +816,7 @@
                         <tr v-if="previewSalesRows.length === 0">
                           <td
                             :colspan="getSalesTotalLabelColspan(form) + 2"
-                            class="text-center py-2 text-slate-400 font-normal"
+                            class="text-center py-2 font-normal ui-text-muted"
                           >
                             Tidak ada data penjualan di rentang unit ini.
                           </td>
@@ -975,16 +827,10 @@
                           :key="idx"
                           class="border-b border-slate-100 dark:border-slate-800"
                         >
-                          <td
-                            v-if="isVarActive(form, 'unit')"
-                            class="py-1 font-semibold"
-                          >
+                          <td v-if="isVarActive(form, 'unit')" class="py-1 font-semibold">
                             {{ row.unit }}
                           </td>
-                          <td
-                            v-if="isVarActive(form, 'divisi')"
-                            class="py-1 font-normal"
-                          >
+                          <td v-if="isVarActive(form, 'divisi')" class="py-1 font-normal">
                             {{ row.divisi }}
                           </td>
                           <td
@@ -1014,15 +860,14 @@
             </div>
 
             <div>
-              <label
-                class="block text-slate-600 dark:text-slate-300 font-semibold mb-1"
+              <label class="block font-semibold mb-1 ui-text-secondary"
                 >Judul Laporan Pekanan:</label
               >
               <input
                 v-model="form.title"
                 type="text"
                 required
-                class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none font-semibold border border-slate-200/60 dark:border-slate-700/60"
+                class="w-full rounded-xl px-3 py-2 font-semibold border border-slate-200/60 dark:border-slate-700/60 ui-input ui-text-primary min-h-0"
               />
             </div>
 
@@ -1037,8 +882,7 @@
 
             <!-- RICH TEXT EDITOR 1: AKTIVITAS UNIT -->
             <div>
-              <label
-                class="block text-slate-600 dark:text-slate-300 font-semibold mb-1"
+              <label class="block font-semibold mb-1 ui-text-secondary"
                 >Aktivitas Unit (Rich Text Editor):</label
               >
               <div
@@ -1050,7 +894,7 @@
                   <button
                     type="button"
                     @click="formatText('csEditor', 'bold')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded font-semibold cursor-pointer"
+                    class="px-2 py-1 rounded cursor-pointer ui-button glass-hover min-h-0"
                     title="Bold"
                   >
                     B
@@ -1058,18 +902,16 @@
                   <button
                     type="button"
                     @click="formatText('csEditor', 'italic')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded italic font-normal cursor-pointer"
+                    class="px-2 py-1 rounded italic font-normal cursor-pointer ui-button glass-hover min-h-0"
                     title="Italic"
                   >
                     I
                   </button>
-                  <div
-                    class="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"
-                  ></div>
+                  <div class="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"></div>
                   <button
                     type="button"
                     @click="formatText('csEditor', 'insertUnorderedList')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded cursor-pointer"
+                    class="px-2 py-1 rounded cursor-pointer ui-button glass-hover min-h-0"
                     title="Bullet List"
                   >
                     <i class="fa-solid fa-list-ul"></i>
@@ -1077,7 +919,7 @@
                   <button
                     type="button"
                     @click="formatText('csEditor', 'insertOrderedList')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded font-semibold cursor-pointer"
+                    class="px-2 py-1 rounded cursor-pointer ui-button glass-hover min-h-0"
                     title="Numbered List (1, 2, 3)"
                   >
                     123
@@ -1085,7 +927,7 @@
                   <button
                     type="button"
                     @click="formatCustomList('csEditor', 'upper-alpha')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded font-semibold cursor-pointer"
+                    class="px-2 py-1 rounded cursor-pointer ui-button glass-hover min-h-0"
                     title="List Kapital (A, B, C)"
                   >
                     ABC
@@ -1093,21 +935,19 @@
                   <button
                     type="button"
                     @click="formatCustomList('csEditor', 'lower-alpha')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded font-semibold cursor-pointer"
+                    class="px-2 py-1 rounded cursor-pointer ui-button glass-hover min-h-0"
                     title="List Non-Kapital (a, b, c)"
                   >
                     abc
                   </button>
 
-                  <div
-                    class="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"
-                  ></div>
+                  <div class="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"></div>
 
                   <!-- TOMBOL IMPORT GAMBAR -->
                   <button
                     type="button"
                     @click="triggerImageUpload('csEditor')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded text-theme font-semibold flex items-center gap-1 cursor-pointer"
+                    class="px-2 py-1 rounded text-theme flex items-center gap-1 cursor-pointer ui-button glass-hover min-h-0"
                     title="Sisipkan Gambar"
                   >
                     <i class="fa-solid fa-image"></i>
@@ -1118,15 +958,14 @@
                   id="csEditor"
                   contenteditable="true"
                   @input="handleEditorInput('csEditor')"
-                  class="rich-editor-box p-3 outline-none text-slate-800 dark:text-slate-100 text-xs custom-scrollbar"
+                  class="rich-editor-box p-3 outline-none text-xs custom-scrollbar ui-text-primary"
                 ></div>
               </div>
             </div>
 
             <!-- RICH TEXT EDITOR 2: KENDALA & SOLUSI -->
             <div>
-              <label
-                class="block text-slate-600 dark:text-slate-300 font-semibold mb-1"
+              <label class="block font-semibold mb-1 ui-text-secondary"
                 >Catatan / Kendala & Solusi Tindak Lanjut:</label
               >
               <div
@@ -1138,7 +977,7 @@
                   <button
                     type="button"
                     @click="formatText('kendalaEditor', 'bold')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded font-semibold cursor-pointer"
+                    class="px-2 py-1 rounded cursor-pointer ui-button glass-hover min-h-0"
                     title="Bold"
                   >
                     B
@@ -1146,18 +985,16 @@
                   <button
                     type="button"
                     @click="formatText('kendalaEditor', 'italic')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded italic font-normal cursor-pointer"
+                    class="px-2 py-1 rounded italic font-normal cursor-pointer ui-button glass-hover min-h-0"
                     title="Italic"
                   >
                     I
                   </button>
-                  <div
-                    class="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"
-                  ></div>
+                  <div class="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"></div>
                   <button
                     type="button"
                     @click="formatText('kendalaEditor', 'insertUnorderedList')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded cursor-pointer"
+                    class="px-2 py-1 rounded cursor-pointer ui-button glass-hover min-h-0"
                     title="Bullet List"
                   >
                     <i class="fa-solid fa-list-ul"></i>
@@ -1165,7 +1002,7 @@
                   <button
                     type="button"
                     @click="formatText('kendalaEditor', 'insertOrderedList')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded font-semibold cursor-pointer"
+                    class="px-2 py-1 rounded cursor-pointer ui-button glass-hover min-h-0"
                     title="Numbered List (1, 2, 3)"
                   >
                     123
@@ -1173,7 +1010,7 @@
                   <button
                     type="button"
                     @click="formatCustomList('kendalaEditor', 'upper-alpha')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded font-semibold cursor-pointer"
+                    class="px-2 py-1 rounded cursor-pointer ui-button glass-hover min-h-0"
                     title="List Kapital (A, B, C)"
                   >
                     ABC
@@ -1181,21 +1018,19 @@
                   <button
                     type="button"
                     @click="formatCustomList('kendalaEditor', 'lower-alpha')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded font-semibold cursor-pointer"
+                    class="px-2 py-1 rounded cursor-pointer ui-button glass-hover min-h-0"
                     title="List Non-Kapital (a, b, c)"
                   >
                     abc
                   </button>
 
-                  <div
-                    class="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"
-                  ></div>
+                  <div class="h-4 w-px bg-slate-300 dark:bg-slate-600 mx-1"></div>
 
                   <!-- TOMBOL IMPORT GAMBAR -->
                   <button
                     type="button"
                     @click="triggerImageUpload('kendalaEditor')"
-                    class="px-2 py-1 hover:bg-slate-200 dark:hover:bg-slate-600 rounded text-theme font-semibold flex items-center gap-1 cursor-pointer"
+                    class="px-2 py-1 rounded text-theme flex items-center gap-1 cursor-pointer ui-button glass-hover min-h-0"
                     title="Sisipkan Gambar"
                   >
                     <i class="fa-solid fa-image"></i>
@@ -1206,7 +1041,7 @@
                   id="kendalaEditor"
                   contenteditable="true"
                   @input="handleEditorInput('kendalaEditor')"
-                  class="rich-editor-box p-3 outline-none text-slate-800 dark:text-slate-100 text-xs custom-scrollbar"
+                  class="rich-editor-box p-3 outline-none text-xs custom-scrollbar ui-text-primary"
                 ></div>
               </div>
             </div>
@@ -1217,22 +1052,17 @@
               <button
                 @click="isModalOpen = false"
                 type="button"
-                class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors"
+                class="bg-slate-100 dark:bg-slate-800 px-4 py-2 rounded-xl text-xs cursor-pointer transition-colors ui-button glass-hover ui-text-secondary min-h-0"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 :disabled="store.isLoading"
-                class="bg-button text-white px-5 py-2 rounded-xl font-semibold shadow-md hover:opacity-95 cursor-pointer disabled:opacity-50 flex items-center gap-1.5 transition-all text-xs"
+                class="px-5 py-2 rounded-xl shadow-md hover:opacity-95 cursor-pointer disabled:opacity-50 flex items-center gap-1.5 transition-all text-xs ui-button ui-button-primary min-h-0"
               >
-                <i
-                  v-if="store.isLoading"
-                  class="fa-solid fa-spinner fa-spin"
-                ></i>
-                <span>{{
-                  store.isLoading ? "Menyimpan..." : "Terbitkan Laporan"
-                }}</span>
+                <i v-if="store.isLoading" class="fa-solid fa-spinner fa-spin"></i>
+                <span>{{ store.isLoading ? "Menyimpan..." : "Terbitkan Laporan" }}</span>
               </button>
             </div>
           </form>
@@ -1248,21 +1078,17 @@
         @click.self="isExportModalOpen = false"
       >
         <div
-          class="w-full max-w-4xl glass-card bg-white dark:bg-slate-900 rounded-3xl p-4 md:p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[92vh] flex flex-col"
+          class="w-full max-w-4xl glass-card rounded-3xl p-4 md:p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[92vh] flex flex-col"
         >
           <div
             class="row md:flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 shrink-0"
           >
             <div>
-              <h3
-                class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100 flex items-center gap-2"
-              >
+              <h3 class="font-semibold flex items-center gap-2 ui-text-primary ui-text-title">
                 <i class="fa-solid fa-file-export text-blue-600"></i>
                 <span>Opsi Ekspor & Pratinjau Dokumen</span>
               </h3>
-              <p
-                class="text-xs text-slate-400 mt-0.5 truncate max-w-xs md:max-w-md font-normal"
-              >
+              <p class="text-xs mt-0.5 truncate max-w-xs md:max-w-md font-normal ui-text-muted">
                 {{ printActiveReport.title }}
               </p>
             </div>
@@ -1270,7 +1096,7 @@
             <div class="flex items-center gap-1.5">
               <button
                 @click="executeExportWord"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-xl text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-xl text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer ui-button min-h-0"
               >
                 <i class="fa-solid fa-file-word"></i>
                 <span class="hidden md:inline">Unduh Word (.doc)</span>
@@ -1278,7 +1104,7 @@
 
               <button
                 @click="executePrintPDF"
-                class="bg-button text-white font-semibold px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-xl text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer hover:opacity-95"
+                class="px-2.5 py-1.5 md:px-3 md:py-1.5 rounded-xl text-xs shadow-md transition-all flex items-center gap-1 cursor-pointer hover:opacity-95 ui-button ui-button-primary min-h-0"
               >
                 <i class="fa-solid fa-print"></i>
                 <span>Cetak / PDF</span>
@@ -1286,7 +1112,7 @@
 
               <button
                 @click="isExportModalOpen = false"
-                class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1"
+                class="hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer p-1 ui-text-muted"
               >
                 <i class="fa-solid fa-xmark text-lg"></i>
               </button>
@@ -1310,16 +1136,13 @@
                   Periode: {{ printActiveReport.periode }} | Unit:
                   {{
                     printActiveReport.unit === "ALL"
-                      ? printActiveReport.selectedUnits?.join(", ") ||
-                        "Semua Unit"
+                      ? printActiveReport.selectedUnits?.join(", ") || "Semua Unit"
                       : printActiveReport.unit
                   }}
                 </p>
               </div>
 
-              <div
-                class="border border-slate-300 p-3 md:p-4 rounded-lg space-y-2"
-              >
+              <div class="border border-slate-300 p-3 md:p-4 rounded-lg space-y-2">
                 <h3
                   class="font-semibold text-xs md:text-sm border-b border-slate-200 pb-1 text-slate-800 uppercase"
                 >
@@ -1330,47 +1153,31 @@
                 >
                   <thead>
                     <tr class="bg-slate-100">
-                      <th class="border border-slate-300 p-1.5 md:p-2">
-                        Total Penawaran
-                      </th>
-                      <th class="border border-slate-300 p-1.5 md:p-2">
-                        Total Pesanan
-                      </th>
-                      <th class="border border-slate-300 p-1.5 md:p-2">
-                        Total Penjualan
-                      </th>
+                      <th class="border border-slate-300 p-1.5 md:p-2">Total Penawaran</th>
+                      <th class="border border-slate-300 p-1.5 md:p-2">Total Pesanan</th>
+                      <th class="border border-slate-300 p-1.5 md:p-2">Total Penjualan</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td
-                        class="border border-slate-300 p-1.5 md:p-2 font-semibold"
-                      >
-                        {{
-                          formatNumber(printActiveReport.ringkasan?.penawaran)
-                        }}
+                      <td class="border border-slate-300 p-1.5 md:p-2 font-semibold">
+                        {{ formatNumber(printActiveReport.ringkasan?.penawaran) }}
                       </td>
-                      <td
-                        class="border border-slate-300 p-1.5 md:p-2 font-semibold"
-                      >
+                      <td class="border border-slate-300 p-1.5 md:p-2 font-semibold">
                         {{ formatNumber(printActiveReport.ringkasan?.pesanan) }}
                       </td>
                       <td
                         class="border border-slate-300 p-1.5 md:p-2 font-semibold text-emerald-700"
                       >
                         Rp
-                        {{
-                          formatNumber(printActiveReport.ringkasan?.penjualan)
-                        }}
+                        {{ formatNumber(printActiveReport.ringkasan?.penjualan) }}
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
-              <div
-                class="border border-slate-300 p-3 md:p-4 rounded-lg space-y-2"
-              >
+              <div class="border border-slate-300 p-3 md:p-4 rounded-lg space-y-2">
                 <h3
                   class="font-semibold text-xs md:text-sm border-b border-slate-200 pb-1 text-slate-800 uppercase"
                 >
@@ -1382,9 +1189,7 @@
                 ></div>
               </div>
 
-              <div
-                class="border border-slate-300 p-3 md:p-4 rounded-lg space-y-2"
-              >
+              <div class="border border-slate-300 p-3 md:p-4 rounded-lg space-y-2">
                 <h3
                   class="font-semibold text-xs md:text-sm border-b border-slate-200 pb-1 text-slate-800 uppercase"
                 >
@@ -1396,25 +1201,14 @@
                   <thead>
                     <tr class="bg-slate-100">
                       <th class="border border-slate-300 p-1.5 md:p-2">Unit</th>
-                      <th class="border border-slate-300 p-1.5 md:p-2">
-                        Data Baru
-                      </th>
-                      <th class="border border-slate-300 p-1.5 md:p-2">
-                        Penawaran
-                      </th>
-                      <th class="border border-slate-300 p-1.5 md:p-2">
-                        Follow Up
-                      </th>
+                      <th class="border border-slate-300 p-1.5 md:p-2">Data Baru</th>
+                      <th class="border border-slate-300 p-1.5 md:p-2">Penawaran</th>
+                      <th class="border border-slate-300 p-1.5 md:p-2">Follow Up</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      v-for="(row, idx) in getPemasaranRows(printActiveReport)"
-                      :key="idx"
-                    >
-                      <td
-                        class="border border-slate-300 p-1.5 md:p-2 font-semibold"
-                      >
+                    <tr v-for="(row, idx) in getPemasaranRows(printActiveReport)" :key="idx">
+                      <td class="border border-slate-300 p-1.5 md:p-2 font-semibold">
                         {{ row.unit }}
                       </td>
                       <td class="border border-slate-300 p-1.5 md:p-2">
@@ -1428,27 +1222,15 @@
                       </td>
                     </tr>
                     <tr class="font-semibold bg-slate-100">
+                      <td class="border border-slate-300 p-1.5 md:p-2">TOTAL</td>
                       <td class="border border-slate-300 p-1.5 md:p-2">
-                        TOTAL
+                        {{ formatNumber(getPemasaranTotal(printActiveReport).leads) }}
                       </td>
                       <td class="border border-slate-300 p-1.5 md:p-2">
-                        {{
-                          formatNumber(
-                            getPemasaranTotal(printActiveReport).leads,
-                          )
-                        }}
+                        {{ formatNumber(getPemasaranTotal(printActiveReport).campaign) }}
                       </td>
                       <td class="border border-slate-300 p-1.5 md:p-2">
-                        {{
-                          formatNumber(
-                            getPemasaranTotal(printActiveReport).campaign,
-                          )
-                        }}
-                      </td>
-                      <td class="border border-slate-300 p-1.5 md:p-2">
-                        {{
-                          formatNumber(getPemasaranTotal(printActiveReport).fu)
-                        }}
+                        {{ formatNumber(getPemasaranTotal(printActiveReport).fu) }}
                       </td>
                     </tr>
                   </tbody>
@@ -1456,9 +1238,7 @@
               </div>
 
               <!-- DETAIL PENJUALAN EKSPOR PREVIEW -->
-              <div
-                class="border border-slate-300 p-3 md:p-4 rounded-lg space-y-2"
-              >
+              <div class="border border-slate-300 p-3 md:p-4 rounded-lg space-y-2">
                 <h3
                   class="font-semibold text-xs md:text-sm border-b border-slate-200 pb-1 text-slate-800 uppercase"
                 >
@@ -1502,10 +1282,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr
-                      v-for="(row, idx) in getPenjualanRows(printActiveReport)"
-                      :key="idx"
-                    >
+                    <tr v-for="(row, idx) in getPenjualanRows(printActiveReport)" :key="idx">
                       <td
                         v-if="isVarActive(printActiveReport, 'unit')"
                         class="border border-slate-300 p-1.5 md:p-2 font-semibold"
@@ -1550,9 +1327,7 @@
                       >
                         {{
                           getPenjualanTotal(printActiveReport).pesanan > 0
-                            ? formatNumber(
-                                getPenjualanTotal(printActiveReport).pesanan,
-                              )
+                            ? formatNumber(getPenjualanTotal(printActiveReport).pesanan)
                             : "-"
                         }}
                       </td>
@@ -1561,20 +1336,14 @@
                         class="border border-slate-300 p-1.5 md:p-2 text-right text-emerald-700"
                       >
                         Rp
-                        {{
-                          formatNumber(
-                            getPenjualanTotal(printActiveReport).penjualan,
-                          )
-                        }}
+                        {{ formatNumber(getPenjualanTotal(printActiveReport).penjualan) }}
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
-              <div
-                class="border border-slate-300 p-3 md:p-4 rounded-lg space-y-2"
-              >
+              <div class="border border-slate-300 p-3 md:p-4 rounded-lg space-y-2">
                 <h3
                   class="font-semibold text-xs md:text-sm border-b border-slate-200 pb-1 text-slate-800 uppercase"
                 >
@@ -1586,9 +1355,7 @@
                 ></div>
               </div>
 
-              <div
-                class="flex justify-between text-xs pt-6 border-t border-slate-200 mt-6"
-              >
+              <div class="flex justify-between text-xs pt-6 border-t border-slate-200 mt-6">
                 <div>
                   <p>Penyusun Laporan:</p>
                   <p class="font-semibold text-xs md:text-sm mt-1">
@@ -1616,11 +1383,7 @@
     </Teleport>
 
     <!-- CONTAINER RENDER KHUSUS PRINTER CETAK PDF -->
-    <div
-      v-if="printActiveReport"
-      id="document-render-template"
-      class="print-only font-calibri"
-    >
+    <div v-if="printActiveReport" id="document-render-template" class="print-only font-calibri">
       <div class="text-center border-b pb-4 mb-6">
         <h2 class="text-xl font-semibold uppercase tracking-wide">
           {{ printActiveReport.title }}
@@ -1664,9 +1427,7 @@
       </div>
 
       <div class="border p-4 rounded-lg space-y-2 mb-4">
-        <h3 class="font-semibold text-sm border-b pb-1 uppercase">
-          2. AKTIVITAS UNIT
-        </h3>
+        <h3 class="font-semibold text-sm border-b pb-1 uppercase">2. AKTIVITAS UNIT</h3>
         <div
           class="rich-editor-content export-override-font text-sm leading-relaxed"
           v-html="printActiveReport.aktivitasCS"
@@ -1687,10 +1448,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(row, idx) in getPemasaranRows(printActiveReport)"
-              :key="idx"
-            >
+            <tr v-for="(row, idx) in getPemasaranRows(printActiveReport)" :key="idx">
               <td class="border p-2 font-semibold">{{ row.unit }}</td>
               <td class="border p-2">{{ formatNumber(row.leads) }}</td>
               <td class="border p-2">{{ formatNumber(row.campaign) }}</td>
@@ -1702,9 +1460,7 @@
                 {{ formatNumber(getPemasaranTotal(printActiveReport).leads) }}
               </td>
               <td class="border p-2">
-                {{
-                  formatNumber(getPemasaranTotal(printActiveReport).campaign)
-                }}
+                {{ formatNumber(getPemasaranTotal(printActiveReport).campaign) }}
               </td>
               <td class="border p-2">
                 {{ formatNumber(getPemasaranTotal(printActiveReport).fu) }}
@@ -1715,105 +1471,55 @@
       </div>
 
       <div class="border p-4 rounded-lg space-y-2 mb-4">
-        <h3 class="font-semibold text-sm border-b pb-1 uppercase">
-          4. DETAIL PENJUALAN
-        </h3>
+        <h3 class="font-semibold text-sm border-b pb-1 uppercase">4. DETAIL PENJUALAN</h3>
         <table class="w-full text-left text-sm border-collapse border">
           <thead>
             <tr class="bg-slate-100">
-              <th
-                v-if="isVarActive(printActiveReport, 'unit')"
-                class="border p-2"
-              >
-                Unit
-              </th>
-              <th
-                v-if="isVarActive(printActiveReport, 'divisi')"
-                class="border p-2"
-              >
-                Divisi
-              </th>
-              <th
-                v-if="isVarActive(printActiveReport, 'channel')"
-                class="border p-2"
-              >
+              <th v-if="isVarActive(printActiveReport, 'unit')" class="border p-2">Unit</th>
+              <th v-if="isVarActive(printActiveReport, 'divisi')" class="border p-2">Divisi</th>
+              <th v-if="isVarActive(printActiveReport, 'channel')" class="border p-2">
                 Channel / Platform
               </th>
-              <th
-                v-if="isVarActive(printActiveReport, 'pesanan')"
-                class="border p-2 text-right"
-              >
+              <th v-if="isVarActive(printActiveReport, 'pesanan')" class="border p-2 text-right">
                 Pesanan
               </th>
-              <th
-                v-if="isVarActive(printActiveReport, 'penjualan')"
-                class="border p-2 text-right"
-              >
+              <th v-if="isVarActive(printActiveReport, 'penjualan')" class="border p-2 text-right">
                 Penjualan (Rp)
               </th>
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(row, idx) in getPenjualanRows(printActiveReport)"
-              :key="idx"
-            >
-              <td
-                v-if="isVarActive(printActiveReport, 'unit')"
-                class="border p-2 font-semibold"
-              >
+            <tr v-for="(row, idx) in getPenjualanRows(printActiveReport)" :key="idx">
+              <td v-if="isVarActive(printActiveReport, 'unit')" class="border p-2 font-semibold">
                 {{ row.unit }}
               </td>
-              <td
-                v-if="isVarActive(printActiveReport, 'divisi')"
-                class="border p-2"
-              >
+              <td v-if="isVarActive(printActiveReport, 'divisi')" class="border p-2">
                 {{ row.divisi }}
               </td>
-              <td
-                v-if="isVarActive(printActiveReport, 'channel')"
-                class="border p-2 font-semibold"
-              >
+              <td v-if="isVarActive(printActiveReport, 'channel')" class="border p-2 font-semibold">
                 {{ row.channel }}
               </td>
-              <td
-                v-if="isVarActive(printActiveReport, 'pesanan')"
-                class="border p-2 text-right"
-              >
+              <td v-if="isVarActive(printActiveReport, 'pesanan')" class="border p-2 text-right">
                 {{ row.pesanan > 0 ? formatNumber(row.pesanan) : "-" }}
               </td>
-              <td
-                v-if="isVarActive(printActiveReport, 'penjualan')"
-                class="border p-2 text-right"
-              >
+              <td v-if="isVarActive(printActiveReport, 'penjualan')" class="border p-2 text-right">
                 Rp {{ formatNumber(row.penjualan) }}
               </td>
             </tr>
             <tr class="font-semibold bg-slate-100">
-              <td
-                :colspan="getSalesTotalLabelColspan(printActiveReport)"
-                class="border p-2"
-              >
+              <td :colspan="getSalesTotalLabelColspan(printActiveReport)" class="border p-2">
                 TOTAL
               </td>
-              <td
-                v-if="isVarActive(printActiveReport, 'pesanan')"
-                class="border p-2 text-right"
-              >
+              <td v-if="isVarActive(printActiveReport, 'pesanan')" class="border p-2 text-right">
                 {{
                   getPenjualanTotal(printActiveReport).pesanan > 0
                     ? formatNumber(getPenjualanTotal(printActiveReport).pesanan)
                     : "-"
                 }}
               </td>
-              <td
-                v-if="isVarActive(printActiveReport, 'penjualan')"
-                class="border p-2 text-right"
-              >
+              <td v-if="isVarActive(printActiveReport, 'penjualan')" class="border p-2 text-right">
                 Rp
-                {{
-                  formatNumber(getPenjualanTotal(printActiveReport).penjualan)
-                }}
+                {{ formatNumber(getPenjualanTotal(printActiveReport).penjualan) }}
               </td>
             </tr>
           </tbody>
@@ -1821,9 +1527,7 @@
       </div>
 
       <div class="border p-4 rounded-lg space-y-2 mb-4">
-        <h3 class="font-semibold text-sm border-b pb-1 uppercase">
-          5. KENDALA & SOLUSI
-        </h3>
+        <h3 class="font-semibold text-sm border-b pb-1 uppercase">5. KENDALA & SOLUSI</h3>
         <div
           class="rich-editor-content export-override-font text-sm leading-relaxed"
           v-html="printActiveReport.kendala"
@@ -1836,10 +1540,7 @@
           <p class="font-semibold text-sm mt-1">
             {{ printActiveReport.author || "SPV Unit" }}
           </p>
-          <p
-            v-if="printActiveReport.originalAuthors"
-            class="text-xs text-slate-500 italic mt-0.5"
-          >
+          <p v-if="printActiveReport.originalAuthors" class="text-xs text-slate-500 italic mt-0.5">
             (Konsolidasi karya dari:
             {{ printActiveReport.originalAuthors.join(", ") }})
           </p>
@@ -1876,6 +1577,45 @@ const sortAsc = ref(false);
 const salesSortKey = ref("penjualan");
 const salesSortAsc = ref(false);
 
+const canViewPage = computed(() => {
+  const user = store.currentUser;
+  if (!user) return false;
+
+  const role = String(user.role || user.Role || "").toUpperCase();
+  if (role === "SUPERADMIN") return true;
+
+  // Cek izin spesifik modul menggunakan store
+  return store.canAccessPage("spv-report");
+});
+
+// State loading khusus modul laporan SPV
+const isLoadingReport = ref(false);
+
+// --- 2. PENARIKAN DATA SPESIFIK SECARA LAZY LOADING ---
+const fetchSpvReportsData = async () => {
+  if (!canViewPage.value) return;
+
+  isLoadingReport.value = true;
+  try {
+    // Pastikan fungsi ini ada di api.js, atau gunakan fallback getDocs collection spv_reports
+    if (api && api.getSpvReports) {
+      const res = await api.getSpvReports(50); // Tarik data dibatasi limit agar cepat
+      if (res && res.length > 0) {
+        if (!store.db) store.db = {};
+        store.db.spvReports = res;
+      }
+    }
+  } catch (err) {
+    store.addNotification(
+      "Gagal",
+      "Gagal memuat data laporan divisi",
+      "warning",
+    );
+  } finally {
+    isLoadingReport.value = false;
+  }
+};
+
 const masterUnits = computed(() => {
   return (
     store.db?.master?.unitList ||
@@ -1909,6 +1649,9 @@ const isSuperadmin = computed(
 );
 
 onMounted(() => {
+  if (canViewPage.value) {
+    fetchSpvReportsData();
+  }
   if (!isSuperadmin.value && store.currentUser) {
     const userUnits = store.currentUser.aksesUnit || [store.currentUser.unit];
     if (userUnits.length > 0) selectedUnitFilter.value = userUnits[0];

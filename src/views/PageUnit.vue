@@ -1,26 +1,15 @@
 <!-- src/views/PageUnit.vue -->
 <template>
-  <section
-    id="page-unit"
-    class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6"
-  >
+  <section id="page-unit" class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6">
     <!-- Filter Header Card -->
-    <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-3"
-    >
-      <div
-        class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
-      >
+    <div class="ui-card space-y-3">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
         <div>
-          <h2
-            class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-          >
+          <h2 class="font-semibold flex items-center gap-2 ui-text-primary ui-text-title">
             <i class="fa-solid fa-chart-pie text-emerald-600"></i>
             <span>Unit Usaha: {{ selectedUnitName }}</span>
           </h2>
-          <p
-            class="text-slate-500 dark:text-slate-400 text-sm md:text-xs mt-0.5"
-          >
+          <p class="mt-0.5 ui-text-description ui-text-body">
             Sesuaikan rekap berdasarkan bulan, divisi, atau platform.
           </p>
         </div>
@@ -30,7 +19,7 @@
           <button
             v-if="store.canExportImport()"
             @click="handleExportRevenue"
-            class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2.5 md:px-3 md:py-2 rounded-xl flex items-center gap-1.5 shadow-sm cursor-pointer transition-all ui-button min-h-0 ui-text-body"
           >
             <i class="fa-solid fa-file-excel"></i>
             <span>Export Excel</span>
@@ -39,7 +28,7 @@
           <button
             v-if="store.canExportImport()"
             @click="isImportModalOpen = true"
-            class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-3.5 py-2.5 md:px-3 md:py-2 rounded-xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer transition-all"
+            class="bg-slate-700 text-white px-3.5 py-2.5 md:px-3 md:py-2 rounded-xl flex items-center gap-1.5 shadow-sm cursor-pointer transition-all ui-button glass-hover min-h-0 ui-text-body"
           >
             <i class="fa-solid fa-file-import"></i>
             <span>Import Excel</span>
@@ -48,7 +37,7 @@
           <button
             v-if="store.canEditPage('unit-' + selectedUnitName)"
             @click="store.openModal('revenue', { Unit: selectedUnitName })"
-            class="bg-button text-white px-4 py-2.5 md:py-2 rounded-xl font-semibold text-sm md:text-xs shadow-md transition-all text-center cursor-pointer flex items-center gap-1.5"
+            class="px-4 py-2.5 md:py-2 rounded-xl shadow-md transition-all text-center cursor-pointer flex items-center gap-1.5 ui-button ui-button-primary min-h-0 ui-text-body"
           >
             <i class="fa-solid fa-plus"></i>Input Revenue {{ selectedUnitName }}
           </button>
@@ -69,33 +58,27 @@
         class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-100 dark:border-slate-800"
       >
         <div>
-          <label
-            class="block text-xs font-semibold text-slate-500 uppercase mb-1"
+          <label class="block text-xs font-semibold text-slate-500 uppercase mb-1"
             >Filter Bulan</label
           >
           <select
             v-model="filterMonth"
-            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
+            class="w-full rounded-xl p-2.5 md:p-2 font-semibold ui-input ui-text-secondary min-h-0 ui-text-body"
           >
             <option value="ALL">Semua Bulan (Jan - Des)</option>
-            <option
-              v-for="(m, idx) in MONTH_NAMES"
-              :key="idx"
-              :value="String(idx)"
-            >
+            <option v-for="(m, idx) in MONTH_NAMES" :key="idx" :value="String(idx)">
               {{ m }}
             </option>
           </select>
         </div>
 
         <div>
-          <label
-            class="block text-xs font-semibold text-slate-500 uppercase mb-1"
+          <label class="block text-xs font-semibold text-slate-500 uppercase mb-1"
             >Filter Divisi</label
           >
           <select
             v-model="filterDivisi"
-            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
+            class="w-full rounded-xl p-2.5 md:p-2 font-semibold ui-input ui-text-secondary min-h-0 ui-text-body"
           >
             <option value="ALL">Semua Divisi</option>
             <option v-for="div in masterDivisiList" :key="div" :value="div">
@@ -105,20 +88,15 @@
         </div>
 
         <div>
-          <label
-            class="block text-xs font-semibold text-slate-500 uppercase mb-1"
+          <label class="block text-xs font-semibold text-slate-500 uppercase mb-1"
             >Filter Platform</label
           >
           <select
             v-model="filterPlatform"
-            class="w-full glass-input rounded-xl p-2.5 md:p-2 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none font-semibold text-slate-700 dark:text-slate-200"
+            class="w-full rounded-xl p-2.5 md:p-2 font-semibold ui-input ui-text-secondary min-h-0 ui-text-body"
           >
             <option value="ALL">Semua Platform</option>
-            <option
-              v-for="plat in masterPlatformList"
-              :key="plat"
-              :value="plat"
-            >
+            <option v-for="plat in masterPlatformList" :key="plat" :value="plat">
               {{ plat }}
             </option>
           </select>
@@ -128,35 +106,23 @@
 
     <!-- Summary Metrics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-      <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs border-l-4 border-l-emerald-400"
-      >
-        <p class="text-xs text-slate-400">Revenue Unit (Filtered)</p>
-        <h3
-          class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
-        >
+      <div class="glass-card p-4 md:p-5 rounded-2xl shadow-xs border-l-4 border-l-emerald-400">
+        <p class="text-xs ui-text-muted">Revenue Unit (Filtered)</p>
+        <h3 class="text-base md:text-xl font-semibold mt-0.5 ui-text-primary">
           {{ formatRupiah(totalFilteredRevenue) }}
         </h3>
       </div>
 
-      <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs border-l-4 border-l-blue-400"
-      >
-        <p class="text-xs text-slate-400">Target Unit</p>
-        <h3
-          class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
-        >
+      <div class="glass-card p-4 md:p-5 rounded-2xl shadow-xs border-l-4 border-l-blue-400">
+        <p class="text-xs ui-text-muted">Target Unit</p>
+        <h3 class="text-base md:text-xl font-semibold mt-0.5 ui-text-primary">
           {{ formatRupiah(unitTarget) }}
         </h3>
       </div>
 
-      <div
-        class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs border-l-4 border-l-amber-400"
-      >
-        <p class="text-xs text-slate-400">% Kontribusi Global</p>
-        <h3
-          class="text-base md:text-xl font-semibold mt-0.5 text-slate-800 dark:text-slate-100"
-        >
+      <div class="glass-card p-4 md:p-5 rounded-2xl shadow-xs border-l-4 border-l-amber-400">
+        <p class="text-xs ui-text-muted">% Kontribusi Global</p>
+        <h3 class="text-base md:text-xl font-semibold mt-0.5 ui-text-primary">
           {{ globalContribution }}%
         </h3>
       </div>
@@ -165,19 +131,11 @@
     <!-- Monthly & Quarterly Rekap + Trend Chart -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-start">
       <!-- 1. Rekap Revenue Per Bulan -->
-      <div
-        class="lg:col-span-4 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-start h-full"
-      >
-        <h3
-          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
-        >
-          Rekap Revenue Per Bulan
-        </h3>
+      <div class="ui-card lg:col-span-4 md:p-5 flex flex-col justify-start h-full">
+        <h3 class="font-semibold mb-3 ui-text-primary ui-text-title">Rekap Revenue Per Bulan</h3>
         <div class="overflow-y-auto max-h-[260px] pr-1 custom-scrollbar">
-          <table class="min-w-full text-sm md:text-xs text-left">
-            <thead
-              class="bg-slate-50 dark:bg-slate-800/80 text-slate-400 sticky top-0 backdrop-blur-md"
-            >
+          <table class="min-w-full text-left ui-text-body">
+            <thead class="glass-input sticky top-0 backdrop-blur-md">
               <tr>
                 <th class="py-2 px-3 font-semibold">Bulan</th>
                 <th class="py-2 px-3 text-right font-semibold">Revenue</th>
@@ -185,17 +143,15 @@
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
               <tr v-if="monthlyRecap.length === 0">
-                <td colspan="2" class="text-center py-4 text-slate-400">
-                  Belum ada data.
-                </td>
+                <td colspan="2" class="text-center py-4 ui-text-muted">Belum ada data.</td>
               </tr>
               <tr
                 v-else
                 v-for="(row, idx) in monthlyRecap"
                 :key="idx"
-                class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+                class="transition-colors ui-row-hover"
               >
-                <td class="py-2.5 px-3 text-slate-700 dark:text-slate-300">
+                <td class="py-2.5 px-3 ui-text-secondary">
                   {{ row.bulan }}
                 </td>
                 <td class="py-2.5 px-3 text-right font-semibold text-theme">
@@ -208,38 +164,26 @@
       </div>
 
       <!-- 2. Rekap Triwulan -->
-      <div
-        class="lg:col-span-3 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-start h-full"
-      >
-        <h3
-          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
-        >
-          Rekap Triwulan
-        </h3>
+      <div class="ui-card lg:col-span-3 md:p-5 flex flex-col justify-start h-full">
+        <h3 class="font-semibold mb-3 ui-text-primary ui-text-title">Rekap Triwulan</h3>
         <div class="space-y-2">
           <div
             v-for="(q, idx) in quarterlyRecap"
             :key="idx"
-            class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800 flex justify-between items-center"
+            class="p-3 glass-card rounded-xl flex justify-between items-center"
           >
             <span
-              class="text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300"
+              class="font-semibold glass-input px-2 py-1 rounded-full ui-text-secondary ui-text-body"
               >{{ q.quarter }}</span
             >
-            <span class="text-sm md:text-xs font-semibold text-theme">{{
-              formatRupiah(q.revenue)
-            }}</span>
+            <span class="font-semibold text-theme ui-text-body">{{ formatRupiah(q.revenue) }}</span>
           </div>
         </div>
       </div>
 
       <!-- 3. Chart Trend Revenue Bulanan -->
-      <div
-        class="lg:col-span-5 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-start h-full"
-      >
-        <h3
-          class="font-semibold text-slate-800 dark:text-slate-100 mb-3 text-base md:text-sm"
-        >
+      <div class="ui-card lg:col-span-5 md:p-5 flex flex-col justify-start h-full">
+        <h3 class="font-semibold mb-3 ui-text-primary ui-text-title">
           Grafik Trend Revenue Bulanan
         </h3>
         <div class="chart-container relative h-60 w-full">
@@ -249,16 +193,10 @@
     </div>
 
     <!-- Management Data Table -->
-    <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-4"
-    >
-      <div
-        class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3"
-      >
+    <div class="ui-card md:p-6 space-y-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <div class="flex items-center gap-2">
-          <h3
-            class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm"
-          >
+          <h3 class="font-semibold ui-text-primary ui-text-title">
             Manajemen Data Revenue Unit {{ selectedUnitName }}
           </h3>
           <span
@@ -269,33 +207,29 @@
           </span>
         </div>
 
-        <div
-          class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end"
-        >
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
           <div v-if="selectedIds.length > 0" class="flex items-center gap-1.5">
             <button
               @click="clearSelection"
-              class="bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold px-2.5 py-1.5 rounded-xl text-sm md:text-xs cursor-pointer"
+              class="bg-slate-200 dark:bg-slate-700 px-2.5 py-1.5 rounded-xl cursor-pointer ui-button glass-hover ui-text-secondary min-h-0 ui-text-body"
             >
               Batal
             </button>
             <button
               v-if="store.canEditPage('unit-' + selectedUnitName)"
               @click="promptBulkDelete"
-              class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-3 py-1.5 rounded-xl text-sm md:text-xs shadow-md cursor-pointer"
+              class="bg-rose-600 hover:bg-rose-700 text-white px-3 py-1.5 rounded-xl shadow-md cursor-pointer ui-button min-h-0 ui-text-body"
             >
-              <i class="fa-solid fa-trash mr-1"></i>Hapus ({{
-                selectedIds.length
-              }})
+              <i class="fa-solid fa-trash mr-1"></i>Hapus ({{ selectedIds.length }})
             </button>
           </div>
 
           <div class="flex items-center gap-1.5">
-            <span class="text-sm md:text-xs text-slate-400">Tampilkan:</span>
+            <span class="ui-text-muted ui-text-body">Tampilkan:</span>
             <select
               v-model="itemsPerPage"
               @change="currentPage = 1"
-              class="glass-input rounded-xl p-1.5 text-sm md:text-xs bg-slate-50 dark:bg-slate-800 outline-none"
+              class="rounded-xl p-1.5 bg-slate-50 dark:bg-slate-800 ui-input min-h-0 ui-text-body"
             >
               <option value="25">25</option>
               <option value="50">50</option>
@@ -307,15 +241,9 @@
       </div>
 
       <!-- Area Scrollable Tabel dengan Sticky Header -->
-      <div
-        class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1 custom-scrollbar"
-      >
-        <table
-          class="min-w-full text-sm md:text-xs text-left border-collapse whitespace-nowrap"
-        >
-          <thead
-            class="bg-slate-50/95 dark:bg-slate-800/95 text-slate-400 sticky top-0 backdrop-blur-md z-10 shadow-sm"
-          >
+      <div class="overflow-x-auto max-h-[400px] overflow-y-auto pr-1 custom-scrollbar">
+        <table class="min-w-full text-left border-collapse whitespace-nowrap ui-text-body">
+          <thead class="sticky top-0 glass-card backdrop-blur-md z-10 shadow-sm">
             <tr class="font-semibold uppercase text-xs">
               <th
                 class="py-2.5 px-3 w-8 text-center border-b border-slate-200 dark:border-slate-700"
@@ -372,30 +300,22 @@
             </tr>
           </thead>
 
-          <tbody
-            class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-200"
-          >
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 ui-text-secondary">
             <tr v-if="store.isLoading">
-              <td colspan="8" class="text-center py-6 text-slate-400">
-                Memuat data revenue...
-              </td>
+              <td colspan="8" class="text-center py-6 ui-text-muted">Memuat data revenue...</td>
             </tr>
 
             <tr v-else-if="paginatedRevenue.length === 0">
-              <td colspan="8" class="text-center py-6 text-slate-400">
-                Tidak ada data revenue.
-              </td>
+              <td colspan="8" class="text-center py-6 ui-text-muted">Tidak ada data revenue.</td>
             </tr>
 
             <tr
               v-else
               v-for="item in paginatedRevenue"
               :key="getDocId(item)"
-              class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
+              class="transition-colors ui-row-hover"
               :class="{
-                'bg-purple-500/10 dark:bg-purple-500/20': selectedIds.includes(
-                  getDocId(item),
-                ),
+                'bg-purple-500/10 dark:bg-purple-500/20': selectedIds.includes(getDocId(item)),
               }"
             >
               <td class="py-2.5 px-3 text-center" @click.stop>
@@ -414,11 +334,7 @@
               </td>
               <td class="py-2.5 px-3">{{ item.Platform || "-" }}</td>
               <td class="py-2.5 px-3 font-semibold text-amber-500">
-                {{
-                  Number(
-                    item.JumlahPesanan || item.pesanan || 0,
-                  ).toLocaleString("id-ID")
-                }}
+                {{ Number(item.JumlahPesanan || item.pesanan || 0).toLocaleString("id-ID") }}
                 Pcs
               </td>
               <td class="py-2.5 px-3 font-semibold text-theme">
@@ -457,17 +373,14 @@
       <!-- Footer Pagination Kontrol -->
       <div
         v-if="itemsPerPage !== 'ALL' && totalPages > 1"
-        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 text-sm md:text-xs text-slate-400"
+        class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-2 ui-text-muted ui-text-body"
       >
-        <div>
-          Menampilkan {{ startItem }} - {{ endItem }} dari
-          {{ sortedRevenue.length }} data
-        </div>
+        <div>Menampilkan {{ startItem }} - {{ endItem }} dari {{ sortedRevenue.length }} data</div>
         <div class="flex items-center gap-1.5">
           <button
             @click="currentPage--"
             :disabled="currentPage === 1"
-            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ui-button ui-button-glass glass-hover min-h-0"
           >
             <i class="fa-solid fa-chevron-left text-xs"></i>
           </button>
@@ -479,7 +392,7 @@
           <button
             @click="currentPage++"
             :disabled="currentPage === totalPages"
-            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg glass-input disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+            class="px-3 py-2 md:px-2.5 md:py-1.5 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer ui-button ui-button-glass glass-hover min-h-0"
           >
             <i class="fa-solid fa-chevron-right text-xs"></i>
           </button>
@@ -494,9 +407,7 @@
         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm"
         @click.self="closeConfirmModal"
       >
-        <div
-          class="glass-card bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-2xl max-w-sm w-full space-y-4 border border-slate-100 dark:border-slate-800"
-        >
+        <div class="glass-card rounded-2xl p-6 shadow-2xl max-w-sm w-full space-y-4">
           <div class="flex items-center gap-3">
             <div
               class="w-10 h-10 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-500 shrink-0"
@@ -504,26 +415,20 @@
               <i class="fa-solid fa-triangle-exclamation text-lg"></i>
             </div>
             <div>
-              <h4
-                class="font-semibold text-base md:text-sm text-slate-800 dark:text-slate-100"
-              >
+              <h4 class="font-semibold ui-text-primary ui-text-title">
                 {{ confirmModal.title }}
               </h4>
-              <p
-                class="text-sm md:text-xs text-slate-500 dark:text-slate-400 mt-0.5"
-              >
+              <p class="mt-0.5 ui-text-description ui-text-body">
                 {{ confirmModal.message }}
               </p>
             </div>
           </div>
 
-          <div
-            class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
-          >
+          <div class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
             <button
               @click="closeConfirmModal"
               type="button"
-              class="px-4 py-2 rounded-xl text-sm md:text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 cursor-pointer"
+              class="px-4 py-2 rounded-xl cursor-pointer ui-button ui-button-secondary min-h-0 ui-text-body"
             >
               Batal
             </button>
@@ -531,7 +436,7 @@
               @click="executeConfirmAction"
               type="button"
               :disabled="store.isLoading"
-              class="px-4 py-2 rounded-xl text-sm md:text-xs font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+              class="px-4 py-2 rounded-xl text-white bg-rose-600 hover:bg-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50 ui-button min-h-0 ui-text-body"
             >
               <i v-if="store.isLoading" class="fa-solid fa-spinner fa-spin"></i>
               <span>Ya, Hapus</span>

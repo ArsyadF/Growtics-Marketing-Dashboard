@@ -1,237 +1,262 @@
 <!-- src/components/Sidebar.vue -->
 <template>
   <div>
-    <!-- Overlay Mobile -->
+    <!-- Overlay mobile -->
     <div
       v-if="isOpen"
+      class="ui-sidebar-overlay fixed inset-0 z-40 md:hidden"
       @click="$emit('close-sidebar')"
       @touchmove.prevent
-      class="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-40 md:hidden transition-opacity"
     ></div>
 
-    <!-- Sidebar Main Container -->
+    <!-- Sidebar -->
     <aside
-      class="fixed top-0 left-0 shrink-0 h-100% glass-card floating-sidebar flex flex-col z-50 transform transition-all duration-300 overflow-hidden pt-4 pb-4"
-      :class="[
-        isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
-        isCollapsed ? 'w-20' : 'w-60',
-      ]"
-      style="padding-bottom: max(0.375rem, env(safe-area-inset-bottom))"
+      id="app-sidebar"
+      class="ui-sidebar fixed top-0 left-0 z-50 flex flex-col w-60 h-[100dvh] pt-4 pb-[max(0.375rem,_env(safe-area-inset-bottom))] overflow-hidden md:h-[calc(100dvh_-_2rem)] md:m-4"
+      :class="{
+        'is-open': isOpen,
+        'is-collapsed': isCollapsed,
+      }"
+      aria-label="Sidebar navigasi"
     >
-      <!-- Header Sidebar -->
+      <!-- Brand dan kontrol -->
       <div
-        class="p-3 mb-2 flex items-center shrink-0 border-b border-slate-100/60 dark:border-slate-800/60"
-        :class="isCollapsed ? 'justify-center' : 'justify-between px-4'"
+        class="ui-sidebar-header flex items-center justify-between gap-1 py-3 px-4 mb-2 shrink-0"
       >
         <button
-          @click="toggleCollapse"
-          class="flex items-center gap-3 outline-none cursor-pointer"
-          :class="isCollapsed ? 'justify-center w-full' : 'justify-start'"
+          type="button"
+          class="ui-sidebar-brand flex items-center gap-3 min-w-0"
           :title="isCollapsed ? 'Buka Sidebar' : 'Kecilkan Sidebar'"
+          :aria-label="isCollapsed ? 'Buka Sidebar' : 'Kecilkan Sidebar'"
+          :aria-expanded="!isCollapsed"
+          @click="toggleCollapse"
         >
+          <span class="ui-sidebar-logo flex items-center justify-center w-9 h-9 shrink-0">
+            <i class="fa-solid fa-chart-pie"></i>
+          </span>
+
           <span
-            class="w-9 h-9 bg-button text-white rounded-xl text-sm shrink-0 flex items-center justify-center shadow-sm"
-            ><i class="fa-solid fa-chart-pie"></i
-          ></span>
-          <h1
             v-if="!isCollapsed"
-            class="text-sm font-semibold text-slate-800 dark:text-slate-100 whitespace-nowrap tracking-wide"
+            class="ui-sidebar-brand-title overflow-hidden text-ellipsis whitespace-nowrap"
           >
             NHP-Group3
-          </h1>
+          </span>
         </button>
+
         <button
           v-if="!isCollapsed"
-          @click="toggleCollapse"
-          class="hidden md:flex text-slate-400 hover:text-emerald-600 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          type="button"
+          class="ui-sidebar-control items-center justify-center w-7 h-7 p-0 shrink-0 hidden md:inline-flex"
           title="Kecilkan Sidebar"
+          aria-label="Kecilkan Sidebar"
+          @click="toggleCollapse"
         >
-          <i class="fa-solid fa-angles-left text-xs"></i>
+          <i class="fa-solid fa-angles-left"></i>
         </button>
+
         <button
           v-if="!isCollapsed"
+          type="button"
+          class="ui-sidebar-control inline-flex items-center justify-center w-7 h-7 p-0 shrink-0 md:hidden"
+          aria-label="Tutup Sidebar"
           @click="$emit('close-sidebar')"
-          class="md:hidden text-slate-400 p-1 shrink-0 cursor-pointer ml-1"
         >
-          <i class="fa-solid fa-xmark text-lg"></i>
+          <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
 
-      <!-- FITUR PENCARIAN MENU -->
+      <!-- Pencarian menu -->
       <div v-if="!isCollapsed" class="px-3 mb-2 shrink-0">
-        <div class="relative">
-          <i
-            class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"
-          ></i>
+        <div class="ui-search relative">
+          <i class="fa-solid fa-magnifying-glass ui-search-icon absolute top-[50%] left-3"></i>
+
           <input
             v-model="searchMenuQuery"
             type="text"
+            class="ui-input"
             placeholder="Cari menu navigasi..."
-            class="w-full glass-input rounded-xl pl-8 pr-7 py-1.5 text-xs outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 font-normal dark:bg-slate-800/80"
+            aria-label="Cari menu navigasi"
           />
+
           <button
             v-if="searchMenuQuery"
-            @click="searchMenuQuery = ''"
             type="button"
-            class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs"
+            class="ui-search-clear absolute top-[50%] right-1.5 inline-flex items-center justify-center w-5 h-5"
+            aria-label="Hapus pencarian menu"
+            @click="searchMenuQuery = ''"
           >
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
       </div>
 
-      <!-- Menu Navigasi Utama (Data-Driven) -->
-      <nav
-        class="flex-1 overflow-y-auto py-1 px-2.5 space-y-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
-      >
-        <ul class="space-y-1">
+      <!-- Navigasi -->
+      <nav class="flex-1 min-h-0 py-1 px-2.5 overflow-y-auto no-scrollbar" aria-label="Menu utama">
+        <ul class="flex flex-col gap-1">
           <template v-for="menu in filteredMenus" :key="menu.id">
-            <!-- Tipe 1: Link Tunggal -->
-            <li v-if="menu.type === 'link'" class="flex justify-center">
+            <!-- Menu tunggal -->
+            <li v-if="menu.type === 'link'">
               <a
                 href="#"
-                @click.prevent="navigate(menu.id)"
-                class="w-full flex items-center py-2 text-xs rounded-xl transition-all"
-                :class="[
-                  activePage === menu.id
-                    ? 'bg-button text-white font-semibold shadow-sm'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
-                  isCollapsed ? 'justify-center px-0' : 'gap-3 px-3',
-                ]"
+                class="ui-sidebar-item flex items-center gap-3 w-full min-w-0 py-2 px-3 text-left"
+                :class="{ 'is-active': activePage === menu.id }"
+                :aria-current="activePage === menu.id ? 'page' : undefined"
+                :aria-label="isCollapsed ? menu.label : undefined"
                 :title="isCollapsed ? menu.label : ''"
+                @click.prevent="navigate(menu.id)"
               >
-                <i :class="['fa-solid text-sm shrink-0', menu.icon]"></i>
-                <span v-if="!isCollapsed" class="whitespace-nowrap truncate">{{
-                  menu.label
-                }}</span>
+                <i :class="['fa-solid ui-sidebar-item-icon shrink-0', menu.icon]"></i>
+
+                <span
+                  v-if="!isCollapsed"
+                  class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap"
+                >
+                  {{ menu.label }}
+                </span>
+
+                <i
+                  v-if="!isMenuAllowed(menu.id) && !isCollapsed"
+                  class="fa-solid fa-lock ui-sidebar-lock ml-auto shrink-0"
+                  title="Terkunci"
+                ></i>
               </a>
             </li>
 
-            <!-- Tipe 2: Grup Akordeon (Dropdown) -->
-            <li v-else-if="menu.type === 'group'">
+            <!-- Grup menu -->
+            <li v-else-if="menu.type === 'group'" class="mt-1">
               <button
-                @click="toggleDropdown(menu.id)"
-                class="w-full flex items-center py-2 text-xs rounded-xl transition-all outline-none cursor-pointer mt-1"
-                :class="[
-                  isGroupActive(menu.children.map((c) => c.id))
-                    ? menu.activeColor ||
-                      'text-theme dark:text-theme font-semibold bg-button/20 dark:bg-button/20'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 font-normal',
-                  isCollapsed ? 'justify-center px-0' : 'justify-between px-3',
-                ]"
+                type="button"
+                class="ui-sidebar-item flex items-center gap-3 w-full min-w-0 py-2 px-3 text-left ui-sidebar-group-button justify-between"
+                :class="{
+                  'is-group-active': isGroupActive(menu.children.map((child) => child.id)),
+                  'ui-sidebar-group-system': menu.id === 'system',
+                }"
                 :title="isCollapsed ? menu.label : ''"
+                :aria-label="isCollapsed ? menu.label : undefined"
+                :aria-expanded="!!(dropdowns[menu.id] || isCollapsed || searchMenuQuery)"
+                :aria-controls="`sidebar-group-${menu.id}`"
+                @click="toggleDropdown(menu.id)"
               >
-                <div
-                  class="flex items-center gap-3 min-w-0"
-                  :class="isCollapsed ? 'justify-center w-full' : ''"
-                >
-                  <i :class="['fa-solid text-sm shrink-0', menu.icon]"></i>
+                <span class="ui-sidebar-group-content flex items-center gap-3 min-w-0">
+                  <i :class="['fa-solid ui-sidebar-item-icon shrink-0', menu.icon]"></i>
+
                   <span
                     v-if="!isCollapsed"
-                    class="whitespace-nowrap truncate"
-                    >{{ menu.label }}</span
+                    class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap"
                   >
-                </div>
+                    {{ menu.label }}
+                  </span>
+                </span>
+
                 <i
                   v-if="!isCollapsed"
-                  class="fa-solid fa-chevron-down text-xs transition-transform duration-200"
+                  class="fa-solid fa-chevron-down ui-sidebar-chevron shrink-0"
                   :class="{
-                    'rotate-180': dropdowns[menu.id] || searchMenuQuery,
+                    'is-expanded': dropdowns[menu.id] || searchMenuQuery,
                   }"
                 ></i>
               </button>
 
-              <!-- Sub-menu -->
-              <transition
-                enter-active-class="transition-all duration-200"
-                leave-active-class="transition-all duration-150"
+              <!-- Submenu -->
+              <ul
+                v-show="dropdowns[menu.id] || isCollapsed || searchMenuQuery"
+                :id="`sidebar-group-${menu.id}`"
+                class="ui-sidebar-submenu flex flex-col gap-1 pl-3 mt-1 ml-4"
               >
-                <ul
-                  v-show="dropdowns[menu.id] || isCollapsed || searchMenuQuery"
-                  class="mt-1 space-y-1"
-                  :class="
-                    isCollapsed
-                      ? 'px-0'
-                      : 'pl-3 border-l-2 border-slate-200 dark:border-slate-800 ml-4'
-                  "
-                >
-                  <li v-for="child in menu.children" :key="child.id">
-                    <a
-                      href="#"
-                      @click.prevent="navigate(child.id)"
-                      class="w-full flex items-center py-1.5 text-xs rounded-lg"
-                      :class="[
-                        activePage === child.id
-                          ? 'bg-button text-white font-semibold'
-                          : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/50 font-normal',
-                        isCollapsed ? 'justify-center px-0' : 'gap-2.5 px-2.5',
-                      ]"
+                <li v-for="child in menu.children" :key="child.id">
+                  <a
+                    href="#"
+                    class="ui-sidebar-item flex items-center gap-3 w-full min-w-0 py-2 px-3 text-left"
+                    :class="{ 'is-active': activePage === child.id }"
+                    :aria-current="activePage === child.id ? 'page' : undefined"
+                    :aria-label="isCollapsed ? child.label : undefined"
+                    :title="isCollapsed ? child.label : ''"
+                    @click.prevent="navigate(child.id)"
+                  >
+                    <i :class="['fa-solid ui-sidebar-item-icon shrink-0', child.icon]"></i>
+
+                    <span
+                      v-if="!isCollapsed"
+                      class="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap"
                     >
-                      <i :class="['fa-solid text-xs', child.icon]"></i>
-                      <span v-if="!isCollapsed" class="truncate">{{
-                        child.label
-                      }}</span>
-                    </a>
-                  </li>
-                </ul>
-              </transition>
+                      {{ child.label }}
+                    </span>
+
+                    <i
+                      v-if="!isMenuAllowed(child.id) && !isCollapsed"
+                      class="fa-solid fa-lock ui-sidebar-lock ml-auto shrink-0"
+                      title="Terkunci"
+                    ></i>
+                  </a>
+                </li>
+              </ul>
             </li>
           </template>
         </ul>
       </nav>
 
-      <!-- Bottom Widget: Profil User -->
-      <div
-        class="p-1.5 m-2 bg-slate-100/60 dark:bg-slate-800/40 rounded-2xl border border-slate-200 dark:border-slate-700/40 flex items-center justify-center shrink-0 transition-all"
-      >
+      <!-- Profil / login -->
+      <div class="ui-sidebar-user flex items-center justify-center m-2 shrink-0">
         <button
           v-if="!isLoggedIn"
-          @click="$emit('open-login')"
-          class="w-full bg-button hover:bg-button text-white font-semibold py-2 rounded-xl text-xs transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
-          :class="isCollapsed ? 'px-0' : 'px-3'"
+          type="button"
+          class="ui-button ui-button-primary ui-button-block"
           :title="isCollapsed ? 'Masuk / Login' : ''"
+          :aria-label="isCollapsed ? 'Masuk / Login' : undefined"
+          @click="$emit('open-login')"
         >
-          <i class="fa-solid fa-right-to-bracket shrink-0"></i>
-          <span v-if="!isCollapsed" class="whitespace-nowrap truncate"
-            >Masuk / Login</span
-          >
+          <i class="fa-solid fa-right-to-bracket"></i>
+          <span v-if="!isCollapsed">Login</span>
         </button>
 
         <button
           v-else
-          @click="navigate('profile')"
-          class="w-full flex items-center gap-2.5 text-left group outline-none overflow-hidden cursor-pointer p-1 rounded-xl hover:bg-button dark:hover:bg-button transition-colors"
-          :class="isCollapsed ? 'justify-center' : ''"
+          type="button"
+          class="ui-sidebar-profile flex items-center gap-2.5 w-full min-w-0 p-1 overflow-hidden text-left"
           :title="isCollapsed ? userData?.nama || 'Profil' : ''"
+          aria-label="Buka profil pengguna"
+          @click="navigate('profile')"
         >
           <img
             :src="
               userData?.avatarUrl ||
-              `https://ui-avatars.com/api/?name=${encodeURIComponent(userData?.nama || 'User')}&background=0D8ABC&color=fff`
+              `https://ui-avatars.com/api/?name=${encodeURIComponent(
+                userData?.nama || 'User',
+              )}&background=0D8ABC&color=fff`
             "
-            class="w-8 h-8 rounded-full object-cover shrink-0 aspect-square border border-theme group-hover:scale-105 transition-transform"
+            alt=""
+            class="ui-sidebar-profile-avatar w-8 h-8 object-cover shrink-0"
           />
-          <div v-if="!isCollapsed" class="min-w-0 flex-1 overflow-hidden">
-            <p
-              class="font-semibold text-xs truncate leading-tight group-hover:text-theme"
+
+          <span v-if="!isCollapsed" class="flex-1 min-w-0">
+            <span
+              class="block ui-sidebar-profile-name overflow-hidden text-ellipsis whitespace-nowrap"
             >
               {{ userData?.nama || "Admin User" }}
-            </p>
-            <p
-              class="text-xs text-slate-400 font-normal uppercase truncate mt-0.5"
+            </span>
+
+            <span
+              class="block ui-sidebar-profile-role overflow-hidden mt-0.5 text-ellipsis whitespace-nowrap"
             >
               {{ userData?.role || "User" }}
-            </p>
-          </div>
+            </span>
+          </span>
         </button>
       </div>
     </aside>
+
+    <ModalHakAkses
+      :is-open="isAlertModalOpen"
+      @close="isAlertModalOpen = false"
+      @open-login="$emit('open-login')"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, computed, watch } from "vue";
 import { store } from "../store/index.js";
+import ModalHakAkses from "./modals/ModalHakAkses.vue";
 
 const props = defineProps({
   isOpen: { type: Boolean, default: false },
@@ -254,9 +279,25 @@ const isSuperadmin = computed(
 );
 const hasUnitAccess = (unitName) => store.canAccessPage(`unit-${unitName}`);
 
+const isMenuAllowed = (pageId) => {
+  // Halaman utama dan profil selalu dibebaskan
+  if (pageId === "main" || pageId === "profile") return true;
+
+  // Jika belum login, anggap terkunci
+  if (!isLoggedIn.value) return false;
+
+  // Superadmin bebas akses
+  if (isSuperadmin.value) return true;
+
+  // Gunakan fungsi canAccessPage dari store yang sudah ada
+  return store.canAccessPage(pageId);
+};
+
 // ==========================================
 // KONFIGURASI MENU DATA-DRIVEN
 // ==========================================
+
+// Menu konfigurasi dengan kondisi akses
 const menuConfig = computed(() => [
   {
     type: "link",
@@ -264,7 +305,7 @@ const menuConfig = computed(() => [
     label: "Dashboard",
     icon: "fa-house",
     keywords: "dashboard utama",
-    condition: () => store.canAccessPage("main"),
+    condition: () => true, // Selalu tampilkan
   },
   {
     type: "link",
@@ -393,8 +434,6 @@ const menuConfig = computed(() => [
     id: "system",
     label: "System Settings",
     icon: "fa-gear",
-    activeColor:
-      "bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold",
     condition: () => isLoggedIn.value && isSuperadmin.value,
     children: [
       {
@@ -414,6 +453,139 @@ const menuConfig = computed(() => [
     ],
   },
 ]);
+
+// semua menu tampilkan jika user belum login, tapi terkunci (lock) jika tidak memiliki akses
+// const menuConfig = computed(() => [
+//   {
+//     type: "link",
+//     id: "main",
+//     label: "Dashboard",
+//     icon: "fa-house",
+//     keywords: "dashboard utama",
+//   },
+//   {
+//     type: "link",
+//     id: "daily-report",
+//     label: "Laporan Harian",
+//     icon: "fa-file-invoice",
+//     keywords: "laporan harian",
+//   },
+//   {
+//     type: "link",
+//     id: "summary",
+//     label: "Business Summary",
+//     icon: "fa-chart-line",
+//     keywords: "unit summary rekap",
+//   },
+//   {
+//     type: "group",
+//     id: "units",
+//     label: "Business Unit",
+//     icon: "fa-building",
+//     children: [
+//       {
+//         id: "unit-NHP",
+//         label: "Nur Hidayah Press",
+//         icon: "fa-book-open",
+//         keywords: "nur hidayah press nhp",
+//       },
+//       {
+//         id: "unit-NHC",
+//         label: "Nusaragam x Pengaosan",
+//         icon: "fa-shirt",
+//         keywords: "nusaragam pengaosan nhc",
+//       },
+//       {
+//         id: "unit-KG",
+//         label: "Karta Grafika",
+//         icon: "fa-print",
+//         keywords: "karta grafika kg",
+//       },
+//     ],
+//   },
+//   {
+//     type: "group",
+//     id: "campaign",
+//     label: "Workspace",
+//     icon: "fa-bullhorn",
+//     children: [
+//       {
+//         id: "progress",
+//         label: "Team Progress",
+//         icon: "fa-bars-progress",
+//         keywords: "campaign progress progres program",
+//       },
+//       {
+//         id: "digmar",
+//         label: "Socmed Analytics",
+//         icon: "fa-share-nodes",
+//         keywords: "socmed analytics",
+//       },
+//       {
+//         id: "leads",
+//         label: "Leads & Campaign",
+//         icon: "fa-users-rays",
+//         keywords: "leads campaign",
+//       },
+//       {
+//         id: "spv-report",
+//         label: "Division Report",
+//         icon: "fa-file-signature",
+//         keywords: "laporan divisi spv pekanan",
+//       },
+//     ],
+//   },
+//   {
+//     type: "link",
+//     id: "notes",
+//     label: "Notes",
+//     icon: "fa-note-sticky",
+//     keywords: "catatan pribadi notes",
+//   },
+//   {
+//     type: "link",
+//     id: "aduan",
+//     label: "Customer Support",
+//     icon: "fa-headset",
+//     keywords: "customer support aduan layanan",
+//   },
+//   {
+//     type: "link",
+//     id: "promo",
+//     label: "Marketing Budget",
+//     icon: "fa-wallet",
+//     keywords: "marketing budget biaya promosi ads",
+//   },
+//   {
+//     type: "link",
+//     id: "report",
+//     label: "Executive Report",
+//     icon: "fa-file-invoice-dollar",
+//     keywords: "laporan executive export",
+//   },
+//   {
+//     type: "group",
+//     id: "system",
+//     label: "System Settings",
+//     icon: "fa-gear",
+//     activeColor:
+//       "bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold",
+//     children: [
+//       {
+//         id: "master-data",
+//         label: "Master Data",
+//         icon: "fa-sliders",
+//         keywords: "master data system target",
+//       },
+//       {
+//         id: "users",
+//         label: "Akses Pengguna",
+//         icon: "fa-users-gear",
+//         keywords: "akses pengguna user role",
+//       },
+//     ],
+//   },
+// ]);
 
 // Logika Filter Pencarian yang Lebih Bersih
 const filteredMenus = computed(() => {
@@ -443,6 +615,33 @@ const filteredMenus = computed(() => {
   }, []);
 });
 
+// menu tampilkan semua jika user belum login, tapi terkunci (lock) jika tidak memiliki akses
+// const filteredMenus = computed(() => {
+//   const query = searchMenuQuery.value.toLowerCase();
+//   return menuConfig.value.reduce((acc, menu) => {
+//     if (menu.type === "link") {
+//       if (
+//         !query ||
+//         menu.label.toLowerCase().includes(query) ||
+//         menu.keywords.includes(query)
+//       ) {
+//         acc.push(menu);
+//       }
+//     } else if (menu.type === "group") {
+//       const validChildren = menu.children.filter(
+//         (child) =>
+//           !query ||
+//           child.label.toLowerCase().includes(query) ||
+//           child.keywords.includes(query),
+//       );
+//       if (validChildren.length > 0) {
+//         acc.push({ ...menu, children: validChildren });
+//       }
+//     }
+//     return acc;
+//   }, []);
+// });
+
 // --- HELPER FUNCTIONS ---
 const toggleDropdown = (key) => {
   if (isCollapsed.value) {
@@ -462,6 +661,38 @@ const navigate = (page) => {
     emit("close-sidebar");
   }
 };
+
+// const navigate = (page) => {
+//   if (!isMenuAllowed(page)) {
+//     store.addNotification(
+//       "Akses Terbatas",
+//       "Anda tidak memiliki hak akses ke modul ini. Hubungi Supervisor/Admin.",
+//       "warning",
+//     );
+//     return; // Blokir perpindahan halaman
+//   }
+
+//   emit("change-page", page);
+//   if (window.innerWidth < 768) {
+//     document.body.style.overflow = "";
+//     emit("close-sidebar");
+//   }
+// };
+
+const isAlertModalOpen = ref(false);
+const alertMessage = ref("");
+
+// const navigate = (page) => {
+//   if (!isMenuAllowed(page)) {
+//     isAlertModalOpen.value = true; // Munculkan pop-up kustom
+//     return;
+//   }
+//   emit("change-page", page);
+//   if (window.innerWidth < 768) {
+//     document.body.style.overflow = "";
+//     emit("close-sidebar");
+//   }
+// };
 
 // --- WATCHERS ---
 watch(
@@ -488,3 +719,238 @@ watch(
   },
 );
 </script>
+
+
+<!-- Gaya khusus komponen; layout utama berada di template. -->
+<style scoped>
+.ui-sidebar-overlay {
+  background-color: var(--ui-overlay);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.ui-sidebar {
+  border: 1px solid var(--ui-border-soft);
+  border-radius: 0 1rem 1rem 0;
+  background-color: var(--card-background);
+  color: var(--ui-text);
+  transform: translateX(-100%);
+  transition:
+    transform 300ms var(--ui-ease),
+    width 300ms var(--ui-ease);
+}
+
+.ui-sidebar.is-open {
+  transform: translateX(0);
+}
+
+.ui-sidebar.is-collapsed {
+  width: var(--ui-sidebar-collapsed-width);
+}
+.ui-sidebar-header {
+  border-bottom: 1px solid var(--ui-border-soft);
+}
+
+.ui-sidebar-brand {
+  color: var(--ui-text);
+  cursor: pointer;
+}
+
+.ui-sidebar-logo {
+  border-radius: var(--ui-radius-control);
+  background-color: var(--primary-color);
+  color: var(--ui-text-on-primary);
+  font-size: var(--ui-font-sm);
+  box-shadow: var(--ui-shadow-sm);
+}
+
+.ui-sidebar-brand-title {
+  font-size: var(--ui-font-sm);
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+.ui-sidebar-control {
+  border-radius: var(--ui-radius-sm);
+  color: var(--ui-text-muted);
+  font-size: var(--ui-font-xs);
+  cursor: pointer;
+}
+
+.ui-search-icon {
+  color: var(--ui-text-muted);
+  font-size: var(--ui-font-xs);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.ui-search .ui-input {
+  min-height: 0;
+  padding: 0.375rem 1.75rem 0.375rem 2rem;
+  font-size: var(--ui-font-xs);
+}
+
+.ui-search-clear {
+  border-radius: var(--ui-radius-sm);
+  color: var(--ui-text-muted);
+  font-size: var(--ui-font-xs);
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.ui-sidebar-item {
+  border-radius: var(--ui-radius-control);
+  background-color: transparent;
+  color: var(--ui-text-secondary);
+  font-size: var(--ui-font-xs);
+  font-weight: 400;
+  line-height: 1.5;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ui-sidebar-item.is-active {
+  background-color: var(--primary-color);
+  color: var(--ui-text-on-primary);
+  font-weight: 600;
+  box-shadow: var(--ui-shadow-sm);
+}
+
+.ui-sidebar-item-icon {
+  font-size: var(--ui-font-sm);
+}
+
+.ui-sidebar-lock {
+  color: var(--ui-text-muted);
+  font-size: 10px;
+}
+
+.ui-sidebar-group-button.is-group-active {
+  background-color: var(--glass-selected);
+  color: var(--ui-selected-text);
+  font-weight: 600;
+}
+
+.ui-sidebar-group-system.is-group-active {
+  background-color: var(--ui-danger-bg);
+  color: var(--ui-danger);
+}
+
+.ui-sidebar-chevron {
+  font-size: var(--ui-font-xs);
+  transition: transform 200ms var(--ui-ease);
+}
+
+.ui-sidebar-chevron.is-expanded {
+  transform: rotate(180deg);
+}
+.ui-sidebar-submenu {
+  border-left: 2px solid var(--ui-sidebar-submenu-border);
+}
+
+.ui-sidebar-submenu .ui-sidebar-item {
+  gap: 0.625rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: var(--ui-radius-sm);
+}
+
+.ui-sidebar-submenu .ui-sidebar-item-icon {
+  font-size: var(--ui-font-xs);
+}
+
+.ui-sidebar-submenu .ui-sidebar-lock {
+  font-size: 9px;
+}
+.ui-sidebar-user {
+  border: 1px solid var(--input-border);
+  border-radius: var(--ui-radius-card);
+  background-color: var(--input-background);
+}
+
+.ui-sidebar-profile {
+  border-radius: var(--ui-radius-control);
+  color: var(--ui-text);
+  cursor: pointer;
+}
+
+.ui-sidebar-profile-avatar {
+  border: 1px solid var(--primary-text);
+  border-radius: 999px;
+}
+
+.ui-sidebar-profile-name {
+  color: var(--ui-text);
+  font-size: var(--ui-font-xs);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ui-sidebar-profile-role {
+  color: var(--ui-text-muted);
+  font-size: var(--ui-font-xs);
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.ui-sidebar.is-collapsed .ui-sidebar-header {
+  justify-content: center;
+  padding-inline: 0.75rem;
+}
+
+.ui-sidebar.is-collapsed .ui-sidebar-brand {
+  justify-content: center;
+  width: 100%;
+}
+
+.ui-sidebar.is-collapsed .ui-sidebar-item {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.ui-sidebar.is-collapsed .ui-sidebar-group-content {
+  justify-content: center;
+  width: 100%;
+}
+
+.ui-sidebar.is-collapsed .ui-sidebar-submenu {
+  padding-left: 0;
+  margin-left: 0;
+  border-left: none;
+}
+
+.ui-sidebar.is-collapsed .ui-sidebar-profile {
+  justify-content: center;
+}
+
+.ui-sidebar.is-collapsed .ui-sidebar-user .ui-button {
+  padding-inline: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ui-sidebar-item:not(.is-active):not(.is-group-active):hover,
+  .ui-sidebar-control:hover,
+  .ui-search-clear:hover,
+  .ui-sidebar-profile:hover {
+    background-image: linear-gradient(var(--glass-hover), var(--glass-hover));
+  }
+}
+.ui-sidebar-brand:focus-visible,
+.ui-sidebar-control:focus-visible,
+.ui-sidebar-item:focus-visible,
+.ui-search-clear:focus-visible,
+.ui-sidebar-profile:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 1px;
+}
+@media (min-width: 768px) {
+  .ui-sidebar {
+    border-radius: var(--ui-radius-card);
+    transform: translateX(0);
+  }
+}
+@media print {
+  .ui-sidebar,
+  .ui-sidebar-overlay {
+    display: none !important;
+  }
+}
+</style>

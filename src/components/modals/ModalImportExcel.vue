@@ -18,55 +18,40 @@
             <i class="fa-solid fa-file-excel text-base"></i>
           </div>
           <div>
-            <p class="text-sm font-semibold text-slate-700 dark:text-slate-200">
-              Format Template
-            </p>
-            <p class="text-xs text-slate-400 font-normal">
+            <p class="text-sm font-semibold ui-text-secondary">Format Template</p>
+            <p class="text-xs font-normal ui-text-muted">
               Unduh contoh template agar struktur kolom sesuai.
             </p>
           </div>
         </div>
         <button
           @click="handleDownloadTemplate"
-          class="bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm"
+          class="bg-emerald-600 text-white px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm ui-button min-h-0 border-0"
         >
           <i class="fa-solid fa-download text-xs"></i> Unduh
         </button>
       </div>
 
       <label
-        class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-200 dark:border-slate-700/80 rounded-2xl cursor-pointer hover:bg-slate-50 transition-colors"
+        class="flex flex-col items-center justify-center p-8 border-2 border-dashed border-slate-200 dark:border-slate-700/80 rounded-2xl cursor-pointer transition-colors glass-hover"
       >
         <i class="fa-solid fa-cloud-arrow-up text-xl text-emerald-600 mb-2"></i>
-        <span class="text-sm font-semibold text-slate-700 dark:text-slate-200"
-          >Pilih berkas Excel (.xlsx)</span
-        >
-        <input
-          type="file"
-          accept=".xlsx, .xls"
-          @change="handleFileSelect"
-          class="hidden"
-        />
+        <span class="text-sm font-semibold ui-text-secondary">Pilih berkas Excel (.xlsx)</span>
+        <input type="file" accept=".xlsx, .xls" @change="handleFileSelect" class="hidden" />
       </label>
     </div>
 
     <!-- TAHAP 2: PRATINJAU & KONFLIK -->
-    <div v-else-if="step === 'preview'" class="space-y-4 text-sm md:text-xs">
+    <div v-else-if="step === 'preview'" class="space-y-4 ui-text-body">
       <div class="grid grid-cols-3 gap-3">
-        <div
-          class="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl"
-        >
-          <p class="text-xs text-emerald-600 font-semibold uppercase">
-            Data Baru
-          </p>
+        <div class="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+          <p class="text-xs text-emerald-600 font-semibold uppercase">Data Baru</p>
           <p class="text-xl font-semibold text-emerald-700">
             {{ diffResult.newItems.length }}
           </p>
         </div>
         <div class="p-3 bg-slate-500/10 border border-slate-500/20 rounded-xl">
-          <p class="text-xs text-slate-500 font-semibold uppercase">
-            Diabaikan
-          </p>
+          <p class="text-xs text-slate-500 font-semibold uppercase">Diabaikan</p>
           <p class="text-xl font-semibold text-slate-600">
             {{ diffResult.unchanged.length }}
           </p>
@@ -84,13 +69,11 @@
         class="p-3 bg-amber-50/50 border border-amber-200 rounded-xl"
       >
         <div class="flex items-center justify-between">
-          <span class="font-semibold text-amber-800"
-            >Aksi Seluruh Konflik:</span
-          >
+          <span class="font-semibold text-amber-800">Aksi Seluruh Konflik:</span>
           <select
             v-model="globalConflictResolution"
             @change="applyGlobalResolution"
-            class="glass-input text-xs font-semibold rounded-lg p-1.5"
+            class="text-xs font-semibold rounded-lg p-1.5 ui-input ui-input-inherit min-h-0"
           >
             <option value="overwrite">Timpa Data Lama</option>
             <option value="generate_new">Buat Data Baru</option>
@@ -100,19 +83,17 @@
       </div>
 
       <!-- FOOTER AKSI PREVIEW -->
-      <div
-        class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-2 mt-4"
-      >
+      <div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-2 mt-4">
         <button
           @click="close"
-          class="px-4 py-2 rounded-xl text-slate-500 font-semibold hover:bg-slate-100 cursor-pointer text-xs"
+          class="px-4 py-2 rounded-xl text-slate-500 cursor-pointer text-xs ui-button min-h-0 gap-0 glass-hover border-0"
         >
           Batal
         </button>
         <button
           @click="processImport"
           :disabled="isProcessing"
-          class="bg-button text-white px-5 py-2 rounded-xl font-semibold text-xs shadow-md cursor-pointer disabled:opacity-50"
+          class="px-5 py-2 rounded-xl text-xs shadow-md cursor-pointer disabled:opacity-50 ui-button min-h-0 gap-0 ui-button-primary border-0"
         >
           {{ isProcessing ? "Memproses..." : "Jalankan Import" }}
         </button>

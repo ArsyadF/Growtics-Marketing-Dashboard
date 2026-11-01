@@ -4,21 +4,19 @@
     class="fixed inset-0 z-[10010] bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in"
   >
     <div
-      class="glass-card bg-white/95 dark:bg-slate-900/95 border border-slate-100 dark:border-slate-800 w-full max-w-2xl rounded-3xl p-6 shadow-2xl space-y-5 max-h-[90vh] flex flex-col"
+      class="glass-card border border-slate-100 dark:border-slate-800 w-full max-w-2xl rounded-3xl p-6 shadow-2xl space-y-5 max-h-[90vh] flex flex-col"
     >
       <!-- Header Modal -->
       <div
         class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 shrink-0"
       >
-        <h3
-          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
+        <h3 class="font-semibold flex items-center gap-2 ui-text-primary ui-text-title">
           <i class="fa-solid fa-user-shield text-theme"></i>
           {{ isEdit ? "Edit Hak Akses Pengguna" : "Tambah Pengguna Baru" }}
         </h3>
         <button
           @click="$emit('close')"
-          class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer transition-colors"
+          class="hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer transition-colors ui-text-muted"
         >
           <i class="fa-solid fa-xmark text-base"></i>
         </button>
@@ -27,34 +25,30 @@
       <!-- Form Body (Scrollable) -->
       <form
         @submit.prevent="handleSubmit"
-        class="space-y-4 overflow-y-auto flex-1 pr-1 custom-scrollbar text-sm md:text-xs"
+        class="space-y-4 overflow-y-auto flex-1 pr-1 custom-scrollbar ui-text-body"
       >
         <!-- Informasi Dasar User -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label
-              class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            <label class="block font-semibold mb-1 ui-text-secondary ui-text-body"
               >Nama Lengkap</label
             >
             <input
               v-model="form.nama"
               type="text"
               required
-              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
+              class="w-full rounded-xl p-2.5 font-normal ui-input ui-input-inherit min-h-0 ui-text-primary ui-text-body"
               placeholder="Masukkan nama"
             />
           </div>
           <div>
-            <label
-              class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
-              >Email</label
-            >
+            <label class="block font-semibold mb-1 ui-text-secondary ui-text-body">Email</label>
             <input
               v-model="form.email"
               type="email"
               required
               :disabled="isEdit"
-              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal disabled:opacity-50 bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
+              class="w-full rounded-xl p-2.5 font-normal disabled:opacity-50 ui-input ui-input-inherit min-h-0 ui-text-primary ui-text-body"
               placeholder="user@growtics.com"
             />
           </div>
@@ -62,27 +56,24 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label
-              class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
-            >
+            <label class="block font-semibold mb-1 ui-text-secondary ui-text-body">
               Password {{ isEdit ? "(Isi jika ingin merubah)" : "" }}
             </label>
             <input
               v-model="form.password"
               type="password"
               :required="!isEdit"
-              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-normal bg-slate-50 dark:bg-slate-800 text-slate-800 dark:text-slate-100"
+              class="w-full rounded-xl p-2.5 font-normal ui-input ui-input-inherit min-h-0 ui-text-primary ui-text-body"
               placeholder="******"
             />
           </div>
           <div>
-            <label
-              class="block text-sm md:text-xs font-semibold mb-1 text-slate-600 dark:text-slate-300"
+            <label class="block font-semibold mb-1 ui-text-secondary ui-text-body"
               >Role Utama</label
             >
             <select
               v-model="form.role"
-              class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none font-semibold bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-200"
+              class="w-full rounded-xl p-2.5 font-semibold ui-input ui-input-inherit min-h-0 ui-text-secondary ui-text-body"
             >
               <option value="USER">USER / STAF</option>
               <option value="SPV">SPV (Supervisor)</option>
@@ -99,17 +90,14 @@
           <h4
             class="text-xs font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1.5 border-b border-blue-100 dark:border-blue-800/50 pb-2"
           >
-            <i class="fa-solid fa-sitemap"></i> Penempatan Internal (Master
-            Data)
+            <i class="fa-solid fa-sitemap"></i> Penempatan Internal (Master Data)
           </h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-semibold mb-1 text-slate-500"
-                >Unit Usaha</label
-              >
+              <label class="block text-xs font-semibold mb-1 text-slate-500">Unit Usaha</label>
               <select
                 v-model="form.unit"
-                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none bg-white dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-200"
+                class="w-full rounded-xl p-2.5 font-semibold ui-input ui-input-inherit min-h-0 ui-text-secondary ui-text-body"
               >
                 <option value="">-- Pilih Unit --</option>
                 <option v-for="u in masterUnits" :key="u.code" :value="u.code">
@@ -118,19 +106,13 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs font-semibold mb-1 text-slate-500"
-                >Divisi</label
-              >
+              <label class="block text-xs font-semibold mb-1 text-slate-500">Divisi</label>
               <select
                 v-model="form.divisi"
-                class="w-full glass-input rounded-xl p-2.5 text-sm md:text-xs outline-none bg-white dark:bg-slate-900 font-semibold text-slate-700 dark:text-slate-200"
+                class="w-full rounded-xl p-2.5 font-semibold ui-input ui-input-inherit min-h-0 ui-text-secondary ui-text-body"
               >
                 <option value="">-- Pilih Divisi --</option>
-                <option
-                  v-for="div in store.db?.master?.divisiList"
-                  :key="div"
-                  :value="div"
-                >
+                <option v-for="div in store.db?.master?.divisiList" :key="div" :value="div">
                   {{ div }}
                 </option>
               </select>
@@ -145,18 +127,17 @@
         >
           <div class="flex items-center justify-between">
             <div>
-              <label class="block text-sm md:text-xs font-semibold text-theme"
+              <label class="block font-semibold text-theme ui-text-body"
                 >Atur Akses Halaman & Fitur Edit</label
               >
-              <p class="text-xs text-slate-400 mt-0.5 font-normal">
-                Pilih modul yang boleh dibuka dan atur hak pengeditan/penambahan
-                data.
+              <p class="text-xs mt-0.5 font-normal ui-text-muted">
+                Pilih modul yang boleh dibuka dan atur hak pengeditan/penambahan data.
               </p>
             </div>
             <button
               type="button"
               @click="toggleAllPermissions"
-              class="text-xs font-semibold text-theme hover:underline cursor-pointer shrink-0 bg-theme/10 px-2.5 py-1 rounded-lg"
+              class="text-xs text-theme hover:underline cursor-pointer shrink-0 theme-tint px-2.5 py-1 rounded-lg ui-button min-h-0 gap-0 border-0"
             >
               {{ isAllSelected ? "Matikan Semua" : "Buka Semua" }}
             </button>
@@ -171,27 +152,14 @@
               >
                 <tr>
                   <th class="p-2.5 font-semibold">Halaman / Modul</th>
-                  <th class="p-2.5 font-semibold text-center w-24">
-                    Bisa Akses
-                  </th>
-                  <th class="p-2.5 font-semibold text-center w-32">
-                    Bisa Edit / Tambah
-                  </th>
+                  <th class="p-2.5 font-semibold text-center w-24">Bisa Akses</th>
+                  <th class="p-2.5 font-semibold text-center w-32">Bisa Edit / Tambah</th>
                 </tr>
               </thead>
-              <tbody
-                class="divide-y divide-slate-100 dark:divide-slate-800/60 text-slate-700 dark:text-slate-200"
-              >
-                <tr
-                  v-for="page in pagesList"
-                  :key="page.id"
-                  class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
-                >
+              <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 ui-text-secondary">
+                <tr v-for="page in pagesList" :key="page.id" class="transition-colors ui-row-hover">
                   <td class="p-2.5 font-normal flex items-center gap-2">
-                    <i
-                      :class="page.icon"
-                      class="w-4 text-center text-theme"
-                    ></i>
+                    <i :class="page.icon" class="w-4 text-center text-theme"></i>
                     <span>{{ page.label }}</span>
                   </td>
                   <td class="p-2.5 text-center">
@@ -222,8 +190,8 @@
         >
           <i class="fa-solid fa-shield-halved text-base shrink-0"></i>
           <p class="font-normal">
-            <strong class="font-semibold">Superadmin</strong> memiliki akses
-            penuh ke seluruh halaman dan hak akses edit tanpa pembatasan.
+            <strong class="font-semibold">Superadmin</strong> memiliki akses penuh ke seluruh
+            halaman dan hak akses edit tanpa pembatasan.
           </p>
         </div>
 
@@ -234,13 +202,13 @@
           <button
             type="button"
             @click="$emit('close')"
-            class="px-4 py-2 rounded-xl text-sm md:text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors"
+            class="px-4 py-2 rounded-xl text-slate-500 cursor-pointer transition-colors ui-button min-h-0 gap-0 glass-hover ui-text-body border-0"
           >
             Batal
           </button>
           <button
             type="submit"
-            class="px-5 py-2 rounded-xl text-sm md:text-xs font-semibold bg-button text-white shadow-md hover:opacity-95 cursor-pointer transition-all flex items-center gap-1.5"
+            class="px-5 py-2 rounded-xl shadow-md cursor-pointer transition-all flex items-center gap-1.5 ui-button min-h-0 ui-button-primary ui-text-body border-0"
           >
             <i class="fa-solid fa-floppy-disk text-xs"></i>
             {{ isEdit ? "Simpan Perubahan" : "Tambah User" }}

@@ -1,424 +1,364 @@
 <!-- src/views/PageSummary.vue -->
 <template>
-  <section
-    id="page-main"
-    class="page-section space-y-4 md:space-y-6 pb-20 md:pb-6"
-  >
-    <!-- Top Row: Kinerja Finansial & Funnel Marketing -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 items-stretch">
-      <!-- Card Kinerja Finansial -->
-      <div
-        class="lg:col-span-7 glass-card bg-white/90 dark:bg-slate-900/90 rounded-2xl p-4 md:p-5 flex flex-col justify-between border border-slate-100 dark:border-slate-800 shadow-sm relative overflow-hidden"
-      >
-        <!-- Baris Atas: Nominal Utama -->
-        <div class="flex items-end justify-between gap-3">
-          <div class="min-w-0">
-            <span
-              class="text-sm md:text-xs font-semibold uppercase text-theme tracking-wider block mb-0.5"
-            >
-              Revenue Terfilter
-            </span>
-            <h2
-              class="text-xl md:text-2xl font-semibold text-slate-800 dark:text-slate-100 leading-none truncate"
-            >
-              <!-- Tampilan Mobile (Ringkas) -->
-              <span class="sm:hidden">{{
-                formatRpDynamic(totRevFiltered, true)
-              }}</span>
-              <!-- Tampilan Desktop (Lengkap) -->
-              <span class="hidden sm:inline">{{
-                formatRpDynamic(totRevFiltered, false)
-              }}</span>
-            </h2>
-          </div>
+  <section id="page-summary" class="ui-page flex flex-col pb-20 md:pb-6 gap-4 md:gap-6">
+    <!-- Akses dibatasi -->
+    <div
+      v-if="!canViewPage"
+      class="ui-card ui-card-large ui-card-bordered ui-access-denied flex flex-col items-center gap-3 mt-10 p-12 text-center"
+    >
+      <i class="fa-solid fa-lock"></i>
 
-          <!-- Badge Target -->
-          <div class="flex flex-col items-end shrink-0">
-            <span
-              class="inline-block text-sm md:text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1.5 md:px-2.5 md:py-1 rounded-full border border-emerald-500/20 leading-tight"
-            >
-              {{ persenCapaian }}% Target
-            </span>
-            <p class="text-sm md:text-xs text-slate-400 mt-1 leading-none">
-              Target:
-              <span class="sm:hidden">{{
-                formatRpDynamic(targetTahun, true)
-              }}</span>
-              <span class="hidden sm:inline">{{
-                formatRpDynamic(targetTahun, false)
-              }}</span>
-            </p>
-          </div>
-        </div>
+      <h3 class="ui-access-title">Akses Modul Dibatasi</h3>
 
-        <!-- Baris Bawah: Sub-Metrik Ringkas -->
-        <div
-          class="grid grid-cols-2 md:grid-cols-2 gap-2 text-center mt-4 pt-3 border-t border-slate-100 dark:border-slate-800"
-        >
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <div>
-              <p class="text-slate-400 text-sm md:text-xs mb-0.5">
-                Sisa Target
-              </p>
-              <p
-                class="font-semibold text-rose-500 dark:text-rose-400 truncate text-base md:text-sm"
-              >
-                <span class="sm:hidden">{{
-                  formatRpDynamic(gap > 0 ? gap : 0, true)
-                }}</span>
-                <span class="hidden sm:inline">{{
-                  formatRpDynamic(gap > 0 ? gap : 0, false)
-                }}</span>
-              </p>
-            </div>
-            <div>
-              <p class="text-slate-400 text-sm md:text-xs mb-0.5">
-                vs Thn Lalu
-              </p>
-              <p class="font-semibold text-theme truncate text-base md:text-sm">
-                <span class="sm:hidden">{{
-                  formatRpDynamic(selisihThnLalu, true)
-                }}</span>
-                <span class="hidden sm:inline">{{
-                  formatRpDynamic(selisihThnLalu, false)
-                }}</span>
-              </p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <div>
-              <p class="text-slate-400 text-sm md:text-xs mb-0.5">
-                Growth (%):
-              </p>
-              <p
-                class="font-semibold truncate text-base md:text-sm"
-                :class="
-                  Number(persenThnLalu) >= 0
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : 'text-rose-500 dark:text-rose-400'
-                "
-              >
-                {{ persenThnLalu }}%
-              </p>
-            </div>
-            <div>
-              <p class="text-slate-400 text-sm md:text-xs mb-0.5">
-                Biaya Promo
-              </p>
-              <p
-                class="font-semibold text-slate-700 dark:text-slate-300 truncate text-base md:text-sm"
-              >
-                <span class="sm:hidden">{{
-                  formatRpDynamic(totPromo, true)
-                }}</span>
-                <span class="hidden sm:inline">{{
-                  formatRpDynamic(totPromo, false)
-                }}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Card Funnel Marketing -->
-      <div
-        class="lg:col-span-5 glass-card bg-white/90 dark:bg-slate-900/90 rounded-2xl p-4 md:p-6 flex flex-col justify-between border border-slate-100 dark:border-slate-800 shadow-sm"
-      >
-        <div class="flex justify-between items-center mb-3 md:mb-4">
-          <span
-            class="text-sm md:text-xs font-semibold uppercase text-sky-600 dark:text-sky-400 bg-sky-500/10 px-2.5 py-1 rounded-full border border-sky-500/20"
-          >
-            Funnel Marketing
-          </span>
-          <span
-            class="text-sm md:text-xs font-semibold text-teal-600 dark:text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-full border border-teal-500/20"
-          >
-            {{ pctOrderFromLeads }}% Konversi
-          </span>
-        </div>
-
-        <div
-          class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center my-auto py-2"
-        >
-          <div
-            class="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/60"
-          >
-            <p
-              class="text-xs text-slate-400 uppercase font-semibold tracking-wider"
-            >
-              Campaign
-            </p>
-            <h4 class="text-base md:text-sm font-semibold text-theme mt-1">
-              {{ totCamp.toLocaleString("id-ID") }}
-            </h4>
-          </div>
-          <div
-            class="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/60"
-          >
-            <p
-              class="text-xs text-slate-400 uppercase font-semibold tracking-wider"
-            >
-              Leads
-            </p>
-            <h4 class="text-base md:text-sm font-semibold text-sky-500 mt-1">
-              {{ totLeads.toLocaleString("id-ID") }}
-            </h4>
-          </div>
-          <div
-            class="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/60"
-          >
-            <p
-              class="text-xs text-slate-400 uppercase font-semibold tracking-wider"
-            >
-              Follow Up
-            </p>
-            <h4 class="text-base md:text-sm font-semibold text-amber-500 mt-1">
-              {{ totFu.toLocaleString("id-ID") }}
-            </h4>
-          </div>
-          <div
-            class="p-2.5 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200/60 dark:border-slate-700/60"
-          >
-            <p
-              class="text-xs text-slate-400 uppercase font-semibold tracking-wider"
-            >
-              Pesanan
-            </p>
-            <h4 class="text-base md:text-sm font-semibold text-theme mt-1">
-              {{ totOrder.toLocaleString("id-ID") }}
-            </h4>
-          </div>
-        </div>
-      </div>
+      <p class="ui-caption">Anda tidak memiliki hak akses ke modul ini.</p>
     </div>
 
-    <!-- Cards Performa Unit Usaha -->
-    <div>
-      <h3
-        class="font-semibold text-slate-800 dark:text-slate-100 mb-2.5 text-base md:text-sm uppercase tracking-wider flex items-center gap-1.5"
-      >
-        <i class="fa-solid fa-building-user text-theme"></i>
-        Rekap Performa Unit Usaha
-      </h3>
-
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3.5 md:gap-4">
+    <template v-else>
+      <!-- Finansial dan funnel -->
+      <div class="grid grid-cols-1 items-stretch gap-4 md:gap-6 lg:grid-cols-12">
         <div
-          v-for="(u, index) in ['NHP', 'NHC', 'KG']"
-          :key="u"
-          @click="store.navigate(`unit-${u}`)"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-3.5 sm:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm hover:border-theme/40 transition-all cursor-pointer group flex flex-col justify-between"
-          :class="{ 'col-span-2 sm:col-span-1': index === 0 }"
+          class="ui-card flex flex-col justify-between gap-3 overflow-hidden p-4 md:p-5 lg:col-span-7"
         >
-          <div>
-            <div class="flex items-center justify-between mb-2">
+          <div class="flex items-end justify-between gap-3">
+            <div class="flex-1 min-w-0">
+              <span class="ui-metric-eyebrow block mb-0.5"> Revenue Terfilter </span>
+
+              <h2 class="ui-metric-total overflow-hidden text-ellipsis whitespace-nowrap">
+                <span class="sm:hidden">
+                  {{ formatRpDynamic(totRevFiltered, true) }}
+                </span>
+                <span class="ui-money-full hidden">
+                  {{ formatRpDynamic(totRevFiltered, false) }}
+                </span>
+              </h2>
+            </div>
+
+            <div class="flex flex-col items-end gap-1 shrink-0">
+              <span class="ui-badge ui-badge-success ui-badge-pill ui-badge-target">
+                {{ persenCapaian }}% Target
+              </span>
+
+              <p class="ui-metric-target-note">
+                Target:
+                <span class="sm:hidden">
+                  {{ formatRpDynamic(targetTahun, true) }}
+                </span>
+                <span class="ui-money-full hidden">
+                  {{ formatRpDynamic(targetTahun, false) }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div class="ui-metric-breakdown grid grid-cols-2 gap-2 mt-1 pt-3 text-center">
+            <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+              <div>
+                <p class="ui-metric-label mb-0.5">Sisa Target</p>
+
+                <p
+                  class="ui-metric-value overflow-hidden text-ellipsis whitespace-nowrap ui-metric-danger"
+                >
+                  <span class="sm:hidden">
+                    {{ formatRpDynamic(gap > 0 ? gap : 0, true) }}
+                  </span>
+                  <span class="ui-money-full hidden">
+                    {{ formatRpDynamic(gap > 0 ? gap : 0, false) }}
+                  </span>
+                </p>
+              </div>
+
+              <div>
+                <p class="ui-metric-label mb-0.5">vs Thn Lalu</p>
+
+                <p
+                  class="ui-metric-value overflow-hidden text-ellipsis whitespace-nowrap ui-metric-theme"
+                >
+                  <span class="sm:hidden">
+                    {{ formatRpDynamic(selisihThnLalu, true) }}
+                  </span>
+                  <span class="ui-money-full hidden">
+                    {{ formatRpDynamic(selisihThnLalu, false) }}
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+              <div>
+                <p class="ui-metric-label mb-0.5">Growth (%):</p>
+
+                <p
+                  class="ui-metric-value overflow-hidden text-ellipsis whitespace-nowrap"
+                  :class="Number(persenThnLalu) >= 0 ? 'ui-metric-success' : 'ui-metric-danger'"
+                >
+                  {{ persenThnLalu }}%
+                </p>
+              </div>
+
+              <div>
+                <p class="ui-metric-label mb-0.5">Biaya Promo</p>
+
+                <p class="ui-metric-value overflow-hidden text-ellipsis whitespace-nowrap">
+                  <span class="sm:hidden">
+                    {{ formatRpDynamic(totPromo, true) }}
+                  </span>
+                  <span class="ui-money-full hidden">
+                    {{ formatRpDynamic(totPromo, false) }}
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Funnel marketing -->
+        <div
+          class="ui-card flex flex-col justify-between gap-3 overflow-hidden p-4 md:p-6 lg:col-span-5"
+        >
+          <div class="flex items-center justify-between gap-3 min-w-0">
+            <span class="ui-badge ui-badge-sky ui-badge-pill"> Funnel Marketing </span>
+
+            <span class="ui-badge ui-badge-teal ui-badge-pill">
+              {{ pctOrderFromLeads }}% Konversi
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 my-auto py-2 sm:grid-cols-4">
+            <div class="ui-funnel-item min-w-0 p-2.5 text-center">
+              <p class="ui-funnel-label">Campaign</p>
               <h4
-                class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm group-hover:text-theme transition-colors"
+                class="ui-metric-value overflow-hidden text-ellipsis whitespace-nowrap ui-metric-theme"
               >
-                Unit {{ u }}
+                {{ totCamp.toLocaleString("id-ID") }}
               </h4>
-              <span
-                class="text-sm md:text-xs font-semibold text-theme bg-button/10 px-2 py-0.5 rounded-full border border-white/20 leading-none"
-              >
-                {{ getUnitCapaian(u) }}%
-              </span>
             </div>
 
-            <div class="mb-2">
-              <span
-                class="text-sm md:text-xs text-slate-400 font-semibold block leading-none mb-0.5"
-                >Rev:</span
+            <div class="ui-funnel-item min-w-0 p-2.5 text-center">
+              <p class="ui-funnel-label">Leads</p>
+              <h4
+                class="ui-metric-value overflow-hidden text-ellipsis whitespace-nowrap ui-metric-sky"
               >
-              <h5
-                class="text-base font-semibold text-theme truncate leading-tight"
-              >
-                <span class="sm:hidden">{{
-                  formatRpDynamic(getUnitRev(u), true)
-                }}</span>
-                <span class="hidden sm:inline">{{
-                  formatRpDynamic(getUnitRev(u), false)
-                }}</span>
-              </h5>
+                {{ totLeads.toLocaleString("id-ID") }}
+              </h4>
             </div>
 
-            <div
-              class="flex items-center gap-1 text-sm md:text-xs text-slate-500 dark:text-slate-400"
-            >
-              <span class="text-slate-400 shrink-0">Tgt:</span>
-              <span
-                class="font-semibold text-slate-700 dark:text-slate-300 truncate"
+            <div class="ui-funnel-item min-w-0 p-2.5 text-center">
+              <p class="ui-funnel-label">Follow Up</p>
+              <h4
+                class="ui-metric-value overflow-hidden text-ellipsis whitespace-nowrap ui-metric-warning"
               >
-                <span class="sm:hidden">{{
-                  formatRpDynamic(getUnitTarget(u), true)
-                }}</span>
-                <span class="hidden sm:inline">{{
-                  formatRpDynamic(getUnitTarget(u), false)
-                }}</span>
-              </span>
+                {{ totFu.toLocaleString("id-ID") }}
+              </h4>
+            </div>
+
+            <div class="ui-funnel-item min-w-0 p-2.5 text-center">
+              <p class="ui-funnel-label">Pesanan</p>
+              <h4
+                class="ui-metric-value overflow-hidden text-ellipsis whitespace-nowrap ui-metric-theme"
+              >
+                {{ totOrder.toLocaleString("id-ID") }}
+              </h4>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Performa unit usaha -->
+      <div class="flex flex-col gap-2">
+        <h3 class="ui-title">
+          <i class="fa-solid fa-building-user"></i>
+          Rekap Performa Unit Usaha
+        </h3>
+
+        <div class="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3.5 md:gap-4">
+          <button
+            v-for="(u, index) in ['NHP', 'NHC', 'KG']"
+            :key="u"
+            type="button"
+            class="ui-unit-card flex flex-col justify-between gap-2.5 min-w-0 p-3.5 text-left sm:p-4"
+            :class="{ 'col-span-full sm:col-auto': index === 0 }"
+            @click="store.navigate(`unit-${u}`)"
+          >
+            <span class="flex flex-col gap-2">
+              <span class="flex items-center justify-between gap-3 min-w-0">
+                <span class="ui-text-strong">Unit {{ u }}</span>
+
+                <span class="ui-badge ui-badge-info ui-badge-pill"> {{ getUnitCapaian(u) }}% </span>
+              </span>
+
+              <span>
+                <span class="block ui-metric-label mb-0.5">Rev:</span>
+
+                <span class="block ui-unit-revenue overflow-hidden text-ellipsis whitespace-nowrap">
+                  <span class="sm:hidden">
+                    {{ formatRpDynamic(getUnitRev(u), true) }}
+                  </span>
+                  <span class="ui-money-full hidden">
+                    {{ formatRpDynamic(getUnitRev(u), false) }}
+                  </span>
+                </span>
+              </span>
+
+              <span class="ui-unit-target flex items-center gap-1 min-w-0">
+                <span class="ui-unit-target-label shrink-0">Tgt:</span>
+
+                <span class="ui-unit-target-value overflow-hidden text-ellipsis whitespace-nowrap">
+                  <span class="sm:hidden">
+                    {{ formatRpDynamic(getUnitTarget(u), true) }}
+                  </span>
+                  <span class="ui-money-full hidden">
+                    {{ formatRpDynamic(getUnitTarget(u), false) }}
+                  </span>
+                </span>
+              </span>
+            </span>
+
+            <span class="ui-progress" aria-hidden="true">
+              <span
+                class="ui-progress-fill"
+                :style="{
+                  width: `${Math.max(0, Math.min(Number(getUnitCapaian(u)), 100))}%`,
+                }"
+              ></span>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Grafik baris pertama -->
+      <div class="grid grid-cols-1 items-stretch gap-4 md:gap-6 lg:grid-cols-12">
+        <div class="ui-card flex flex-col justify-between gap-3 overflow-hidden lg:col-span-5">
+          <h3 class="ui-title">Rekap Penjualan Tiap Unit</h3>
+
+          <div class="relative w-full min-w-0 h-64">
+            <canvas
+              ref="chartUnitRef"
+              role="img"
+              aria-label="Grafik rekap penjualan tiap unit"
+            ></canvas>
+          </div>
+        </div>
+
+        <div class="ui-card flex flex-col justify-between gap-3 overflow-hidden lg:col-span-3">
+          <h3 class="ui-title">Revenue vs Biaya Promosi</h3>
+
+          <div class="relative w-full min-w-0 h-64">
+            <canvas
+              ref="chartRevVsPromoRef"
+              role="img"
+              aria-label="Grafik perbandingan revenue dan biaya promosi"
+            ></canvas>
+          </div>
+        </div>
+
+        <div class="ui-card flex flex-col justify-between gap-3 overflow-hidden lg:col-span-4">
+          <h3 class="ui-title">Penjualan per Platform</h3>
 
           <div
-            class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2.5 overflow-hidden"
+            class="relative w-full min-w-0 flex items-center justify-center h-36 overflow-hidden md:h-40"
           >
-            <div
-              class="bg-button h-full rounded-full transition-all duration-500"
-              :style="{ width: `${Math.min(getUnitCapaian(u), 100)}%` }"
-            ></div>
+            <canvas
+              ref="chartPlatPieRef"
+              role="img"
+              aria-label="Grafik penjualan per platform"
+            ></canvas>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- BARIS 1 CHARTS -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
-      <div
-        class="lg:col-span-5 glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between"
-      >
-        <h3
-          class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
-        >
-          Rekap Penjualan Tiap Unit
-        </h3>
-        <div class="chart-container relative h-64">
-          <canvas ref="chartUnitRef"></canvas>
+      <!-- Grafik baris kedua -->
+      <div class="grid grid-cols-1 items-stretch gap-4 md:gap-6 lg:grid-cols-12">
+        <div class="ui-card flex flex-col justify-between gap-3 overflow-hidden lg:col-span-5">
+          <h3 class="ui-title">Rekap Penjualan Tiap Divisi</h3>
+
+          <div class="relative w-full min-w-0 h-64">
+            <canvas
+              ref="chartDivisiRef"
+              role="img"
+              aria-label="Grafik rekap penjualan tiap divisi"
+            ></canvas>
+          </div>
+        </div>
+
+        <div class="ui-card flex flex-col justify-between gap-3 overflow-hidden lg:col-span-7">
+          <h3 class="ui-title">Trend Revenue Bulanan ({{ currentYear }} vs {{ lastYear }})</h3>
+
+          <div class="relative w-full min-w-0 h-64">
+            <canvas
+              ref="chartTrendCompareRef"
+              role="img"
+              aria-label="Grafik perbandingan revenue bulanan tahun ini dan tahun lalu"
+            ></canvas>
+          </div>
         </div>
       </div>
-
-      <div
-        class="lg:col-span-3 glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between"
-      >
-        <h3
-          class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
-        >
-          Revenue vs Biaya Promosi
-        </h3>
-        <div class="chart-container relative h-64">
-          <canvas ref="chartRevVsPromoRef"></canvas>
-        </div>
-      </div>
-
-      <div
-        class="lg:col-span-4 glass-card bg-white/90 dark:bg-slate-900/90 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between"
-      >
-        <h3
-          class="font-semibold text-base md:text-sm mb-1 text-slate-800 dark:text-slate-100"
-        >
-          Penjualan per Platform
-        </h3>
-        <div
-          class="chart-container relative h-36 md:h-40 flex items-center justify-center overflow-hidden"
-        >
-          <canvas ref="chartPlatPieRef"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- BARIS 2 CHARTS -->
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
-      <div
-        class="lg:col-span-5 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between"
-      >
-        <h3
-          class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
-        >
-          Rekap Penjualan Tiap Divisi
-        </h3>
-        <div class="chart-container relative h-64">
-          <canvas ref="chartDivisiRef"></canvas>
-        </div>
-      </div>
-
-      <div
-        class="lg:col-span-7 glass-card bg-white/90 dark:bg-slate-900/90 p-4 md:p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex flex-col justify-between"
-      >
-        <h3
-          class="font-semibold text-base md:text-sm mb-3 text-slate-800 dark:text-slate-100"
-        >
-          Trend Revenue Bulanan ({{ currentYear }} vs {{ lastYear }})
-        </h3>
-        <div class="chart-container relative h-64">
-          <canvas ref="chartTrendCompareRef"></canvas>
-        </div>
-      </div>
-    </div>
+    </template>
   </section>
 
-  <!-- MOBILE FLOATING ACTION BUTTON (FAB) FILTER -->
-  <div class="md:hidden fixed bottom-20 right-4 z-40">
-    <button
-      @click="isFilterModalOpen = true"
-      class="flex flex-col text-slate-400 mb-4 items-center justify-center text-lg active:scale-95 transition-transform cursor-pointer"
-      title="Buka Filter Tanggal"
-    >
-      <i
-        class="fa-solid fa-filter flex items-center justify-center w-12 h-12 rounded-full bg-button text-white text-base shadow-md"
-      ></i>
-      <span class="text-xs font-semibold mt-1">Filter</span>
-    </button>
-  </div>
+  <!-- Filter mobile -->
+  <button
+    type="button"
+    class="ui-filter-fab fixed right-4 bottom-24 z-40 flex flex-col items-center gap-1 md:hidden"
+    title="Buka Filter Tanggal"
+    aria-label="Buka filter tanggal"
+    @click="isFilterModalOpen = true"
+  >
+    <span class="ui-filter-fab-icon flex items-center justify-center w-12 h-12">
+      <i class="fa-solid fa-filter"></i>
+    </span>
+    <span class="ui-filter-fab-label">Filter</span>
+  </button>
 
-  <!-- POPUP MODAL FILTER TANGGAL (MOBILE) -->
+  <!-- Modal filter -->
   <Teleport to="body">
     <div
       v-if="isFilterModalOpen"
-      class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity"
+      class="ui-modal-overlay items-end sm:items-center"
       @click.self="isFilterModalOpen = false"
     >
       <div
-        class="absolute mb-20 w-full max-w-sm glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800"
+        class="ui-modal ui-filter-modal max-w-96 mb-20 max-h-[calc(100dvh_-_7rem)] animate-fade-in"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="summary-filter-title"
       >
-        <div
-          class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
-        >
-          <h3
-            class="font-semibold text-slate-800 dark:text-slate-100 text-base flex items-center gap-2"
-          >
-            <i class="fa-solid fa-filter text-theme"></i> Filter Rentang Tanggal
+        <div class="ui-modal-header">
+          <h3 id="summary-filter-title" class="ui-title">
+            <i class="fa-solid fa-filter"></i>
+            Filter Rentang Tanggal
           </h3>
+
           <button
+            type="button"
+            class="ui-close"
+            aria-label="Tutup filter tanggal"
             @click="isFilterModalOpen = false"
-            class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
           >
-            <i class="fa-solid fa-xmark text-lg"></i>
+            <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
 
-        <div class="space-y-3 text-sm">
-          <div>
-            <label
-              class="block text-slate-500 dark:text-slate-400 font-semibold mb-1"
-              >Tanggal Mulai:</label
-            >
-            <input
-              v-model="tempStartDate"
-              type="date"
-              class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 outline-none focus:border-theme text-sm"
-            />
+        <div class="ui-modal-body flex flex-col gap-4">
+          <div class="min-w-0">
+            <label for="summary-start-date" class="ui-label"> Tanggal Mulai: </label>
+            <input id="summary-start-date" v-model="tempStartDate" type="date" class="ui-input" />
           </div>
-          <div>
-            <label
-              class="block text-slate-500 dark:text-slate-400 font-semibold mb-1"
-              >Tanggal Akhir:</label
-            >
-            <input
-              v-model="tempEndDate"
-              type="date"
-              class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2.5 text-slate-800 dark:text-slate-100 outline-none focus:border-theme text-sm"
-            />
+
+          <div class="min-w-0">
+            <label for="summary-end-date" class="ui-label"> Tanggal Akhir: </label>
+            <input id="summary-end-date" v-model="tempEndDate" type="date" class="ui-input" />
           </div>
         </div>
 
-        <div class="flex items-center gap-2 pt-2">
-          <button
-            @click="resetFilterMobile"
-            class="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-700 dark:text-slate-200 py-3 rounded-xl font-semibold text-sm cursor-pointer"
-          >
+        <div class="ui-modal-footer">
+          <button type="button" class="ui-button ui-button-secondary" @click="resetFilterMobile">
             Reset
           </button>
+
           <button
+            type="button"
+            class="ui-button ui-button-primary ui-button-shadow"
             @click="applyFilterMobile"
-            class="flex-1 bg-button text-white py-3 rounded-xl font-semibold text-sm shadow-md cursor-pointer hover:opacity-95"
           >
             Terapkan
           </button>
@@ -431,11 +371,13 @@
 <script setup>
 import { computed, ref, onMounted, watch } from "vue";
 import { store } from "../store";
+import { api } from "../services/api.js";
 import Chart from "chart.js/auto";
 
 const isFilterModalOpen = ref(false);
 const tempStartDate = ref("");
 const tempEndDate = ref("");
+const isLoadingSummary = ref(false);
 
 watch(
   () => store.filterDates,
@@ -445,6 +387,62 @@ watch(
   },
   { deep: true },
 );
+
+// Di dalam script setup PageSummary.vue
+const canViewPage = computed(() => {
+  const user = store.currentUser;
+  if (!user) return false;
+  const role = String(user.role || "").toUpperCase();
+  if (role === "SUPERADMIN") return true;
+  return store.canAccessPage("");
+});
+
+onMounted(async () => {
+  // 1. Validasi akses view
+  if (!canViewPage.value) return;
+
+  // 2. Tarik data spesifik halaman ini secara lazy (hanya jika diakses)
+  isLoadingSummary.value = true;
+  try {
+    const [revRes, promoRes, leadsRes] = await Promise.all([
+      api.getRevenues(200), // Batasi limit agar cepat
+      api.getPromos(100),
+      api.getLeads(100),
+    ]);
+
+    if (!store.db) store.db = {};
+    store.db.revenue = revRes || [];
+    store.db.promo = promoRes || [];
+    store.db.leads = leadsRes || [];
+  } catch (err) {
+    store.addNotification("Gagal", "Gagal memuat rekap bisnis", "warning");
+  } finally {
+    isLoadingSummary.value = false;
+    renderCharts();
+  }
+});
+
+const fetchSummaryData = async () => {
+  isLoadingSummary.value = true;
+  try {
+    // Tarik data revenue, promo, dan leads terbaru secukupnya (misal limit 200 data terakhir)
+    const [revRes, promoRes, leadsRes] = await Promise.all([
+      api && api.getRevenues ? api.getRevenues() : [],
+      api && api.getPromos ? api.getPromos() : [],
+      api && api.getLeads ? api.getLeads() : [],
+    ]);
+
+    if (!store.db) store.db = {};
+    if (revRes && revRes.length > 0) store.db.revenue = revRes;
+    if (promoRes && promoRes.length > 0) store.db.promo = promoRes;
+    if (leadsRes && leadsRes.length > 0) store.db.leads = leadsRes;
+  } catch (err) {
+    console.error("Gagal memuat data summary:", err);
+  } finally {
+    isLoadingSummary.value = false;
+    renderCharts(); // Render ulang chart setelah data masuk
+  }
+};
 
 const applyFilter = () => {
   store.filterDates.start = tempStartDate.value;
@@ -488,6 +486,8 @@ onMounted(() => {
   }
   tempStartDate.value = store.filterDates.start;
   tempEndDate.value = store.filterDates.end;
+
+  fetchSummaryData();
 });
 
 const MONTH_NAMES = [
@@ -845,3 +845,172 @@ const formatRpDynamic = (val, isCompact = false) => {
   return `Rp ${new Intl.NumberFormat("id-ID").format(num)}`;
 };
 </script>
+
+
+<!-- Gaya khusus komponen; layout utama berada di template. -->
+<style scoped>
+.ui-access-denied > i {
+  color: var(--ui-danger);
+  font-size: 2.25rem;
+}
+
+.ui-access-title {
+  color: var(--ui-text);
+  font-size: var(--ui-font-lg);
+  font-weight: 600;
+}
+
+.ui-metric-eyebrow {
+  color: var(--ui-selected-text);
+  font-size: var(--ui-body-size);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ui-metric-total {
+  color: var(--ui-text);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ui-metric-target-note {
+  color: var(--ui-text-muted);
+  font-size: var(--ui-body-size);
+  line-height: 1.25;
+}
+.ui-metric-breakdown {
+  border-top: 1px solid var(--ui-border-soft);
+}
+
+.ui-metric-label {
+  color: var(--ui-text-muted);
+  font-size: var(--ui-body-size);
+  font-weight: 400;
+}
+
+.ui-metric-value {
+  color: var(--ui-text-secondary);
+  font-size: var(--ui-title-size);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.ui-metric-theme {
+  color: var(--ui-selected-text);
+}
+
+.ui-metric-success {
+  color: var(--ui-success);
+}
+
+.ui-metric-danger {
+  color: var(--ui-danger);
+}
+
+.ui-metric-warning {
+  color: var(--ui-warning);
+}
+
+.ui-metric-sky {
+  color: var(--ui-sky);
+}
+
+.ui-funnel-item {
+  border: 1px solid var(--input-border);
+  border-radius: var(--ui-radius-control);
+  background-color: var(--input-background);
+}
+
+.ui-funnel-label {
+  color: var(--ui-text-muted);
+  font-size: var(--ui-font-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ui-funnel-item .ui-metric-value {
+  margin-top: 0.25rem;
+}
+
+.ui-unit-card {
+  border-radius: var(--ui-radius-card);
+  background-color: var(--card-background);
+  color: var(--ui-text);
+  box-shadow: var(--ui-shadow-sm);
+  cursor: pointer;
+}
+
+.ui-unit-revenue {
+  color: var(--ui-selected-text);
+  font-size: var(--ui-font-base);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ui-unit-target {
+  font-size: var(--ui-body-size);
+}
+
+.ui-unit-target-label {
+  color: var(--ui-text-muted);
+}
+
+.ui-unit-target-value {
+  color: var(--ui-text-secondary);
+  font-weight: 600;
+}
+.ui-filter-fab {
+  color: var(--ui-text-muted);
+  cursor: pointer;
+}
+
+.ui-filter-fab-icon {
+  border-radius: 999px;
+  background-color: var(--primary-color);
+  color: var(--ui-text-on-primary);
+  font-size: var(--ui-font-base);
+  box-shadow: var(--ui-shadow-button);
+}
+
+.ui-filter-fab-label {
+  font-size: var(--ui-font-xs);
+  font-weight: 600;
+}
+
+.ui-filter-modal .ui-modal-footer > .ui-button {
+  flex: 1;
+}
+.ui-unit-card:focus-visible,
+.ui-filter-fab:focus-visible {
+  outline: 1px solid var(--input-border-focus);
+  outline-offset: 3px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ui-unit-card:hover {
+    background-image: linear-gradient(var(--glass-hover), var(--glass-hover));
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .ui-filter-fab:hover .ui-filter-fab-icon {
+    filter: brightness(1.06);
+  }
+}
+@media (min-width: 640px) {
+  .ui-money-full {
+    display: inline;
+  }
+}
+@media (min-width: 768px) {
+  .ui-metric-total {
+    font-size: 1.5rem;
+  }
+}
+@media print {
+  .ui-filter-fab {
+    display: none !important;
+  }
+}
+</style>

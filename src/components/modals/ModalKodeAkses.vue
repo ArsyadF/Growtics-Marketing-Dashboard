@@ -1,26 +1,21 @@
 <!-- src/components/modals/ModalKodeAkses.vue -->
 <template>
-  <BaseModal
-    title="Update Passcode Publik"
-    maxWidth="max-w-md"
-    @close="$emit('close')"
-  >
-    <form @submit.prevent="saveData" class="space-y-3 text-sm md:text-xs">
+  <BaseModal title="Update Passcode Publik" maxWidth="max-w-md" @close="$emit('close')">
+    <form @submit.prevent="saveData" class="space-y-3 ui-text-body">
       <div>
-        <label
-          class="block mb-1 font-semibold text-amber-600 dark:text-amber-400"
+        <label class="block mb-1 font-semibold text-amber-600 dark:text-amber-400"
           >Kode Akses Publik (PIN)</label
         >
         <input
           type="text"
           v-model="form.code"
           required
-          class="w-full glass-input rounded-xl p-2.5 outline-none font-mono font-normal"
+          class="w-full rounded-xl p-2.5 font-mono font-normal ui-input ui-input-inherit min-h-0"
         />
       </div>
       <button
         type="submit"
-        class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-2.5 rounded-xl mt-4 shadow-md cursor-pointer disabled:opacity-50"
+        class="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2.5 rounded-xl mt-4 shadow-md cursor-pointer disabled:opacity-50 ui-button min-h-0 px-0 gap-0 border-0 ui-button-inherit"
         :disabled="store.isLoading"
       >
         Simpan Passcode

@@ -5,7 +5,7 @@
     class="fixed inset-0 z-[9999] bg-slate-950/80 backdrop-blur-xl flex justify-center items-center p-4"
   >
     <div
-      class="glass-card bg-white/95 dark:bg-slate-900/95 w-full max-w-sm p-6 md:p-8 rounded-3xl shadow-2xl border border-white/60 dark:border-blue-900/40 space-y-5 text-center relative z-[10000]"
+      class="glass-card w-full max-w-sm p-6 md:p-8 rounded-3xl shadow-2xl border border-white/60 dark:border-blue-900/40 space-y-5 text-center relative z-[10000]"
     >
       <div
         class="inline-flex p-3.5 bg-gradient-to-tr from-amber-500 to-orange-400 text-white rounded-2xl shadow-lg text-xl"
@@ -13,15 +13,13 @@
         <i class="fa-solid fa-lock"></i>
       </div>
       <div>
-        <h3 class="text-xl font-semibold text-slate-800 dark:text-slate-100">
-          Area Terproteksi
-        </h3>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-normal">
+        <h3 class="text-xl font-semibold ui-text-primary">Area Terproteksi</h3>
+        <p class="text-xs mt-1 font-normal ui-text-description">
           Masukkan Kode Akses Publik untuk membuka visualisasi Dashboard.
         </p>
       </div>
 
-      <form @submit.prevent="verify" class="space-y-4 text-sm md:text-xs">
+      <form @submit.prevent="verify" class="space-y-4 ui-text-body">
         <div>
           <input
             type="password"
@@ -29,21 +27,16 @@
             maxlength="20"
             required
             placeholder="Masukkan Kode Akses..."
-            class="w-full glass-input rounded-xl p-3 text-center font-semibold tracking-widest text-sm outline-none"
+            class="w-full rounded-xl p-3 text-center font-semibold tracking-widest text-sm ui-input ui-input-inherit min-h-0"
           />
         </div>
         <button
           type="submit"
           :disabled="loading"
-          class="w-full bg-button text-white font-semibold py-3 rounded-xl text-sm md:text-xs transition-all shadow-md flex items-center justify-center cursor-pointer disabled:opacity-50"
+          class="w-full py-3 rounded-xl transition-all shadow-md flex items-center justify-center cursor-pointer disabled:opacity-50 ui-button min-h-0 px-0 gap-0 ui-button-primary ui-text-body border-0"
         >
-          <i
-            v-if="loading"
-            class="fa-solid fa-spinner fa-spin mr-1.5 text-xs"
-          ></i>
-          <span v-else
-            ><i class="fa-solid fa-key mr-1.5 text-xs"></i>Buka Dashboard</span
-          >
+          <i v-if="loading" class="fa-solid fa-spinner fa-spin mr-1.5 text-xs"></i>
+          <span v-else><i class="fa-solid fa-key mr-1.5 text-xs"></i>Buka Dashboard</span>
         </button>
       </form>
 
@@ -51,7 +44,7 @@
         <button
           type="button"
           @click="store.openModal('login')"
-          class="text-sm md:text-xs text-theme hover:underline font-semibold cursor-pointer"
+          class="text-theme hover:underline font-semibold cursor-pointer ui-text-body"
         >
           <i class="fa-solid fa-user-shield mr-1"></i>Login
         </button>

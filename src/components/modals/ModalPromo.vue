@@ -5,28 +5,22 @@
     maxWidth="max-w-md"
     @close="$emit('close')"
   >
-    <form @submit.prevent="saveData" class="space-y-3 text-sm md:text-xs">
+    <form @submit.prevent="saveData" class="space-y-3 ui-text-body">
       <div>
-        <label
-          class="block mb-1 font-semibold text-slate-600 dark:text-slate-300"
-          >Tanggal</label
-        >
+        <label class="block mb-1 font-semibold ui-text-secondary">Tanggal</label>
         <input
           type="date"
           v-model="form.Tanggal"
           required
-          class="w-full glass-input rounded-xl p-2.5 outline-none font-normal"
+          class="w-full rounded-xl p-2.5 font-normal ui-input ui-input-inherit min-h-0"
         />
       </div>
       <div>
-        <label
-          class="block mb-1 font-semibold text-slate-600 dark:text-slate-300"
-          >Unit Usaha</label
-        >
+        <label class="block mb-1 font-semibold ui-text-secondary">Unit Usaha</label>
         <select
           v-model="form.Unit"
           required
-          class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold"
+          class="w-full rounded-xl p-2.5 font-semibold ui-input ui-input-inherit min-h-0"
         >
           <option v-for="u in masterUnits" :key="u.code" :value="u.code">
             {{ u.code }} - {{ u.name }}
@@ -34,31 +28,27 @@
         </select>
       </div>
       <div>
-        <label class="block mb-1 font-semibold text-rose-500"
-          >Biaya Promosi (Rp)</label
-        >
+        <label class="block mb-1 font-semibold text-rose-500">Biaya Promosi (Rp)</label>
         <input
           type="text"
           v-model="displayBiaya"
           @input="formatInput"
           required
           placeholder="0"
-          class="w-full glass-input rounded-xl p-2.5 outline-none font-normal"
+          class="w-full rounded-xl p-2.5 font-normal ui-input ui-input-inherit min-h-0"
         />
       </div>
-      <div
-        class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 mt-4"
-      >
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 mt-4">
         <button
           type="button"
           @click="$emit('close')"
-          class="bg-slate-200 dark:bg-slate-800 px-4 py-2 rounded-xl font-semibold cursor-pointer"
+          class="bg-slate-200 dark:bg-slate-800 px-4 py-2 rounded-xl cursor-pointer ui-button min-h-0 gap-0 border-0 ui-button-inherit"
         >
           Batal
         </button>
         <button
           type="submit"
-          class="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-4 py-2 rounded-xl font-semibold shadow-md cursor-pointer disabled:opacity-50"
+          class="bg-gradient-to-r from-rose-500 to-pink-500 text-white px-4 py-2 rounded-xl shadow-md cursor-pointer disabled:opacity-50 ui-button min-h-0 gap-0 border-0 ui-button-inherit"
           :disabled="store.isLoading"
         >
           Simpan Promosi

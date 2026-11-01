@@ -5,28 +5,22 @@
     maxWidth="max-w-lg"
     @close="$emit('close')"
   >
-    <form @submit.prevent="saveData" class="space-y-3 text-sm md:text-xs">
+    <form @submit.prevent="saveData" class="space-y-4 ui-text-body">
       <div>
-        <label
-          class="block mb-1 font-semibold text-slate-600 dark:text-slate-300"
-          >Tanggal</label
-        >
+        <label class="ui-label leading-4">Tanggal</label>
         <input
           type="date"
           v-model="form.Tanggal"
           required
-          class="w-full glass-input rounded-xl p-2.5 outline-none font-normal"
+          class="w-full rounded-xl p-2.5 font-semibold transition-all ui-input ui-input-inherit min-h-0 ui-text-primary ui-text-body"
         />
       </div>
       <div>
-        <label
-          class="block mb-1 font-semibold text-slate-600 dark:text-slate-300"
-          >Unit Usaha</label
-        >
+        <label class="ui-label leading-4">Unit Usaha</label>
         <select
           v-model="form.Unit"
           required
-          class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold"
+          class="w-full rounded-xl p-2.5 font-semibold transition-all ui-input ui-input-inherit min-h-0 ui-text-primary ui-text-body"
         >
           <option value="" disabled>-- Pilih Unit --</option>
           <option v-for="u in masterUnits" :key="u.code" :value="u.code">
@@ -36,43 +30,34 @@
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label
-            class="block mb-1 font-semibold text-slate-600 dark:text-slate-300"
-            >Revenue (Rp)</label
-          >
+          <label class="ui-label leading-4">Revenue (Rp)</label>
           <input
             type="text"
             v-model="displayRevenue"
             @input="formatInput"
             required
             placeholder="0"
-            class="w-full glass-input rounded-xl p-2.5 outline-none font-normal"
+            class="w-full rounded-xl p-2.5 font-semibold transition-all ui-input ui-input-inherit min-h-0 ui-text-primary ui-text-body"
           />
         </div>
         <div>
-          <label
-            class="block mb-1 font-semibold text-slate-600 dark:text-slate-300"
-            >Jumlah Pesanan</label
-          >
+          <label class="ui-label leading-4">Jumlah Pesanan</label>
           <input
             type="number"
             v-model.number="form.JumlahPesanan"
             required
             placeholder="0"
-            class="w-full glass-input rounded-xl p-2.5 outline-none font-normal"
+            class="w-full rounded-xl p-2.5 font-semibold transition-all ui-input ui-input-inherit min-h-0 ui-text-primary ui-text-body"
           />
         </div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label
-            class="block mb-1 font-semibold text-slate-600 dark:text-slate-300"
-            >Divisi</label
-          >
+          <label class="ui-label leading-4">Divisi</label>
           <select
             v-model="form.Divisi"
             required
-            class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold"
+            class="w-full rounded-xl p-2.5 font-semibold transition-all ui-input ui-input-inherit min-h-0 ui-text-primary ui-text-body"
           >
             <option v-for="div in availableDivisions" :key="div" :value="div">
               {{ div }}
@@ -80,48 +65,37 @@
           </select>
         </div>
         <div>
-          <label
-            class="block mb-1 font-semibold text-slate-600 dark:text-slate-300"
-            >Platform</label
-          >
+          <label class="ui-label leading-4">Platform</label>
           <select
             v-model="form.Platform"
             required
-            class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold"
+            class="w-full rounded-xl p-2.5 font-semibold transition-all ui-input ui-input-inherit min-h-0 ui-text-primary ui-text-body"
           >
-            <option
-              v-for="plat in availablePlatforms"
-              :key="plat"
-              :value="plat"
-            >
+            <option v-for="plat in availablePlatforms" :key="plat" :value="plat">
               {{ plat }}
             </option>
           </select>
         </div>
       </div>
       <div>
-        <label class="block font-semibold text-slate-500 mb-1"
-          >Keterangan Tambahan</label
-        >
+        <label class="ui-label leading-4">Keterangan Tambahan</label>
         <textarea
           v-model="form.Keterangan"
           rows="2"
-          class="w-full glass-input rounded-xl p-3 outline-none resize-none"
+          class="w-full rounded-xl p-2.5 resize-y transition-all ui-input ui-input-inherit min-h-0 ui-text-primary ui-text-body"
         ></textarea>
       </div>
-      <div
-        class="flex justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 mt-4"
-      >
+      <div class="flex justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-800 mt-4">
         <button
           type="button"
           @click="$emit('close')"
-          class="bg-slate-200 dark:bg-slate-800 px-4 py-2 rounded-xl font-semibold cursor-pointer"
+          class="px-4 py-2.5 md:py-2 rounded-xl cursor-pointer transition-all ui-button min-h-0 gap-0 ui-button-glass glass-hover ui-text-secondary ui-text-body"
         >
           Batal
         </button>
         <button
           type="submit"
-          class="bg-button text-white px-4 py-2 rounded-xl font-semibold shadow-md cursor-pointer"
+          class="px-5 py-2.5 md:py-2 rounded-xl shadow-sm cursor-pointer transition-all hover:shadow-md ui-button min-h-0 gap-0 ui-button-primary ui-text-body border-0"
         >
           Simpan Revenue
         </button>

@@ -1,29 +1,22 @@
 <!-- src/views/PageStaffDashboard.vue -->
 <template>
-  <div class="space-y-4 md:space-y-6 pb-20 md:pb-6">
-    <!-- 1. HEADER MENYAPA STAF DENGAN DINAMIS LANGIT & RUNNING TEXT BIO -->
+  <div class="flex flex-col gap-4 pb-12 md:gap-6 md:pb-6">
+    <!-- Sapaan -->
     <div
-      class="p-5 rounded-3xl text-white shadow-lg relative overflow-hidden -mb-16 pb-16 bg-theme-gradient"
+      class="ui-staff-greeting relative overflow-hidden -mb-16 pt-5 px-5 pb-16 bg-theme-gradient"
     >
-      <!-- ORNAMEN AWAN LATAR BELAKANG -->
       <div class="absolute inset-0 pointer-events-none opacity-25">
-        <i
-          class="fa-solid fa-cloud text-white text-6xl absolute top-2 right-12 animate-pulse"
-        ></i>
-        <i
-          class="fa-solid fa-cloud text-white text-4xl absolute bottom-14 right-36 opacity-75"
-        ></i>
-        <i
-          class="fa-solid fa-cloud text-white text-3xl absolute top-8 left-1/3 opacity-50"
-        ></i>
+        <i class="fa-solid fa-cloud text-white text-6xl absolute top-2 right-12 animate-pulse"></i>
+        <i class="fa-solid fa-cloud text-white text-4xl absolute bottom-14 right-36 opacity-75"></i>
+        <i class="fa-solid fa-cloud text-white text-3xl absolute top-8 left-1/3 opacity-50"></i>
       </div>
 
-      <!-- MATAHARI / BULAN BERDASARKAN WAKTU -->
       <div class="absolute -right-4 -top-4 pointer-events-none">
         <div
           class="w-32 h-32 rounded-full blur-2xl opacity-60 transition-all duration-700"
           :class="skyTheme.glow"
         ></div>
+
         <div
           class="absolute top-8 right-8 w-14 h-14 rounded-full flex items-center justify-center text-3xl shadow-xl transition-all duration-700 backdrop-blur-xs"
           :class="skyTheme.celestialClass"
@@ -32,350 +25,274 @@
         </div>
       </div>
 
-      <!-- KONTEN GREETING CARD -->
-      <div class="relative z-10 flex flex-col justify-between space-y-3">
+      <div class="relative z-10 flex flex-col gap-4">
         <div>
-          <span
-            class="text-sm md:text-xs font-semibold uppercase tracking-widest bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-md"
-          >
+          <span class="ui-staff-role inline-block py-1 px-2.5">
             {{ currentUser.role || "Staff Workspace" }}
           </span>
-          <h2 class="text-base md:text-sm mt-2 leading-tight">
-            Selamat {{ greetingTime }}
-          </h2>
-          <h2 class="text-xl md:text-2xl font-semibold leading-tight">
-            {{ currentUser.nama || "Rekan Tim" }} 👋
-          </h2>
-          <p class="text-sm md:text-xs text-white/80 mt-1">
+
+          <h2 class="ui-staff-salutation mt-2">Selamat {{ greetingTime }}</h2>
+
+          <h2 class="ui-staff-name">{{ currentUser.nama || "Rekan Tim" }} 👋</h2>
+
+          <p class="ui-staff-description mt-1">
             Unit:
-            <span class="font-semibold underline">{{
-              currentUser.unit || "NHP"
-            }}</span>
+            <span class="font-semibold underline">
+              {{ currentUser.unit || "NHP" }}
+            </span>
             • Pantau aktivitas & tugas harian Anda di sini.
           </p>
         </div>
 
-        <!-- RUNNING TEXT BIO + EMOTICON ANIMASI -->
-        <div class="mt-2 flex items-center gap-2">
-          <div
-            @click="openBioModal"
-            class="flex-1 bg-black/25 hover:bg-black/35 backdrop-blur-md rounded-2xl px-4 py-2 flex items-center border border-white/20 cursor-pointer transition-all overflow-hidden"
+        <div class="flex items-center gap-2 min-w-0">
+          <button
+            type="button"
+            class="ui-staff-status flex items-center flex-1 min-w-0 overflow-hidden py-2 px-4 text-left glass-hover"
             title="Klik untuk memperbarui status Anda"
-          >
-            <div class="overflow-hidden whitespace-nowrap w-full">
-              <div
-                class="inline-block animate-marquee pl-full text-sm md:text-xs font-semibold text-white/95"
-              >
-                {{ cleanedBioText }}
-              </div>
-            </div>
-          </div>
-
-          <div
             @click="openBioModal"
-            class="shrink-0 text-4xl md:text-3xl cursor-pointer hover:scale-125 transition-transform drop-shadow-md select-none px-1 flex items-center justify-center"
+          >
+            <span class="overflow-hidden whitespace-nowrap w-full">
+              <span class="inline-block animate-marquee pl-full">
+                {{ cleanedBioText }}
+              </span>
+            </span>
+          </button>
+
+          <button
+            type="button"
+            class="ui-staff-emoji flex items-center justify-center px-1 shrink-0"
             :class="emojiAnimationClass"
             title="Klik untuk ganti emoticon status"
+            @click="openBioModal"
           >
             {{ activeEmoji }}
-          </div>
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- 2. AKTIVITAS TERKINI (TUGAS DEADLINE TERDEKAT) -->
-    <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-3xl p-4 mx-4 md:p-5 border border-slate-100 dark:border-slate-800 shadow-sm space-y-3 relative z-10"
-    >
-      <div class="flex items-center justify-between">
-        <h3
-          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-1.5"
-        >
-          <i class="fa-solid fa-clock-rotate-left text-emerald-600"></i> Tugas
-          Deadline Terdekat Anda
+    <!-- Deadline -->
+    <div class="ui-card ui-card-large relative z-10 mx-4 flex flex-col gap-4">
+      <div class="flex items-center justify-between gap-3 min-w-0">
+        <h3 class="ui-title">
+          <i class="fa-solid fa-clock-rotate-left ui-text-success"></i>
+          Tugas Deadline Terdekat
         </h3>
-        <button
-          @click="navTo('progress')"
-          class="text-sm md:text-xs font-semibold text-theme hover:underline"
-        >
-          Lihat Semua
-        </button>
+
+        <button type="button" class="ui-link" @click="navigateTo('progress')">Lihat Semua</button>
       </div>
 
-      <div class="space-y-2">
-        <div
+      <div class="flex flex-col gap-2">
+        <button
           v-for="task in myUpcomingTasks"
           :key="task.id"
-          @click="navTo('progress')"
-          class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 flex items-center justify-between gap-3 text-sm md:text-xs cursor-pointer hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          type="button"
+          class="ui-list-item ui-list-item-action"
+          @click="navigateTo('progress')"
         >
-          <div class="overflow-hidden">
-            <p
-              class="font-semibold text-slate-800 dark:text-slate-200 truncate"
-            >
+          <span class="flex-1 min-w-0">
+            <span class="block ui-text-strong ui-truncate">
               {{ task.title || task.Judul }}
-            </p>
-            <p class="text-xs text-slate-400">
+            </span>
+            <span class="block ui-caption">
               DL: {{ task.deadline || task.Deadline || "-" }} • Unit
               {{ task.unit || task.Unit }}
-            </p>
-          </div>
-          <span
-            class="px-2.5 py-1 rounded-full text-xs font-semibold shrink-0 bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
-          >
-            {{ task.progress || 0 }}%
+            </span>
           </span>
-        </div>
 
-        <div
-          v-if="myUpcomingTasks.length === 0"
-          class="text-center py-6 text-slate-400 text-sm md:text-xs"
-        >
-          <i class="fa-solid fa-circle-check text-xl mb-1 opacity-40"></i>
+          <span class="ui-badge ui-badge-success ui-badge-pill"> {{ task.progress || 0 }}% </span>
+        </button>
+
+        <div v-if="myUpcomingTasks.length === 0" class="ui-empty">
+          <i class="fa-solid fa-circle-check"></i>
           <p>Tidak ada tugas mendekati deadline.</p>
         </div>
       </div>
     </div>
 
-    <!-- 3. RINGKASAN LAPORAN OPERASIONAL -->
+    <!-- Ringkasan -->
     <div>
-      <h3
-        class="text-sm md:text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2.5 px-1 flex items-center gap-1.5"
-      >
-        <i class="fa-solid fa-chart-pie"></i> Ringkasan Aktivitas Anda
+      <h3 class="ui-section-label">
+        <i class="fa-solid fa-chart-pie"></i>
+        Ringkasan Aktivitas Anda
       </h3>
 
       <div class="grid grid-cols-4 gap-2 sm:gap-3">
-        <!-- Kartu 1: Tugas Berjalan -->
-        <div
-          @click="navTo('progress', 'in progress')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-blue-500/40 transition-all"
-        >
-          <div
-            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-sm sm:text-base shrink-0"
-          >
-            <i class="fa-solid fa-list-check"></i>
-          </div>
-          <div class="overflow-hidden w-full">
-            <p
-              class="text-[10px] sm:text-xs font-semibold text-slate-400 truncate"
-            >
-              Tugas Aktif
-            </p>
-            <p
-              class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight"
-            >
-              {{ myActiveTasksCount }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Kartu 2: Tugas Selesai -->
-        <div
-          @click="navTo('progress', 'completed')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-emerald-500/40 transition-all"
-        >
-          <div
-            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-sm sm:text-base shrink-0"
-          >
-            <i class="fa-solid fa-circle-check"></i>
-          </div>
-          <div class="overflow-hidden w-full">
-            <p
-              class="text-[10px] sm:text-xs font-semibold text-slate-400 truncate"
-            >
-              Tugas Selesai
-            </p>
-            <p
-              class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight"
-            >
-              {{ myCompletedTasksCount }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Kartu 3: Aduan Menunggu -->
-        <div
-          @click="navTo('aduan')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-rose-500/40 transition-all"
-        >
-          <div
-            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 flex items-center justify-center text-sm sm:text-base shrink-0"
-          >
-            <i class="fa-solid fa-headset"></i>
-          </div>
-          <div class="overflow-hidden w-full">
-            <p
-              class="text-[10px] sm:text-xs font-semibold text-slate-400 truncate"
-            >
-              Aduan Open
-            </p>
-            <p
-              class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight"
-            >
-              {{ openTicketsCount }}
-            </p>
-          </div>
-        </div>
-
-        <!-- Kartu 4: Catatan/Notes -->
-        <div
-          @click="navTo('notes')"
-          class="glass-card bg-white/90 dark:bg-slate-900/90 p-2.5 sm:p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-xs flex flex-col sm:flex-row items-center text-center sm:text-left gap-1.5 sm:gap-3 cursor-pointer hover:border-amber-500/40 transition-all"
-        >
-          <div
-            class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-sm sm:text-base shrink-0"
-          >
-            <i class="fa-solid fa-note-sticky"></i>
-          </div>
-          <div class="overflow-hidden w-full">
-            <p
-              class="text-[10px] sm:text-xs font-semibold text-slate-400 truncate"
-            >
-              Notes
-            </p>
-            <p
-              class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight"
-            >
-              {{ notesCount }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 4. AKSES MODUL & FITUR (PERBAIKAN SIMETRIS & CENTER MOBILE) -->
-    <div class="p-2 rounded-3xl space-y-4">
-      <div class="flex items-center justify-between pb-3">
-        <h4
-          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
-          <i class="fa-solid fa-shapes text-theme"></i> Akses Modul & Fitur
-        </h4>
-      </div>
-
-      <div
-        class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-6 gap-y-16 pt-8"
-      >
         <button
-          v-for="menu in filteredFeatures"
-          :key="menu.id"
-          @click="navigateTo(menu.id)"
-          class="w-full glass-card bg-white/90 group flex flex-col items-center justify-start p-3 pt-2 pb-3.5 rounded-2xl bg-slate-100/80 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-700/60 shadow-xs hover:shadow-md transition-all cursor-pointer relative"
+          type="button"
+          class="ui-stat-card flex flex-col items-center gap-1.5 min-w-0 p-2.5 text-center sm:flex-row sm:gap-3 sm:p-3.5 sm:text-left"
+          @click="navigateTo('progress', 'in progress')"
         >
-          <span
-            v-if="menu.badge"
-            class="absolute -top-8 -right-1 bg-rose-500 text-white font-semibold text-[9px] px-1.5 py-0.2 rounded-full uppercase shadow-xs z-20"
-          >
-            {{ menu.badge }}
+          <span class="ui-icon ui-stat-icon w-8 h-8 sm:w-10 sm:h-10 ui-icon-info">
+            <i class="fa-solid fa-list-check"></i>
           </span>
+          <span class="overflow-hidden w-full">
+            <span class="ui-stat-label block overflow-hidden text-ellipsis whitespace-nowrap"
+              >Tugas Aktif</span
+            >
+            <span class="ui-stat-value block">{{ myActiveTasksCount }}</span>
+          </span>
+        </button>
 
-          <div
-            class="-mt-12 w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center text-xl md:text-2xl mb-1.5 transition-transform duration-200 group-hover:-translate-y-1 group-hover:scale-105 shadow-md z-10"
-            :class="menu.bgClass || 'bg-theme/10 text-theme'"
-          >
-            <i :class="menu.icon"></i>
-          </div>
+        <button
+          type="button"
+          class="ui-stat-card flex flex-col items-center gap-1.5 min-w-0 p-2.5 text-center sm:flex-row sm:gap-3 sm:p-3.5 sm:text-left"
+          @click="navigateTo('progress', 'completed')"
+        >
+          <span class="ui-icon ui-stat-icon w-8 h-8 sm:w-10 sm:h-10 ui-icon-success">
+            <i class="fa-solid fa-circle-check"></i>
+          </span>
+          <span class="overflow-hidden w-full">
+            <span class="ui-stat-label block overflow-hidden text-ellipsis whitespace-nowrap"
+              >Tugas Selesai</span
+            >
+            <span class="ui-stat-value block">{{ myCompletedTasksCount }}</span>
+          </span>
+        </button>
 
-          <span
-            class="text-xs font-semibold text-slate-700 dark:text-slate-200 text-center leading-tight group-hover:text-theme line-clamp-2"
-          >
-            {{ menu.label }}
+        <button
+          type="button"
+          class="ui-stat-card flex flex-col items-center gap-1.5 min-w-0 p-2.5 text-center sm:flex-row sm:gap-3 sm:p-3.5 sm:text-left"
+          @click="navigateTo('aduan')"
+        >
+          <span class="ui-icon ui-stat-icon w-8 h-8 sm:w-10 sm:h-10 ui-icon-danger">
+            <i class="fa-solid fa-headset"></i>
+          </span>
+          <span class="overflow-hidden w-full">
+            <span class="ui-stat-label block overflow-hidden text-ellipsis whitespace-nowrap"
+              >Aduan Open</span
+            >
+            <span class="ui-stat-value block">{{ openTicketsCount }}</span>
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="ui-stat-card flex flex-col items-center gap-1.5 min-w-0 p-2.5 text-center sm:flex-row sm:gap-3 sm:p-3.5 sm:text-left"
+          @click="navigateTo('notes')"
+        >
+          <span class="ui-icon ui-stat-icon w-8 h-8 sm:w-10 sm:h-10 ui-icon-warning">
+            <i class="fa-solid fa-note-sticky"></i>
+          </span>
+          <span class="overflow-hidden w-full">
+            <span class="ui-stat-label block overflow-hidden text-ellipsis whitespace-nowrap"
+              >Notes</span
+            >
+            <span class="ui-stat-value block">{{ notesCount }}</span>
           </span>
         </button>
       </div>
     </div>
 
-    <!-- POPUP MODAL GANTI BIO / STATUS PROFIL -->
-    <Teleport to="body">
+    <!-- Modul -->
+    <div class="ui-card ui-card-flush bg-transparent shadow-none">
+      <h4 class="ui-title">
+        <i class="fa-solid fa-shapes"></i>
+        Akses Modul & Fitur
+      </h4>
+
       <div
-        v-if="isBioModalOpen"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm"
-        @click.self="isBioModalOpen = false"
+        class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-x-6 gap-y-16 pt-12"
       >
-        <div
-          class="w-full max-w-md glass-card bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800"
+        <button
+          v-for="menu in filteredFeatures"
+          :key="menu.id"
+          type="button"
+          class="ui-module-card relative flex flex-col items-center justify-start w-full pt-3 px-1 pb-3.5"
+          @click="navigateTo(menu.id)"
         >
-          <div
-            class="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800"
+          <span
+            v-if="menu.badge"
+            class="ui-module-badge absolute -top-8 right-1 z-20 py-0.5 px-1.5"
           >
-            <h3
-              class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm flex items-center gap-2"
-            >
-              <i class="fa-solid fa-comment-dots text-emerald-600"></i>
-              <span>Ganti Status Harian</span>
+            {{ menu.badge }}
+          </span>
+
+          <span
+            class="ui-module-icon z-10 flex items-center justify-center w-12 h-12 -mt-12 mb-1.5 md:w-14 md:h-14"
+          >
+            <img :src="menu.iconImg" :alt="menu.label" class="w-full h-full object-contain" />
+          </span>
+
+          <span class="ui-module-label line-clamp-2 overflow-hidden text-center">{{
+            menu.label
+          }}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal status -->
+    <Teleport to="body">
+      <div v-if="isBioModalOpen" class="ui-modal-overlay" @click.self="isBioModalOpen = false">
+        <div
+          class="ui-modal ui-modal-sm animate-fade-in"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="staff-bio-title"
+        >
+          <div class="ui-modal-header">
+            <h3 id="staff-bio-title" class="ui-title">
+              <i class="fa-solid fa-comment-dots ui-text-success"></i>
+              Ganti Status Harian
             </h3>
+
             <button
-              @click="isBioModalOpen = false"
               type="button"
-              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+              class="ui-close"
+              aria-label="Tutup modal status"
+              @click="isBioModalOpen = false"
             >
-              <i class="fa-solid fa-xmark text-lg"></i>
+              <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
 
-          <form @submit.prevent="saveBio" class="space-y-4 text-sm md:text-xs">
+          <form class="ui-modal-body flex flex-col gap-4" @submit.prevent="saveBio">
             <div>
-              <label
-                class="block text-slate-500 dark:text-slate-400 font-semibold mb-1"
-                >Pilih Emoticon Ekspresif:</label
-              >
-              <div
-                class="flex items-center gap-1.5 overflow-x-auto pb-2 [scrollbar-width:none]"
-              >
+              <label class="ui-label">Pilih Emoticon Ekspresif:</label>
+
+              <div class="flex items-center gap-2 min-w-0 overflow-x-auto no-scrollbar pb-2">
                 <button
                   v-for="emoji in EXPRESSIVE_EMOJIS"
                   :key="emoji"
                   type="button"
+                  class="ui-option ui-option-emoji"
+                  :class="{ 'is-active': selectedEmoji === emoji }"
+                  :aria-pressed="selectedEmoji === emoji"
                   @click="selectEmoji(emoji)"
-                  class="w-9 h-9 rounded-xl text-base flex items-center justify-center shrink-0 border transition-all active:scale-95 cursor-pointer"
-                  :class="
-                    selectedEmoji === emoji
-                      ? 'bg-emerald-500/10 border-emerald-500 ring-2 ring-emerald-500/30'
-                      : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-slate-200/60'
-                  "
                 >
                   {{ emoji }}
                 </button>
               </div>
             </div>
 
-            <div>
-              <label
-                class="block text-slate-500 dark:text-slate-400 font-semibold mb-1"
-                >Teks Status:</label
-              >
+            <div class="min-w-0">
+              <label for="staff-bio" class="ui-label"> Teks Status: </label>
               <textarea
+                id="staff-bio"
                 v-model="bioFormText"
                 rows="3"
+                class="ui-input"
                 placeholder="Tuliskan status harian Anda..."
-                class="w-full glass-input rounded-xl p-3 text-sm md:text-xs outline-none text-slate-800 dark:text-slate-100 resize-none"
               ></textarea>
             </div>
 
-            <div
-              class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100 dark:border-slate-800"
-            >
+            <div class="ui-actions flex flex-wrap items-center gap-2 justify-end ui-divider pt-3">
               <button
-                @click="isBioModalOpen = false"
                 type="button"
+                class="ui-button ui-button-secondary"
                 :disabled="isSavingBio"
-                class="px-4 py-2.5 rounded-xl font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer"
+                @click="isBioModalOpen = false"
               >
                 Batal
               </button>
+
               <button
                 type="submit"
+                class="ui-button ui-button-primary ui-button-shadow"
                 :disabled="isSavingBio"
-                class="px-5 py-2.5 rounded-xl font-semibold bg-button text-white shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
-                <i
-                  v-if="isSavingBio"
-                  class="fa-solid fa-spinner fa-spin text-xs"
-                ></i>
-                <span>{{
-                  isSavingBio ? "Menyimpan..." : "Simpan Status"
-                }}</span>
+                <i v-if="isSavingBio" class="fa-solid fa-spinner fa-spin"></i>
+                {{ isSavingBio ? "Menyimpan..." : "Simpan Status" }}
               </button>
             </div>
           </form>
@@ -389,8 +306,26 @@
 import { ref, computed, onMounted, watch } from "vue";
 import { store } from "../store/index.js";
 import { api } from "../services/api.js";
+import ModalHakAkses from "../components/modals/ModalHakAkses.vue";
+
+const canViewPage = computed(() => {
+  const user = store.currentUser;
+  if (!user) return false;
+
+  const role = String(user.role || "").toUpperCase();
+  if (role === "SUPERADMIN") return true;
+  return store.canAccessPage("main");
+});
 
 const currentUser = computed(() => store.currentUser || {});
+
+const isLoadingDashboard = ref(false);
+const props = defineProps({
+  isOpen: { type: Boolean, default: false },
+  activePage: { type: String, default: "main" },
+});
+
+const emit = defineEmits(["close-sidebar", "change-page", "open-login"]);
 
 const EXPRESSIVE_EMOJIS = [
   "🚀",
@@ -452,6 +387,37 @@ const emojiAnimationClass = computed(() => {
   if (["✨", "🌟", "🌈", "🎉"].includes(emoji)) return "tg-anim-spin-glow";
   return "tg-anim-bounce";
 });
+
+const directOpenTicketsCount = ref(0);
+
+const fetchDashboardData = async () => {
+  if (!canViewPage.value) return;
+  isLoadingDashboard.value = true;
+  try {
+    const currentUserId =
+      currentUser.value?.email || currentUser.value?.id || "guest";
+
+    if (api && api.getDashboardSummary) {
+      const summary = await api.getDashboardSummary(currentUserId);
+
+      // Masukkan ke state reaktif penampung dashboard
+      myNotesList.value = new Array(summary.notesCount); // Cukup simpan jumlahnya untuk .length
+
+      // Simpan list program ringan untuk widget deadline terdekat
+      if (!store.db) store.db = {};
+      store.db.programs = summary.upcomingList;
+
+      directOpenTicketsCount.value = summary.openTicketsCount || 0;
+
+      // Simpan variabel hitungan langsung jika ingin dipakai di template
+      // (Atau biarkan computed property membaca dari store yang sudah diringkas)
+    }
+  } catch (err) {
+    console.error("Gagal memuat data dashboard:", err);
+  } finally {
+    isLoadingDashboard.value = false;
+  }
+};
 
 const openBioModal = () => {
   bioFormText.value = cleanedBioText.value;
@@ -584,17 +550,40 @@ const myCompletedTasksCount = computed(
 );
 const openTicketsCount = computed(
   () =>
+    directOpenTicketsCount.value ||
     (store.db?.aduanList || store.aduanList || []).filter(
       (a) => a.status === "Open",
     ).length,
 );
 
 // MENGAMBIL JUMLAH CATATAN SECARA REAKTIF & AKURAT
+// const fetchNotesCount = async () => {
+//   const currentUserId =
+//     currentUser.value?.email || currentUser.value?.id || "guest";
+//   try {
+//     if (api && api.getUserNotesCountOnly) {
+//       const res = await api.getUserNotesCountOnly(currentUserId);
+//       myNotesList.value = res || [];
+//     } else if (api && api.getUserNotes) {
+//       const res = await api.getUserNotes(currentUserId);
+//       myNotesList.value = res || [];
+//     } else {
+//       myNotesList.value = store.db?.notes || store.notes || [];
+//     }
+//   } catch (err) {
+//     myNotesList.value = store.db?.notes || store.notes || [];
+//   }
+// };
+
 const fetchNotesCount = async () => {
   const currentUserId =
     currentUser.value?.email || currentUser.value?.id || "guest";
   try {
-    if (api && api.getUserNotes) {
+    // Gunakan fungsi khusus yang tidak membawa beban gambar/content besar
+    if (api && api.getUserNotesCountOnly) {
+      const res = await api.getUserNotesCountOnly(currentUserId);
+      myNotesList.value = res || [];
+    } else if (api && api.getUserNotes) {
       const res = await api.getUserNotes(currentUserId);
       myNotesList.value = res || [];
     } else {
@@ -613,99 +602,210 @@ const myUpcomingTasks = computed(() =>
     .slice(0, 3),
 );
 
+// const allSidebarFeatures = [
+//   {
+//     id: "daily-report",
+//     label: "Laporan Harian",
+//     icon: "fa-solid fa-file-invoice",
+//     bgClass: "bg-rose-600 dark:bg-rose-500 text-white",
+//     badge: "Wajib!",
+//   },
+//   {
+//     id: "summary",
+//     label: "Rekap Bisnis",
+//     icon: "fa-solid fa-chart-line",
+//     bgClass: "bg-emerald-600 dark:bg-emerald-500 text-white",
+//   },
+//   {
+//     id: "notes",
+//     label: "Notes",
+//     icon: "fa-solid fa-note-sticky",
+//     bgClass: "bg-amber-500 dark:bg-amber-500  text-white",
+//   },
+//   {
+//     id: "unit-NHP",
+//     label: "Nur Hidayah Press",
+//     icon: "fa-solid fa-book-open",
+//     bgClass: "bg-teal-600 dark:bg-teal-500 text-white",
+//   },
+//   {
+//     id: "unit-NHC",
+//     label: "Nusaragam",
+//     icon: "fa-solid fa-shirt",
+//     bgClass: "bg-amber-600 dark:bg-amber-500 text-white",
+//   },
+//   {
+//     id: "unit-KG",
+//     label: "Karta Grafika",
+//     icon: "fa-solid fa-print",
+//     bgClass: "bg-indigo-600 dark:bg-indigo-500 text-white",
+//   },
+//   {
+//     id: "progress",
+//     label: "Team Progress",
+//     icon: "fa-solid fa-bars-progress",
+//     bgClass: "bg-blue-600 dark:bg-blue-500 text-white",
+//   },
+//   {
+//     id: "digmar",
+//     label: "Socmed Analytics",
+//     icon: "fa-solid fa-share-nodes",
+//     bgClass: "bg-pink-600 dark:bg-pink-500 text-white",
+//   },
+//   {
+//     id: "leads",
+//     label: "Leads & Campaign",
+//     icon: "fa-solid fa-users-rays",
+//     bgClass: "bg-teal-600 dark:bg-teal-500 text-white",
+//   },
+//   {
+//     id: "promo",
+//     label: "Marketing Budget",
+//     icon: "fa-solid fa-wallet",
+//     bgClass: "bg-rose-600 dark:bg-rose-500 text-white",
+//   },
+//   {
+//     id: "spv-report",
+//     label: "Laporan Divisi",
+//     icon: "fa-solid fa-file-signature",
+//     bgClass: "bg-purple-600 dark:bg-purple-500 text-white",
+//   },
+//   {
+//     id: "aduan",
+//     label: "Customer Support",
+//     icon: "fa-solid fa-headset",
+//     bgClass: "bg-red-600 dark:bg-red-500 text-white",
+//   },
+//   {
+//     id: "report",
+//     label: "Laporan Executive",
+//     icon: "fa-solid fa-file-invoice-dollar",
+//     bgClass: "bg-emerald-700 dark:bg-emerald-800 text-white",
+//   },
+//   {
+//     id: "master-data",
+//     label: "Master Data",
+//     icon: "fa-solid fa-sliders",
+//     bgClass: "bg-slate-600 dark:bg-slate-500 text-white",
+//   },
+//   {
+//     id: "users",
+//     label: "Akses Pengguna",
+//     icon: "fa-solid fa-users-gear",
+//     bgClass: "bg-purple-600 dark:bg-purple-600 text-white",
+//   },
+// ];
+
 const allSidebarFeatures = [
   {
     id: "daily-report",
     label: "Laporan Harian",
-    icon: "fa-solid fa-file-invoice",
-    bgClass: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+    iconImg: new URL("/icon/laporan_harian.png", import.meta.url).href,
+    bgClass: "bg-rose-600/10 dark:bg-rose-500/20 text-rose-600",
     badge: "Wajib!",
   },
   {
     id: "summary",
     label: "Rekap Bisnis",
-    icon: "fa-solid fa-chart-line",
-    bgClass: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+    iconImg: new URL("/icon/rekap_bisnis.png", import.meta.url).href,
+    bgClass: "bg-emerald-600/10 dark:bg-emerald-500/20 text-emerald-600",
   },
   {
     id: "notes",
     label: "Notes",
-    icon: "fa-solid fa-note-sticky",
-    bgClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+    iconImg: new URL("/icon/notes.png", import.meta.url).href,
+    bgClass: "bg-amber-500/10 dark:bg-amber-500/20 text-amber-600",
   },
   {
     id: "unit-NHP",
     label: "Nur Hidayah Press",
-    icon: "fa-solid fa-book-open",
-    bgClass: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+    iconImg: new URL("/icon/penerbitan.png", import.meta.url).href,
+    bgClass: "bg-teal-600/10 dark:bg-teal-500/20 text-teal-600",
   },
   {
     id: "unit-NHC",
     label: "Nusaragam",
-    icon: "fa-solid fa-shirt",
-    bgClass: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
+    iconImg: new URL("/icon/konveksi.png", import.meta.url).href,
+    bgClass: "bg-amber-600/10 dark:bg-amber-500/20 text-amber-600",
   },
   {
     id: "unit-KG",
     label: "Karta Grafika",
-    icon: "fa-solid fa-print",
-    bgClass: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
+    iconImg: new URL("/icon/percetakan.png", import.meta.url).href,
+    bgClass: "bg-indigo-600/10 dark:bg-indigo-500/20 text-indigo-600",
   },
   {
     id: "progress",
     label: "Team Progress",
-    icon: "fa-solid fa-bars-progress",
-    bgClass: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
+    iconImg: new URL("/icon/progres.png", import.meta.url).href,
+    bgClass: "bg-blue-600/10 dark:bg-blue-500/20 text-blue-600",
   },
   {
     id: "digmar",
     label: "Socmed Analytics",
-    icon: "fa-solid fa-share-nodes",
-    bgClass: "bg-pink-500/10 text-pink-600 dark:text-pink-400",
+    iconImg: new URL("/icon/medsos.png", import.meta.url).href,
+    bgClass: "bg-pink-600/10 dark:bg-pink-500/20 text-pink-600",
   },
   {
     id: "leads",
     label: "Leads & Campaign",
-    icon: "fa-solid fa-users-rays",
-    bgClass: "bg-teal-500/10 text-teal-600 dark:text-teal-400",
+    iconImg: new URL("/icon/campaign.png", import.meta.url).href,
+    bgClass: "bg-teal-600/10 dark:bg-teal-500/20 text-teal-600",
   },
   {
     id: "promo",
     label: "Marketing Budget",
-    icon: "fa-solid fa-wallet",
-    bgClass: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
+    iconImg: new URL("/icon/budget.png", import.meta.url).href,
+    bgClass: "bg-rose-600/10 dark:bg-rose-500/20 text-rose-600",
   },
   {
     id: "spv-report",
     label: "Laporan Divisi",
-    icon: "fa-solid fa-file-signature",
-    bgClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+    iconImg: new URL("/icon/executive_report.png", import.meta.url).href,
+    bgClass: "bg-purple-600/10 dark:bg-purple-500/20 text-purple-600",
   },
   {
     id: "aduan",
     label: "Customer Support",
-    icon: "fa-solid fa-headset",
-    bgClass: "bg-red-500/10 text-red-600 dark:text-red-400",
+    iconImg: new URL("/icon/customer_care.png", import.meta.url).href,
+    bgClass: "bg-red-600/10 dark:bg-red-500/20 text-red-600",
   },
   {
     id: "report",
     label: "Laporan Executive",
-    icon: "fa-solid fa-file-invoice-dollar",
-    bgClass: "bg-emerald-600/10 text-emerald-700 dark:text-emerald-300",
+    iconImg: new URL("/icon/report.png", import.meta.url).href,
+    bgClass: "bg-emerald-700/10 dark:bg-emerald-800/20 text-emerald-700",
   },
   {
     id: "master-data",
     label: "Master Data",
-    icon: "fa-solid fa-sliders",
-    bgClass: "bg-slate-500/10 text-slate-600 dark:text-slate-300",
+    iconImg: new URL("/icon/master_data.png", import.meta.url).href,
+    bgClass: "bg-slate-600/10 dark:bg-slate-500/20 text-slate-600",
   },
   {
     id: "users",
     label: "Akses Pengguna",
-    icon: "fa-solid fa-users-gear",
-    bgClass: "bg-purple-500/10 text-purple-600 dark:text-purple-400",
+    iconImg: new URL("/icon/user.png", import.meta.url).href,
+    bgClass: "bg-purple-600/10 dark:bg-purple-600/20 text-purple-600",
   },
 ];
+
+// const isMenuAllowed = (menuId) => {
+//   // Jika belum login sama sekali, anggap terkunci
+//   if (!store.currentUser) return true;
+
+//   const role = String(
+//     store.currentUser?.role || store.currentUser?.Role || "",
+//   ).toUpperCase();
+
+//   // Superadmin bebas akses semua
+//   if (role === "SUPERADMIN") return true;
+
+//   const userPerms = store.currentUser?.permissions || {};
+
+//   // Jika permissions belum diset sama sekali, sesuaikan default-nya (misal: false jika ingin dikunci ketat)
+//   return !!userPerms[menuId]?.access;
+// };
 
 const filteredFeatures = computed(() => {
   const role = String(
@@ -720,14 +820,33 @@ const navigateTo = (pageId) => {
   store.currentPage = pageId;
 };
 
+// const filteredFeatures = computed(() => {
+//   return allSidebarFeatures;
+// });
+
+// const isAlertModalOpen = ref(false);
+// const alertMessage = ref("");
+
+// const navigateTo = (pageId) => {
+//   if (!isMenuAllowed(pageId)) {
+//     isAlertModalOpen.value = true; // Munculkan pop-up kustom
+//     return;
+//   }
+//   store.currentPage = pageId;
+// };
+
 onMounted(() => {
-  fetchNotesCount();
+  if (canViewPage.value) {
+    fetchNotesCount();
+    fetchDashboardData();
+  }
 });
 
 watch(
   () => store.currentUser,
   () => {
     fetchNotesCount();
+    fetchDashboardData();
   },
   { deep: true },
 );
@@ -833,5 +952,149 @@ watch(
 }
 .tg-anim-spin-glow {
   animation: tgSpinGlow 3s ease-in-out infinite;
+}
+</style>
+
+
+<!-- Gaya khusus komponen; layout utama berada di template. -->
+<style scoped>
+.ui-stat-card {
+  border-radius: var(--ui-radius-card);
+  background-color: var(--card-background);
+  box-shadow: var(--ui-shadow-xs);
+  cursor: pointer;
+}
+
+.ui-stat-label {
+  color: var(--ui-text-muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.ui-stat-value {
+  color: var(--ui-text);
+  font-size: var(--ui-font-sm);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+@media (min-width: 640px) {
+  .ui-stat-label {
+    font-size: var(--ui-font-xs);
+  }
+}
+
+@media (min-width: 640px) {
+  .ui-stat-value {
+    font-size: var(--ui-font-base);
+  }
+}
+
+.ui-staff-greeting {
+  border-radius: var(--ui-radius-large);
+  color: #ffffff;
+  box-shadow: var(--ui-shadow-button);
+}
+
+.ui-staff-role {
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.2);
+  font-size: var(--ui-font-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  backdrop-filter: blur(12px);
+}
+
+.ui-staff-salutation {
+  font-size: var(--ui-body-size);
+  line-height: 1.25;
+}
+
+.ui-staff-name {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.ui-staff-description {
+  color: rgb(255 255 255 / 0.8);
+  font-size: var(--ui-body-size);
+}
+
+.ui-staff-status {
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: var(--ui-radius-card);
+  background-color: rgb(0 0 0 / 0.25);
+  color: rgb(255 255 255 / 0.95);
+  font-size: var(--ui-body-size);
+  font-weight: 600;
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+}
+
+.ui-staff-emoji {
+  font-size: 2.25rem;
+  cursor: pointer;
+  user-select: none;
+  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.15));
+}
+
+.ui-stat-icon {
+  font-size: var(--ui-font-sm);
+}
+
+.ui-module-card {
+  border-radius: var(--ui-radius-control);
+  background-color: var(--card-background);
+  box-shadow: var(--ui-shadow-xs);
+  cursor: pointer;
+}
+
+.ui-module-icon {
+  transition: transform 200ms var(--ui-ease);
+}
+
+.ui-module-label {
+  color: var(--ui-text-secondary);
+  font-size: var(--ui-font-xs);
+  font-weight: 600;
+  line-height: 1.25;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ui-module-badge {
+  border-radius: 999px;
+  background: #f43f5e;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  box-shadow: var(--ui-shadow-xs);
+}
+
+@media (min-width: 640px) {
+  .ui-stat-icon {
+    font-size: var(--ui-font-base);
+  }
+}
+
+@media (min-width: 768px) {
+  .ui-staff-name {
+    font-size: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .ui-staff-emoji {
+    font-size: 1.875rem;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ui-module-card:hover .ui-module-icon {
+    transform: translateY(-0.25rem) scale(1.05);
+  }
 }
 </style>

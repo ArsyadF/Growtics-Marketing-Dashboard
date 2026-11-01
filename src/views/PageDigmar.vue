@@ -6,15 +6,12 @@
       class="glass-card p-4 md:p-5 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4"
     >
       <div>
-        <h3
-          class="text-sm md:text-base font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
+        <h3 class="text-sm md:text-base font-bold flex items-center gap-2 ui-text-primary">
           <i class="fa-solid fa-share-nodes text-theme"></i>
           Digital Marketing & Weekly Sosmed Analytics
         </h3>
-        <p class="text-[11px] md:text-xs text-slate-400 mt-0.5">
-          Rekapitulasi performa konten, jangkauan organik, dan konversi leads
-          mingguan.
+        <p class="text-[11px] md:text-xs mt-0.5 ui-text-muted">
+          Rekapitulasi performa konten, jangkauan organik, dan konversi leads mingguan.
         </p>
       </div>
 
@@ -23,7 +20,7 @@
         <!-- Filter Unit Usaha -->
         <select
           v-model="selectedUnit"
-          class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 outline-none cursor-pointer flex-1 sm:flex-initial"
+          class="rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 cursor-pointer flex-1 sm:flex-initial ui-input ui-text-secondary min-h-0"
         >
           <option value="ALL" v-if="isSuperadmin">Semua Unit Usaha</option>
           <option value="NHP">Unit NHP</option>
@@ -34,7 +31,7 @@
         <!-- Filter Pekan/Bulan -->
         <select
           v-model="selectedPeriod"
-          class="glass-input rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 text-slate-700 dark:text-slate-200 outline-none cursor-pointer"
+          class="rounded-xl px-3 py-2 text-xs font-semibold dark:bg-slate-800 cursor-pointer ui-input ui-text-secondary min-h-0"
         >
           <option value="this-week">Pekan Ini</option>
           <option value="last-week">Pekan Lalu</option>
@@ -44,7 +41,7 @@
         <!-- Button Input Weekly Metrics -->
         <button
           @click="openAddModal"
-          class="bg-button text-white font-bold px-3.5 py-2 rounded-xl text-xs shadow-md hover:opacity-95 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+          class="px-3.5 py-2 rounded-xl text-xs shadow-md hover:opacity-95 transition-all flex items-center gap-1.5 cursor-pointer shrink-0 ui-button ui-button-primary min-h-0"
         >
           <i class="fa-solid fa-plus text-xs"></i>
           <span class="hidden sm:inline">Input Data Pekanan</span>
@@ -58,18 +55,14 @@
       <div
         class="glass-card p-3.5 md:p-4 rounded-2xl border border-slate-100 dark:border-slate-800"
       >
-        <div class="flex items-center justify-between text-slate-400 mb-1">
+        <div class="flex items-center justify-between mb-1 ui-text-muted">
           <span class="text-[10px] md:text-xs font-medium">Total Reach</span>
           <i class="fa-solid fa-eye text-xs text-blue-500"></i>
         </div>
-        <h3
-          class="text-base md:text-xl font-black text-slate-800 dark:text-slate-100"
-        >
+        <h3 class="text-base md:text-xl font-black ui-text-primary">
           {{ formatNumber(totalReach) }}
         </h3>
-        <p
-          class="text-[9px] text-emerald-500 font-semibold mt-1 flex items-center gap-1"
-        >
+        <p class="text-[9px] text-emerald-500 font-semibold mt-1 flex items-center gap-1">
           <i class="fa-solid fa-arrow-trend-up"></i> +12.4% vs pekan lalu
         </p>
       </div>
@@ -78,20 +71,14 @@
       <div
         class="glass-card p-3.5 md:p-4 rounded-2xl border border-slate-100 dark:border-slate-800"
       >
-        <div class="flex items-center justify-between text-slate-400 mb-1">
-          <span class="text-[10px] md:text-xs font-medium"
-            >Total Engagement</span
-          >
+        <div class="flex items-center justify-between mb-1 ui-text-muted">
+          <span class="text-[10px] md:text-xs font-medium">Total Engagement</span>
           <i class="fa-solid fa-heart text-xs text-rose-500"></i>
         </div>
-        <h3
-          class="text-base md:text-xl font-black text-slate-800 dark:text-slate-100"
-        >
+        <h3 class="text-base md:text-xl font-black ui-text-primary">
           {{ formatNumber(totalEngagement) }}
         </h3>
-        <p
-          class="text-[9px] text-emerald-500 font-semibold mt-1 flex items-center gap-1"
-        >
+        <p class="text-[9px] text-emerald-500 font-semibold mt-1 flex items-center gap-1">
           <i class="fa-solid fa-arrow-trend-up"></i> +8.1% vs pekan lalu
         </p>
       </div>
@@ -100,31 +87,29 @@
       <div
         class="glass-card p-3.5 md:p-4 rounded-2xl border border-slate-100 dark:border-slate-800"
       >
-        <div class="flex items-center justify-between text-slate-400 mb-1">
+        <div class="flex items-center justify-between mb-1 ui-text-muted">
           <span class="text-[10px] md:text-xs font-medium">Avg ER (%)</span>
           <i class="fa-solid fa-chart-line text-xs text-amber-500"></i>
         </div>
         <h3 class="text-base md:text-xl font-black text-theme">{{ avgER }}%</h3>
-        <p class="text-[9px] text-slate-400 mt-1">
+        <p class="text-[9px] mt-1 ui-text-muted">
           Status: <strong class="text-emerald-500">Sehat (&gt;3%)</strong>
         </p>
       </div>
 
       <!-- Leads Disatukan dari Sosmed -->
       <div
-        class="glass-card p-3.5 md:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 bg-button/5"
+        class="glass-card p-3.5 md:p-4 rounded-2xl border border-slate-100 dark:border-slate-800 theme-tint-subtle"
       >
-        <div class="flex items-center justify-between text-slate-400 mb-1">
-          <span class="text-[10px] md:text-xs font-medium text-theme"
-            >Leads dari Sosmed</span
-          >
+        <div class="flex items-center justify-between mb-1 ui-text-muted">
+          <span class="text-[10px] md:text-xs font-medium text-theme">Leads dari Sosmed</span>
           <i class="fa-solid fa-comments text-xs text-theme"></i>
         </div>
         <h3 class="text-base md:text-xl font-black text-theme">
           {{ totalLeadsFromSosmed }}
-          <span class="text-[10px] font-normal text-slate-400">Leads</span>
+          <span class="text-[10px] font-normal ui-text-muted">Leads</span>
         </h3>
-        <p class="text-[9px] text-slate-400 mt-1">Terhubung ke Page Leads</p>
+        <p class="text-[9px] mt-1 ui-text-muted">Terhubung ke Page Leads</p>
       </div>
     </div>
 
@@ -133,7 +118,7 @@
       <div
         v-for="item in filteredSocialData"
         :key="item.id"
-        class="glass-card p-4 md:p-5 rounded-2xl border border-white/20 dark:border-slate-800 hover:border-theme/40 transition-all space-y-3 relative overflow-hidden"
+        class="glass-card p-4 md:p-5 rounded-2xl border border-white/20 dark:border-slate-800 theme-border-hover transition-all space-y-3 relative overflow-hidden"
       >
         <!-- Top Bar Platform Header -->
         <div
@@ -145,18 +130,13 @@
               class="w-9 h-9 rounded-xl flex items-center justify-center text-white text-base shadow-sm"
               :class="getPlatformBgClass(item.platform)"
             >
-              <i
-                class="fa-brands"
-                :class="getPlatformIconClass(item.platform)"
-              ></i>
+              <i class="fa-brands" :class="getPlatformIconClass(item.platform)"></i>
             </div>
             <div>
-              <h4
-                class="font-bold text-slate-800 dark:text-slate-100 text-xs sm:text-sm"
-              >
+              <h4 class="font-bold text-xs sm:text-sm ui-text-primary">
                 {{ item.platform }}
               </h4>
-              <span class="text-[9px] font-bold text-slate-400 uppercase">
+              <span class="text-[9px] font-bold uppercase ui-text-muted">
                 Unit {{ item.unit }} • {{ item.weekRange }}
               </span>
             </div>
@@ -164,7 +144,7 @@
 
           <!-- Badge Engagement Rate -->
           <span
-            class="text-[10px] font-extrabold text-theme bg-button/10 px-2 py-0.5 rounded-full border border-theme/20"
+            class="text-[10px] font-extrabold text-theme theme-tint px-2 py-0.5 rounded-full border theme-border-soft"
           >
             ER {{ item.er }}%
           </span>
@@ -173,34 +153,19 @@
         <!-- Rincian Parameter Metrics -->
         <div class="grid grid-cols-2 gap-2 text-xs pt-1">
           <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-            <span class="text-[9px] text-slate-400 block mb-0.5"
-              >Reach / Impression</span
-            >
-            <span class="font-bold text-slate-800 dark:text-slate-200">{{
-              formatNumber(item.reach)
-            }}</span>
+            <span class="text-[9px] block mb-0.5 ui-text-muted">Reach / Impression</span>
+            <span class="font-bold ui-text-primary">{{ formatNumber(item.reach) }}</span>
           </div>
           <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-            <span class="text-[9px] text-slate-400 block mb-0.5"
-              >Likes & Comments</span
-            >
-            <span class="font-bold text-slate-800 dark:text-slate-200">{{
-              formatNumber(item.likesComments)
-            }}</span>
+            <span class="text-[9px] block mb-0.5 ui-text-muted">Likes & Comments</span>
+            <span class="font-bold ui-text-primary">{{ formatNumber(item.likesComments) }}</span>
           </div>
           <div class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/50">
-            <span class="text-[9px] text-slate-400 block mb-0.5"
-              >Shares & Saves</span
-            >
-            <span class="font-bold text-slate-800 dark:text-slate-200">{{
-              formatNumber(item.sharesSaves)
-            }}</span>
+            <span class="text-[9px] block mb-0.5 ui-text-muted">Shares & Saves</span>
+            <span class="font-bold ui-text-primary">{{ formatNumber(item.sharesSaves) }}</span>
           </div>
-          <div
-            class="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20"
-          >
-            <span
-              class="text-[9px] text-emerald-600 dark:text-emerald-400 block mb-0.5"
+          <div class="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+            <span class="text-[9px] text-emerald-600 dark:text-emerald-400 block mb-0.5"
               >Link Clicks / Leads</span
             >
             <span class="font-bold text-emerald-700 dark:text-emerald-300"
@@ -212,12 +177,9 @@
         <!-- Top Performing Content Catatan -->
         <div
           v-if="item.topContent"
-          class="text-[10px] bg-slate-100/70 dark:bg-slate-800/70 p-2.5 rounded-xl text-slate-600 dark:text-slate-300"
+          class="text-[10px] bg-slate-100/70 dark:bg-slate-800/70 p-2.5 rounded-xl ui-text-secondary"
         >
-          <span
-            class="font-bold text-slate-800 dark:text-slate-100 block mb-0.5"
-            >🏆 Content Winner Pekan Ini:</span
-          >
+          <span class="font-bold block mb-0.5 ui-text-primary">🏆 Content Winner Pekan Ini:</span>
           "{{ item.topContent }}"
         </div>
 
@@ -227,14 +189,14 @@
         >
           <button
             @click="openEditModal(item)"
-            class="text-slate-400 hover:text-amber-500 text-xs p-1 transition-colors cursor-pointer"
+            class="hover:text-amber-500 text-xs p-1 transition-colors cursor-pointer ui-text-muted"
             title="Edit Analytics"
           >
             <i class="fa-solid fa-pen-to-square"></i>
           </button>
           <button
             @click="deleteItem(item.id)"
-            class="text-slate-400 hover:text-rose-500 text-xs p-1 transition-colors cursor-pointer"
+            class="hover:text-rose-500 text-xs p-1 transition-colors cursor-pointer ui-text-muted"
             title="Hapus Data"
           >
             <i class="fa-solid fa-trash-can"></i>
@@ -251,19 +213,17 @@
         @click.self="isModalOpen = false"
       >
         <div
-          class="w-full max-w-md glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800"
+          class="w-full max-w-md glass-card rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800"
         >
           <div
             class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
           >
-            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm">
-              {{
-                isEdit ? "Edit Metrics Sosmed" : "Input Metrics Sosmed Pekanan"
-              }}
+            <h3 class="font-bold text-sm ui-text-primary">
+              {{ isEdit ? "Edit Metrics Sosmed" : "Input Metrics Sosmed Pekanan" }}
             </h3>
             <button
               @click="isModalOpen = false"
-              class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              class="hover:text-slate-600 dark:hover:text-slate-200 ui-text-muted"
             >
               <i class="fa-solid fa-xmark text-lg"></i>
             </button>
@@ -272,13 +232,10 @@
           <form @submit.prevent="saveMetrics" class="space-y-3 text-xs">
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label
-                  class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
-                  >Unit Usaha:</label
-                >
+                <label class="block font-medium mb-1 ui-text-description">Unit Usaha:</label>
                 <select
                   v-model="form.unit"
-                  class="w-full glass-input rounded-xl px-3 py-2 dark:bg-slate-800 text-slate-800 dark:text-slate-100 outline-none"
+                  class="w-full rounded-xl px-3 py-2 dark:bg-slate-800 ui-input ui-text-primary min-h-0"
                 >
                   <option value="NHP">NHP</option>
                   <option value="NHC">NHC</option>
@@ -287,13 +244,10 @@
               </div>
 
               <div>
-                <label
-                  class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
-                  >Platform Sosmed:</label
-                >
+                <label class="block font-medium mb-1 ui-text-description">Platform Sosmed:</label>
                 <select
                   v-model="form.platform"
-                  class="w-full glass-input rounded-xl px-3 py-2 dark:bg-slate-800 text-slate-800 dark:text-slate-100 outline-none"
+                  class="w-full rounded-xl px-3 py-2 dark:bg-slate-800 ui-input ui-text-primary min-h-0"
                 >
                   <option value="Instagram">Instagram</option>
                   <option value="TikTok">TikTok</option>
@@ -305,79 +259,63 @@
 
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label
-                  class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
-                  >Rentang Pekan:</label
-                >
+                <label class="block font-medium mb-1 ui-text-description">Rentang Pekan:</label>
                 <input
                   v-model="form.weekRange"
                   type="text"
                   required
                   placeholder="Misal: 07 Apr - 13 Apr"
-                  class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme"
+                  class="w-full rounded-xl px-3 py-2 ui-input ui-text-primary min-h-0"
                 />
               </div>
               <div>
-                <label
-                  class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
-                  >Total Reach:</label
-                >
+                <label class="block font-medium mb-1 ui-text-description">Total Reach:</label>
                 <input
                   v-model.number="form.reach"
                   type="number"
                   required
                   placeholder="0"
-                  class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme"
+                  class="w-full rounded-xl px-3 py-2 ui-input ui-text-primary min-h-0"
                 />
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label
-                  class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
-                  >Likes & Comments:</label
-                >
+                <label class="block font-medium mb-1 ui-text-description">Likes & Comments:</label>
                 <input
                   v-model.number="form.likesComments"
                   type="number"
                   required
                   placeholder="0"
-                  class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme"
+                  class="w-full rounded-xl px-3 py-2 ui-input ui-text-primary min-h-0"
                 />
               </div>
               <div>
-                <label
-                  class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
-                  >Shares & Saves:</label
-                >
+                <label class="block font-medium mb-1 ui-text-description">Shares & Saves:</label>
                 <input
                   v-model.number="form.sharesSaves"
                   type="number"
                   required
                   placeholder="0"
-                  class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme"
+                  class="w-full rounded-xl px-3 py-2 ui-input ui-text-primary min-h-0"
                 />
               </div>
             </div>
 
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label
-                  class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
-                  >Leads Generated:</label
-                >
+                <label class="block font-medium mb-1 ui-text-description">Leads Generated:</label>
                 <input
                   v-model.number="form.leads"
                   type="number"
                   required
                   placeholder="0"
-                  class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme"
+                  class="w-full rounded-xl px-3 py-2 ui-input ui-text-primary min-h-0"
                 />
               </div>
               <div>
-                <label
-                  class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
+                <label class="block font-medium mb-1 ui-text-description"
                   >Engagement Rate (%):</label
                 >
                 <input
@@ -386,21 +324,20 @@
                   step="0.1"
                   required
                   placeholder="3.5"
-                  class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme"
+                  class="w-full rounded-xl px-3 py-2 ui-input ui-text-primary min-h-0"
                 />
               </div>
             </div>
 
             <div>
-              <label
-                class="block text-slate-500 dark:text-slate-400 font-medium mb-1"
+              <label class="block font-medium mb-1 ui-text-description"
                 >Judul Content Winner (Opsional):</label
               >
               <input
                 v-model="form.topContent"
                 type="text"
                 placeholder="Misal: Video Reels Promo Buku Q2"
-                class="w-full glass-input rounded-xl px-3 py-2 text-slate-800 dark:text-slate-100 outline-none focus:border-theme"
+                class="w-full rounded-xl px-3 py-2 ui-input ui-text-primary min-h-0"
               />
             </div>
 
@@ -409,22 +346,17 @@
                 @click="isModalOpen = false"
                 type="button"
                 :disabled="isSubmitting"
-                class="bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-xl font-bold cursor-pointer disabled:opacity-50"
+                class="bg-slate-200 dark:bg-slate-800 px-4 py-2 rounded-xl cursor-pointer disabled:opacity-50 ui-button ui-text-secondary min-h-0"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 :disabled="isSubmitting"
-                class="bg-button text-white px-5 py-2 rounded-xl font-bold shadow-md cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                class="px-5 py-2 rounded-xl shadow-md cursor-pointer flex items-center gap-2 disabled:opacity-50 ui-button ui-button-primary min-h-0"
               >
-                <i
-                  v-if="isSubmitting"
-                  class="fa-solid fa-circle-notch fa-spin text-xs"
-                ></i>
-                <span>{{
-                  isSubmitting ? "Memproses..." : "Simpan Analytics"
-                }}</span>
+                <i v-if="isSubmitting" class="fa-solid fa-circle-notch fa-spin text-xs"></i>
+                <span>{{ isSubmitting ? "Memproses..." : "Simpan Analytics" }}</span>
               </button>
             </div>
           </form>

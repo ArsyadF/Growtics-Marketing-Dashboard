@@ -1,764 +1,789 @@
 <!-- src/views/PageCustomerCare.vue -->
 <template>
   <div class="space-y-4 md:space-y-6">
-    <!-- HEADER HALAMAN & RINGKASAN STASTISTIK -->
+    <!-- KONDISI JIKA USER TIDAK PUNYA HAK AKSES -->
     <div
-      class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-4 md:p-5 rounded-3xl border border-white/20 dark:border-slate-800 shadow-sm"
+      v-if="!canViewPage"
+      class="glass-card p-12 text-center rounded-3xl space-y-3 mt-10 shadow-sm border border-slate-100 dark:border-slate-800"
     >
-      <div>
-        <h2
-          class="text-base md:text-sm font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2"
-        >
-          <i class="fa-solid fa-headset text-theme"></i>
-          Customer Care & Aduan Layanan
-        </h2>
-        <p class="text-xs md:text-xs text-slate-400 mt-0.5 font-normal">
-          Kelola tiket aduan, masukan pelanggan, dan eskalasi penanganan
-          masalah.
-        </p>
-      </div>
-
-      <!-- Toolbar Halaman -->
-      <div class="flex items-center justify-end gap-2">
-        <button
-          v-if="store.canExportImport()"
-          @click="handleExportAduan"
-          class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-2 rounded-2xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer"
-        >
-          <i class="fa-solid fa-file-excel"></i>
-          <span>Export Excel</span>
-        </button>
-
-        <button
-          v-if="store.canExportImport()"
-          @click="isImportModalOpen = true"
-          class="bg-slate-700 hover:bg-slate-800 text-white font-semibold px-3 py-2 rounded-2xl text-sm md:text-xs flex items-center gap-1.5 shadow-sm cursor-pointer"
-        >
-          <i class="fa-solid fa-file-import"></i>
-          <span>Import Excel</span>
-        </button>
-
-        <!-- Modal Component -->
-        <ModalImportExcel
-          :isOpen="isImportModalOpen"
-          schemaKey="ADUAN"
-          :existingData="tickets"
-          @close="isImportModalOpen = false"
-          @confirm="handleImportConfirm"
-        />
-        <!-- Tombol Tambah -->
-        <button
-          v-if="canCreateOrEdit"
-          @click="openAddModal"
-          class="bg-button hover:opacity-90 text-white font-semibold px-4 py-2.5 rounded-2xl text-sm md:text-xs shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
-        >
-          <i class="fa-solid fa-plus text-xs"></i>
-          <span>Buat Tiket Aduan</span>
-        </button>
-      </div>
+      <i class="fa-solid fa-lock text-4xl text-rose-500 mb-2"></i>
+      <h3 class="font-bold text-lg ui-text-primary">Akses Modul Dibatasi</h3>
+      <p class="text-xs ui-text-muted">Anda tidak memiliki hak akses ke modul ini.</p>
     </div>
 
-    <!-- STATISTIK RINGKAS -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <!-- KONDISI JIKA USER MEMILIKI HAK AKSES (TAMPILAN NORMAL) -->
+    <template v-else>
+      <!-- HEADER HALAMAN & RINGKASAN STASTISTIK -->
       <div
-        class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex items-center gap-3"
+        class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md p-4 md:p-5 rounded-3xl border border-white/20 dark:border-slate-800 shadow-sm"
       >
-        <div
-          class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-base shrink-0"
-        >
-          <i class="fa-solid fa-inbox"></i>
-        </div>
         <div>
-          <p
-            class="text-xs md:text-xs font-normal text-slate-400 uppercase tracking-wider"
-          >
-            Total Aduan
-          </p>
-          <p
-            class="text-xl md:text-base font-semibold text-slate-800 dark:text-slate-100 leading-tight"
-          >
-            {{ tickets.length }}
+          <h2 class="font-semibold flex items-center gap-2 ui-text-primary ui-text-title">
+            <i class="fa-solid fa-headset text-theme"></i>
+            Customer Care & Aduan Layanan
+          </h2>
+          <p class="text-xs md:text-xs mt-0.5 font-normal ui-text-muted">
+            Kelola tiket aduan, masukan pelanggan, dan eskalasi penanganan masalah.
           </p>
         </div>
-      </div>
 
-      <div
-        class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex items-center gap-3"
-      >
-        <div
-          class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-base shrink-0"
-        >
-          <i class="fa-solid fa-clock"></i>
-        </div>
-        <div>
-          <p
-            class="text-xs md:text-xs font-normal text-slate-400 uppercase tracking-wider"
-          >
-            Menunggu
-          </p>
-          <p
-            class="text-xl md:text-base font-semibold text-amber-600 dark:text-amber-400 leading-tight"
-          >
-            {{ countByStatus("Open") }}
-          </p>
-        </div>
-      </div>
-
-      <div
-        class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex items-center gap-3"
-      >
-        <div
-          class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-base shrink-0"
-        >
-          <i class="fa-solid fa-spinner"></i>
-        </div>
-        <div>
-          <p
-            class="text-xs md:text-xs font-normal text-slate-400 uppercase tracking-wider"
-          >
-            Diproses
-          </p>
-          <p
-            class="text-xl md:text-base font-semibold text-purple-600 dark:text-purple-400 leading-tight"
-          >
-            {{ countByStatus("In Progress") }}
-          </p>
-        </div>
-      </div>
-
-      <div
-        class="glass-card bg-white/80 dark:bg-slate-900/80 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex items-center gap-3"
-      >
-        <div
-          class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base shrink-0"
-        >
-          <i class="fa-solid fa-circle-check"></i>
-        </div>
-        <div>
-          <p
-            class="text-xs md:text-xs font-normal text-slate-400 uppercase tracking-wider"
-          >
-            Selesai
-          </p>
-          <p
-            class="text-xl md:text-base font-semibold text-emerald-600 dark:text-emerald-400 leading-tight"
-          >
-            {{ countByStatus("Resolved") }}
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- FILTER & PENCARIAN -->
-    <div
-      class="glass-card bg-white/80 dark:bg-slate-900/80 p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex flex-col md:flex-row gap-3 justify-between items-center text-sm md:text-xs"
-    >
-      <div class="relative w-full md:w-72">
-        <i
-          class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-        ></i>
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Cari nama, tiket, atau masalah..."
-          class="w-full glass-input rounded-xl pl-9 pr-3 py-2 outline-none text-slate-800 dark:text-slate-100 placeholder:text-slate-400 font-normal"
-        />
-      </div>
-
-      <div
-        class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end"
-      >
-        <select
-          v-model="filterUnit"
-          class="glass-input rounded-xl px-3 py-2 outline-none dark:bg-slate-800 font-semibold"
-        >
-          <option value="">Semua Unit</option>
-          <option v-for="u in masterUnits" :key="u.code" :value="u.code">
-            {{ u.code }} - {{ u.name }}
-          </option>
-        </select>
-
-        <select
-          v-model="filterStatus"
-          class="glass-input rounded-xl px-3 py-2 outline-none dark:bg-slate-800 font-semibold"
-        >
-          <option value="">Semua Status</option>
-          <option value="Open">Open (Menunggu)</option>
-          <option value="In Progress">In Progress</option>
-          <option value="Resolved">Resolved (Selesai)</option>
-        </select>
-
-        <select
-          v-model="filterPriority"
-          class="glass-input rounded-xl px-3 py-2 outline-none dark:bg-slate-800 font-semibold"
-        >
-          <option value="">Semua Prioritas</option>
-          <option value="Tinggi">Tinggi</option>
-          <option value="Sedang">Sedang</option>
-          <option value="Rendah">Rendah</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- ACTION BAR SELEKSI MASSAL -->
-    <transition
-      enter-active-class="transition duration-200 ease-out"
-      enter-from-class="opacity-0 -translate-y-2"
-      enter-to-class="opacity-100 translate-y-0"
-      leave-active-class="transition duration-150 ease-in"
-      leave-from-class="opacity-100 translate-y-0"
-      leave-to-class="opacity-0 -translate-y-2"
-    >
-      <div
-        v-if="selectedIds.length > 0"
-        class="bg-emerald-600 text-white p-3 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-3 shadow-lg text-sm md:text-xs"
-      >
-        <div class="flex items-center gap-2 font-semibold">
-          <i class="fa-solid fa-list-check"></i>
-          <span>{{ selectedIds.length }} data tiket terpilih</span>
-        </div>
-
-        <div class="flex items-center gap-2 flex-wrap">
-          <div v-if="canCreateOrEdit" class="flex items-center gap-1">
-            <span class="text-xs md:text-xs opacity-90 font-normal"
-              >Status:</span
-            >
-            <select
-              v-model="bulkStatus"
-              class="bg-emerald-700 text-white rounded-lg px-2.5 py-1 text-sm md:text-xs outline-none cursor-pointer border border-emerald-500 font-semibold"
-            >
-              <option value="">-- Tidak Diubah --</option>
-              <option value="Open">Open</option>
-              <option value="In Progress">In Progress</option>
-              <option value="Resolved">Resolved</option>
-            </select>
-          </div>
-
-          <div v-if="canCreateOrEdit" class="flex items-center gap-1">
-            <span class="text-xs md:text-xs opacity-90 font-normal"
-              >Prioritas:</span
-            >
-            <select
-              v-model="bulkPriority"
-              class="bg-emerald-700 text-white rounded-lg px-2.5 py-1 text-sm md:text-xs outline-none cursor-pointer border border-emerald-500 font-semibold"
-            >
-              <option value="">-- Tidak Diubah --</option>
-              <option value="Tinggi">Tinggi</option>
-              <option value="Sedang">Sedang</option>
-              <option value="Rendah">Rendah</option>
-            </select>
-          </div>
-
+        <!-- Toolbar Halaman -->
+        <div class="flex items-center justify-end gap-2">
           <button
-            v-if="canCreateOrEdit && (bulkStatus || bulkPriority)"
-            @click="applyBulkEdit"
-            class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded-lg font-semibold flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
+            v-if="store.canExportImport()"
+            @click="handleExportAduan"
+            class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-2 rounded-2xl flex items-center gap-1.5 shadow-sm cursor-pointer ui-button min-h-0 ui-text-body"
           >
-            <i class="fa-solid fa-check text-xs"></i>
-            <span>Terapkan</span>
+            <i class="fa-solid fa-file-excel"></i>
+            <span>Export Excel</span>
           </button>
 
           <button
-            @click="bulkDelete"
-            class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1 rounded-lg font-semibold flex items-center gap-1 shadow-sm transition-colors cursor-pointer"
+            v-if="store.canExportImport()"
+            @click="isImportModalOpen = true"
+            class="bg-slate-700 text-white px-3 py-2 rounded-2xl flex items-center gap-1.5 shadow-sm cursor-pointer ui-button glass-hover min-h-0 ui-text-body"
           >
-            <i class="fa-solid fa-trash-can text-xs"></i>
-            <span>Hapus Massal</span>
+            <i class="fa-solid fa-file-import"></i>
+            <span>Import Excel</span>
           </button>
 
+          <!-- Modal Component -->
+          <ModalImportExcel
+            :isOpen="isImportModalOpen"
+            schemaKey="ADUAN"
+            :existingData="tickets"
+            @close="isImportModalOpen = false"
+            @confirm="handleImportConfirm"
+          />
+          <!-- Tombol Tambah -->
           <button
-            @click="resetBulkSelection"
-            class="text-white/80 hover:text-white underline text-xs md:text-xs ml-1 cursor-pointer font-normal"
+            v-if="canCreateOrEdit"
+            @click="openAddModal"
+            class="hover:opacity-90 px-4 py-2.5 rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0 ui-button ui-button-primary min-h-0 ui-text-body"
           >
-            Batal
+            <i class="fa-solid fa-plus text-xs"></i>
+            <span>Buat Tiket Aduan</span>
           </button>
         </div>
       </div>
-    </transition>
 
-    <!-- TABEL ADUAN -->
-    <div
-      class="glass-card bg-white/90 dark:bg-slate-900/90 rounded-3xl border border-slate-100 dark:border-slate-800/80 shadow-md overflow-hidden"
-    >
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse text-sm md:text-xs">
-          <thead>
-            <tr
-              class="bg-slate-100/70 dark:bg-slate-800/50 text-slate-600 dark:text-slate-300 border-b border-slate-200/60 dark:border-slate-800 select-none uppercase font-semibold text-xs md:text-xs"
-            >
-              <th class="p-3.5 w-10 text-center">
-                <input
-                  type="checkbox"
-                  :checked="isAllSelected"
-                  @change="toggleSelectAll"
-                  class="accent-emerald-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
-                />
-              </th>
-
-              <th
-                @click="sortBy('ticketNo')"
-                class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
-              >
-                <div class="flex items-center gap-1">
-                  <span>No. Tiket</span>
-                  <i class="fa-solid" :class="getSortIcon('ticketNo')"></i>
-                </div>
-              </th>
-
-              <th
-                @click="sortBy('customerName')"
-                class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
-              >
-                <div class="flex items-center gap-1">
-                  <span>Pelanggan / Kontak</span>
-                  <i class="fa-solid" :class="getSortIcon('customerName')"></i>
-                </div>
-              </th>
-
-              <th
-                @click="sortBy('unit')"
-                class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
-              >
-                <div class="flex items-center gap-1">
-                  <span>Unit Usaha</span>
-                  <i class="fa-solid" :class="getSortIcon('unit')"></i>
-                </div>
-              </th>
-
-              <th class="p-3.5 font-semibold">Kategori / Masalah</th>
-
-              <th
-                @click="sortBy('priority')"
-                class="p-3.5 font-semibold text-center cursor-pointer hover:text-emerald-600 transition-colors"
-              >
-                <div class="flex items-center justify-center gap-1">
-                  <span>Prioritas</span>
-                  <i class="fa-solid" :class="getSortIcon('priority')"></i>
-                </div>
-              </th>
-
-              <th
-                @click="sortBy('status')"
-                class="p-3.5 font-semibold text-center cursor-pointer hover:text-emerald-600 transition-colors"
-              >
-                <div class="flex items-center justify-center gap-1">
-                  <span>Status</span>
-                  <i class="fa-solid" :class="getSortIcon('status')"></i>
-                </div>
-              </th>
-
-              <th
-                @click="sortBy('date')"
-                class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
-              >
-                <div class="flex items-center gap-1">
-                  <span>Tanggal</span>
-                  <i class="fa-solid" :class="getSortIcon('date')"></i>
-                </div>
-              </th>
-
-              <th class="p-3.5 font-semibold text-center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
-            <tr
-              v-for="item in filteredTickets"
-              :key="item.id"
-              @click="openDetailModal(item)"
-              class="hover:bg-slate-50/80 dark:hover:bg-slate-800/60 transition-colors cursor-pointer group"
-              :class="{ 'bg-emerald-500/5': selectedIds.includes(item.id) }"
-            >
-              <td class="p-3.5 text-center" @click.stop>
-                <input
-                  type="checkbox"
-                  :value="item.id"
-                  v-model="selectedIds"
-                  class="accent-emerald-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
-                />
-              </td>
-
-              <td class="p-3.5 font-mono font-semibold text-theme">
-                #{{ item.ticketNo || item.id }}
-              </td>
-
-              <td class="p-3.5">
-                <p
-                  class="font-semibold text-slate-800 dark:text-slate-100 group-hover:text-theme transition-colors text-sm md:text-xs"
-                >
-                  {{ item.customerName }}
-                </p>
-                <p class="text-xs md:text-xs text-slate-400 font-normal">
-                  {{ item.contact || "-" }}
-                </p>
-              </td>
-
-              <td class="p-3.5 font-semibold">
-                <span
-                  class="px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-slate-700/50"
-                >
-                  {{ item.unit }}
-                </span>
-              </td>
-
-              <td class="p-3.5 max-w-xs">
-                <p
-                  class="font-semibold text-slate-700 dark:text-slate-200 truncate"
-                >
-                  {{ item.category }}
-                </p>
-                <p
-                  class="text-xs md:text-xs text-slate-400 truncate font-normal"
-                >
-                  {{ item.description }}
-                </p>
-              </td>
-
-              <td class="p-3.5 text-center">
-                <span
-                  :class="getPriorityClass(item.priority)"
-                  class="px-2.5 py-1 rounded-full text-xs md:text-xs font-semibold"
-                >
-                  {{ item.priority }}
-                </span>
-              </td>
-
-              <td class="p-3.5 text-center">
-                <span
-                  :class="getStatusClass(item.status)"
-                  class="px-2.5 py-1 rounded-full text-xs md:text-xs font-semibold inline-flex items-center gap-1"
-                >
-                  <i :class="getStatusIcon(item.status)"></i>
-                  {{ item.status }}
-                </span>
-              </td>
-
-              <td class="p-3.5 text-slate-500 whitespace-nowrap font-normal">
-                {{ formatDate(item.date) }}
-              </td>
-
-              <td class="p-3.5 text-center" @click.stop>
-                <div class="flex items-center justify-center gap-1.5">
-                  <button
-                    @click="openDetailModal(item)"
-                    class="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                    :title="
-                      canCreateOrEdit ? 'Edit Tiket' : 'Lihat Detail Tiket'
-                    "
-                  >
-                    <i
-                      :class="
-                        canCreateOrEdit
-                          ? 'fa-solid fa-pen-to-square'
-                          : 'fa-solid fa-eye'
-                      "
-                    ></i>
-                  </button>
-
-                  <button
-                    v-if="canDeleteItem(item)"
-                    @click="deleteTicket(item)"
-                    class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                    title="Hapus Tiket"
-                  >
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-
-            <tr v-if="filteredTickets.length === 0">
-              <td colspan="9" class="p-8 text-center text-slate-400">
-                <i class="fa-solid fa-folder-open text-3xl mb-2 opacity-40"></i>
-                <p class="font-normal text-sm md:text-xs">
-                  Tidak ada data tiket aduan yang ditemukan.
-                </p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- MODAL POPUP DETAIL / FORM TIKET ADUAN -->
-    <Teleport to="body">
-      <div
-        v-if="isModalOpen"
-        class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4"
-        @click.self="isModalOpen = false"
-      >
+      <!-- STATISTIK RINGKAS -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
         <div
-          class="glass-card w-full max-w-lg bg-white/95 dark:bg-slate-900/95 rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
+          class="glass-card p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex items-center gap-3"
         >
           <div
-            class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
+            class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-base shrink-0"
           >
-            <div>
-              <span
-                class="text-xs font-mono font-semibold text-theme bg-theme/10 px-2 py-0.5 rounded border border-theme/20"
-              >
-                #{{ form.ticketNo }}
-              </span>
-              <h3
-                class="font-semibold text-slate-800 dark:text-slate-100 text-base md:text-sm mt-1 flex items-center gap-2"
-              >
-                <i class="fa-solid fa-ticket text-theme"></i>
-                {{
-                  isEdit
-                    ? canCreateOrEdit
-                      ? "Edit Tiket Aduan"
-                      : "Rincian Tiket Aduan"
-                    : "Buat Tiket Aduan Baru"
-                }}
-              </h3>
-            </div>
-            <button
-              @click="isModalOpen = false"
-              class="text-slate-400 hover:text-slate-600 cursor-pointer"
-            >
-              <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
+            <i class="fa-solid fa-inbox"></i>
           </div>
+          <div>
+            <p class="text-xs md:text-xs font-normal uppercase tracking-wider ui-text-muted">
+              Total Aduan
+            </p>
+            <p class="text-xl md:text-base font-semibold leading-tight ui-text-primary">
+              {{ tickets.length }}
+            </p>
+          </div>
+        </div>
 
-          <form
-            @submit.prevent="saveTicket"
-            class="space-y-3 text-sm md:text-xs"
+        <div
+          class="glass-card p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex items-center gap-3"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center text-base shrink-0"
           >
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1"
-                  >Nama Pelanggan / Pelapor</label
-                >
-                <input
-                  v-model="form.customerName"
-                  type="text"
-                  required
-                  :disabled="!canCreateOrEdit"
-                  placeholder="Nama Lengkap"
-                  class="w-full glass-input rounded-xl p-2.5 outline-none font-normal disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
-                />
-              </div>
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1"
-                  >Kontak (WA / Email)</label
-                >
-                <div class="flex gap-1.5">
-                  <input
-                    v-model="form.contact"
-                    type="text"
-                    :disabled="!canCreateOrEdit"
-                    placeholder="08xxxxxxx"
-                    class="w-full glass-input rounded-xl p-2.5 outline-none font-normal disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
-                  />
-                  <a
-                    v-if="form.contact"
-                    :href="
-                      getWaLink(form.contact, form.customerName, form.ticketNo)
-                    "
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 rounded-xl flex items-center justify-center shrink-0 transition-all shadow-sm"
-                    title="Hubungi via WhatsApp"
-                  >
-                    <i class="fa-brands fa-whatsapp text-base"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1"
-                  >Unit Usaha</label
-                >
-                <select
-                  v-model="form.unit"
-                  required
-                  :disabled="!canCreateOrEdit"
-                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold disabled:opacity-70"
-                >
-                  <option
-                    v-for="u in masterUnits"
-                    :key="u.code"
-                    :value="u.code"
-                  >
-                    {{ u.code }} - {{ u.name }}
-                  </option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1"
-                  >Kategori Masalah</label
-                >
-                <select
-                  v-model="form.category"
-                  required
-                  :disabled="!canCreateOrEdit"
-                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold disabled:opacity-70"
-                >
-                  <option value="Keterlambatan Pengiriman">
-                    Keterlambatan Pengiriman
-                  </option>
-                  <option value="Kerusakan Produk / Cetak">
-                    Kerusakan Produk / Cetak
-                  </option>
-                  <option value="Pelayanan CS / Admin">
-                    Pelayanan CS / Admin
-                  </option>
-                  <option value="Kesalahan Order / Jumlah">
-                    Kesalahan Order / Jumlah
-                  </option>
-                  <option value="Lain-lain">Lain-lain</option>
-                </select>
-              </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3">
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1"
-                  >Tingkat Prioritas</label
-                >
-                <select
-                  v-model="form.priority"
-                  required
-                  :disabled="!canCreateOrEdit"
-                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold disabled:opacity-70"
-                >
-                  <option value="Rendah">Rendah</option>
-                  <option value="Sedang">Sedang</option>
-                  <option value="Tinggi">Tinggi</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-slate-500 font-semibold mb-1"
-                  >Status Penanganan</label
-                >
-                <select
-                  v-model="form.status"
-                  required
-                  :disabled="!canCreateOrEdit"
-                  class="w-full glass-input rounded-xl p-2.5 dark:bg-slate-800 outline-none font-semibold disabled:opacity-70"
-                >
-                  <option value="Open">Open (Menunggu)</option>
-                  <option value="In Progress">In Progress</option>
-                  <option value="Resolved">Resolved (Selesai)</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-slate-500 font-semibold mb-1"
-                >Rincian Keluhan / Aduan</label
-              >
-              <textarea
-                v-model="form.description"
-                rows="3"
-                required
-                :disabled="!canCreateOrEdit"
-                placeholder="Jelaskan detail aduan pelanggan..."
-                class="w-full glass-input rounded-xl p-2.5 outline-none resize-y min-h-[80px] font-normal disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500"
-              ></textarea>
-            </div>
-
-            <!-- PREVIEW GAMBAR & INPUT UPLOAD -->
-            <div class="space-y-1.5">
-              <label class="block text-slate-500 font-semibold"
-                >Foto Bukti Aduan / Lampiran</label
-              >
-
-              <!-- Preview Gambar -->
-              <div
-                v-if="form.imageUrl"
-                class="relative w-full max-h-48 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/50 flex justify-center items-center p-2"
-              >
-                <img
-                  :src="form.imageUrl"
-                  alt="Bukti Aduan"
-                  class="max-h-44 object-contain w-auto rounded-lg"
-                />
-                <button
-                  v-if="canCreateOrEdit"
-                  type="button"
-                  @click="removeImage"
-                  class="absolute top-2 right-2 w-7 h-7 rounded-full bg-rose-500/80 text-white flex items-center justify-center hover:bg-rose-600 transition-colors cursor-pointer shadow-md"
-                  title="Hapus Foto"
-                >
-                  <i class="fa-solid fa-trash text-xs"></i>
-                </button>
-              </div>
-
-              <!-- Input Upload File -->
-              <div v-if="canCreateOrEdit && !form.imageUrl">
-                <label
-                  class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-slate-200 dark:border-slate-700/80 rounded-2xl cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors"
-                >
-                  <div class="flex items-center gap-2 text-slate-500">
-                    <i class="fa-solid fa-camera text-base text-theme"></i>
-                    <span class="text-sm md:text-xs font-semibold"
-                      >Unggah Foto Bukti</span
-                    >
-                  </div>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    @change="handleImageUpload"
-                    class="hidden"
-                  />
-                </label>
-              </div>
-            </div>
-
-            <div
-              v-if="form.createdBy"
-              class="text-xs md:text-xs text-slate-400 italic font-normal"
+            <i class="fa-solid fa-clock"></i>
+          </div>
+          <div>
+            <p class="text-xs md:text-xs font-normal uppercase tracking-wider ui-text-muted">
+              Menunggu
+            </p>
+            <p
+              class="text-xl md:text-base font-semibold text-amber-600 dark:text-amber-400 leading-tight"
             >
-              Dibuat oleh: {{ form.createdBy }}
-            </div>
+              {{ countByStatus("Open") }}
+            </p>
+          </div>
+        </div>
 
-            <div
-              class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center"
+        <div
+          class="glass-card p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex items-center gap-3"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-base shrink-0"
+          >
+            <i class="fa-solid fa-spinner"></i>
+          </div>
+          <div>
+            <p class="text-xs md:text-xs font-normal uppercase tracking-wider ui-text-muted">
+              Diproses
+            </p>
+            <p
+              class="text-xl md:text-base font-semibold text-purple-600 dark:text-purple-400 leading-tight"
             >
-              <button
-                v-if="isEdit && canDeleteItem(form)"
-                type="button"
-                @click="deleteTicket(form)"
-                class="text-rose-500 font-semibold hover:underline cursor-pointer text-sm md:text-xs"
-              >
-                Hapus Tiket
-              </button>
+              {{ countByStatus("In Progress") }}
+            </p>
+          </div>
+        </div>
 
-              <div class="flex gap-2 ml-auto">
-                <button
-                  type="button"
-                  @click="isModalOpen = false"
-                  class="px-4 py-2 rounded-xl text-slate-500 font-semibold hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-sm md:text-xs"
-                >
-                  {{ canCreateOrEdit ? "Batal" : "Tutup" }}
-                </button>
-                <button
-                  v-if="canCreateOrEdit"
-                  type="submit"
-                  :disabled="isSubmitting"
-                  class="bg-button text-white px-5 py-2 rounded-xl font-semibold shadow-md cursor-pointer disabled:opacity-50 text-sm md:text-xs"
-                >
-                  {{ isSubmitting ? "Menyimpan..." : "Simpan Tiket" }}
-                </button>
-              </div>
-            </div>
-          </form>
+        <div
+          class="glass-card p-4 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex items-center gap-3"
+        >
+          <div
+            class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base shrink-0"
+          >
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div>
+            <p class="text-xs md:text-xs font-normal uppercase tracking-wider ui-text-muted">
+              Selesai
+            </p>
+            <p
+              class="text-xl md:text-base font-semibold text-emerald-600 dark:text-emerald-400 leading-tight"
+            >
+              {{ countByStatus("Resolved") }}
+            </p>
+          </div>
         </div>
       </div>
-    </Teleport>
+
+      <!-- FILTER & PENCARIAN -->
+      <div
+        class="glass-card p-3.5 rounded-2xl border border-slate-100 dark:border-slate-800/60 shadow-xs flex flex-col md:flex-row gap-3 justify-between items-center ui-text-body"
+      >
+        <div class="relative w-full md:w-72">
+          <i
+            class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 ui-text-muted"
+          ></i>
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Cari nama, tiket, atau masalah..."
+            class="w-full rounded-xl pl-9 pr-3 py-2 placeholder:text-slate-400 font-normal ui-input ui-text-primary min-h-0"
+          />
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto justify-end">
+          <select
+            v-model="filterUnit"
+            class="rounded-xl px-3 py-2 dark:bg-slate-800 font-semibold ui-input min-h-0"
+          >
+            <option value="">Semua Unit</option>
+            <option v-for="u in masterUnits" :key="u.code" :value="u.code">
+              {{ u.code }} - {{ u.name }}
+            </option>
+          </select>
+
+          <select
+            v-model="filterStatus"
+            class="rounded-xl px-3 py-2 dark:bg-slate-800 font-semibold ui-input min-h-0"
+          >
+            <option value="">Semua Status</option>
+            <option value="Open">Open (Menunggu)</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Resolved">Resolved (Selesai)</option>
+          </select>
+
+          <select
+            v-model="filterPriority"
+            class="rounded-xl px-3 py-2 dark:bg-slate-800 font-semibold ui-input min-h-0"
+          >
+            <option value="">Semua Prioritas</option>
+            <option value="Tinggi">Tinggi</option>
+            <option value="Sedang">Sedang</option>
+            <option value="Rendah">Rendah</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ACTION BAR SELEKSI MASSAL -->
+      <transition
+        enter-active-class="transition duration-200 ease-out"
+        enter-from-class="opacity-0 -translate-y-2"
+        enter-to-class="opacity-100 translate-y-0"
+        leave-active-class="transition duration-150 ease-in"
+        leave-from-class="opacity-100 translate-y-0"
+        leave-to-class="opacity-0 -translate-y-2"
+      >
+        <div
+          v-if="selectedIds.length > 0"
+          class="bg-emerald-600 text-white p-3 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-3 shadow-lg ui-text-body"
+        >
+          <div class="flex items-center gap-2 font-semibold">
+            <i class="fa-solid fa-list-check"></i>
+            <span>{{ selectedIds.length }} data tiket terpilih</span>
+          </div>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            <div v-if="canCreateOrEdit" class="flex items-center gap-1">
+              <span class="text-xs md:text-xs opacity-90 font-normal">Status:</span>
+              <select
+                v-model="bulkStatus"
+                class="bg-emerald-700 text-white rounded-lg px-2.5 py-1 outline-none cursor-pointer border border-emerald-500 font-semibold ui-text-body"
+              >
+                <option value="">-- Tidak Diubah --</option>
+                <option value="Open">Open</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+            </div>
+
+            <div v-if="canCreateOrEdit" class="flex items-center gap-1">
+              <span class="text-xs md:text-xs opacity-90 font-normal">Prioritas:</span>
+              <select
+                v-model="bulkPriority"
+                class="bg-emerald-700 text-white rounded-lg px-2.5 py-1 outline-none cursor-pointer border border-emerald-500 font-semibold ui-text-body"
+              >
+                <option value="">-- Tidak Diubah --</option>
+                <option value="Tinggi">Tinggi</option>
+                <option value="Sedang">Sedang</option>
+                <option value="Rendah">Rendah</option>
+              </select>
+            </div>
+
+            <button
+              v-if="canCreateOrEdit && (bulkStatus || bulkPriority)"
+              @click="applyBulkEdit"
+              class="bg-amber-500 hover:bg-amber-600 text-white px-3 py-1 rounded-lg flex items-center gap-1 shadow-sm transition-colors cursor-pointer ui-button min-h-0"
+            >
+              <i class="fa-solid fa-check text-xs"></i>
+              <span>Terapkan</span>
+            </button>
+
+            <button
+              @click="bulkDelete"
+              class="bg-rose-500 hover:bg-rose-600 text-white px-3 py-1 rounded-lg flex items-center gap-1 shadow-sm transition-colors cursor-pointer ui-button min-h-0"
+            >
+              <i class="fa-solid fa-trash-can text-xs"></i>
+              <span>Hapus Massal</span>
+            </button>
+
+            <button
+              @click="resetBulkSelection"
+              class="text-white/80 hover:text-white underline text-xs md:text-xs ml-1 cursor-pointer font-normal"
+            >
+              Batal
+            </button>
+          </div>
+        </div>
+      </transition>
+
+      <!-- TABEL ADUAN -->
+      <div
+        class="glass-card rounded-3xl border border-slate-100 dark:border-slate-800/80 shadow-md overflow-hidden"
+      >
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse ui-text-body">
+            <thead>
+              <tr
+                class="bg-slate-100/70 dark:bg-slate-800/50 border-b border-slate-200/60 dark:border-slate-800 select-none uppercase font-semibold text-xs md:text-xs ui-text-secondary"
+              >
+                <th class="p-3.5 w-10 text-center">
+                  <input
+                    type="checkbox"
+                    :checked="isAllSelected"
+                    @change="toggleSelectAll"
+                    class="accent-emerald-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
+                  />
+                </th>
+
+                <th
+                  @click="sortBy('ticketNo')"
+                  class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
+                >
+                  <div class="flex items-center gap-1">
+                    <span>No. Tiket</span>
+                    <i class="fa-solid" :class="getSortIcon('ticketNo')"></i>
+                  </div>
+                </th>
+
+                <th
+                  @click="sortBy('customerName')"
+                  class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
+                >
+                  <div class="flex items-center gap-1">
+                    <span>Pelanggan / Kontak</span>
+                    <i class="fa-solid" :class="getSortIcon('customerName')"></i>
+                  </div>
+                </th>
+
+                <th
+                  @click="sortBy('unit')"
+                  class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
+                >
+                  <div class="flex items-center gap-1">
+                    <span>Unit Usaha</span>
+                    <i class="fa-solid" :class="getSortIcon('unit')"></i>
+                  </div>
+                </th>
+
+                <th class="p-3.5 font-semibold">Kategori / Masalah</th>
+
+                <th
+                  @click="sortBy('priority')"
+                  class="p-3.5 font-semibold text-center cursor-pointer hover:text-emerald-600 transition-colors"
+                >
+                  <div class="flex items-center justify-center gap-1">
+                    <span>Prioritas</span>
+                    <i class="fa-solid" :class="getSortIcon('priority')"></i>
+                  </div>
+                </th>
+
+                <th
+                  @click="sortBy('status')"
+                  class="p-3.5 font-semibold text-center cursor-pointer hover:text-emerald-600 transition-colors"
+                >
+                  <div class="flex items-center justify-center gap-1">
+                    <span>Status</span>
+                    <i class="fa-solid" :class="getSortIcon('status')"></i>
+                  </div>
+                </th>
+
+                <th
+                  @click="sortBy('date')"
+                  class="p-3.5 font-semibold cursor-pointer hover:text-emerald-600 transition-colors"
+                >
+                  <div class="flex items-center gap-1">
+                    <span>Tanggal</span>
+                    <i class="fa-solid" :class="getSortIcon('date')"></i>
+                  </div>
+                </th>
+
+                <th class="p-3.5 font-semibold text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60">
+              <tr
+                v-for="item in filteredTickets"
+                :key="item.id"
+                @click="openDetailModal(item)"
+                class="transition-colors cursor-pointer group ui-row-hover"
+                :class="{ 'bg-emerald-500/5': selectedIds.includes(item.id) }"
+              >
+                <td class="p-3.5 text-center" @click.stop>
+                  <input
+                    type="checkbox"
+                    :value="item.id"
+                    v-model="selectedIds"
+                    class="accent-emerald-600 rounded cursor-pointer w-4 h-4 md:w-3.5 md:h-3.5"
+                  />
+                </td>
+
+                <td class="p-3.5 font-mono font-semibold text-theme">
+                  #{{ item.ticketNo || item.id }}
+                </td>
+
+                <td class="p-3.5">
+                  <p
+                    class="font-semibold group-hover:text-theme transition-colors ui-text-primary ui-text-body"
+                  >
+                    {{ item.customerName }}
+                  </p>
+                  <p class="text-xs md:text-xs font-normal ui-text-muted">
+                    {{ item.contact || "-" }}
+                  </p>
+                </td>
+
+                <td class="p-3.5 font-semibold">
+                  <span
+                    class="px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50 ui-text-secondary"
+                  >
+                    {{ item.unit }}
+                  </span>
+                </td>
+
+                <td class="p-3.5 max-w-xs">
+                  <p class="font-semibold truncate ui-text-secondary">
+                    {{ item.category }}
+                  </p>
+                  <p class="text-xs md:text-xs truncate font-normal ui-text-muted">
+                    {{ item.description }}
+                  </p>
+                </td>
+
+                <td class="p-3.5 text-center">
+                  <span
+                    :class="getPriorityClass(item.priority)"
+                    class="px-2.5 py-1 rounded-full text-xs md:text-xs font-semibold"
+                  >
+                    {{ item.priority }}
+                  </span>
+                </td>
+
+                <td class="p-3.5 text-center">
+                  <span
+                    :class="getStatusClass(item.status)"
+                    class="px-2.5 py-1 rounded-full text-xs md:text-xs font-semibold inline-flex items-center gap-1"
+                  >
+                    <i :class="getStatusIcon(item.status)"></i>
+                    {{ item.status }}
+                  </span>
+                </td>
+
+                <td class="p-3.5 text-slate-500 whitespace-nowrap font-normal">
+                  {{ formatDate(item.date) }}
+                </td>
+
+                <td class="p-3.5 text-center" @click.stop>
+                  <div class="flex items-center justify-center gap-1.5">
+                    <button
+                      @click="openDetailModal(item)"
+                      class="p-1.5 rounded-lg hover:text-emerald-600 hover:bg-emerald-50 transition-colors cursor-pointer ui-button glass-hover ui-text-muted min-h-0"
+                      :title="canCreateOrEdit ? 'Edit Tiket' : 'Lihat Detail Tiket'"
+                    >
+                      <i
+                        :class="canCreateOrEdit ? 'fa-solid fa-pen-to-square' : 'fa-solid fa-eye'"
+                      ></i>
+                    </button>
+
+                    <button
+                      v-if="canDeleteItem(item)"
+                      @click="deleteTicket(item)"
+                      class="p-1.5 rounded-lg hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer ui-button glass-hover ui-text-muted min-h-0"
+                      title="Hapus Tiket"
+                    >
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr v-if="filteredTickets.length === 0">
+                <td colspan="9" class="p-8 text-center ui-text-muted">
+                  <i class="fa-solid fa-folder-open text-3xl mb-2 opacity-40"></i>
+                  <p class="font-normal ui-text-body">Tidak ada data tiket aduan yang ditemukan.</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MODAL POPUP DETAIL / FORM TIKET ADUAN -->
+      <Teleport to="body">
+        <div
+          v-if="isModalOpen"
+          class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4"
+          @click.self="isModalOpen = false"
+        >
+          <div
+            class="glass-card w-full max-w-lg rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto"
+          >
+            <div
+              class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
+            >
+              <div>
+                <span
+                  class="text-xs font-mono font-semibold text-theme theme-tint px-2 py-0.5 rounded border theme-border-soft"
+                >
+                  #{{ form.ticketNo }}
+                </span>
+                <h3
+                  class="font-semibold mt-1 flex items-center gap-2 ui-text-primary ui-text-title"
+                >
+                  <i class="fa-solid fa-ticket text-theme"></i>
+                  {{
+                    isEdit
+                      ? canCreateOrEdit
+                        ? "Edit Tiket Aduan"
+                        : "Rincian Tiket Aduan"
+                      : "Buat Tiket Aduan Baru"
+                  }}
+                </h3>
+              </div>
+              <button
+                @click="isModalOpen = false"
+                class="hover:text-slate-600 cursor-pointer ui-text-muted"
+              >
+                <i class="fa-solid fa-xmark text-lg"></i>
+              </button>
+            </div>
+
+            <form @submit.prevent="saveTicket" class="space-y-3 ui-text-body">
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-slate-500 font-semibold mb-1"
+                    >Nama Pelanggan / Pelapor</label
+                  >
+                  <input
+                    v-model="form.customerName"
+                    type="text"
+                    required
+                    :disabled="!canCreateOrEdit"
+                    placeholder="Nama Lengkap"
+                    class="w-full rounded-xl p-2.5 font-normal disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500 ui-input min-h-0"
+                  />
+                </div>
+                <div>
+                  <label class="block text-slate-500 font-semibold mb-1">Kontak (WA / Email)</label>
+                  <div class="flex gap-1.5">
+                    <input
+                      v-model="form.contact"
+                      type="text"
+                      :disabled="!canCreateOrEdit"
+                      placeholder="08xxxxxxx"
+                      class="w-full rounded-xl p-2.5 font-normal disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500 ui-input min-h-0"
+                    />
+                    <a
+                      v-if="form.contact"
+                      :href="getWaLink(form.contact, form.customerName, form.ticketNo)"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 rounded-xl flex items-center justify-center shrink-0 transition-all shadow-sm"
+                      title="Hubungi via WhatsApp"
+                    >
+                      <i class="fa-brands fa-whatsapp text-base"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-slate-500 font-semibold mb-1">Unit Usaha</label>
+                  <select
+                    v-model="form.unit"
+                    required
+                    :disabled="!canCreateOrEdit"
+                    class="w-full rounded-xl p-2.5 dark:bg-slate-800 font-semibold disabled:opacity-70 ui-input min-h-0"
+                  >
+                    <option v-for="u in masterUnits" :key="u.code" :value="u.code">
+                      {{ u.code }} - {{ u.name }}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-500 font-semibold mb-1">Kategori Masalah</label>
+                  <select
+                    v-model="form.category"
+                    required
+                    :disabled="!canCreateOrEdit"
+                    class="w-full rounded-xl p-2.5 dark:bg-slate-800 font-semibold disabled:opacity-70 ui-input min-h-0"
+                  >
+                    <option value="Keterlambatan Pengiriman">Keterlambatan Pengiriman</option>
+                    <option value="Kerusakan Produk / Cetak">Kerusakan Produk / Cetak</option>
+                    <option value="Pelayanan CS / Admin">Pelayanan CS / Admin</option>
+                    <option value="Kesalahan Order / Jumlah">Kesalahan Order / Jumlah</option>
+                    <option value="Lain-lain">Lain-lain</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-slate-500 font-semibold mb-1">Tingkat Prioritas</label>
+                  <select
+                    v-model="form.priority"
+                    required
+                    :disabled="!canCreateOrEdit"
+                    class="w-full rounded-xl p-2.5 dark:bg-slate-800 font-semibold disabled:opacity-70 ui-input min-h-0"
+                  >
+                    <option value="Rendah">Rendah</option>
+                    <option value="Sedang">Sedang</option>
+                    <option value="Tinggi">Tinggi</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-slate-500 font-semibold mb-1">Status Penanganan</label>
+                  <select
+                    v-model="form.status"
+                    required
+                    :disabled="!canCreateOrEdit"
+                    class="w-full rounded-xl p-2.5 dark:bg-slate-800 font-semibold disabled:opacity-70 ui-input min-h-0"
+                  >
+                    <option value="Open">Open (Menunggu)</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Resolved">Resolved (Selesai)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-slate-500 font-semibold mb-1"
+                  >Rincian Keluhan / Aduan</label
+                >
+                <textarea
+                  v-model="form.description"
+                  rows="3"
+                  required
+                  :disabled="!canCreateOrEdit"
+                  placeholder="Jelaskan detail aduan pelanggan..."
+                  class="w-full rounded-xl p-2.5 resize-y font-normal disabled:bg-slate-100 dark:disabled:bg-slate-800/60 disabled:text-slate-500 ui-input min-h-0"
+                ></textarea>
+              </div>
+
+              <!-- PREVIEW GAMBAR & INPUT UPLOAD -->
+              <div class="space-y-1.5">
+                <label class="block text-slate-500 font-semibold"
+                  >Foto Bukti Aduan / Lampiran</label
+                >
+
+                <!-- Preview Gambar -->
+                <div
+                  v-if="form.imageUrl"
+                  class="relative w-full max-h-48 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800/50 flex justify-center items-center p-2"
+                >
+                  <img
+                    :src="form.imageUrl"
+                    alt="Bukti Aduan"
+                    class="max-h-44 object-contain w-auto rounded-lg"
+                  />
+                  <button
+                    v-if="canCreateOrEdit"
+                    type="button"
+                    @click="removeImage"
+                    class="absolute top-2 right-2 w-7 h-7 rounded-full bg-rose-500/80 text-white flex items-center justify-center hover:bg-rose-600 transition-colors cursor-pointer shadow-md ui-button min-h-0"
+                    title="Hapus Foto"
+                  >
+                    <i class="fa-solid fa-trash text-xs"></i>
+                  </button>
+                </div>
+
+                <!-- Input Upload File -->
+                <div v-if="canCreateOrEdit && !form.imageUrl">
+                  <label
+                    class="flex flex-col items-center justify-center p-3 border-2 border-dashed border-slate-200 dark:border-slate-700/80 rounded-2xl cursor-pointer transition-colors glass-hover"
+                  >
+                    <div class="flex items-center gap-2 text-slate-500">
+                      <i class="fa-solid fa-camera text-base text-theme"></i>
+                      <span class="font-semibold ui-text-body">Unggah Foto Bukti</span>
+                    </div>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      @change="handleImageUpload"
+                      class="hidden"
+                    />
+                  </label>
+                </div>
+              </div>
+
+              <div
+                v-if="form.createdBy"
+                class="text-xs md:text-xs italic font-normal ui-text-muted"
+              >
+                Dibuat oleh: {{ form.createdBy }}
+              </div>
+
+              <div
+                class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center"
+              >
+                <button
+                  v-if="isEdit && canDeleteItem(form)"
+                  type="button"
+                  @click="deleteTicket(form)"
+                  class="text-rose-500 font-semibold hover:underline cursor-pointer ui-text-body"
+                >
+                  Hapus Tiket
+                </button>
+
+                <div class="flex gap-2 ml-auto">
+                  <button
+                    type="button"
+                    @click="isModalOpen = false"
+                    class="px-4 py-2 rounded-xl text-slate-500 cursor-pointer ui-button glass-hover min-h-0 ui-text-body"
+                  >
+                    {{ canCreateOrEdit ? "Batal" : "Tutup" }}
+                  </button>
+                  <button
+                    v-if="canCreateOrEdit"
+                    type="submit"
+                    :disabled="isSubmitting"
+                    class="px-5 py-2 rounded-xl shadow-md cursor-pointer disabled:opacity-50 ui-button ui-button-primary min-h-0 ui-text-body"
+                  >
+                    {{ isSubmitting ? "Menyimpan..." : "Simpan Tiket" }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </Teleport>
+    </template>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 import { store } from "../store/index.js";
 import { api } from "../services/api.js";
 import { exportToExcelBySchema } from "../utils/excelHandler.js";
 import ModalImportExcel from "../components/modals/ModalImportExcel.vue";
 
 const isImportModalOpen = ref(false);
+
+// Cek apakah user berhak melihat halaman
+const canViewPage = computed(() => {
+  const user = currentUser.value;
+  // Jika belum login atau tidak punya data user
+  if (!user || Object.keys(user).length === 0) return false;
+
+  const role = String(user.role || user.Role || "").toUpperCase();
+  // Superadmin bebas akses
+  if (role === "SUPERADMIN") return true;
+
+  // Gunakan fungsi bawaan store untuk cek izin halaman 'aduan'
+  return store.canAccessPage("aduan");
+});
+
+const isLoadingReport = ref(false);
+
+// --- 2. PENARIKAN DATA SPESIFIK (LAZY LOADING) ---
+const fetchAduanData = async () => {
+  if (!canViewPage.value) return;
+
+  isLoadingReport.value = true;
+  try {
+    // Pastikan memanggil api.getAduanList agar ada pergerakan network/firestore
+    if (api && api.getAduanList) {
+      const res = await api.getAduanList();
+      if (res) {
+        if (!store.db) store.db = {};
+        store.db.aduanList = res; // Masukkan ke store agar computed 'reports' terisi
+      }
+    }
+  } catch (err) {
+    store.addNotification(
+      "Gagal",
+      "Gagal memuat data laporan divisi",
+      "warning",
+    );
+  } finally {
+    isLoadingReport.value = false;
+  }
+};
+
+const openDetailModal = async (item) => {
+  store.isLoading = true;
+  try {
+    // Panggil API spesifik untuk mengambil dokumen utuh berdasarkan ID dari Firestore
+    const detailData = await api.getAduanDetail(item.id);
+
+    if (detailData) {
+      isEdit.value = true;
+      // Masukkan data utuh tanpa ada field atau gambar yang terpotong
+      Object.assign(form, detailData);
+      isModalOpen.value = true;
+    } else {
+      store.addNotification(
+        "Peringatan",
+        "Data detail aduan tidak ditemukan",
+        "warning",
+      );
+    }
+  } catch (err) {
+    store.addNotification("Gagal", "Gagal memuat detail aduan", "warning");
+  } finally {
+    store.isLoading = false;
+  }
+};
+
+onMounted(() => {
+  if (canViewPage.value) {
+    fetchAduanData();
+  }
+});
 
 // Handler Export Excel
 const handleExportAduan = () => {
@@ -1079,15 +1104,6 @@ const openAddModal = () => {
     imageUrl: "",
     date: new Date().toISOString().split("T")[0],
     createdBy: store.currentUser?.email || store.currentUser?.id || "",
-  });
-  isModalOpen.value = true;
-};
-
-const openDetailModal = (item) => {
-  isEdit.value = true;
-  Object.assign(form, {
-    imageUrl: item.imageUrl || item.ImageUrl || item.image || "",
-    ...item,
   });
   isModalOpen.value = true;
 };

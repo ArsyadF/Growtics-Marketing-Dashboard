@@ -1,211 +1,203 @@
 <!-- src/components/Header.vue -->
 <template>
   <header
-    class="sticky top-0 z-40 pt-[max(1.5rem,env(safe-area-inset-top))] md:pt-4 px-4 md:px-6 pb-4 flex items-center justify-between gap-3 transition-all duration-300 transform"
-    :class="[
-      isHeaderHidden
-        ? '-translate-y-full opacity-0 pointer-events-none'
-        : 'translate-y-0 opacity-100',
-      isScrolled
-        ? // ? 'bg-gradient-to-b from-white via-white/80 to-transparent dark:from-slate-950 dark:via-slate-950/80 dark:to-transparent backdrop-blur-md shadow-xs'
-          // : 'bg-gradient-to-b from-white/90 to-transparent dark:from-slate-950/90 dark:to-transparent',
-          'bg-[#f1f5f9] dark:bg-slate-950/80 shadow-xs'
-        : 'bg-[#f1f5f9] dark:bg-slate-950/90',
-    ]"
+    class="ui-app-header sticky top-0 z-40 flex items-center justify-between gap-3 md:py-4 md:px-6"
+    :class="{
+      'is-hidden': isHeaderHidden,
+      'is-scrolled': isScrolled,
+    }"
   >
-    <!-- SISI KIRI: Judul Halaman Dinamis -->
-    <div class="flex items-center gap-2 md:gap-3 shrink-0 md:min-w-0">
-      <h2
-        class="dynamic-page-title text-base md:text-xl font-semibold text-slate-800 dark:text-slate-100 truncate"
-      >
+    <div class="flex-1 min-w-0">
+      <h2 class="ui-header-title overflow-hidden text-ellipsis whitespace-nowrap">
         {{ dynamicPageTitle }}
       </h2>
     </div>
 
-    <!-- SISI KANAN: Kontrol Ekstra -->
-    <div class="flex items-center gap-2 md:gap-3 shrink-0 relative">
-      <!-- Filter Tanggal Global (KHUSUS DESKTOP) -->
-      <div
-        class="hidden md:flex items-center space-x-2 glass-input p-1.5 rounded-xl text-xs overflow-x-auto"
-      >
-        <span class="text-slate-500 dark:text-slate-400 font-normal px-1"
-          >Filter:</span
-        >
+    <div class="flex items-center gap-2 shrink-0 relative md:gap-3">
+      <!-- Filter tanggal -->
+      <div class="ui-date-filter hidden items-center gap-2 p-1.5 md:flex">
+        <span class="ui-date-filter-label px-1">Filter:</span>
+
         <input
           v-model="tempStartDate"
           type="date"
-          class="bg-transparent rounded-lg px-1.5 py-1 dark:text-slate-100 outline-none w-auto text-xs font-normal"
+          class="ui-date-filter-input w-auto min-w-0 py-1 px-1.5"
+          aria-label="Tanggal awal"
         />
-        <span class="dark:text-slate-400 font-normal">-</span>
+
+        <span class="ui-caption">-</span>
+
         <input
           v-model="tempEndDate"
           type="date"
-          class="bg-transparent rounded-lg px-1.5 py-1 dark:text-slate-100 outline-none w-auto text-xs font-normal"
+          class="ui-date-filter-input w-auto min-w-0 py-1 px-1.5"
+          aria-label="Tanggal akhir"
         />
 
         <button
+          type="button"
+          class="ui-button ui-button-primary ui-button-sm ui-button-shadow"
           @click="applyFilter"
-          class="bg-button text-white px-3 py-1 rounded-lg font-semibold transition-all shadow-md text-xs cursor-pointer flex items-center gap-1 shrink-0 hover:opacity-95"
           title="Terapkan Filter Tanggal"
         >
-          <i class="fa-solid fa-filter"></i> <span>Terapkan</span>
+          <i class="fa-solid fa-filter"></i>
+          Terapkan
         </button>
+
         <button
+          type="button"
+          class="ui-button ui-button-secondary ui-button-sm"
           @click="resetFilter"
-          class="bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1 rounded-lg font-semibold transition-all text-xs cursor-pointer flex items-center gap-1 shrink-0"
           title="Reset ke Awal Tahun s/d Hari Ini"
         >
-          <i class="fa-solid fa-rotate-left"></i> <span>Reset</span>
+          <i class="fa-solid fa-rotate-left"></i>
+          Reset
         </button>
       </div>
 
-      <!-- ICON LONCENG NOTIFIKASI -->
+      <!-- Mode terang / gelap -->
+      <button
+        type="button"
+        role="switch"
+        class="ui-theme-switch flex items-center w-14 h-8 px-1"
+        :class="{ 'is-dark': store.isDarkMode }"
+        :aria-checked="store.isDarkMode"
+        aria-label="Mode gelap"
+        :title="store.isDarkMode ? 'Ubah ke Mode Terang' : 'Ubah ke Mode Gelap'"
+        @click="toggleThemeSwitch"
+      >
+        <span class="ui-theme-switch-thumb flex items-center justify-center w-6 h-6">
+          <i :class="['fa-solid', store.isDarkMode ? 'fa-moon' : 'fa-sun']"></i>
+        </span>
+      </button>
+
+      <!-- Notifikasi -->
       <div class="relative">
         <button
-          @click="togglePopup('notif')"
-          class="w-10 h-10 md:w-11 md:h-11 rounded-full glass-card text-slate-600 dark:text-slate-300 hover:scale-105 transition-all cursor-pointer flex items-center justify-center shrink-0 relative"
+          type="button"
+          class="ui-header-icon inline-flex items-center justify-center w-10 h-10 shrink-0 relative md:w-11 md:h-11"
+          :aria-expanded="activePopup === 'notif'"
+          aria-controls="header-notifications"
+          aria-label="Notifikasi Aktivitas"
           title="Notifikasi Aktivitas"
+          @click="togglePopup('notif')"
         >
-          <i class="fa-solid fa-bell text-base"></i>
+          <i class="fa-solid fa-bell"></i>
+
           <span
             v-if="unreadCount > 0"
-            class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-rose-500 text-white font-semibold text-xs rounded-full flex items-center justify-center border-2 border-white dark:border-slate-900 animate-pulse"
+            class="ui-notification-count absolute -top-0.5 -right-0.5 flex items-center justify-center w-4 h-4"
           >
             {{ unreadCount > 9 ? "9+" : unreadCount }}
           </span>
         </button>
 
-        <!-- POPUP CARD NOTIFIKASI -->
         <div
           v-if="activePopup === 'notif'"
-          class="absolute right-0 mt-3 w-72 sm:w-80 glass-card bg-white dark:bg-slate-900 rounded-3xl p-4 shadow-2xl border border-slate-100 dark:border-slate-800 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+          id="header-notifications"
+          class="ui-popup absolute top-full right-0 z-50 mt-3 w-72 sm:w-80 animate-fade-in"
         >
-          <div
-            class="flex items-center justify-between pb-2.5 border-b border-slate-100 dark:border-slate-800"
-          >
-            <div class="flex items-center gap-2">
-              <h4
-                class="font-semibold text-xs text-slate-800 dark:text-slate-100"
-              >
-                Notifikasi
-              </h4>
-              <span
-                v-if="unreadCount > 0"
-                class="text-xs font-semibold text-theme bg-button/10 px-2 py-0.5 rounded-full"
-                >{{ unreadCount }} Baru</span
-              >
+          <div class="ui-popup-header">
+            <div class="flex items-center gap-2 min-w-0">
+              <h4 class="ui-text-strong">Notifikasi</h4>
+
+              <span v-if="unreadCount > 0" class="ui-badge ui-badge-info ui-badge-pill">
+                {{ unreadCount }} Baru
+              </span>
             </div>
+
             <button
+              type="button"
+              class="ui-link ui-link-danger"
               @click="store.clearNotifications()"
-              class="text-xs font-semibold text-slate-400 hover:text-rose-500 transition-colors cursor-pointer"
             >
               Hapus Semua
             </button>
           </div>
 
-          <!-- List Notifikasi -->
-          <div
-            class="max-h-64 overflow-y-auto py-2 space-y-2 [scrollbar-width:none]"
-          >
+          <div class="flex flex-col gap-2 max-h-64 py-2 overflow-y-auto no-scrollbar">
             <template v-if="store.notifications?.length > 0">
               <div
                 v-for="notif in store.notifications"
                 :key="notif.id"
-                :class="[
-                  'p-2.5 rounded-2xl transition-all border text-xs flex gap-2.5 items-start',
-                  notif.read
-                    ? 'bg-transparent border-transparent opacity-70'
-                    : 'bg-slate-50 dark:bg-slate-800/60 border-slate-100 dark:border-slate-700/50',
-                ]"
+                class="ui-notification flex items-start gap-2.5 p-2.5"
+                :class="{ 'is-read': notif.read }"
               >
-                <div
-                  :class="[
-                    'w-7 h-7 rounded-xl shrink-0 flex items-center justify-center text-xs mt-0.5',
-                    getNotifStyle(notif.type).bgClass,
-                  ]"
-                >
-                  <i
-                    :class="['fa-solid', getNotifStyle(notif.type).iconClass]"
-                  ></i>
-                </div>
+                <span class="ui-icon ui-icon-sm" :class="getNotifStyle(notif.type).bgClass">
+                  <i :class="['fa-solid', getNotifStyle(notif.type).iconClass]"></i>
+                </span>
+
                 <div class="flex-1 min-w-0">
-                  <div class="flex justify-between items-start">
-                    <p
-                      class="font-semibold text-slate-800 dark:text-slate-100 text-xs truncate"
-                    >
+                  <div class="flex items-center justify-between gap-3 min-w-0">
+                    <p class="ui-text-strong ui-truncate">
                       {{ notif.title }}
                     </p>
-                    <span
-                      class="text-xs text-slate-400 shrink-0 ml-1 font-normal"
-                      >{{ notif.time }}</span
-                    >
+                    <span class="ui-caption shrink-0">
+                      {{ notif.time }}
+                    </span>
                   </div>
-                  <p
-                    class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-snug font-normal"
-                  >
-                    {{ notif.message }}
-                  </p>
+
+                  <p class="ui-description">{{ notif.message }}</p>
                 </div>
               </div>
             </template>
-            <div
-              v-else
-              class="text-center py-6 text-slate-400 text-xs font-normal"
-            >
-              <i
-                class="fa-solid fa-bell-slash text-base mb-1 opacity-40 block"
-              ></i>
-              Belum ada notifikasi
+
+            <div v-else class="ui-empty">
+              <i class="fa-solid fa-bell-slash"></i>
+              <p>Belum ada notifikasi</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- MENU PROFIL -->
+      <!-- Profil -->
       <div class="relative">
         <button
-          @click="togglePopup('profile')"
-          class="w-10 h-10 md:w-11 md:h-11 rounded-full border-2 border-slate-200 dark:border-slate-700 hover:border-theme transition-all cursor-pointer shrink-0 overflow-hidden flex items-center justify-center"
+          type="button"
+          class="ui-avatar inline-flex items-center justify-center w-10 h-10 shrink-0 overflow-hidden md:w-11 md:h-11"
+          :aria-expanded="activePopup === 'profile'"
+          aria-controls="header-profile"
+          aria-label="Profil Pengguna"
           title="Profil Pengguna"
+          @click="togglePopup('profile')"
         >
-          <img
-            :src="userAvatar"
-            alt="Profil"
-            class="w-full h-full object-cover"
-          />
+          <img :src="userAvatar" alt="Profil" />
         </button>
 
-        <!-- Dropdown Profil -->
         <div
           v-if="activePopup === 'profile'"
-          class="absolute right-0 mt-3 w-48 glass-card bg-white dark:bg-slate-900 rounded-2xl p-2 shadow-2xl border border-slate-100 dark:border-slate-800 z-50 animate-in fade-in slide-in-from-top-2 duration-150"
+          id="header-profile"
+          class="ui-popup ui-popup-compact absolute top-full right-0 z-50 mt-3 w-48 animate-fade-in"
         >
-          <div
-            class="p-2.5 border-b border-slate-100 dark:border-slate-800 mb-1"
-          >
-            <p
-              class="font-semibold text-xs text-slate-800 dark:text-slate-100 truncate"
-            >
-              {{ userName }}
-            </p>
-            <p
-              class="text-xs text-slate-400 truncate uppercase mt-0.5 font-normal"
-            >
-              {{ userRole }}
-            </p>
+          <div v-if="isLoggedIn" class="ui-profile-summary p-2.5 mb-1">
+            <p class="ui-text-strong ui-truncate">{{ userName }}</p>
+            <p class="ui-caption ui-truncate">{{ userRole }}</p>
           </div>
-          <div class="space-y-1">
+
+          <div class="ui-menu-list">
             <button
+              v-if="isLoggedIn"
+              type="button"
+              class="ui-menu-item"
               @click="handleProfileMenu('profile')"
-              class="w-full text-left flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
             >
-              <i class="fa-regular fa-user text-slate-400"></i> Profil Saya
+              <i class="fa-regular fa-user"></i>
+              Kelola Profil
             </button>
+
             <button
-              @click="handleProfileMenu('theme')"
-              class="w-full text-left flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              v-else
+              type="button"
+              class="ui-menu-item ui-menu-item-success"
+              @click="handleProfileMenu('login')"
             >
-              <i class="fa-solid fa-palette text-slate-400"></i> Tema Tampilan
+              <i class="fa-solid fa-right-to-bracket"></i>
+              Login
+            </button>
+
+            <button type="button" class="ui-menu-item" @click="handleProfileMenu('theme')">
+              <i class="fa-solid fa-palette"></i>
+              Tema Tampilan
             </button>
           </div>
         </div>
@@ -213,95 +205,83 @@
     </div>
   </header>
 
-  <!-- MODAL TEMA TAMPILAN -->
+  <!-- Pengaturan tampilan -->
   <Teleport to="body">
-    <div
-      v-if="isThemeModalOpen"
-      @click.self="isThemeModalOpen = false"
-      class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity"
-    >
+    <div v-if="isThemeModalOpen" class="ui-modal-overlay" @click.self="isThemeModalOpen = false">
       <div
-        class="w-full max-w-xs glass-card bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl space-y-4 border border-slate-100 dark:border-slate-800 animate-in fade-in zoom-in-95 duration-150"
+        class="ui-modal ui-modal-xs animate-fade-in"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="theme-modal-title"
       >
-        <div
-          class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3"
-        >
-          <h3
-            class="font-semibold text-slate-800 dark:text-slate-100 text-sm flex items-center gap-2"
-          >
-            <i class="fa-solid fa-palette text-theme"></i> Pengaturan Tampilan
+        <div class="ui-modal-header">
+          <h3 id="theme-modal-title" class="ui-title">
+            <i class="fa-solid fa-palette"></i>
+            Pengaturan Tampilan
           </h3>
+
           <button
+            type="button"
+            class="ui-close"
+            aria-label="Tutup pengaturan tampilan"
             @click="isThemeModalOpen = false"
-            class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer transition-colors"
           >
-            <i class="fa-solid fa-xmark text-base"></i>
+            <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
 
-        <div class="space-y-4">
-          <!-- Mode Tampilan (Light / Dark / System) -->
-          <div class="space-y-2">
-            <h4
-              class="font-semibold text-xs text-slate-400 dark:text-slate-400 uppercase tracking-wider"
-            >
-              Mode Tampilan
-            </h4>
+        <div class="ui-modal-body flex flex-col gap-4">
+          <div>
+            <h4 class="ui-section-label">Mode Tampilan</h4>
+
             <div class="grid grid-cols-3 gap-2">
               <button
                 v-for="mode in themeModes"
                 :key="mode.id"
+                type="button"
+                class="ui-option"
+                :class="{ 'is-active': themePreference === mode.id }"
+                :aria-pressed="themePreference === mode.id"
                 @click="setTheme(mode.id)"
-                :class="[
-                  'p-2.5 rounded-xl text-xs font-semibold border flex items-center justify-center gap-2 transition-all cursor-pointer',
-                  themePreference === mode.id
-                    ? 'border-theme text-theme bg-button/10 shadow-sm'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 font-normal',
-                ]"
               >
-                <i :class="['fa-solid', mode.iconClass]"></i> {{ mode.label }}
+                <i :class="['fa-solid', mode.iconClass]"></i>
+                {{ mode.label }}
               </button>
             </div>
           </div>
 
-          <!-- Warna Aksen (Presets + Color Wheel) -->
-          <div
-            class="space-y-2 pt-3 border-t border-slate-200 dark:border-slate-800"
-          >
-            <h4
-              class="font-semibold text-xs text-slate-400 dark:text-slate-400 uppercase tracking-wider"
-            >
-              Warna Aksen
-            </h4>
+          <div class="ui-subsection flex flex-col gap-3 pt-3">
+            <h4 class="ui-section-label">Warna Aksen</h4>
+
             <div class="grid grid-cols-3 gap-2">
               <button
                 v-for="color in store.colorPresets"
                 :key="color.id"
+                type="button"
+                class="ui-option"
+                :class="{
+                  'is-active': store.activeThemeColor === color.hex,
+                }"
+                :aria-pressed="store.activeThemeColor === color.hex"
                 @click="store.setThemeColor(color.hex, color.lightHex)"
-                :class="[
-                  'flex items-center gap-2 p-2 rounded-xl border text-xs font-semibold transition-all cursor-pointer',
-                  store.activeThemeColor === color.hex
-                    ? 'border-theme text-theme bg-button/10 shadow-sm'
-                    : 'border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 opacity-80 hover:opacity-100 font-normal',
-                ]"
               >
                 <span
-                  class="w-3.5 h-3.5 rounded-full shrink-0 shadow-sm"
+                  class="ui-color-dot w-3.5 h-3.5 shrink-0"
                   :style="{ backgroundColor: color.hex }"
                 ></span>
-                <span class="truncate text-xs">{{ color.name }}</span>
+                <span class="ui-truncate">{{ color.name }}</span>
               </button>
             </div>
-            <div class="flex items-center justify-between pt-2">
-              <span
-                class="text-xs font-normal text-slate-500 dark:text-slate-400"
-                >Warna Bebas (Wheel):</span
-              >
+
+            <div class="flex items-center justify-between gap-3 min-w-0">
+              <label for="header-accent-color" class="ui-caption"> Warna Bebas (Wheel): </label>
+
               <input
+                id="header-accent-color"
                 type="color"
+                class="ui-color-input w-7 h-7 p-0"
                 :value="store.activeThemeColor"
                 @input="(e) => store.setThemeColor(e.target.value)"
-                class="w-7 h-7 rounded-lg cursor-pointer border-0 bg-transparent p-0"
               />
             </div>
           </div>
@@ -329,7 +309,10 @@ let lastScrollY = 0;
 const tempStartDate = ref("");
 const tempEndDate = ref("");
 
-// Data Pengguna
+// Status Login & Data Pengguna
+const isLoggedIn = computed(
+  () => !!store.currentUser && Object.keys(store.currentUser).length > 0,
+);
 const currentUser = computed(() => store.currentUser || {});
 const userName = computed(
   () => currentUser.value.nama || currentUser.value.Nama || "Pengguna",
@@ -337,12 +320,15 @@ const userName = computed(
 const userRole = computed(
   () => currentUser.value.role || currentUser.value.Role || "User",
 );
-const userAvatar = computed(
-  () =>
-    currentUser.value.avatarUrl ||
-    currentUser.value.Avatar ||
-    `https://ui-avatars.com/api/?name=${encodeURIComponent(userName.value)}&background=0D8ABC&color=fff`,
-);
+const userAvatar = computed(() => {
+  if (
+    isLoggedIn.value &&
+    (currentUser.value.avatarUrl || currentUser.value.Avatar)
+  ) {
+    return currentUser.value.avatarUrl || currentUser.value.Avatar;
+  }
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(isLoggedIn.value ? userName.value : "Guest")}&background=94a3b8&color=fff`;
+});
 
 // Dynamic Title Mapping
 const titleMap = {
@@ -389,8 +375,17 @@ const togglePopup = (popupName) => {
 
 const handleProfileMenu = (action) => {
   activePopup.value = null;
-  if (action === "profile" && typeof store.navigate === "function")
+  if (action === "profile" && typeof store.navigate === "function") {
     store.navigate("profile");
+  }
+  if (action === "login") {
+    // Membuka modal login atau navigasi ke halaman login jika tersedia pada store/props
+    if (typeof store.openModal === "function") {
+      store.openModal("login");
+    } else if (typeof store.navigate === "function") {
+      store.navigate("login");
+    }
+  }
   if (action === "theme") isThemeModalOpen.value = true;
 };
 
@@ -398,19 +393,23 @@ const handleProfileMenu = (action) => {
 const getNotifStyle = (type) => {
   const styles = {
     success: {
-      bgClass: "bg-emerald-500/10 text-emerald-500",
+      bgClass: "ui-icon-success",
       iconClass: "fa-check",
     },
     danger: {
-      bgClass: "bg-rose-500/10 text-rose-500",
+      bgClass: "ui-icon-danger",
       iconClass: "fa-trash-can",
     },
     warning: {
-      bgClass: "bg-amber-500/10 text-amber-500",
+      bgClass: "ui-icon-warning",
       iconClass: "fa-pen-to-square",
     },
-    info: { bgClass: "bg-button/10 text-theme", iconClass: "fa-info" },
+    info: {
+      bgClass: "ui-icon-info",
+      iconClass: "fa-info",
+    },
   };
+
   return styles[type] || styles.info;
 };
 
@@ -453,6 +452,12 @@ const setTheme = (mode) => {
     );
 
   isThemeModalOpen.value = false;
+};
+
+// --- TOGGLE THEME SWITCH (GESER) ---
+const toggleThemeSwitch = () => {
+  const newMode = store.isDarkMode ? "light" : "dark";
+  setTheme(newMode);
 };
 
 // --- SCROLL MANAGEMENT ---
@@ -514,3 +519,176 @@ watch(
   { deep: true },
 );
 </script>
+
+
+<!-- Gaya khusus komponen; layout utama berada di template. -->
+<style scoped>
+.ui-app-header {
+  padding: max(1.5rem, env(safe-area-inset-top)) 1rem 1rem;
+  background-color: var(--page-background);
+  transition:
+    transform 300ms var(--ui-ease),
+    opacity 300ms var(--ui-ease);
+}
+
+.ui-app-header.is-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ui-app-header.is-scrolled {
+  box-shadow: var(--ui-shadow-xs);
+}
+
+.ui-avatar {
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.ui-header-icon {
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.ui-avatar {
+  border: 2px solid var(--ui-border);
+  transition: border-color var(--hover-duration);
+}
+
+.ui-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ui-header-icon {
+  background-color: var(--card-background);
+  color: var(--ui-text-secondary);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ui-avatar:hover {
+    border-color: var(--primary-color);
+  }
+}
+
+.ui-header-title {
+  color: var(--ui-text);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.ui-date-filter {
+  border: 1px solid var(--input-border);
+  border-radius: var(--ui-radius-control);
+  background-color: var(--input-background);
+  font-size: var(--ui-font-xs);
+}
+
+.ui-date-filter-label {
+  color: var(--ui-text-description);
+  font-weight: 400;
+}
+
+.ui-date-filter-input {
+  border: 1px solid transparent;
+  border-radius: var(--ui-radius-sm);
+  outline: none;
+  background: transparent;
+  color: var(--ui-text);
+  font-family: inherit;
+  font-size: var(--ui-font-xs);
+}
+
+.ui-date-filter-input:focus {
+  border-color: var(--input-border-focus);
+}
+
+.ui-date-filter .ui-button {
+  min-height: 0;
+  padding: 0.25rem 0.625rem;
+}
+
+.ui-theme-switch {
+  border: 1px solid var(--input-border);
+  border-radius: 999px;
+  background-color: var(--input-background);
+  box-shadow: var(--ui-shadow-xs);
+  cursor: pointer;
+}
+
+.ui-theme-switch-thumb {
+  border-radius: 999px;
+  background: #ffffff;
+  color: #f59e0b;
+  font-size: var(--ui-font-xs);
+  box-shadow: var(--ui-shadow-button);
+  transition: transform 300ms var(--ui-ease);
+}
+
+.ui-theme-switch.is-dark .ui-theme-switch-thumb {
+  transform: translateX(1.5rem);
+  color: #4f46e5;
+}
+
+.ui-theme-switch:focus-visible {
+  outline: 1px solid var(--input-border-focus);
+  outline-offset: 2px;
+}
+
+.ui-notification {
+  border: 1px solid var(--input-border);
+  border-radius: var(--ui-radius-card);
+  background-color: var(--input-background);
+  font-size: var(--ui-font-xs);
+}
+
+.ui-notification.is-read {
+  border-color: transparent;
+  background: transparent;
+  opacity: 0.7;
+}
+
+.ui-notification-count {
+  border: 2px solid var(--card-background);
+  border-radius: 999px;
+  background-color: #f43f5e;
+  color: #ffffff;
+  font-size: var(--ui-font-xs);
+  font-weight: 600;
+}
+
+.ui-profile-summary {
+  border-bottom: 1px solid var(--ui-border-soft);
+}
+
+.ui-color-dot {
+  border-radius: 999px;
+  box-shadow: var(--ui-shadow-sm);
+}
+
+.ui-color-input {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+@media print {
+  header,
+  nav,
+  .bottom-nav,
+  .no-print,
+  .ui-app-header,
+  .ui-tabs,
+  .ui-actions,
+  button,
+  select,
+  .glass-card:not(.print-active),
+  .ui-card:not(.print-active),
+  .ui-popup,
+  .ui-modal-overlay {
+    display: none !important;
+  }
+}
+</style>
